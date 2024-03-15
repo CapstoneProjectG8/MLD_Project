@@ -21,8 +21,20 @@ builder.Services.AddDbContext<MldDatabaseContext>(option =>
 //Mapper
 builder.Services.AddAutoMapper(typeof(MapperConfig));
 //Dependacy Injection
-builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IAccountRoleRepository, AccountRoleRepository>();
+builder.Services.AddScoped<ICurriculumDistributionRepository, CurriculumDistributionRepository>();
+builder.Services.AddScoped<IGradeRepository, GradeRepository>();
+builder.Services.AddScoped<ILevelOfTrainningRepository, LevelOfTrainningRepository>();
+builder.Services.AddScoped<IPhuLuc1Repository, PhuLuc1Repository>();
 builder.Services.AddScoped<IProfessionalStandardRepository, ProfessionalStandardRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<ISelectedTopicsRepository, SelectedTopicRepository>();
+builder.Services.AddScoped<ISpecialTeamRepository, SpecialTeamRepository>();
+builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
+builder.Services.AddScoped<ISubjectRoomRepository, SubjectRoomRepository>();
+builder.Services.AddScoped<ITeachingEquipmentRepository, TeachingEquipmentRepository>();
+
+
 //ADD CORS
 builder.Services.AddCors();
 
