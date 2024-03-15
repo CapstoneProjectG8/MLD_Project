@@ -22,6 +22,7 @@ builder.Services.AddDbContext<MldDatabaseContext>(option =>
 builder.Services.AddAutoMapper(typeof(MapperConfig));
 //Dependacy Injection
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IProfessionalStandardRepository, ProfessionalStandardRepository>();
 //ADD CORS
 builder.Services.AddCors();
 
