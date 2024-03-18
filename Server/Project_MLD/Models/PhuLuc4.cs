@@ -11,6 +11,8 @@ public partial class PhuLuc4
 
     public int? TeachingPlannerId { get; set; }
 
+    public bool? Status { get; set; }
+
     public virtual ICollection<Document> Documents { get; set; } = new List<Document>();
 
     public virtual ICollection<PhuLuc5> PhuLuc5s { get; set; } = new List<PhuLuc5>();

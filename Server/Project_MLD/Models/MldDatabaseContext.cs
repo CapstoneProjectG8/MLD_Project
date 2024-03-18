@@ -17,8 +17,6 @@ public partial class MldDatabaseContext : DbContext
 
     public virtual DbSet<Account> Accounts { get; set; }
 
-    public virtual DbSet<AccountRole> AccountRoles { get; set; }
-
     public virtual DbSet<Category> Categories { get; set; }
 
     public virtual DbSet<Class> Classes { get; set; }
@@ -89,6 +87,7 @@ public partial class MldDatabaseContext : DbContext
         IConfigurationRoot configuration = builder.Build();
         optionsBuilder.UseSqlServer(configuration.GetConnectionString("MyCnn"));
     }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Account>(entity =>
@@ -102,29 +101,14 @@ public partial class MldDatabaseContext : DbContext
             entity.Property(e => e.Password)
                 .HasMaxLength(50)
                 .HasColumnName("password");
+            entity.Property(e => e.RoleId).HasColumnName("role_id");
             entity.Property(e => e.Username)
                 .HasMaxLength(50)
                 .HasColumnName("username");
-        });
 
-        modelBuilder.Entity<AccountRole>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToTable("Account Role");
-
-            entity.Property(e => e.AccountId).HasColumnName("account_id");
-            entity.Property(e => e.CreatedBy).HasColumnName("created_by");
-            entity.Property(e => e.CreatedDate).HasColumnName("created_date");
-            entity.Property(e => e.RoleId).HasColumnName("role_id");
-
-            entity.HasOne(d => d.Account).WithMany()
-                .HasForeignKey(d => d.AccountId)
-                .HasConstraintName("FK_Account Role_Account");
-
-            entity.HasOne(d => d.Role).WithMany()
+            entity.HasOne(d => d.Role).WithMany(p => p.Accounts)
                 .HasForeignKey(d => d.RoleId)
-                .HasConstraintName("FK_Account Role_Role");
+                .HasConstraintName("FK_Account_Role");
         });
 
         modelBuilder.Entity<Category>(entity =>
@@ -311,6 +295,7 @@ public partial class MldDatabaseContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
                 .HasColumnName("name");
+            entity.Property(e => e.Status).HasColumnName("status");
             entity.Property(e => e.UserId).HasColumnName("user_id");
 
             entity.HasOne(d => d.User).WithMany(p => p.PhuLuc2s)
@@ -364,6 +349,7 @@ public partial class MldDatabaseContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Pl1Id).HasColumnName("pl1_id");
+            entity.Property(e => e.Status).HasColumnName("status");
             entity.Property(e => e.UserId).HasColumnName("user_id");
 
             entity.HasOne(d => d.Pl1).WithMany(p => p.PhuLuc3s)
@@ -383,6 +369,7 @@ public partial class MldDatabaseContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
                 .HasColumnName("name");
+            entity.Property(e => e.Status).HasColumnName("status");
             entity.Property(e => e.TeachingPlannerId).HasColumnName("teaching_planner_id");
 
             entity.HasOne(d => d.TeachingPlanner).WithMany(p => p.PhuLuc4s)

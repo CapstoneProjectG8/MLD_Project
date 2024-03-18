@@ -11,5 +11,7 @@ public partial class PhuLuc2
 
     public int? UserId { get; set; }
 
+    public bool? Status { get; set; }
+
     public virtual User? User { get; set; }
 }

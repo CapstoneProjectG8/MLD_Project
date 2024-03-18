@@ -17,7 +17,7 @@ public partial class PhuLuc1
 
     public string? Note { get; set; }
 
-    public int? Status { get; set; }
+    public bool? Status { get; set; }
 
     public int? ApproveBy { get; set; }
 
