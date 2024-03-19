@@ -1,6 +1,7 @@
 @Project_MLD_HostAddress = http://localhost:5051
 
-GET {{Project_MLD_HostAddress}}/weatherforecast/
+
+GET {{Project_MLD_HostAddress}}/api/Role
 Accept: application/json
 
 ###
