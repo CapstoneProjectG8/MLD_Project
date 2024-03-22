@@ -296,9 +296,9 @@ namespace Project_MLD.Migrations
                         .HasColumnType("int")
                         .HasColumnName("form_category_id");
 
-                    b.Property<int?>("Pl1Id")
+                    b.Property<int?>("document1Id")
                         .HasColumnType("int")
-                        .HasColumnName("pl1_id");
+                        .HasColumnName("document1_id");
 
                     b.Property<int?>("TestingCategoryId")
                         .HasColumnType("int")
@@ -310,14 +310,14 @@ namespace Project_MLD.Migrations
 
                     b.HasIndex("FormCategoryId");
 
-                    b.HasIndex("Pl1Id");
+                    b.HasIndex("document1Id");
 
                     b.HasIndex("TestingCategoryId");
 
                     b.ToTable("Periodic Assessment", (string)null);
                 });
 
-            modelBuilder.Entity("Project_MLD.Models.PhuLuc1", b =>
+            modelBuilder.Entity("Project_MLD.Models.Document1", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -368,7 +368,7 @@ namespace Project_MLD.Migrations
                     b.ToTable("Phu Luc 1", (string)null);
                 });
 
-            modelBuilder.Entity("Project_MLD.Models.PhuLuc2", b =>
+            modelBuilder.Entity("Project_MLD.Models.Docuemnt2", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -394,7 +394,7 @@ namespace Project_MLD.Migrations
                     b.ToTable("Phu luc 2", (string)null);
                 });
 
-            modelBuilder.Entity("Project_MLD.Models.PhuLuc2Grade", b =>
+            modelBuilder.Entity("Project_MLD.Models.Docuemnt2Grade", b =>
                 {
                     b.Property<string>("CollaborateWith")
                         .HasMaxLength(50)
@@ -446,7 +446,7 @@ namespace Project_MLD.Migrations
 
                     b.HasIndex("Pl2Id");
 
-                    b.ToTable("PhuLuc2_Grade", (string)null);
+                    b.ToTable("Docuemnt2_Grade", (string)null);
                 });
 
             modelBuilder.Entity("Project_MLD.Models.PhuLuc3", b =>
@@ -458,9 +458,9 @@ namespace Project_MLD.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("Pl1Id")
+                    b.Property<int?>("document1Id")
                         .HasColumnType("int")
-                        .HasColumnName("pl1_id");
+                        .HasColumnName("document1_id");
 
                     b.Property<int?>("UserId")
                         .HasColumnType("int")
@@ -469,7 +469,7 @@ namespace Project_MLD.Migrations
                     b.HasKey("Id")
                         .HasName("PK_Kế hoạch giáo dục của GV");
 
-                    b.HasIndex("Pl1Id");
+                    b.HasIndex("document1Id");
 
                     b.HasIndex("UserId");
 
@@ -532,7 +532,7 @@ namespace Project_MLD.Migrations
                     b.ToTable("Phu Luc 5", (string)null);
                 });
 
-            modelBuilder.Entity("Project_MLD.Models.Pl1CurriculumDistribution", b =>
+            modelBuilder.Entity("Project_MLD.Models.document1CurriculumDistribution", b =>
                 {
                     b.Property<int>("CurruculumId")
                         .HasColumnType("int")
@@ -543,9 +543,9 @@ namespace Project_MLD.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("description");
 
-                    b.Property<int>("Pl1Id")
+                    b.Property<int>("document1Id")
                         .HasColumnType("int")
-                        .HasColumnName("pl1_id");
+                        .HasColumnName("document1_id");
 
                     b.Property<int>("Slot")
                         .HasColumnType("int")
@@ -553,21 +553,21 @@ namespace Project_MLD.Migrations
 
                     b.HasIndex("CurruculumId");
 
-                    b.HasIndex("Pl1Id");
+                    b.HasIndex("document1Id");
 
-                    b.ToTable("PL1_CurriculumDistribution", (string)null);
+                    b.ToTable("document1_CurriculumDistribution", (string)null);
                 });
 
-            modelBuilder.Entity("Project_MLD.Models.Pl1SelectedTopic", b =>
+            modelBuilder.Entity("Project_MLD.Models.document1SelectedTopic", b =>
                 {
                     b.Property<string>("Description")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("description");
 
-                    b.Property<int?>("Pl1Id")
+                    b.Property<int?>("document1Id")
                         .HasColumnType("int")
-                        .HasColumnName("pl1_id");
+                        .HasColumnName("document1_id");
 
                     b.Property<int?>("SelectedTopicsId")
                         .HasColumnType("int")
@@ -577,14 +577,14 @@ namespace Project_MLD.Migrations
                         .HasColumnType("int")
                         .HasColumnName("slot");
 
-                    b.HasIndex("Pl1Id");
+                    b.HasIndex("document1Id");
 
                     b.HasIndex("SelectedTopicsId");
 
-                    b.ToTable("PL1_SelectedTopics", (string)null);
+                    b.ToTable("document1_SelectedTopics", (string)null);
                 });
 
-            modelBuilder.Entity("Project_MLD.Models.Pl1SubjectRoom", b =>
+            modelBuilder.Entity("Project_MLD.Models.document1SubjectRoom", b =>
                 {
                     b.Property<string>("Description")
                         .HasMaxLength(50)
@@ -596,9 +596,9 @@ namespace Project_MLD.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("note");
 
-                    b.Property<int?>("Pl1Id")
+                    b.Property<int?>("document1Id")
                         .HasColumnType("int")
-                        .HasColumnName("pl1_id");
+                        .HasColumnName("document1_id");
 
                     b.Property<int?>("Quantity")
                         .HasColumnType("int")
@@ -608,14 +608,14 @@ namespace Project_MLD.Migrations
                         .HasColumnType("int")
                         .HasColumnName("subject_room_id");
 
-                    b.HasIndex("Pl1Id");
+                    b.HasIndex("document1Id");
 
                     b.HasIndex("SubjectRoomId");
 
-                    b.ToTable("PL1_Subject Room", (string)null);
+                    b.ToTable("document1_Subject Room", (string)null);
                 });
 
-            modelBuilder.Entity("Project_MLD.Models.Pl1TeachingEquipment", b =>
+            modelBuilder.Entity("Project_MLD.Models.document1TeachingEquipment", b =>
                 {
                     b.Property<string>("Description")
                         .HasMaxLength(50)
@@ -627,9 +627,9 @@ namespace Project_MLD.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("note");
 
-                    b.Property<int?>("Pl1Id")
+                    b.Property<int?>("document1Id")
                         .HasColumnType("int")
-                        .HasColumnName("pl1_id");
+                        .HasColumnName("document1_id");
 
                     b.Property<int?>("Quantity")
                         .HasColumnType("int")
@@ -639,11 +639,11 @@ namespace Project_MLD.Migrations
                         .HasColumnType("int")
                         .HasColumnName("teaching_equipment_id");
 
-                    b.HasIndex("Pl1Id");
+                    b.HasIndex("document1Id");
 
                     b.HasIndex("TeachingEquipmentId");
 
-                    b.ToTable("PL1_TeachingEquipment", (string)null);
+                    b.ToTable("document1_TeachingEquipment", (string)null);
                 });
 
             modelBuilder.Entity("Project_MLD.Models.Pl3CurriculumDistribution", b =>
@@ -1060,9 +1060,9 @@ namespace Project_MLD.Migrations
                         .HasForeignKey("FormCategoryId")
                         .HasConstraintName("FK_Kiểm tra, đánh giá định kỳ_Loại Bài kiểm tra");
 
-                    b.HasOne("Project_MLD.Models.PhuLuc1", "Pl1")
+                    b.HasOne("Project_MLD.Models.Document1", "document1")
                         .WithMany()
-                        .HasForeignKey("Pl1Id")
+                        .HasForeignKey("document1Id")
                         .HasConstraintName("FK_Kiểm tra, đánh giá định kỳ_Kế Hoạch Dạy Học");
 
                     b.HasOne("Project_MLD.Models.FormCategory", "TestingCategory")
@@ -1072,25 +1072,25 @@ namespace Project_MLD.Migrations
 
                     b.Navigation("FormCategory");
 
-                    b.Navigation("Pl1");
+                    b.Navigation("document1");
 
                     b.Navigation("TestingCategory");
                 });
 
-            modelBuilder.Entity("Project_MLD.Models.PhuLuc1", b =>
+            modelBuilder.Entity("Project_MLD.Models.Document1", b =>
                 {
                     b.HasOne("Project_MLD.Models.Grade", "Grade")
-                        .WithMany("PhuLuc1s")
+                        .WithMany("Document1s")
                         .HasForeignKey("GradeId")
                         .HasConstraintName("FK_Kế Hoạch Dạy Học_Khối Lớp");
 
                     b.HasOne("Project_MLD.Models.Subject", "Subject")
-                        .WithMany("PhuLuc1s")
+                        .WithMany("Document1s")
                         .HasForeignKey("SubjectId")
                         .HasConstraintName("FK_Kế Hoạch Dạy Học_Môn học");
 
                     b.HasOne("Project_MLD.Models.User", "User")
-                        .WithMany("PhuLuc1s")
+                        .WithMany("Document1s")
                         .HasForeignKey("UserId")
                         .HasConstraintName("FK_Phu Luc 1_User");
 
@@ -1101,24 +1101,24 @@ namespace Project_MLD.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Project_MLD.Models.PhuLuc2", b =>
+            modelBuilder.Entity("Project_MLD.Models.Docuemnt2", b =>
                 {
                     b.HasOne("Project_MLD.Models.User", "User")
-                        .WithMany("PhuLuc2s")
+                        .WithMany("Docuemnt2s")
                         .HasForeignKey("UserId")
                         .HasConstraintName("FK_Kế hoạch Tổ chức Hoạt Động Giáo Dục_User");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Project_MLD.Models.PhuLuc2Grade", b =>
+            modelBuilder.Entity("Project_MLD.Models.Docuemnt2Grade", b =>
                 {
                     b.HasOne("Project_MLD.Models.Grade", "Grade")
                         .WithMany()
                         .HasForeignKey("GradeId")
                         .HasConstraintName("FK_KHTCHDGD - KHỐI LỚP_Khối Lớp");
 
-                    b.HasOne("Project_MLD.Models.PhuLuc2", "Pl2")
+                    b.HasOne("Project_MLD.Models.Docuemnt2", "Pl2")
                         .WithMany()
                         .HasForeignKey("Pl2Id")
                         .HasConstraintName("FK_KHTCHDGD - KHỐI LỚP_Kế hoạch Tổ chức Hoạt Động Giáo Dục");
@@ -1130,9 +1130,9 @@ namespace Project_MLD.Migrations
 
             modelBuilder.Entity("Project_MLD.Models.PhuLuc3", b =>
                 {
-                    b.HasOne("Project_MLD.Models.PhuLuc1", "Pl1")
+                    b.HasOne("Project_MLD.Models.Document1", "document1")
                         .WithMany("PhuLuc3s")
-                        .HasForeignKey("Pl1Id")
+                        .HasForeignKey("document1Id")
                         .HasConstraintName("FK_Kế hoạch giáo dục của GV_Kế Hoạch Dạy Học");
 
                     b.HasOne("Project_MLD.Models.User", "User")
@@ -1140,7 +1140,7 @@ namespace Project_MLD.Migrations
                         .HasForeignKey("UserId")
                         .HasConstraintName("FK_Kế hoạch giáo dục của GV_User");
 
-                    b.Navigation("Pl1");
+                    b.Navigation("document1");
 
                     b.Navigation("User");
                 });
@@ -1173,7 +1173,7 @@ namespace Project_MLD.Migrations
                     b.Navigation("Pl4");
                 });
 
-            modelBuilder.Entity("Project_MLD.Models.Pl1CurriculumDistribution", b =>
+            modelBuilder.Entity("Project_MLD.Models.document1CurriculumDistribution", b =>
                 {
                     b.HasOne("Project_MLD.Models.CurriculumDistribution", "Curruculum")
                         .WithMany()
@@ -1181,22 +1181,22 @@ namespace Project_MLD.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_khdh-pptc_Phân phối chương trình");
 
-                    b.HasOne("Project_MLD.Models.PhuLuc1", "Pl1")
+                    b.HasOne("Project_MLD.Models.Document1", "document1")
                         .WithMany()
-                        .HasForeignKey("Pl1Id")
+                        .HasForeignKey("document1Id")
                         .IsRequired()
                         .HasConstraintName("FK_khdh-pptc_Kế Hoạch Dạy Học");
 
                     b.Navigation("Curruculum");
 
-                    b.Navigation("Pl1");
+                    b.Navigation("document1");
                 });
 
-            modelBuilder.Entity("Project_MLD.Models.Pl1SelectedTopic", b =>
+            modelBuilder.Entity("Project_MLD.Models.document1SelectedTopic", b =>
                 {
-                    b.HasOne("Project_MLD.Models.PhuLuc1", "Pl1")
+                    b.HasOne("Project_MLD.Models.Document1", "document1")
                         .WithMany()
-                        .HasForeignKey("Pl1Id")
+                        .HasForeignKey("document1Id")
                         .HasConstraintName("FK_khdh _ CD / BH_Kế Hoạch Dạy Học");
 
                     b.HasOne("Project_MLD.Models.SelectedTopic", "SelectedTopics")
@@ -1204,16 +1204,16 @@ namespace Project_MLD.Migrations
                         .HasForeignKey("SelectedTopicsId")
                         .HasConstraintName("FK_khdh _ CD / BH_Chuyên đề / Bài Học");
 
-                    b.Navigation("Pl1");
+                    b.Navigation("document1");
 
                     b.Navigation("SelectedTopics");
                 });
 
-            modelBuilder.Entity("Project_MLD.Models.Pl1SubjectRoom", b =>
+            modelBuilder.Entity("Project_MLD.Models.document1SubjectRoom", b =>
                 {
-                    b.HasOne("Project_MLD.Models.PhuLuc1", "Pl1")
+                    b.HasOne("Project_MLD.Models.Document1", "document1")
                         .WithMany()
-                        .HasForeignKey("Pl1Id")
+                        .HasForeignKey("document1Id")
                         .HasConstraintName("FK_khdh - Phòng bộ môn_Kế Hoạch Dạy Học");
 
                     b.HasOne("Project_MLD.Models.SubjectRoom", "SubjectRoom")
@@ -1221,16 +1221,16 @@ namespace Project_MLD.Migrations
                         .HasForeignKey("SubjectRoomId")
                         .HasConstraintName("FK_khdh - Phòng bộ môn_Phòng Bộ Môn");
 
-                    b.Navigation("Pl1");
+                    b.Navigation("document1");
 
                     b.Navigation("SubjectRoom");
                 });
 
-            modelBuilder.Entity("Project_MLD.Models.Pl1TeachingEquipment", b =>
+            modelBuilder.Entity("Project_MLD.Models.document1TeachingEquipment", b =>
                 {
-                    b.HasOne("Project_MLD.Models.PhuLuc1", "Pl1")
+                    b.HasOne("Project_MLD.Models.Document1", "document1")
                         .WithMany()
-                        .HasForeignKey("Pl1Id")
+                        .HasForeignKey("document1Id")
                         .HasConstraintName("FK_KHDH_TBDH_Kế Hoạch Dạy Học");
 
                     b.HasOne("Project_MLD.Models.TeachingEquipment", "TeachingEquipment")
@@ -1238,7 +1238,7 @@ namespace Project_MLD.Migrations
                         .HasForeignKey("TeachingEquipmentId")
                         .HasConstraintName("FK_KHDH_TBDH_Thiết bị dậy học");
 
-                    b.Navigation("Pl1");
+                    b.Navigation("document1");
 
                     b.Navigation("TeachingEquipment");
                 });
@@ -1342,7 +1342,7 @@ namespace Project_MLD.Migrations
                 {
                     b.Navigation("Classes");
 
-                    b.Navigation("PhuLuc1s");
+                    b.Navigation("Document1s");
                 });
 
             modelBuilder.Entity("Project_MLD.Models.LevelOfTrainning", b =>
@@ -1350,7 +1350,7 @@ namespace Project_MLD.Migrations
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("Project_MLD.Models.PhuLuc1", b =>
+            modelBuilder.Entity("Project_MLD.Models.Document1", b =>
                 {
                     b.Navigation("PhuLuc3s");
                 });
@@ -1374,7 +1374,7 @@ namespace Project_MLD.Migrations
 
             modelBuilder.Entity("Project_MLD.Models.Subject", b =>
                 {
-                    b.Navigation("PhuLuc1s");
+                    b.Navigation("Document1s");
 
                     b.Navigation("TeachingPlanners");
                 });
@@ -1386,9 +1386,9 @@ namespace Project_MLD.Migrations
 
             modelBuilder.Entity("Project_MLD.Models.User", b =>
                 {
-                    b.Navigation("PhuLuc1s");
+                    b.Navigation("Document1s");
 
-                    b.Navigation("PhuLuc2s");
+                    b.Navigation("Docuemnt2s");
 
                     b.Navigation("PhuLuc3s");
 

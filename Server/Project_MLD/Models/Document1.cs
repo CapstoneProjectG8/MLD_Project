@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Project_MLD.Models;
 
-public partial class PhuLuc1
+public partial class Document1
 {
     public int Id { get; set; }
 
@@ -21,9 +21,9 @@ public partial class PhuLuc1
 
     public int? ApproveBy { get; set; }
 
-    public virtual Grade? Grade { get; set; }
+    public virtual ICollection<Document3> Document3s { get; set; } = new List<Document3>();
 
-    public virtual ICollection<PhuLuc3> PhuLuc3s { get; set; } = new List<PhuLuc3>();
+    public virtual Grade? Grade { get; set; }
 
     public virtual Subject? Subject { get; set; }
 

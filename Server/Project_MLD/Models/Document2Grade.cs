@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Project_MLD.Models;
 
-public partial class PhuLuc2Grade
+public partial class Document2Grade
 {
-    public int? Pl2Id { get; set; }
+    public int? Document2Id { get; set; }
 
     public int? GradeId { get; set; }
 
@@ -25,7 +25,7 @@ public partial class PhuLuc2Grade
 
     public string? Condition { get; set; }
 
-    public virtual Grade? Grade { get; set; }
+    public virtual Document2? Document2 { get; set; }
 
-    public virtual PhuLuc2? Pl2 { get; set; }
+    public virtual Grade? Grade { get; set; }
 }

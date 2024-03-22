@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Project_MLD.Models;
 
-public partial class Pl3CurriculumDistribution
+public partial class Document3CurriculumDistribution
 {
-    public int? Pl3Id { get; set; }
+    public int? Document3Id { get; set; }
 
     public int? CurriculumId { get; set; }
 
@@ -19,7 +19,7 @@ public partial class Pl3CurriculumDistribution
 
     public virtual CurriculumDistribution? Curriculum { get; set; }
 
-    public virtual PhuLuc3? Pl3 { get; set; }
+    public virtual Document3? Document3 { get; set; }
 
     public virtual TeachingEquipment TeachingEquipment { get; set; } = null!;
 }

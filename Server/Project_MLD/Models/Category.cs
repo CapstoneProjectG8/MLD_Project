@@ -9,5 +9,5 @@ public partial class Category
 
     public string? Name { get; set; }
 
-    public virtual ICollection<Document> Documents { get; set; } = new List<Document>();
+    public virtual ICollection<Doc> Docs { get; set; } = new List<Doc>();
 }

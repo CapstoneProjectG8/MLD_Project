@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Project_MLD.Models;
 
-public partial class Pl1TeachingEquipment
+public partial class Document1TeachingEquipment
 {
-    public int? Pl1Id { get; set; }
+    public int? Document1Id { get; set; }
 
     public int? TeachingEquipmentId { get; set; }
 
@@ -15,7 +15,7 @@ public partial class Pl1TeachingEquipment
 
     public string? Description { get; set; }
 
-    public virtual PhuLuc1? Pl1 { get; set; }
+    public virtual Document1? Document1 { get; set; }
 
     public virtual TeachingEquipment? TeachingEquipment { get; set; }
 }

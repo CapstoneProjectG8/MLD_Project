@@ -3,11 +3,15 @@ using System.Collections.Generic;
 
 namespace Project_MLD.Models;
 
-public partial class SpecializedTeam
+public partial class Document2
 {
     public int Id { get; set; }
 
     public string? Name { get; set; }
 
-    public virtual ICollection<User> Users { get; set; } = new List<User>();
+    public int? UserId { get; set; }
+
+    public bool? Status { get; set; }
+
+    public virtual User? User { get; set; }
 }

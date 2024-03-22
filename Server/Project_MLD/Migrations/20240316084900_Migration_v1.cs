@@ -414,7 +414,7 @@ namespace Project_MLD.Migrations
                     time = table.Column<int>(type: "int", nullable: true),
                     date = table.Column<DateOnly>(type: "date", nullable: true),
                     description = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    pl1_id = table.Column<int>(type: "int", nullable: true)
+                    document1_id = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -425,7 +425,7 @@ namespace Project_MLD.Migrations
                         principalColumn: "id");
                     table.ForeignKey(
                         name: "FK_Kiểm tra, đánh giá định kỳ_Kế Hoạch Dạy Học",
-                        column: x => x.pl1_id,
+                        column: x => x.document1_id,
                         principalTable: "Phu Luc 1",
                         principalColumn: "id");
                     table.ForeignKey(
@@ -441,7 +441,7 @@ namespace Project_MLD.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    pl1_id = table.Column<int>(type: "int", nullable: true),
+                    document1_id = table.Column<int>(type: "int", nullable: true),
                     user_id = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -449,7 +449,7 @@ namespace Project_MLD.Migrations
                     table.PrimaryKey("PK_Kế hoạch giáo dục của GV", x => x.id);
                     table.ForeignKey(
                         name: "FK_Kế hoạch giáo dục của GV_Kế Hoạch Dạy Học",
-                        column: x => x.pl1_id,
+                        column: x => x.document1_id,
                         principalTable: "Phu Luc 1",
                         principalColumn: "id");
                     table.ForeignKey(
@@ -460,10 +460,10 @@ namespace Project_MLD.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PL1_CurriculumDistribution",
+                name: "document1_CurriculumDistribution",
                 columns: table => new
                 {
-                    pl1_id = table.Column<int>(type: "int", nullable: false),
+                    document1_id = table.Column<int>(type: "int", nullable: false),
                     curruculum_id = table.Column<int>(type: "int", nullable: false),
                     slot = table.Column<int>(type: "int", nullable: false),
                     description = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
@@ -472,7 +472,7 @@ namespace Project_MLD.Migrations
                 {
                     table.ForeignKey(
                         name: "FK_khdh-pptc_Kế Hoạch Dạy Học",
-                        column: x => x.pl1_id,
+                        column: x => x.document1_id,
                         principalTable: "Phu Luc 1",
                         principalColumn: "id");
                     table.ForeignKey(
@@ -483,10 +483,10 @@ namespace Project_MLD.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PL1_SelectedTopics",
+                name: "document1_SelectedTopics",
                 columns: table => new
                 {
-                    pl1_id = table.Column<int>(type: "int", nullable: true),
+                    document1_id = table.Column<int>(type: "int", nullable: true),
                     selected_topics_id = table.Column<int>(type: "int", nullable: true),
                     slot = table.Column<int>(type: "int", nullable: true),
                     description = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
@@ -500,17 +500,17 @@ namespace Project_MLD.Migrations
                         principalColumn: "id");
                     table.ForeignKey(
                         name: "FK_khdh _ CD / BH_Kế Hoạch Dạy Học",
-                        column: x => x.pl1_id,
+                        column: x => x.document1_id,
                         principalTable: "Phu Luc 1",
                         principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "PL1_Subject Room",
+                name: "document1_Subject Room",
                 columns: table => new
                 {
                     subject_room_id = table.Column<int>(type: "int", nullable: true),
-                    pl1_id = table.Column<int>(type: "int", nullable: true),
+                    document1_id = table.Column<int>(type: "int", nullable: true),
                     quantity = table.Column<int>(type: "int", nullable: true),
                     description = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     note = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
@@ -519,7 +519,7 @@ namespace Project_MLD.Migrations
                 {
                     table.ForeignKey(
                         name: "FK_khdh - Phòng bộ môn_Kế Hoạch Dạy Học",
-                        column: x => x.pl1_id,
+                        column: x => x.document1_id,
                         principalTable: "Phu Luc 1",
                         principalColumn: "id");
                     table.ForeignKey(
@@ -530,10 +530,10 @@ namespace Project_MLD.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PL1_TeachingEquipment",
+                name: "document1_TeachingEquipment",
                 columns: table => new
                 {
-                    pl1_id = table.Column<int>(type: "int", nullable: true),
+                    document1_id = table.Column<int>(type: "int", nullable: true),
                     teaching_equipment_id = table.Column<int>(type: "int", nullable: true),
                     quantity = table.Column<int>(type: "int", nullable: true),
                     note = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
@@ -543,7 +543,7 @@ namespace Project_MLD.Migrations
                 {
                     table.ForeignKey(
                         name: "FK_KHDH_TBDH_Kế Hoạch Dạy Học",
-                        column: x => x.pl1_id,
+                        column: x => x.document1_id,
                         principalTable: "Phu Luc 1",
                         principalColumn: "id");
                     table.ForeignKey(
@@ -554,7 +554,7 @@ namespace Project_MLD.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PhuLuc2_Grade",
+                name: "Docuemnt2_Grade",
                 columns: table => new
                 {
                     pl2_id = table.Column<int>(type: "int", nullable: true),
@@ -713,9 +713,9 @@ namespace Project_MLD.Migrations
                 column: "form_category_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Periodic Assessment_pl1_id",
+                name: "IX_Periodic Assessment_document1_id",
                 table: "Periodic Assessment",
-                column: "pl1_id");
+                column: "document1_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Periodic Assessment_testing_category_id",
@@ -743,9 +743,9 @@ namespace Project_MLD.Migrations
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Phu Luc 3_pl1_id",
+                name: "IX_Phu Luc 3_document1_id",
                 table: "Phu Luc 3",
-                column: "pl1_id");
+                column: "document1_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Phu Luc 3_user_id",
@@ -768,53 +768,53 @@ namespace Project_MLD.Migrations
                 column: "pl4_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PhuLuc2_Grade_grade_id",
-                table: "PhuLuc2_Grade",
+                name: "IX_Docuemnt2_Grade_grade_id",
+                table: "Docuemnt2_Grade",
                 column: "grade_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PhuLuc2_Grade_pl2_id",
-                table: "PhuLuc2_Grade",
+                name: "IX_Docuemnt2_Grade_pl2_id",
+                table: "Docuemnt2_Grade",
                 column: "pl2_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PL1_CurriculumDistribution_curruculum_id",
-                table: "PL1_CurriculumDistribution",
+                name: "IX_document1_CurriculumDistribution_curruculum_id",
+                table: "document1_CurriculumDistribution",
                 column: "curruculum_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PL1_CurriculumDistribution_pl1_id",
-                table: "PL1_CurriculumDistribution",
-                column: "pl1_id");
+                name: "IX_document1_CurriculumDistribution_document1_id",
+                table: "document1_CurriculumDistribution",
+                column: "document1_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PL1_SelectedTopics_pl1_id",
-                table: "PL1_SelectedTopics",
-                column: "pl1_id");
+                name: "IX_document1_SelectedTopics_document1_id",
+                table: "document1_SelectedTopics",
+                column: "document1_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PL1_SelectedTopics_selected_topics_id",
-                table: "PL1_SelectedTopics",
+                name: "IX_document1_SelectedTopics_selected_topics_id",
+                table: "document1_SelectedTopics",
                 column: "selected_topics_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PL1_Subject Room_pl1_id",
-                table: "PL1_Subject Room",
-                column: "pl1_id");
+                name: "IX_document1_Subject Room_document1_id",
+                table: "document1_Subject Room",
+                column: "document1_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PL1_Subject Room_subject_room_id",
-                table: "PL1_Subject Room",
+                name: "IX_document1_Subject Room_subject_room_id",
+                table: "document1_Subject Room",
                 column: "subject_room_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PL1_TeachingEquipment_pl1_id",
-                table: "PL1_TeachingEquipment",
-                column: "pl1_id");
+                name: "IX_document1_TeachingEquipment_document1_id",
+                table: "document1_TeachingEquipment",
+                column: "document1_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PL1_TeachingEquipment_teaching_equipment_id",
-                table: "PL1_TeachingEquipment",
+                name: "IX_document1_TeachingEquipment_teaching_equipment_id",
+                table: "document1_TeachingEquipment",
                 column: "teaching_equipment_id");
 
             migrationBuilder.CreateIndex(
@@ -887,19 +887,19 @@ namespace Project_MLD.Migrations
                 name: "Phu Luc 5");
 
             migrationBuilder.DropTable(
-                name: "PhuLuc2_Grade");
+                name: "Docuemnt2_Grade");
 
             migrationBuilder.DropTable(
-                name: "PL1_CurriculumDistribution");
+                name: "document1_CurriculumDistribution");
 
             migrationBuilder.DropTable(
-                name: "PL1_SelectedTopics");
+                name: "document1_SelectedTopics");
 
             migrationBuilder.DropTable(
-                name: "PL1_Subject Room");
+                name: "document1_Subject Room");
 
             migrationBuilder.DropTable(
-                name: "PL1_TeachingEquipment");
+                name: "document1_TeachingEquipment");
 
             migrationBuilder.DropTable(
                 name: "PL3_CurriculumDistribution");

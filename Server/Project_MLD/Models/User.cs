@@ -43,19 +43,19 @@ public partial class User
 
     public virtual Account? Account { get; set; }
 
+    public virtual ICollection<Document1> Document1s { get; set; } = new List<Document1>();
+
+    public virtual ICollection<Document2> Document2s { get; set; } = new List<Document2>();
+
+    public virtual ICollection<Document3> Document3s { get; set; } = new List<Document3>();
+
+    public virtual ICollection<Document5> Document5s { get; set; } = new List<Document5>();
+
     public virtual LevelOfTrainning? LevelOfTrainning { get; set; }
-
-    public virtual ICollection<PhuLuc1> PhuLuc1s { get; set; } = new List<PhuLuc1>();
-
-    public virtual ICollection<PhuLuc2> PhuLuc2s { get; set; } = new List<PhuLuc2>();
-
-    public virtual ICollection<PhuLuc3> PhuLuc3s { get; set; } = new List<PhuLuc3>();
-
-    public virtual ICollection<PhuLuc5> PhuLuc5s { get; set; } = new List<PhuLuc5>();
 
     public virtual ProfessionalStandard? ProfessionalStandards { get; set; }
 
-    public virtual SpecializedTeam? SpecializedTeam { get; set; }
+    public virtual SpecializedDepartment? SpecializedTeam { get; set; }
 
     public virtual ICollection<TeachingPlanner> TeachingPlanners { get; set; } = new List<TeachingPlanner>();
 }

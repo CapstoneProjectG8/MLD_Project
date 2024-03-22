@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Project_MLD.Models;
 
-public partial class PhuLuc4
+public partial class Document4
 {
     public int Id { get; set; }
 
@@ -13,9 +13,9 @@ public partial class PhuLuc4
 
     public bool? Status { get; set; }
 
-    public virtual ICollection<Document> Documents { get; set; } = new List<Document>();
+    public virtual ICollection<Doc> Docs { get; set; } = new List<Doc>();
 
-    public virtual ICollection<PhuLuc5> PhuLuc5s { get; set; } = new List<PhuLuc5>();
+    public virtual ICollection<Document5> Document5s { get; set; } = new List<Document5>();
 
     public virtual TeachingPlanner? TeachingPlanner { get; set; }
 }

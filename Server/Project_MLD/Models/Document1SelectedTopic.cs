@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Project_MLD.Models;
 
-public partial class Pl1SelectedTopic
+public partial class Document1SelectedTopic
 {
-    public int? Pl1Id { get; set; }
+    public int? Document1Id { get; set; }
 
     public int? SelectedTopicsId { get; set; }
 
@@ -13,7 +13,7 @@ public partial class Pl1SelectedTopic
 
     public string? Description { get; set; }
 
-    public virtual PhuLuc1? Pl1 { get; set; }
+    public virtual Document1? Document1 { get; set; }
 
     public virtual SelectedTopic? SelectedTopics { get; set; }
 }

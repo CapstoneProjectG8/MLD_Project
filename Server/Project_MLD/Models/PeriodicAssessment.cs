@@ -15,11 +15,11 @@ public partial class PeriodicAssessment
 
     public string? Description { get; set; }
 
-    public int? Pl1Id { get; set; }
+    public int? Document1Id { get; set; }
+
+    public virtual Document1? Document1 { get; set; }
 
     public virtual TestingCategory? FormCategory { get; set; }
-
-    public virtual PhuLuc1? Pl1 { get; set; }
 
     public virtual FormCategory? TestingCategory { get; set; }
 }

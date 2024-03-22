@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Project_MLD.Models;
 
-public partial class Pl1SubjectRoom
+public partial class Document1SubjectRoom
 {
     public int? SubjectRoomId { get; set; }
 
-    public int? Pl1Id { get; set; }
+    public int? Document1Id { get; set; }
 
     public int? Quantity { get; set; }
 
@@ -15,7 +15,7 @@ public partial class Pl1SubjectRoom
 
     public string? Note { get; set; }
 
-    public virtual PhuLuc1? Pl1 { get; set; }
+    public virtual Document1? Document1 { get; set; }
 
     public virtual SubjectRoom? SubjectRoom { get; set; }
 }

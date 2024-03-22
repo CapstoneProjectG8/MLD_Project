@@ -23,7 +23,29 @@ public partial class MldDatabaseContext : DbContext
 
     public virtual DbSet<CurriculumDistribution> CurriculumDistributions { get; set; }
 
-    public virtual DbSet<Document> Documents { get; set; }
+    public virtual DbSet<Doc> Docs { get; set; }
+
+    public virtual DbSet<Document1> Document1s { get; set; }
+
+    public virtual DbSet<Document1CurriculumDistribution> Document1CurriculumDistributions { get; set; }
+
+    public virtual DbSet<Document1SelectedTopic> Document1SelectedTopics { get; set; }
+
+    public virtual DbSet<Document1SubjectRoom> Document1SubjectRooms { get; set; }
+
+    public virtual DbSet<Document1TeachingEquipment> Document1TeachingEquipments { get; set; }
+
+    public virtual DbSet<Document2> Document2s { get; set; }
+
+    public virtual DbSet<Document2Grade> Document2Grades { get; set; }
+
+    public virtual DbSet<Document3> Document3s { get; set; }
+
+    public virtual DbSet<Document3CurriculumDistribution> Document3CurriculumDistributions { get; set; }
+
+    public virtual DbSet<Document4> Document4s { get; set; }
+
+    public virtual DbSet<Document5> Document5s { get; set; }
 
     public virtual DbSet<FormCategory> FormCategories { get; set; }
 
@@ -35,28 +57,6 @@ public partial class MldDatabaseContext : DbContext
 
     public virtual DbSet<PeriodicAssessment> PeriodicAssessments { get; set; }
 
-    public virtual DbSet<PhuLuc1> PhuLuc1s { get; set; }
-
-    public virtual DbSet<PhuLuc2> PhuLuc2s { get; set; }
-
-    public virtual DbSet<PhuLuc2Grade> PhuLuc2Grades { get; set; }
-
-    public virtual DbSet<PhuLuc3> PhuLuc3s { get; set; }
-
-    public virtual DbSet<PhuLuc4> PhuLuc4s { get; set; }
-
-    public virtual DbSet<PhuLuc5> PhuLuc5s { get; set; }
-
-    public virtual DbSet<Pl1CurriculumDistribution> Pl1CurriculumDistributions { get; set; }
-
-    public virtual DbSet<Pl1SelectedTopic> Pl1SelectedTopics { get; set; }
-
-    public virtual DbSet<Pl1SubjectRoom> Pl1SubjectRooms { get; set; }
-
-    public virtual DbSet<Pl1TeachingEquipment> Pl1TeachingEquipments { get; set; }
-
-    public virtual DbSet<Pl3CurriculumDistribution> Pl3CurriculumDistributions { get; set; }
-
     public virtual DbSet<ProfessionalStandard> ProfessionalStandards { get; set; }
 
     public virtual DbSet<Role> Roles { get; set; }
@@ -65,7 +65,7 @@ public partial class MldDatabaseContext : DbContext
 
     public virtual DbSet<SelectedTopic> SelectedTopics { get; set; }
 
-    public virtual DbSet<SpecializedTeam> SpecializedTeams { get; set; }
+    public virtual DbSet<SpecializedDepartment> SpecializedDepartments { get; set; }
 
     public virtual DbSet<Subject> Subjects { get; set; }
 
@@ -151,27 +151,303 @@ public partial class MldDatabaseContext : DbContext
                 .HasColumnName("name");
         });
 
-        modelBuilder.Entity<Document>(entity =>
+        modelBuilder.Entity<Doc>(entity =>
         {
-            entity.ToTable("Document");
+            entity.HasKey(e => e.Id).HasName("PK_Document");
+
+            entity.ToTable("Doc");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.CategoryId).HasColumnName("category_id");
             entity.Property(e => e.Content).HasColumnName("content");
+            entity.Property(e => e.Document4Id).HasColumnName("document4_id");
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
                 .HasColumnName("name");
-            entity.Property(e => e.Pl4Id).HasColumnName("pl4_id");
 
-            entity.HasOne(d => d.Category).WithMany(p => p.Documents)
+            entity.HasOne(d => d.Category).WithMany(p => p.Docs)
                 .HasForeignKey(d => d.CategoryId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Document_Category");
 
-            entity.HasOne(d => d.Pl4).WithMany(p => p.Documents)
-                .HasForeignKey(d => d.Pl4Id)
+            entity.HasOne(d => d.Document4).WithMany(p => p.Docs)
+                .HasForeignKey(d => d.Document4Id)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Document_Phu Luc 4");
+        });
+
+        modelBuilder.Entity<Document1>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_Kế Hoạch Dạy Học");
+
+            entity.ToTable("Document 1");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.ApproveBy).HasColumnName("approve_by");
+            entity.Property(e => e.GradeId).HasColumnName("grade_id");
+            entity.Property(e => e.Name)
+                .HasMaxLength(50)
+                .HasColumnName("name");
+            entity.Property(e => e.Note)
+                .HasMaxLength(50)
+                .HasColumnName("note");
+            entity.Property(e => e.Status).HasColumnName("status");
+            entity.Property(e => e.SubjectId).HasColumnName("subject_id");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+
+            entity.HasOne(d => d.Grade).WithMany(p => p.Document1s)
+                .HasForeignKey(d => d.GradeId)
+                .HasConstraintName("FK_Kế Hoạch Dạy Học_Khối Lớp");
+
+            entity.HasOne(d => d.Subject).WithMany(p => p.Document1s)
+                .HasForeignKey(d => d.SubjectId)
+                .HasConstraintName("FK_Kế Hoạch Dạy Học_Môn học");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Document1s)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK_Phu Luc 1_User");
+        });
+
+        modelBuilder.Entity<Document1CurriculumDistribution>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("Document1_CurriculumDistribution");
+
+            entity.Property(e => e.CurruculumId).HasColumnName("curruculum_id");
+            entity.Property(e => e.Description)
+                .HasMaxLength(50)
+                .HasColumnName("description");
+            entity.Property(e => e.Document1Id).HasColumnName("document1_id");
+            entity.Property(e => e.Slot).HasColumnName("slot");
+
+            entity.HasOne(d => d.Curruculum).WithMany()
+                .HasForeignKey(d => d.CurruculumId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_khdh-pptc_Phân phối chương trình");
+
+            entity.HasOne(d => d.Document1).WithMany()
+                .HasForeignKey(d => d.Document1Id)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_khdh-pptc_Kế Hoạch Dạy Học");
+        });
+
+        modelBuilder.Entity<Document1SelectedTopic>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("Document1_SelectedTopics");
+
+            entity.Property(e => e.Description)
+                .HasMaxLength(50)
+                .HasColumnName("description");
+            entity.Property(e => e.Document1Id).HasColumnName("document1_id");
+            entity.Property(e => e.SelectedTopicsId).HasColumnName("selected_topics_id");
+            entity.Property(e => e.Slot).HasColumnName("slot");
+
+            entity.HasOne(d => d.Document1).WithMany()
+                .HasForeignKey(d => d.Document1Id)
+                .HasConstraintName("FK_khdh _ CD / BH_Kế Hoạch Dạy Học");
+
+            entity.HasOne(d => d.SelectedTopics).WithMany()
+                .HasForeignKey(d => d.SelectedTopicsId)
+                .HasConstraintName("FK_khdh _ CD / BH_Chuyên đề / Bài Học");
+        });
+
+        modelBuilder.Entity<Document1SubjectRoom>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("Document1_Subject Room");
+
+            entity.Property(e => e.Description)
+                .HasMaxLength(50)
+                .HasColumnName("description");
+            entity.Property(e => e.Document1Id).HasColumnName("document1_id");
+            entity.Property(e => e.Note)
+                .HasMaxLength(50)
+                .HasColumnName("note");
+            entity.Property(e => e.Quantity).HasColumnName("quantity");
+            entity.Property(e => e.SubjectRoomId).HasColumnName("subject_room_id");
+
+            entity.HasOne(d => d.Document1).WithMany()
+                .HasForeignKey(d => d.Document1Id)
+                .HasConstraintName("FK_khdh - Phòng bộ môn_Kế Hoạch Dạy Học");
+
+            entity.HasOne(d => d.SubjectRoom).WithMany()
+                .HasForeignKey(d => d.SubjectRoomId)
+                .HasConstraintName("FK_khdh - Phòng bộ môn_Phòng Bộ Môn");
+        });
+
+        modelBuilder.Entity<Document1TeachingEquipment>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("Document1_TeachingEquipment");
+
+            entity.Property(e => e.Description)
+                .HasMaxLength(50)
+                .HasColumnName("description");
+            entity.Property(e => e.Document1Id).HasColumnName("document1_id");
+            entity.Property(e => e.Note)
+                .HasMaxLength(50)
+                .HasColumnName("note");
+            entity.Property(e => e.Quantity).HasColumnName("quantity");
+            entity.Property(e => e.TeachingEquipmentId).HasColumnName("teaching_equipment_id");
+
+            entity.HasOne(d => d.Document1).WithMany()
+                .HasForeignKey(d => d.Document1Id)
+                .HasConstraintName("FK_KHDH_TBDH_Kế Hoạch Dạy Học");
+
+            entity.HasOne(d => d.TeachingEquipment).WithMany()
+                .HasForeignKey(d => d.TeachingEquipmentId)
+                .HasConstraintName("FK_KHDH_TBDH_Thiết bị dậy học");
+        });
+
+        modelBuilder.Entity<Document2>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_Kế hoạch Tổ chức Hoạt Động Giáo Dục");
+
+            entity.ToTable("Document 2");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Name)
+                .HasMaxLength(50)
+                .HasColumnName("name");
+            entity.Property(e => e.Status).HasColumnName("status");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Document2s)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK_Kế hoạch Tổ chức Hoạt Động Giáo Dục_User");
+        });
+
+        modelBuilder.Entity<Document2Grade>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("Document2_Grade");
+
+            entity.Property(e => e.CollaborateWith)
+                .HasMaxLength(50)
+                .HasColumnName("collaborate_with");
+            entity.Property(e => e.Condition)
+                .HasMaxLength(50)
+                .HasColumnName("condition");
+            entity.Property(e => e.Description)
+                .HasMaxLength(50)
+                .HasColumnName("description");
+            entity.Property(e => e.Document2Id).HasColumnName("document2_id");
+            entity.Property(e => e.GradeId).HasColumnName("grade_id");
+            entity.Property(e => e.HostBy)
+                .HasMaxLength(50)
+                .HasColumnName("host_by");
+            entity.Property(e => e.Place)
+                .HasMaxLength(50)
+                .HasColumnName("place");
+            entity.Property(e => e.Slot).HasColumnName("slot");
+            entity.Property(e => e.Time).HasColumnName("time");
+            entity.Property(e => e.TitleName)
+                .HasMaxLength(50)
+                .HasColumnName("title_name");
+
+            entity.HasOne(d => d.Document2).WithMany()
+                .HasForeignKey(d => d.Document2Id)
+                .HasConstraintName("FK_KHTCHDGD - KHỐI LỚP_Kế hoạch Tổ chức Hoạt Động Giáo Dục");
+
+            entity.HasOne(d => d.Grade).WithMany()
+                .HasForeignKey(d => d.GradeId)
+                .HasConstraintName("FK_KHTCHDGD - KHỐI LỚP_Khối Lớp");
+        });
+
+        modelBuilder.Entity<Document3>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_Kế hoạch giáo dục của GV");
+
+            entity.ToTable("Document 3");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Document1Id).HasColumnName("document1_id");
+            entity.Property(e => e.Status).HasColumnName("status");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+
+            entity.HasOne(d => d.Document1).WithMany(p => p.Document3s)
+                .HasForeignKey(d => d.Document1Id)
+                .HasConstraintName("FK_Kế hoạch giáo dục của GV_Kế Hoạch Dạy Học");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Document3s)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK_Kế hoạch giáo dục của GV_User");
+        });
+
+        modelBuilder.Entity<Document3CurriculumDistribution>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("Document3_CurriculumDistribution");
+
+            entity.Property(e => e.CurriculumId).HasColumnName("curriculum_id");
+            entity.Property(e => e.Document3Id).HasColumnName("document3_id");
+            entity.Property(e => e.Place)
+                .HasMaxLength(50)
+                .HasColumnName("place");
+            entity.Property(e => e.Slot).HasColumnName("slot");
+            entity.Property(e => e.TeachingEquipmentId).HasColumnName("teaching_equipment_id");
+            entity.Property(e => e.Time).HasColumnName("time");
+
+            entity.HasOne(d => d.Curriculum).WithMany()
+                .HasForeignKey(d => d.CurriculumId)
+                .HasConstraintName("FK_khgdGV - ppct_Phân phối chương trình");
+
+            entity.HasOne(d => d.Document3).WithMany()
+                .HasForeignKey(d => d.Document3Id)
+                .HasConstraintName("FK_khgdGV - ppct_Kế hoạch giáo dục của GV");
+
+            entity.HasOne(d => d.TeachingEquipment).WithMany()
+                .HasForeignKey(d => d.TeachingEquipmentId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_khgdGV - ppct_Thiết bị dậy học");
+        });
+
+        modelBuilder.Entity<Document4>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_Phu Luc 4");
+
+            entity.ToTable("Document 4");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Name)
+                .HasMaxLength(50)
+                .HasColumnName("name");
+            entity.Property(e => e.Status).HasColumnName("status");
+            entity.Property(e => e.TeachingPlannerId).HasColumnName("teaching_planner_id");
+
+            entity.HasOne(d => d.TeachingPlanner).WithMany(p => p.Document4s)
+                .HasForeignKey(d => d.TeachingPlannerId)
+                .HasConstraintName("FK_Phu Luc 4_User - Lớp - Mon");
+        });
+
+        modelBuilder.Entity<Document5>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_Phu Luc 5");
+
+            entity.ToTable("Document 5");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Document4Id).HasColumnName("document4_id");
+            entity.Property(e => e.EvaluateBy).HasColumnName("evaluate_by");
+            entity.Property(e => e.Name)
+                .HasMaxLength(50)
+                .HasColumnName("name");
+
+            entity.HasOne(d => d.Document4).WithMany(p => p.Document5s)
+                .HasForeignKey(d => d.Document4Id)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Phu Luc 5_Phu Luc 4");
+
+            entity.HasOne(d => d.EvaluateByNavigation).WithMany(p => p.Document5s)
+                .HasForeignKey(d => d.EvaluateBy)
+                .HasConstraintName("FK_Phu Luc 5_User");
         });
 
         modelBuilder.Entity<FormCategory>(entity =>
@@ -202,7 +478,9 @@ public partial class MldDatabaseContext : DbContext
 
         modelBuilder.Entity<LevelOfTrainning>(entity =>
         {
-            entity.ToTable("LevelOfTrainning");
+            entity.HasKey(e => e.Id).HasName("PK_LevelOfTrainning");
+
+            entity.ToTable("Level Of Trainning");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Name)
@@ -235,292 +513,22 @@ public partial class MldDatabaseContext : DbContext
             entity.Property(e => e.Description)
                 .HasMaxLength(50)
                 .HasColumnName("description");
+            entity.Property(e => e.Document1Id).HasColumnName("document1_id");
             entity.Property(e => e.FormCategoryId).HasColumnName("form_category_id");
-            entity.Property(e => e.Pl1Id).HasColumnName("pl1_id");
             entity.Property(e => e.TestingCategoryId).HasColumnName("testing_category_id");
             entity.Property(e => e.Time).HasColumnName("time");
+
+            entity.HasOne(d => d.Document1).WithMany()
+                .HasForeignKey(d => d.Document1Id)
+                .HasConstraintName("FK_Kiểm tra, đánh giá định kỳ_Kế Hoạch Dạy Học");
 
             entity.HasOne(d => d.FormCategory).WithMany()
                 .HasForeignKey(d => d.FormCategoryId)
                 .HasConstraintName("FK_Kiểm tra, đánh giá định kỳ_Loại Bài kiểm tra");
 
-            entity.HasOne(d => d.Pl1).WithMany()
-                .HasForeignKey(d => d.Pl1Id)
-                .HasConstraintName("FK_Kiểm tra, đánh giá định kỳ_Kế Hoạch Dạy Học");
-
             entity.HasOne(d => d.TestingCategory).WithMany()
                 .HasForeignKey(d => d.TestingCategoryId)
                 .HasConstraintName("FK_Kiểm tra, đánh giá định kỳ_Hình thức thi");
-        });
-
-        modelBuilder.Entity<PhuLuc1>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_Kế Hoạch Dạy Học");
-
-            entity.ToTable("Phu Luc 1");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.ApproveBy).HasColumnName("approve_by");
-            entity.Property(e => e.GradeId).HasColumnName("grade_id");
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .HasColumnName("name");
-            entity.Property(e => e.Note)
-                .HasMaxLength(50)
-                .HasColumnName("note");
-            entity.Property(e => e.Status).HasColumnName("status");
-            entity.Property(e => e.SubjectId).HasColumnName("subject_id");
-            entity.Property(e => e.UserId).HasColumnName("user_id");
-
-            entity.HasOne(d => d.Grade).WithMany(p => p.PhuLuc1s)
-                .HasForeignKey(d => d.GradeId)
-                .HasConstraintName("FK_Kế Hoạch Dạy Học_Khối Lớp");
-
-            entity.HasOne(d => d.Subject).WithMany(p => p.PhuLuc1s)
-                .HasForeignKey(d => d.SubjectId)
-                .HasConstraintName("FK_Kế Hoạch Dạy Học_Môn học");
-
-            entity.HasOne(d => d.User).WithMany(p => p.PhuLuc1s)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK_Phu Luc 1_User");
-        });
-
-        modelBuilder.Entity<PhuLuc2>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_Kế hoạch Tổ chức Hoạt Động Giáo Dục");
-
-            entity.ToTable("Phu luc 2");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .HasColumnName("name");
-            entity.Property(e => e.Status).HasColumnName("status");
-            entity.Property(e => e.UserId).HasColumnName("user_id");
-
-            entity.HasOne(d => d.User).WithMany(p => p.PhuLuc2s)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK_Kế hoạch Tổ chức Hoạt Động Giáo Dục_User");
-        });
-
-        modelBuilder.Entity<PhuLuc2Grade>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToTable("PhuLuc2_Grade");
-
-            entity.Property(e => e.CollaborateWith)
-                .HasMaxLength(50)
-                .HasColumnName("collaborate_with");
-            entity.Property(e => e.Condition)
-                .HasMaxLength(50)
-                .HasColumnName("condition");
-            entity.Property(e => e.Description)
-                .HasMaxLength(50)
-                .HasColumnName("description");
-            entity.Property(e => e.GradeId).HasColumnName("grade_id");
-            entity.Property(e => e.HostBy)
-                .HasMaxLength(50)
-                .HasColumnName("host_by");
-            entity.Property(e => e.Pl2Id).HasColumnName("pl2_id");
-            entity.Property(e => e.Place)
-                .HasMaxLength(50)
-                .HasColumnName("place");
-            entity.Property(e => e.Slot).HasColumnName("slot");
-            entity.Property(e => e.Time).HasColumnName("time");
-            entity.Property(e => e.TitleName)
-                .HasMaxLength(50)
-                .HasColumnName("title_name");
-
-            entity.HasOne(d => d.Grade).WithMany()
-                .HasForeignKey(d => d.GradeId)
-                .HasConstraintName("FK_KHTCHDGD - KHỐI LỚP_Khối Lớp");
-
-            entity.HasOne(d => d.Pl2).WithMany()
-                .HasForeignKey(d => d.Pl2Id)
-                .HasConstraintName("FK_KHTCHDGD - KHỐI LỚP_Kế hoạch Tổ chức Hoạt Động Giáo Dục");
-        });
-
-        modelBuilder.Entity<PhuLuc3>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_Kế hoạch giáo dục của GV");
-
-            entity.ToTable("Phu Luc 3");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Pl1Id).HasColumnName("pl1_id");
-            entity.Property(e => e.Status).HasColumnName("status");
-            entity.Property(e => e.UserId).HasColumnName("user_id");
-
-            entity.HasOne(d => d.Pl1).WithMany(p => p.PhuLuc3s)
-                .HasForeignKey(d => d.Pl1Id)
-                .HasConstraintName("FK_Kế hoạch giáo dục của GV_Kế Hoạch Dạy Học");
-
-            entity.HasOne(d => d.User).WithMany(p => p.PhuLuc3s)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK_Kế hoạch giáo dục của GV_User");
-        });
-
-        modelBuilder.Entity<PhuLuc4>(entity =>
-        {
-            entity.ToTable("Phu Luc 4");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .HasColumnName("name");
-            entity.Property(e => e.Status).HasColumnName("status");
-            entity.Property(e => e.TeachingPlannerId).HasColumnName("teaching_planner_id");
-
-            entity.HasOne(d => d.TeachingPlanner).WithMany(p => p.PhuLuc4s)
-                .HasForeignKey(d => d.TeachingPlannerId)
-                .HasConstraintName("FK_Phu Luc 4_User - Lớp - Mon");
-        });
-
-        modelBuilder.Entity<PhuLuc5>(entity =>
-        {
-            entity.ToTable("Phu Luc 5");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.EvaluateBy).HasColumnName("evaluate_by");
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .HasColumnName("name");
-            entity.Property(e => e.Pl4Id).HasColumnName("pl4_id");
-
-            entity.HasOne(d => d.EvaluateByNavigation).WithMany(p => p.PhuLuc5s)
-                .HasForeignKey(d => d.EvaluateBy)
-                .HasConstraintName("FK_Phu Luc 5_User");
-
-            entity.HasOne(d => d.Pl4).WithMany(p => p.PhuLuc5s)
-                .HasForeignKey(d => d.Pl4Id)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Phu Luc 5_Phu Luc 4");
-        });
-
-        modelBuilder.Entity<Pl1CurriculumDistribution>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToTable("PL1_CurriculumDistribution");
-
-            entity.Property(e => e.CurruculumId).HasColumnName("curruculum_id");
-            entity.Property(e => e.Description)
-                .HasMaxLength(50)
-                .HasColumnName("description");
-            entity.Property(e => e.Pl1Id).HasColumnName("pl1_id");
-            entity.Property(e => e.Slot).HasColumnName("slot");
-
-            entity.HasOne(d => d.Curruculum).WithMany()
-                .HasForeignKey(d => d.CurruculumId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_khdh-pptc_Phân phối chương trình");
-
-            entity.HasOne(d => d.Pl1).WithMany()
-                .HasForeignKey(d => d.Pl1Id)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_khdh-pptc_Kế Hoạch Dạy Học");
-        });
-
-        modelBuilder.Entity<Pl1SelectedTopic>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToTable("PL1_SelectedTopics");
-
-            entity.Property(e => e.Description)
-                .HasMaxLength(50)
-                .HasColumnName("description");
-            entity.Property(e => e.Pl1Id).HasColumnName("pl1_id");
-            entity.Property(e => e.SelectedTopicsId).HasColumnName("selected_topics_id");
-            entity.Property(e => e.Slot).HasColumnName("slot");
-
-            entity.HasOne(d => d.Pl1).WithMany()
-                .HasForeignKey(d => d.Pl1Id)
-                .HasConstraintName("FK_khdh _ CD / BH_Kế Hoạch Dạy Học");
-
-            entity.HasOne(d => d.SelectedTopics).WithMany()
-                .HasForeignKey(d => d.SelectedTopicsId)
-                .HasConstraintName("FK_khdh _ CD / BH_Chuyên đề / Bài Học");
-        });
-
-        modelBuilder.Entity<Pl1SubjectRoom>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToTable("PL1_Subject Room");
-
-            entity.Property(e => e.Description)
-                .HasMaxLength(50)
-                .HasColumnName("description");
-            entity.Property(e => e.Note)
-                .HasMaxLength(50)
-                .HasColumnName("note");
-            entity.Property(e => e.Pl1Id).HasColumnName("pl1_id");
-            entity.Property(e => e.Quantity).HasColumnName("quantity");
-            entity.Property(e => e.SubjectRoomId).HasColumnName("subject_room_id");
-
-            entity.HasOne(d => d.Pl1).WithMany()
-                .HasForeignKey(d => d.Pl1Id)
-                .HasConstraintName("FK_khdh - Phòng bộ môn_Kế Hoạch Dạy Học");
-
-            entity.HasOne(d => d.SubjectRoom).WithMany()
-                .HasForeignKey(d => d.SubjectRoomId)
-                .HasConstraintName("FK_khdh - Phòng bộ môn_Phòng Bộ Môn");
-        });
-
-        modelBuilder.Entity<Pl1TeachingEquipment>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToTable("PL1_TeachingEquipment");
-
-            entity.Property(e => e.Description)
-                .HasMaxLength(50)
-                .HasColumnName("description");
-            entity.Property(e => e.Note)
-                .HasMaxLength(50)
-                .HasColumnName("note");
-            entity.Property(e => e.Pl1Id).HasColumnName("pl1_id");
-            entity.Property(e => e.Quantity).HasColumnName("quantity");
-            entity.Property(e => e.TeachingEquipmentId).HasColumnName("teaching_equipment_id");
-
-            entity.HasOne(d => d.Pl1).WithMany()
-                .HasForeignKey(d => d.Pl1Id)
-                .HasConstraintName("FK_KHDH_TBDH_Kế Hoạch Dạy Học");
-
-            entity.HasOne(d => d.TeachingEquipment).WithMany()
-                .HasForeignKey(d => d.TeachingEquipmentId)
-                .HasConstraintName("FK_KHDH_TBDH_Thiết bị dậy học");
-        });
-
-        modelBuilder.Entity<Pl3CurriculumDistribution>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToTable("PL3_CurriculumDistribution");
-
-            entity.Property(e => e.CurriculumId).HasColumnName("curriculum_id");
-            entity.Property(e => e.Pl3Id).HasColumnName("pl3_id");
-            entity.Property(e => e.Place)
-                .HasMaxLength(50)
-                .HasColumnName("place");
-            entity.Property(e => e.Slot).HasColumnName("slot");
-            entity.Property(e => e.TeachingEquipmentId).HasColumnName("teaching_equipment_ID");
-            entity.Property(e => e.Time).HasColumnName("time");
-
-            entity.HasOne(d => d.Curriculum).WithMany()
-                .HasForeignKey(d => d.CurriculumId)
-                .HasConstraintName("FK_khgdGV - ppct_Phân phối chương trình");
-
-            entity.HasOne(d => d.Pl3).WithMany()
-                .HasForeignKey(d => d.Pl3Id)
-                .HasConstraintName("FK_khgdGV - ppct_Kế hoạch giáo dục của GV");
-
-            entity.HasOne(d => d.TeachingEquipment).WithMany()
-                .HasForeignKey(d => d.TeachingEquipmentId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_khgdGV - ppct_Thiết bị dậy học");
         });
 
         modelBuilder.Entity<ProfessionalStandard>(entity =>
@@ -574,11 +582,11 @@ public partial class MldDatabaseContext : DbContext
                 .HasColumnName("name");
         });
 
-        modelBuilder.Entity<SpecializedTeam>(entity =>
+        modelBuilder.Entity<SpecializedDepartment>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK_Tổ chuyên Môn");
 
-            entity.ToTable("Specialized Team");
+            entity.ToTable("Specialized Department");
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Name)

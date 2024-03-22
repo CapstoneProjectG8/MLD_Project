@@ -15,7 +15,7 @@ public partial class TeachingPlanner
 
     public virtual Class? Class { get; set; }
 
-    public virtual ICollection<PhuLuc4> PhuLuc4s { get; set; } = new List<PhuLuc4>();
+    public virtual ICollection<Document4> Document4s { get; set; } = new List<Document4>();
 
     public virtual Subject? Subject { get; set; }
 

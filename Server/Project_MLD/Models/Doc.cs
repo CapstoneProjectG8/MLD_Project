@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Project_MLD.Models;
 
-public partial class Document
+public partial class Doc
 {
     public int Id { get; set; }
 
@@ -13,9 +13,9 @@ public partial class Document
 
     public int CategoryId { get; set; }
 
-    public int Pl4Id { get; set; }
+    public int Document4Id { get; set; }
 
     public virtual Category Category { get; set; } = null!;
 
-    public virtual PhuLuc4 Pl4 { get; set; } = null!;
+    public virtual Document4 Document4 { get; set; } = null!;
 }

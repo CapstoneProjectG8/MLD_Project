@@ -15,5 +15,5 @@ public partial class Grade
 
     public virtual ICollection<Class> Classes { get; set; } = new List<Class>();
 
-    public virtual ICollection<PhuLuc1> PhuLuc1s { get; set; } = new List<PhuLuc1>();
+    public virtual ICollection<Document1> Document1s { get; set; } = new List<Document1>();
 }
