@@ -214,15 +214,15 @@ public partial class MldDatabaseContext : DbContext
                 .HasNoKey()
                 .ToTable("Document1_CurriculumDistribution");
 
-            entity.Property(e => e.CurruculumId).HasColumnName("curruculum_id");
+            entity.Property(e => e.CurriculumId).HasColumnName("curriculum_id");
             entity.Property(e => e.Description)
                 .HasMaxLength(50)
                 .HasColumnName("description");
             entity.Property(e => e.Document1Id).HasColumnName("document1_id");
             entity.Property(e => e.Slot).HasColumnName("slot");
 
-            entity.HasOne(d => d.Curruculum).WithMany()
-                .HasForeignKey(d => d.CurruculumId)
+            entity.HasOne(d => d.Curriculum).WithMany()
+                .HasForeignKey(d => d.CurriculumId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_khdh-pptc_Phân phối chương trình");
 
@@ -699,7 +699,7 @@ public partial class MldDatabaseContext : DbContext
                 .HasMaxLength(50)
                 .HasColumnName("place_of_birth");
             entity.Property(e => e.ProfessionalStandardsId).HasColumnName("professional_standards_id");
-            entity.Property(e => e.SpecializedTeamId).HasColumnName("specialized_team_id");
+            entity.Property(e => e.SpecializedDepartmentId).HasColumnName("specialized_department_id");
 
             entity.HasOne(d => d.Account).WithMany(p => p.Users)
                 .HasForeignKey(d => d.AccountId)
@@ -713,8 +713,8 @@ public partial class MldDatabaseContext : DbContext
                 .HasForeignKey(d => d.ProfessionalStandardsId)
                 .HasConstraintName("FK_User_Professional Standards");
 
-            entity.HasOne(d => d.SpecializedTeam).WithMany(p => p.Users)
-                .HasForeignKey(d => d.SpecializedTeamId)
+            entity.HasOne(d => d.SpecializedDepartment).WithMany(p => p.Users)
+                .HasForeignKey(d => d.SpecializedDepartmentId)
                 .HasConstraintName("FK_User_Tổ chuyên Môn");
         });
 

@@ -25,7 +25,7 @@ public partial class User
 
     public int? LevelOfTrainningId { get; set; }
 
-    public int? SpecializedTeamId { get; set; }
+    public int? SpecializedDepartmentId { get; set; }
 
     public int? AccountId { get; set; }
 
@@ -55,7 +55,7 @@ public partial class User
 
     public virtual ProfessionalStandard? ProfessionalStandards { get; set; }
 
-    public virtual SpecializedDepartment? SpecializedTeam { get; set; }
+    public virtual SpecializedDepartment? SpecializedDepartment { get; set; }
 
     public virtual ICollection<TeachingPlanner> TeachingPlanners { get; set; } = new List<TeachingPlanner>();
 }
