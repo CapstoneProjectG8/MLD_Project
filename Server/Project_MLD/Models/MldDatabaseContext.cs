@@ -41,8 +41,6 @@ public partial class MldDatabaseContext : DbContext
 
     public virtual DbSet<Document3> Document3s { get; set; }
 
-    public virtual DbSet<Document3CurriculumDistribution> Document3CurriculumDistributions { get; set; }
-
     public virtual DbSet<Document4> Document4s { get; set; }
 
     public virtual DbSet<Document5> Document5s { get; set; }
@@ -378,35 +376,6 @@ public partial class MldDatabaseContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.Document3s)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("FK_Kế hoạch giáo dục của GV_User");
-        });
-
-        modelBuilder.Entity<Document3CurriculumDistribution>(entity =>
-        {
-            entity
-                .HasNoKey()
-                .ToTable("Document3_CurriculumDistribution");
-
-            entity.Property(e => e.CurriculumId).HasColumnName("curriculum_id");
-            entity.Property(e => e.Document3Id).HasColumnName("document3_id");
-            entity.Property(e => e.Place)
-                .HasMaxLength(50)
-                .HasColumnName("place");
-            entity.Property(e => e.Slot).HasColumnName("slot");
-            entity.Property(e => e.TeachingEquipmentId).HasColumnName("teaching_equipment_id");
-            entity.Property(e => e.Time).HasColumnName("time");
-
-            entity.HasOne(d => d.Curriculum).WithMany()
-                .HasForeignKey(d => d.CurriculumId)
-                .HasConstraintName("FK_khgdGV - ppct_Phân phối chương trình");
-
-            entity.HasOne(d => d.Document3).WithMany()
-                .HasForeignKey(d => d.Document3Id)
-                .HasConstraintName("FK_khgdGV - ppct_Kế hoạch giáo dục của GV");
-
-            entity.HasOne(d => d.TeachingEquipment).WithMany()
-                .HasForeignKey(d => d.TeachingEquipmentId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_khgdGV - ppct_Thiết bị dậy học");
         });
 
         modelBuilder.Entity<Document4>(entity =>
