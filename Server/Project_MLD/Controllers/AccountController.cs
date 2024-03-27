@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Project_MLD.Models;
+using Project_MLD.Service.Interface;
 using System.Diagnostics;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -17,6 +18,7 @@ namespace Project_MLD.Controllers
     {
         private IConfiguration _config;
         private readonly MldDatabaseContext _context;
+        private readonly IAccountRepository _repository;
         public AccountController(IConfiguration configuration, MldDatabaseContext context)
         {
             _config = configuration;
@@ -98,6 +100,60 @@ namespace Project_MLD.Controllers
                         + " " + accountClaims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value);
             }
             return null;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Account>>> GetAllAccount()
+        {
+            var acc = await _repository.GetAllAccounts();
+            return Ok(acc);
+        }
+
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Account>> GetAccountById(int id)
+        {
+            var exAcc = await _repository.GetAccountById(id);
+            if (exAcc == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(exAcc);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Account>> AddAccount(Account acc)
+        {
+            await _repository.AddAccount(acc);
+            return CreatedAtAction(nameof(GetAccountById), new { id = acc.AccountId }, acc);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAccount(int id)
+        {
+            var result = await _repository.DeleteAccount(id);
+            if (!result)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateAccount(int id, Account acc)
+        {
+            if (id != acc.AccountId)
+            {
+                return BadRequest();
+            }
+
+            var result = await _repository.UpdateAccount(acc);
+            if (!result)
+            {
+                return NotFound();
+            }
+            return NoContent();
         }
     }
 }
