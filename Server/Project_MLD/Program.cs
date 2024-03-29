@@ -51,6 +51,8 @@ builder.Services.AddScoped<ISpecializedDepartmentRepository, SpecializedDepartme
 builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
 builder.Services.AddScoped<ISubjectRoomRepository, SubjectRoomRepository>();
 builder.Services.AddScoped<ITeachingEquipmentRepository, TeachingEquipmentRepository>();
+builder.Services.AddScoped<IDocRepository, DocRepository>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 
 
 //ADD CORS
