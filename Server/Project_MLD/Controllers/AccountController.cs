@@ -19,10 +19,11 @@ namespace Project_MLD.Controllers
         private IConfiguration _config;
         private readonly MldDatabaseContext _context;
         private readonly IAccountRepository _repository;
-        public AccountController(IConfiguration configuration, MldDatabaseContext context)
+        public AccountController(IConfiguration configuration,IAccountRepository repository, MldDatabaseContext context)
         {
             _config = configuration;
             _context = context;
+            _repository = repository;
         }
 
         [AllowAnonymous]
