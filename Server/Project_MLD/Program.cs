@@ -6,11 +6,12 @@ using Project_MLD.Service.Interface;
 using Project_MLD.Service.Repository;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
+using Project_MLD.DTO;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -39,6 +40,7 @@ builder.Services.AddDbContext<MldDatabaseContext>(option =>
 
 //Mapper
 builder.Services.AddAutoMapper(typeof(MapperConfig));
+
 //Dependacy Injection
 builder.Services.AddScoped<ICurriculumDistributionRepository, CurriculumDistributionRepository>();
 builder.Services.AddScoped<IGradeRepository, GradeRepository>();
@@ -53,7 +55,9 @@ builder.Services.AddScoped<ISubjectRoomRepository, SubjectRoomRepository>();
 builder.Services.AddScoped<ITeachingEquipmentRepository, TeachingEquipmentRepository>();
 builder.Services.AddScoped<IDocRepository, DocRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 
 //ADD CORS
 builder.Services.AddCors();

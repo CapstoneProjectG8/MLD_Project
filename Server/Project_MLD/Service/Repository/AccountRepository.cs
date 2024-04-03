@@ -55,5 +55,14 @@ namespace Project_MLD.Service.Repository
             await _context.SaveChangesAsync();
             return true;
         }
+        public Account GetAccountByUsername(string username)
+        {
+            var existAccount = _context.Accounts.FirstOrDefault(x => x.Username == username);
+            if (existAccount == null)
+            {
+                return null;
+            }
+            return existAccount;
+        }
     }
 }

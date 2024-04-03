@@ -9,6 +9,6 @@ namespace Project_MLD.Service.Interface
         Task<Account> AddAccount(Account acc);
         Task<bool> UpdateAccount(Account acc);
         Task<bool> DeleteAccount(int id);
-
+        Account GetAccountByUsername(string username);
     }
 }

@@ -94,11 +94,11 @@ public partial class MldDatabaseContext : DbContext
 
             entity.Property(e => e.AccountId).HasColumnName("account_id");
             entity.Property(e => e.Active).HasColumnName("active");
-            entity.Property(e => e.CreatedBy).HasColumnName("created_by");
-            entity.Property(e => e.CreatedDate).HasColumnName("created_date");
-            entity.Property(e => e.Password)
+            entity.Property(e => e.CreatedBy)
                 .HasMaxLength(50)
-                .HasColumnName("password");
+                .HasColumnName("created_by");
+            entity.Property(e => e.CreatedDate).HasColumnName("created_date");
+            entity.Property(e => e.Password).HasColumnName("password");
             entity.Property(e => e.RoleId).HasColumnName("role_id");
             entity.Property(e => e.Username)
                 .HasMaxLength(50)
