@@ -51,8 +51,6 @@ public partial class MldDatabaseContext : DbContext
 
     public virtual DbSet<LevelOfTrainning> LevelOfTrainnings { get; set; }
 
-    public virtual DbSet<LoginAttempt> LoginAttempts { get; set; }
-
     public virtual DbSet<PeriodicAssessment> PeriodicAssessments { get; set; }
 
     public virtual DbSet<ProfessionalStandard> ProfessionalStandards { get; set; }
@@ -94,15 +92,11 @@ public partial class MldDatabaseContext : DbContext
 
             entity.Property(e => e.AccountId).HasColumnName("account_id");
             entity.Property(e => e.Active).HasColumnName("active");
-            entity.Property(e => e.CreatedBy)
-                .HasMaxLength(50)
-                .HasColumnName("created_by");
+            entity.Property(e => e.CreatedBy).HasColumnName("created_by");
             entity.Property(e => e.CreatedDate).HasColumnName("created_date");
             entity.Property(e => e.Password).HasColumnName("password");
             entity.Property(e => e.RoleId).HasColumnName("role_id");
-            entity.Property(e => e.Username)
-                .HasMaxLength(50)
-                .HasColumnName("username");
+            entity.Property(e => e.Username).HasColumnName("username");
 
             entity.HasOne(d => d.Role).WithMany(p => p.Accounts)
                 .HasForeignKey(d => d.RoleId)
@@ -113,9 +107,7 @@ public partial class MldDatabaseContext : DbContext
         {
             entity.ToTable("Category");
 
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name");
         });
 
         modelBuilder.Entity<Class>(entity =>
@@ -128,9 +120,7 @@ public partial class MldDatabaseContext : DbContext
                 .ValueGeneratedNever()
                 .HasColumnName("id");
             entity.Property(e => e.GradeId).HasColumnName("grade_ id");
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name");
 
             entity.HasOne(d => d.Grade).WithMany(p => p.Classes)
                 .HasForeignKey(d => d.GradeId)
@@ -144,9 +134,7 @@ public partial class MldDatabaseContext : DbContext
             entity.ToTable("Curriculum Distribution");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name");
         });
 
         modelBuilder.Entity<Doc>(entity =>
@@ -159,9 +147,7 @@ public partial class MldDatabaseContext : DbContext
             entity.Property(e => e.CategoryId).HasColumnName("category_id");
             entity.Property(e => e.Content).HasColumnName("content");
             entity.Property(e => e.Document4Id).HasColumnName("document4_id");
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name");
 
             entity.HasOne(d => d.Category).WithMany(p => p.Docs)
                 .HasForeignKey(d => d.CategoryId)
@@ -183,12 +169,8 @@ public partial class MldDatabaseContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.ApproveBy).HasColumnName("approve_by");
             entity.Property(e => e.GradeId).HasColumnName("grade_id");
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .HasColumnName("name");
-            entity.Property(e => e.Note)
-                .HasMaxLength(50)
-                .HasColumnName("note");
+            entity.Property(e => e.Name).HasColumnName("name");
+            entity.Property(e => e.Note).HasColumnName("note");
             entity.Property(e => e.Status).HasColumnName("status");
             entity.Property(e => e.SubjectId).HasColumnName("subject_id");
             entity.Property(e => e.UserId).HasColumnName("user_id");
@@ -213,9 +195,7 @@ public partial class MldDatabaseContext : DbContext
                 .ToTable("Document1_CurriculumDistribution");
 
             entity.Property(e => e.CurriculumId).HasColumnName("curriculum_id");
-            entity.Property(e => e.Description)
-                .HasMaxLength(50)
-                .HasColumnName("description");
+            entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.Document1Id).HasColumnName("document1_id");
             entity.Property(e => e.Slot).HasColumnName("slot");
 
@@ -236,9 +216,7 @@ public partial class MldDatabaseContext : DbContext
                 .HasNoKey()
                 .ToTable("Document1_SelectedTopics");
 
-            entity.Property(e => e.Description)
-                .HasMaxLength(50)
-                .HasColumnName("description");
+            entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.Document1Id).HasColumnName("document1_id");
             entity.Property(e => e.SelectedTopicsId).HasColumnName("selected_topics_id");
             entity.Property(e => e.Slot).HasColumnName("slot");
@@ -258,13 +236,9 @@ public partial class MldDatabaseContext : DbContext
                 .HasNoKey()
                 .ToTable("Document1_Subject Room");
 
-            entity.Property(e => e.Description)
-                .HasMaxLength(50)
-                .HasColumnName("description");
+            entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.Document1Id).HasColumnName("document1_id");
-            entity.Property(e => e.Note)
-                .HasMaxLength(50)
-                .HasColumnName("note");
+            entity.Property(e => e.Note).HasColumnName("note");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
             entity.Property(e => e.SubjectRoomId).HasColumnName("subject_room_id");
 
@@ -283,13 +257,9 @@ public partial class MldDatabaseContext : DbContext
                 .HasNoKey()
                 .ToTable("Document1_TeachingEquipment");
 
-            entity.Property(e => e.Description)
-                .HasMaxLength(50)
-                .HasColumnName("description");
+            entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.Document1Id).HasColumnName("document1_id");
-            entity.Property(e => e.Note)
-                .HasMaxLength(50)
-                .HasColumnName("note");
+            entity.Property(e => e.Note).HasColumnName("note");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
             entity.Property(e => e.TeachingEquipmentId).HasColumnName("teaching_equipment_id");
 
@@ -309,9 +279,7 @@ public partial class MldDatabaseContext : DbContext
             entity.ToTable("Document 2");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name");
             entity.Property(e => e.Status).HasColumnName("status");
             entity.Property(e => e.UserId).HasColumnName("user_id");
 
@@ -326,28 +294,16 @@ public partial class MldDatabaseContext : DbContext
                 .HasNoKey()
                 .ToTable("Document2_Grade");
 
-            entity.Property(e => e.CollaborateWith)
-                .HasMaxLength(50)
-                .HasColumnName("collaborate_with");
-            entity.Property(e => e.Condition)
-                .HasMaxLength(50)
-                .HasColumnName("condition");
-            entity.Property(e => e.Description)
-                .HasMaxLength(50)
-                .HasColumnName("description");
+            entity.Property(e => e.CollaborateWith).HasColumnName("collaborate_with");
+            entity.Property(e => e.Condition).HasColumnName("condition");
+            entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.Document2Id).HasColumnName("document2_id");
             entity.Property(e => e.GradeId).HasColumnName("grade_id");
-            entity.Property(e => e.HostBy)
-                .HasMaxLength(50)
-                .HasColumnName("host_by");
-            entity.Property(e => e.Place)
-                .HasMaxLength(50)
-                .HasColumnName("place");
+            entity.Property(e => e.HostBy).HasColumnName("host_by");
+            entity.Property(e => e.Place).HasColumnName("place");
             entity.Property(e => e.Slot).HasColumnName("slot");
             entity.Property(e => e.Time).HasColumnName("time");
-            entity.Property(e => e.TitleName)
-                .HasMaxLength(50)
-                .HasColumnName("title_name");
+            entity.Property(e => e.TitleName).HasColumnName("title_name");
 
             entity.HasOne(d => d.Document2).WithMany()
                 .HasForeignKey(d => d.Document2Id)
@@ -385,9 +341,7 @@ public partial class MldDatabaseContext : DbContext
             entity.ToTable("Document 4");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name");
             entity.Property(e => e.Status).HasColumnName("status");
             entity.Property(e => e.TeachingPlannerId).HasColumnName("teaching_planner_id");
 
@@ -405,9 +359,7 @@ public partial class MldDatabaseContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Document4Id).HasColumnName("document4_id");
             entity.Property(e => e.EvaluateBy).HasColumnName("evaluate_by");
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name");
 
             entity.HasOne(d => d.Document4).WithMany(p => p.Document5s)
                 .HasForeignKey(d => d.Document4Id)
@@ -426,9 +378,7 @@ public partial class MldDatabaseContext : DbContext
             entity.ToTable("Form Category");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name");
         });
 
         modelBuilder.Entity<Grade>(entity =>
@@ -438,9 +388,7 @@ public partial class MldDatabaseContext : DbContext
             entity.ToTable("Grade");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name");
             entity.Property(e => e.TotalStudent).HasColumnName("total_student");
             entity.Property(e => e.TotalStudentSelectedTopics).HasColumnName("total_student_selected_topics");
         });
@@ -452,24 +400,7 @@ public partial class MldDatabaseContext : DbContext
             entity.ToTable("Level Of Trainning");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .HasColumnName("name");
-        });
-
-        modelBuilder.Entity<LoginAttempt>(entity =>
-        {
-            entity.ToTable("Login Attempt");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.AccountName)
-                .HasMaxLength(50)
-                .HasColumnName("account_name");
-            entity.Property(e => e.CreatedDate).HasColumnName("created_date");
-            entity.Property(e => e.Password)
-                .HasMaxLength(50)
-                .HasColumnName("password");
-            entity.Property(e => e.Success).HasColumnName("success");
+            entity.Property(e => e.Name).HasColumnName("name");
         });
 
         modelBuilder.Entity<PeriodicAssessment>(entity =>
@@ -479,9 +410,7 @@ public partial class MldDatabaseContext : DbContext
                 .ToTable("Periodic Assessment");
 
             entity.Property(e => e.Date).HasColumnName("date");
-            entity.Property(e => e.Description)
-                .HasMaxLength(50)
-                .HasColumnName("description");
+            entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.Document1Id).HasColumnName("document1_id");
             entity.Property(e => e.FormCategoryId).HasColumnName("form_category_id");
             entity.Property(e => e.TestingCategoryId).HasColumnName("testing_category_id");
@@ -505,9 +434,7 @@ public partial class MldDatabaseContext : DbContext
             entity.ToTable("Professional Standards");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name");
         });
 
         modelBuilder.Entity<Role>(entity =>
@@ -520,12 +447,8 @@ public partial class MldDatabaseContext : DbContext
             entity.Property(e => e.CreatedDate).HasColumnName("created_date");
             entity.Property(e => e.ModifiedBy).HasColumnName("modified_by");
             entity.Property(e => e.ModifiedDate).HasColumnName("modified_date");
-            entity.Property(e => e.RoleName)
-                .HasMaxLength(50)
-                .HasColumnName("role_name");
-            entity.Property(e => e.RoleNote)
-                .HasMaxLength(50)
-                .HasColumnName("role_note");
+            entity.Property(e => e.RoleName).HasColumnName("role_name");
+            entity.Property(e => e.RoleNote).HasColumnName("role_note");
         });
 
         modelBuilder.Entity<Scorm>(entity =>
@@ -533,8 +456,7 @@ public partial class MldDatabaseContext : DbContext
             entity.ToTable("Scorm");
 
             entity.Property(e => e.Id)
-                .HasMaxLength(10)
-                .IsFixedLength()
+                .ValueGeneratedNever()
                 .HasColumnName("id");
             entity.Property(e => e.Content).HasColumnName("content");
         });
@@ -546,9 +468,7 @@ public partial class MldDatabaseContext : DbContext
             entity.ToTable("Selected Topics");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name");
         });
 
         modelBuilder.Entity<SpecializedDepartment>(entity =>
@@ -558,9 +478,7 @@ public partial class MldDatabaseContext : DbContext
             entity.ToTable("Specialized Department");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name");
         });
 
         modelBuilder.Entity<Subject>(entity =>
@@ -570,9 +488,7 @@ public partial class MldDatabaseContext : DbContext
             entity.ToTable("Subject");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name");
         });
 
         modelBuilder.Entity<SubjectRoom>(entity =>
@@ -582,9 +498,7 @@ public partial class MldDatabaseContext : DbContext
             entity.ToTable("Subject Room");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name");
         });
 
         modelBuilder.Entity<TeachingEquipment>(entity =>
@@ -594,9 +508,7 @@ public partial class MldDatabaseContext : DbContext
             entity.ToTable("Teaching Equipment");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name");
         });
 
         modelBuilder.Entity<TeachingPlanner>(entity =>
@@ -630,9 +542,7 @@ public partial class MldDatabaseContext : DbContext
             entity.ToTable("Testing Category");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name)
-                .HasMaxLength(50)
-                .HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name");
         });
 
         modelBuilder.Entity<User>(entity =>
@@ -642,31 +552,20 @@ public partial class MldDatabaseContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.AccountId).HasColumnName("account_id");
             entity.Property(e => e.Active).HasColumnName("active");
-            entity.Property(e => e.Address)
-                .HasMaxLength(50)
-                .HasColumnName("address");
+            entity.Property(e => e.Address).HasColumnName("address");
             entity.Property(e => e.Age).HasColumnName("age");
             entity.Property(e => e.CreatedBy).HasColumnName("created_by");
             entity.Property(e => e.CreatedDate).HasColumnName("created_date");
-            entity.Property(e => e.FirstName)
-                .HasMaxLength(50)
-                .HasColumnName("first_name");
-            entity.Property(e => e.FullName)
-                .HasMaxLength(50)
-                .HasColumnName("full_name");
+            entity.Property(e => e.Email).HasColumnName("email");
+            entity.Property(e => e.FirstName).HasColumnName("first_name");
+            entity.Property(e => e.FullName).HasColumnName("full_name");
             entity.Property(e => e.Gender).HasColumnName("gender");
-            entity.Property(e => e.LastName)
-                .HasMaxLength(50)
-                .HasColumnName("last_name");
+            entity.Property(e => e.LastName).HasColumnName("last_name");
             entity.Property(e => e.LevelOfTrainningId).HasColumnName("level_of_trainning_id");
             entity.Property(e => e.ModifiedBy).HasColumnName("modified_by");
             entity.Property(e => e.ModifiedDate).HasColumnName("modified_date");
-            entity.Property(e => e.Photo)
-                .HasMaxLength(50)
-                .HasColumnName("photo");
-            entity.Property(e => e.PlaceOfBirth)
-                .HasMaxLength(50)
-                .HasColumnName("place_of_birth");
+            entity.Property(e => e.Photo).HasColumnName("photo");
+            entity.Property(e => e.PlaceOfBirth).HasColumnName("place_of_birth");
             entity.Property(e => e.ProfessionalStandardsId).HasColumnName("professional_standards_id");
             entity.Property(e => e.SpecializedDepartmentId).HasColumnName("specialized_department_id");
 

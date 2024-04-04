@@ -1,7 +1,6 @@
-﻿using Project_MLD.Service.Interface;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 
-namespace Project_MLD.Service.Repository
+namespace Project_MLD.Utils.PasswordHash
 {
     public class PasswordHasher : IPasswordHasher
     {

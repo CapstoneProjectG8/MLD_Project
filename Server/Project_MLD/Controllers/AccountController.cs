@@ -1,14 +1,12 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Project_MLD.DTO;
 using Project_MLD.Models;
 using Project_MLD.Service.Interface;
-using System.Diagnostics;
+using Project_MLD.Utils.PasswordHash;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -73,6 +71,7 @@ namespace Project_MLD.Controllers
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, user.FullName),
+                new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Role, user.Account.Role.RoleName)
             };
 
@@ -80,7 +79,7 @@ namespace Project_MLD.Controllers
                 claims: claims,
                 issuer: _config["Jwt:Issuer"],
                 audience: _config["Jwt:Audience"],
-                expires: DateTime.Now.AddMinutes(15),
+                expires: DateTime.Now.AddHours(1),
                 signingCredentials: credentials
                 );
 
@@ -90,11 +89,8 @@ namespace Project_MLD.Controllers
         private User Authenticate(string username, string password)
         {
             var currentAccount = _context.Users
-                .Include(x => x.Account)
-                .ThenInclude(account => account.Role)
-                .FirstOrDefault(x =>
-                x.Account.Username == username.ToLower());
-            //var result = _passwordHasher.VerifyPassword(currentAccount.Account.Password, password);
+                .Include(x => x.Account).ThenInclude(account => account.Role)
+                .FirstOrDefault(x => x.Account.Username == username.ToLower());
             if (currentAccount != null)
             {
                 bool result = _passwordHasher.VerifyPassword(currentAccount.Account.Password, password);
@@ -116,7 +112,8 @@ namespace Project_MLD.Controllers
                 var accountClaims = identity.Claims;
                 return (
                         accountClaims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value
-                        + " " + accountClaims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value);
+                        + " " + accountClaims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value
+                         + " " + accountClaims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value);
             }
             return null;
         }
@@ -150,7 +147,7 @@ namespace Project_MLD.Controllers
             {
                 return BadRequest("Account Exist");
             }
-
+            acc.Active = true;
             acc.CreatedBy = "ADMIN";
             acc.CreatedDate = DateOnly.FromDateTime(DateTime.Now);
             acc.Password = _passwordHasher.Hash(acc.Password);

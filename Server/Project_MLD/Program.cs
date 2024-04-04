@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Project_MLD.DTO;
+using Project_MLD.Utils.PasswordHash;
 
 var builder = WebApplication.CreateBuilder(args);
 

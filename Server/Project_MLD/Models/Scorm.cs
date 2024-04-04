@@ -5,7 +5,7 @@ namespace Project_MLD.Models;
 
 public partial class Scorm
 {
-    public string Id { get; set; } = null!;
+    public int Id { get; set; }
 
     public byte[]? Content { get; set; }
 }

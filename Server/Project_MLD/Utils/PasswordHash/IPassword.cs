@@ -1,6 +1,6 @@
 ﻿using Project_MLD.Models;
 
-namespace Project_MLD.Service.Interface
+namespace Project_MLD.Utils.PasswordHash
 {
     public interface IPasswordHasher
     {
