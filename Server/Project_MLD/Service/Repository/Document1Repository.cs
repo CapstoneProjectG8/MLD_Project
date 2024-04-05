@@ -35,7 +35,18 @@ namespace Project_MLD.Service.Repository
 
         public async Task<IEnumerable<Document1>> GetAllDocument1s()
         {
-            return await _context.Document1s.ToListAsync();
+            return await _context.Document1s.Where(x => x.Status == true).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Document1>> GetDocument1ByCondition(string condition)
+        {
+            return await _context.Document1s
+                .Include(x => x.User)
+                .Where(x => x.Name == condition ||
+                x.User.FullName.Contains(condition) ||
+                x.User.FirstName.Contains(condition) ||
+                x.User.LastName.Contains(condition))
+                .ToListAsync();
         }
 
         public async Task<Document1> GetDocument1ById(int id)

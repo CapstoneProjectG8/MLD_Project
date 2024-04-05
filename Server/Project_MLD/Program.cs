@@ -47,6 +47,10 @@ builder.Services.AddScoped<ICurriculumDistributionRepository, CurriculumDistribu
 builder.Services.AddScoped<IGradeRepository, GradeRepository>();
 builder.Services.AddScoped<ILevelOfTrainningRepository, LevelOfTrainningRepository>();
 builder.Services.AddScoped<IDocument1Repository, Document1Repository>();
+builder.Services.AddScoped<IDocument2Repository, Document2Repository>();
+builder.Services.AddScoped<IDocument3Repository, Document3Repository>();
+builder.Services.AddScoped<IDocument4Repository, Document4Repository>();
+builder.Services.AddScoped<IDocument5Repository, Document5Repository>();
 builder.Services.AddScoped<IProfessionalStandardRepository, ProfessionalStandardRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<ISelectedTopicsRepository, SelectedTopicRepository>();
@@ -71,6 +75,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+//app.UseSwagger();
+//app.UseSwaggerUI(c =>
+//{
+//    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Project MLD API");
+//    c.RoutePrefix = string.Empty;
+//});
+///swagger/v1/swagger.json
 
 app.UseHttpsRedirection();
 

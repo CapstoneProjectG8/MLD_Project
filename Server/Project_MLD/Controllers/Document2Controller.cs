@@ -25,10 +25,22 @@ namespace Project_MLD.Controllers
             return Ok(pl2);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("ById/{id}")]
         public async Task<ActionResult<Document2>> GetDocument2ById(int id)
         {
             var existDocument2 = await _repository.GetDocument2ById(id);
+            if (existDocument2 == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(existDocument2);
+        }
+
+        [HttpGet("ByCondition/{condition}")]
+        public async Task<ActionResult<Document2>> GetDoucment2ByCondition(string condition)
+        {
+            var existDocument2 = await _repository.GetDocumentByCondition(condition);
             if (existDocument2 == null)
             {
                 return NotFound();

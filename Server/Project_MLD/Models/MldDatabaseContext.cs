@@ -57,8 +57,6 @@ public partial class MldDatabaseContext : DbContext
 
     public virtual DbSet<Role> Roles { get; set; }
 
-    public virtual DbSet<Scorm> Scorms { get; set; }
-
     public virtual DbSet<SelectedTopic> SelectedTopics { get; set; }
 
     public virtual DbSet<SpecializedDepartment> SpecializedDepartments { get; set; }
@@ -83,7 +81,6 @@ public partial class MldDatabaseContext : DbContext
         IConfigurationRoot configuration = builder.Build();
         optionsBuilder.UseSqlServer(configuration.GetConnectionString("MyCnn"));
     }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Account>(entity =>
@@ -322,6 +319,7 @@ public partial class MldDatabaseContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Document1Id).HasColumnName("document1_id");
+            entity.Property(e => e.Name).HasColumnName("name");
             entity.Property(e => e.Status).HasColumnName("status");
             entity.Property(e => e.UserId).HasColumnName("user_id");
 
@@ -358,17 +356,17 @@ public partial class MldDatabaseContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Document4Id).HasColumnName("document4_id");
-            entity.Property(e => e.EvaluateBy).HasColumnName("evaluate_by");
             entity.Property(e => e.Name).HasColumnName("name");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
 
             entity.HasOne(d => d.Document4).WithMany(p => p.Document5s)
                 .HasForeignKey(d => d.Document4Id)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Phu Luc 5_Phu Luc 4");
 
-            entity.HasOne(d => d.EvaluateByNavigation).WithMany(p => p.Document5s)
-                .HasForeignKey(d => d.EvaluateBy)
-                .HasConstraintName("FK_Phu Luc 5_User");
+            entity.HasOne(d => d.User).WithMany(p => p.Document5s)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK_Document 5_User");
         });
 
         modelBuilder.Entity<FormCategory>(entity =>
@@ -449,16 +447,6 @@ public partial class MldDatabaseContext : DbContext
             entity.Property(e => e.ModifiedDate).HasColumnName("modified_date");
             entity.Property(e => e.RoleName).HasColumnName("role_name");
             entity.Property(e => e.RoleNote).HasColumnName("role_note");
-        });
-
-        modelBuilder.Entity<Scorm>(entity =>
-        {
-            entity.ToTable("Scorm");
-
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
-            entity.Property(e => e.Content).HasColumnName("content");
         });
 
         modelBuilder.Entity<SelectedTopic>(entity =>

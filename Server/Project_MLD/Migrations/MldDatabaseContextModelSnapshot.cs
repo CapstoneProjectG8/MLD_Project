@@ -403,6 +403,10 @@ namespace Project_MLD.Migrations
                         .HasColumnType("int")
                         .HasColumnName("document1_id");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("name");
+
                     b.Property<bool?>("Status")
                         .HasColumnType("bit")
                         .HasColumnName("status");
@@ -463,20 +467,20 @@ namespace Project_MLD.Migrations
                         .HasColumnType("int")
                         .HasColumnName("document4_id");
 
-                    b.Property<int?>("EvaluateBy")
-                        .HasColumnType("int")
-                        .HasColumnName("evaluate_by");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("name");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int")
+                        .HasColumnName("user_id");
 
                     b.HasKey("Id")
                         .HasName("PK_Phu Luc 5");
 
                     b.HasIndex("Document4Id");
 
-                    b.HasIndex("EvaluateBy");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Document 5", (string)null);
                 });
@@ -639,21 +643,6 @@ namespace Project_MLD.Migrations
                     b.HasKey("RoleId");
 
                     b.ToTable("Role", (string)null);
-                });
-
-            modelBuilder.Entity("Project_MLD.Models.Scorm", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int")
-                        .HasColumnName("id");
-
-                    b.Property<byte[]>("Content")
-                        .HasColumnType("varbinary(max)")
-                        .HasColumnName("content");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Scorm", (string)null);
                 });
 
             modelBuilder.Entity("Project_MLD.Models.SelectedTopic", b =>
@@ -1088,14 +1077,14 @@ namespace Project_MLD.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_Phu Luc 5_Phu Luc 4");
 
-                    b.HasOne("Project_MLD.Models.User", "EvaluateByNavigation")
+                    b.HasOne("Project_MLD.Models.User", "User")
                         .WithMany("Document5s")
-                        .HasForeignKey("EvaluateBy")
-                        .HasConstraintName("FK_Phu Luc 5_User");
+                        .HasForeignKey("UserId")
+                        .HasConstraintName("FK_Document 5_User");
 
                     b.Navigation("Document4");
 
-                    b.Navigation("EvaluateByNavigation");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Project_MLD.Models.PeriodicAssessment", b =>

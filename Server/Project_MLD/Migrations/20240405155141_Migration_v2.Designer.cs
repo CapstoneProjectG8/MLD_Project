@@ -12,8 +12,8 @@ using Project_MLD.Models;
 namespace Project_MLD.Migrations
 {
     [DbContext(typeof(MldDatabaseContext))]
-    [Migration("20240322102727_Migration_v4")]
-    partial class Migration_v4
+    [Migration("20240405155141_Migration_v2")]
+    partial class Migration_v2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,8 +38,8 @@ namespace Project_MLD.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("active");
 
-                    b.Property<int?>("CreatedBy")
-                        .HasColumnType("int")
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("created_by");
 
                     b.Property<DateOnly?>("CreatedDate")
@@ -47,8 +47,7 @@ namespace Project_MLD.Migrations
                         .HasColumnName("created_date");
 
                     b.Property<string>("Password")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("password");
 
                     b.Property<int?>("RoleId")
@@ -56,8 +55,7 @@ namespace Project_MLD.Migrations
                         .HasColumnName("role_id");
 
                     b.Property<string>("Username")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("username");
 
                     b.HasKey("AccountId");
@@ -76,8 +74,7 @@ namespace Project_MLD.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("name");
 
                     b.HasKey("Id");
@@ -96,8 +93,7 @@ namespace Project_MLD.Migrations
                         .HasColumnName("grade_ id");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("name");
 
                     b.HasKey("Id")
@@ -118,8 +114,7 @@ namespace Project_MLD.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("name");
 
                     b.HasKey("Id")
@@ -150,8 +145,7 @@ namespace Project_MLD.Migrations
                         .HasColumnName("document4_id");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("name");
 
                     b.HasKey("Id")
@@ -182,13 +176,11 @@ namespace Project_MLD.Migrations
                         .HasColumnName("grade_id");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("name");
 
                     b.Property<string>("Note")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("note");
 
                     b.Property<bool?>("Status")
@@ -217,13 +209,12 @@ namespace Project_MLD.Migrations
 
             modelBuilder.Entity("Project_MLD.Models.Document1CurriculumDistribution", b =>
                 {
-                    b.Property<int>("CurruculumId")
+                    b.Property<int>("CurriculumId")
                         .HasColumnType("int")
-                        .HasColumnName("curruculum_id");
+                        .HasColumnName("curriculum_id");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("description");
 
                     b.Property<int>("Document1Id")
@@ -234,7 +225,7 @@ namespace Project_MLD.Migrations
                         .HasColumnType("int")
                         .HasColumnName("slot");
 
-                    b.HasIndex("CurruculumId");
+                    b.HasIndex("CurriculumId");
 
                     b.HasIndex("Document1Id");
 
@@ -244,8 +235,7 @@ namespace Project_MLD.Migrations
             modelBuilder.Entity("Project_MLD.Models.Document1SelectedTopic", b =>
                 {
                     b.Property<string>("Description")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("description");
 
                     b.Property<int?>("Document1Id")
@@ -270,8 +260,7 @@ namespace Project_MLD.Migrations
             modelBuilder.Entity("Project_MLD.Models.Document1SubjectRoom", b =>
                 {
                     b.Property<string>("Description")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("description");
 
                     b.Property<int?>("Document1Id")
@@ -279,8 +268,7 @@ namespace Project_MLD.Migrations
                         .HasColumnName("document1_id");
 
                     b.Property<string>("Note")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("note");
 
                     b.Property<int?>("Quantity")
@@ -301,8 +289,7 @@ namespace Project_MLD.Migrations
             modelBuilder.Entity("Project_MLD.Models.Document1TeachingEquipment", b =>
                 {
                     b.Property<string>("Description")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("description");
 
                     b.Property<int?>("Document1Id")
@@ -310,8 +297,7 @@ namespace Project_MLD.Migrations
                         .HasColumnName("document1_id");
 
                     b.Property<string>("Note")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("note");
 
                     b.Property<int?>("Quantity")
@@ -339,8 +325,7 @@ namespace Project_MLD.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("name");
 
                     b.Property<bool?>("Status")
@@ -362,18 +347,15 @@ namespace Project_MLD.Migrations
             modelBuilder.Entity("Project_MLD.Models.Document2Grade", b =>
                 {
                     b.Property<string>("CollaborateWith")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("collaborate_with");
 
                     b.Property<string>("Condition")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("condition");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("description");
 
                     b.Property<int?>("Document2Id")
@@ -385,13 +367,11 @@ namespace Project_MLD.Migrations
                         .HasColumnName("grade_id");
 
                     b.Property<string>("HostBy")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("host_by");
 
                     b.Property<string>("Place")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("place");
 
                     b.Property<int?>("Slot")
@@ -403,8 +383,7 @@ namespace Project_MLD.Migrations
                         .HasColumnName("time");
 
                     b.Property<string>("TitleName")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("title_name");
 
                     b.HasIndex("Document2Id");
@@ -427,6 +406,10 @@ namespace Project_MLD.Migrations
                         .HasColumnType("int")
                         .HasColumnName("document1_id");
 
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("name");
+
                     b.Property<bool?>("Status")
                         .HasColumnType("bit")
                         .HasColumnName("status");
@@ -445,42 +428,6 @@ namespace Project_MLD.Migrations
                     b.ToTable("Document 3", (string)null);
                 });
 
-            modelBuilder.Entity("Project_MLD.Models.Document3CurriculumDistribution", b =>
-                {
-                    b.Property<int?>("CurriculumId")
-                        .HasColumnType("int")
-                        .HasColumnName("curriculum_id");
-
-                    b.Property<int?>("Document3Id")
-                        .HasColumnType("int")
-                        .HasColumnName("document3_id");
-
-                    b.Property<string>("Place")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("place");
-
-                    b.Property<int?>("Slot")
-                        .HasColumnType("int")
-                        .HasColumnName("slot");
-
-                    b.Property<int>("TeachingEquipmentId")
-                        .HasColumnType("int")
-                        .HasColumnName("teaching_equipment_id");
-
-                    b.Property<DateOnly?>("Time")
-                        .HasColumnType("date")
-                        .HasColumnName("time");
-
-                    b.HasIndex("CurriculumId");
-
-                    b.HasIndex("Document3Id");
-
-                    b.HasIndex("TeachingEquipmentId");
-
-                    b.ToTable("Document3_CurriculumDistribution", (string)null);
-                });
-
             modelBuilder.Entity("Project_MLD.Models.Document4", b =>
                 {
                     b.Property<int>("Id")
@@ -491,8 +438,7 @@ namespace Project_MLD.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("name");
 
                     b.Property<bool?>("Status")
@@ -524,21 +470,20 @@ namespace Project_MLD.Migrations
                         .HasColumnType("int")
                         .HasColumnName("document4_id");
 
-                    b.Property<int?>("EvaluateBy")
-                        .HasColumnType("int")
-                        .HasColumnName("evaluate_by");
-
                     b.Property<string>("Name")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("name");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int")
+                        .HasColumnName("user_id");
 
                     b.HasKey("Id")
                         .HasName("PK_Phu Luc 5");
 
                     b.HasIndex("Document4Id");
 
-                    b.HasIndex("EvaluateBy");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Document 5", (string)null);
                 });
@@ -553,8 +498,7 @@ namespace Project_MLD.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("name");
 
                     b.HasKey("Id")
@@ -573,8 +517,7 @@ namespace Project_MLD.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("name");
 
                     b.Property<int?>("TotalStudent")
@@ -601,46 +544,13 @@ namespace Project_MLD.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("name");
 
                     b.HasKey("Id")
                         .HasName("PK_LevelOfTrainning");
 
                     b.ToTable("Level Of Trainning", (string)null);
-                });
-
-            modelBuilder.Entity("Project_MLD.Models.LoginAttempt", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AccountName")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("account_name");
-
-                    b.Property<DateOnly?>("CreatedDate")
-                        .HasColumnType("date")
-                        .HasColumnName("created_date");
-
-                    b.Property<string>("Password")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("password");
-
-                    b.Property<bool?>("Success")
-                        .HasColumnType("bit")
-                        .HasColumnName("success");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Login Attempt", (string)null);
                 });
 
             modelBuilder.Entity("Project_MLD.Models.PeriodicAssessment", b =>
@@ -650,8 +560,7 @@ namespace Project_MLD.Migrations
                         .HasColumnName("date");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("description");
 
                     b.Property<int?>("Document1Id")
@@ -689,8 +598,7 @@ namespace Project_MLD.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("name");
 
                     b.HasKey("Id");
@@ -728,35 +636,16 @@ namespace Project_MLD.Migrations
                         .HasColumnName("modified_date");
 
                     b.Property<string>("RoleName")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("role_name");
 
                     b.Property<string>("RoleNote")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("role_note");
 
                     b.HasKey("RoleId");
 
                     b.ToTable("Role", (string)null);
-                });
-
-            modelBuilder.Entity("Project_MLD.Models.Scorm", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasMaxLength(10)
-                        .HasColumnType("nchar(10)")
-                        .HasColumnName("id")
-                        .IsFixedLength();
-
-                    b.Property<byte[]>("Content")
-                        .HasColumnType("varbinary(max)")
-                        .HasColumnName("content");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Scorm", (string)null);
                 });
 
             modelBuilder.Entity("Project_MLD.Models.SelectedTopic", b =>
@@ -769,8 +658,7 @@ namespace Project_MLD.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("name");
 
                     b.HasKey("Id")
@@ -789,8 +677,7 @@ namespace Project_MLD.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("name");
 
                     b.HasKey("Id")
@@ -809,8 +696,7 @@ namespace Project_MLD.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("name");
 
                     b.HasKey("Id")
@@ -829,8 +715,7 @@ namespace Project_MLD.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("name");
 
                     b.HasKey("Id")
@@ -849,8 +734,7 @@ namespace Project_MLD.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("name");
 
                     b.HasKey("Id")
@@ -898,8 +782,7 @@ namespace Project_MLD.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("name");
 
                     b.HasKey("Id")
@@ -926,30 +809,31 @@ namespace Project_MLD.Migrations
                         .HasColumnName("active");
 
                     b.Property<string>("Address")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("address");
 
                     b.Property<int?>("Age")
                         .HasColumnType("int")
                         .HasColumnName("age");
 
-                    b.Property<int?>("CreatedBy")
-                        .HasColumnType("int")
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("created_by");
 
                     b.Property<DateOnly?>("CreatedDate")
                         .HasColumnType("date")
                         .HasColumnName("created_date");
 
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("email");
+
                     b.Property<string>("FirstName")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("first_name");
 
                     b.Property<string>("FullName")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("full_name");
 
                     b.Property<bool?>("Gender")
@@ -957,8 +841,7 @@ namespace Project_MLD.Migrations
                         .HasColumnName("gender");
 
                     b.Property<string>("LastName")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("last_name");
 
                     b.Property<int?>("LevelOfTrainningId")
@@ -974,22 +857,20 @@ namespace Project_MLD.Migrations
                         .HasColumnName("modified_date");
 
                     b.Property<byte[]>("Photo")
-                        .HasMaxLength(50)
-                        .HasColumnType("varbinary(50)")
+                        .HasColumnType("varbinary(max)")
                         .HasColumnName("photo");
 
                     b.Property<string>("PlaceOfBirth")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("place_of_birth");
 
                     b.Property<int?>("ProfessionalStandardsId")
                         .HasColumnType("int")
                         .HasColumnName("professional_standards_id");
 
-                    b.Property<int?>("SpecializedTeamId")
+                    b.Property<int?>("SpecializedDepartmentId")
                         .HasColumnType("int")
-                        .HasColumnName("specialized_team_id");
+                        .HasColumnName("specialized_department_id");
 
                     b.HasKey("Id");
 
@@ -999,7 +880,7 @@ namespace Project_MLD.Migrations
 
                     b.HasIndex("ProfessionalStandardsId");
 
-                    b.HasIndex("SpecializedTeamId");
+                    b.HasIndex("SpecializedDepartmentId");
 
                     b.ToTable("User", (string)null);
                 });
@@ -1069,9 +950,9 @@ namespace Project_MLD.Migrations
 
             modelBuilder.Entity("Project_MLD.Models.Document1CurriculumDistribution", b =>
                 {
-                    b.HasOne("Project_MLD.Models.CurriculumDistribution", "Curruculum")
+                    b.HasOne("Project_MLD.Models.CurriculumDistribution", "Curriculum")
                         .WithMany()
-                        .HasForeignKey("CurruculumId")
+                        .HasForeignKey("CurriculumId")
                         .IsRequired()
                         .HasConstraintName("FK_khdh-pptc_Phân phối chương trình");
 
@@ -1081,7 +962,7 @@ namespace Project_MLD.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_khdh-pptc_Kế Hoạch Dạy Học");
 
-                    b.Navigation("Curruculum");
+                    b.Navigation("Curriculum");
 
                     b.Navigation("Document1");
                 });
@@ -1181,31 +1062,6 @@ namespace Project_MLD.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Project_MLD.Models.Document3CurriculumDistribution", b =>
-                {
-                    b.HasOne("Project_MLD.Models.CurriculumDistribution", "Curriculum")
-                        .WithMany()
-                        .HasForeignKey("CurriculumId")
-                        .HasConstraintName("FK_khgdGV - ppct_Phân phối chương trình");
-
-                    b.HasOne("Project_MLD.Models.Document3", "Document3")
-                        .WithMany()
-                        .HasForeignKey("Document3Id")
-                        .HasConstraintName("FK_khgdGV - ppct_Kế hoạch giáo dục của GV");
-
-                    b.HasOne("Project_MLD.Models.TeachingEquipment", "TeachingEquipment")
-                        .WithMany()
-                        .HasForeignKey("TeachingEquipmentId")
-                        .IsRequired()
-                        .HasConstraintName("FK_khgdGV - ppct_Thiết bị dậy học");
-
-                    b.Navigation("Curriculum");
-
-                    b.Navigation("Document3");
-
-                    b.Navigation("TeachingEquipment");
-                });
-
             modelBuilder.Entity("Project_MLD.Models.Document4", b =>
                 {
                     b.HasOne("Project_MLD.Models.TeachingPlanner", "TeachingPlanner")
@@ -1224,14 +1080,14 @@ namespace Project_MLD.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_Phu Luc 5_Phu Luc 4");
 
-                    b.HasOne("Project_MLD.Models.User", "EvaluateByNavigation")
+                    b.HasOne("Project_MLD.Models.User", "User")
                         .WithMany("Document5s")
-                        .HasForeignKey("EvaluateBy")
-                        .HasConstraintName("FK_Phu Luc 5_User");
+                        .HasForeignKey("UserId")
+                        .HasConstraintName("FK_Document 5_User");
 
                     b.Navigation("Document4");
 
-                    b.Navigation("EvaluateByNavigation");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Project_MLD.Models.PeriodicAssessment", b =>
@@ -1299,9 +1155,9 @@ namespace Project_MLD.Migrations
                         .HasForeignKey("ProfessionalStandardsId")
                         .HasConstraintName("FK_User_Professional Standards");
 
-                    b.HasOne("Project_MLD.Models.SpecializedDepartment", "SpecializedTeam")
+                    b.HasOne("Project_MLD.Models.SpecializedDepartment", "SpecializedDepartment")
                         .WithMany("Users")
-                        .HasForeignKey("SpecializedTeamId")
+                        .HasForeignKey("SpecializedDepartmentId")
                         .HasConstraintName("FK_User_Tổ chuyên Môn");
 
                     b.Navigation("Account");
@@ -1310,7 +1166,7 @@ namespace Project_MLD.Migrations
 
                     b.Navigation("ProfessionalStandards");
 
-                    b.Navigation("SpecializedTeam");
+                    b.Navigation("SpecializedDepartment");
                 });
 
             modelBuilder.Entity("Project_MLD.Models.Account", b =>

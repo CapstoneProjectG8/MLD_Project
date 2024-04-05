@@ -25,7 +25,7 @@ namespace Project_MLD.Controllers
             return Ok(Document1);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("ById/{id}")]
         public async Task<ActionResult<Document1>> GetDocument1ById(int id)
         {
             var Document1 = await _repository.GetDocument1ById(id);
@@ -34,6 +34,17 @@ namespace Project_MLD.Controllers
                 return NotFound();
             }
 
+            return Ok(Document1);
+        }
+
+        [HttpGet("ByCondition/{condition}")]
+        public async Task<ActionResult<Document1>> GetDocument1ByCondition(string condition)
+        {
+            var Document1 = await _repository.GetDocument1ByCondition(condition);
+            if (Document1 == null)
+            {
+                return NotFound();
+            }
             return Ok(Document1);
         }
 

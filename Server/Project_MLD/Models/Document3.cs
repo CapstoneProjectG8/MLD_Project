@@ -7,6 +7,8 @@ public partial class Document3
 {
     public int Id { get; set; }
 
+    public string? Name { get; set; }
+
     public int? Document1Id { get; set; }
 
     public int? UserId { get; set; }

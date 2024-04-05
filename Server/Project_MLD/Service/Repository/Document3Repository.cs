@@ -35,12 +35,23 @@ namespace Project_MLD.Service.Repository
 
         public async Task<IEnumerable<Document3>> GetAllDocument3s()
         {
-            return await _context.Document3s.ToListAsync();
+            return await _context.Document3s.Where(x => x.Status == true).ToListAsync();
         }
 
         public async Task<Document3> GetDocument3ById(int id)
         {
             return await _context.Document3s.FindAsync(id);
+        }
+
+        public async Task<IEnumerable<Document3>> GetDocument3sByCondition(string condition)
+        {
+            return await _context.Document3s
+                .Include(x => x.User)
+                .Where(x => x.Name == condition ||
+                x.User.FullName.Contains(condition) ||
+                x.User.FirstName.Contains(condition) ||
+                x.User.LastName.Contains(condition))
+                .ToListAsync();
         }
 
         public async Task<bool> UpdateDocument3(Document3 pl3)
