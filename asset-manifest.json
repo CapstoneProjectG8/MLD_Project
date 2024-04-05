@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/CapstoneProjectG8/MLD_Project/static/css/main.915bb5fd.css",
+    "main.js": "/CapstoneProjectG8/MLD_Project/static/js/main.70800f89.js",
+    "static/media/phuluc1.pdf": "/CapstoneProjectG8/MLD_Project/static/media/phuluc1.2aab05b10b6674897fd3.pdf",
+    "static/media/phuluc2.pdf": "/CapstoneProjectG8/MLD_Project/static/media/phuluc2.0092e7c585fb59da890c.pdf",
+    "static/media/phuluc3.pdf": "/CapstoneProjectG8/MLD_Project/static/media/phuluc3.2911706bb861afcbb3f2.pdf",
+    "static/media/font-times-new-roman.ttf": "/CapstoneProjectG8/MLD_Project/static/media/font-times-new-roman.f85717dad92d60284052.ttf",
+    "index.html": "/CapstoneProjectG8/MLD_Project/index.html",
+    "main.915bb5fd.css.map": "/CapstoneProjectG8/MLD_Project/static/css/main.915bb5fd.css.map",
+    "main.70800f89.js.map": "/CapstoneProjectG8/MLD_Project/static/js/main.70800f89.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.915bb5fd.css",
+    "static/js/main.70800f89.js"
+  ]
+}
