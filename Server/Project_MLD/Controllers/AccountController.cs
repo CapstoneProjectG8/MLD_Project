@@ -10,6 +10,7 @@ using Project_MLD.Utils.PasswordHash;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
 
 
 namespace Project_MLD.Controllers
@@ -36,17 +37,39 @@ namespace Project_MLD.Controllers
         [HttpPost("Login")]
         public IActionResult Login([FromBody] AccountDTO accountLogin)
         {
-            var acc = Authenticate(accountLogin.Username, accountLogin.Password);
-            if (acc != null)
+            if (accountLogin.Username == null || accountLogin.Password == null)
             {
-                var token = GenerateToken(acc);
-                if (token != null)
-                {
-                    return Ok(token);
-                }
-                return BadRequest("Token cannot create");
+                return BadRequest("Please fill information");
             }
-            return NotFound("Account Not Found");
+
+            if (CheckPasswordValidation(accountLogin.Password))
+            {
+                var acc = Authenticate(accountLogin.Username, accountLogin.Password);
+                if (acc != null)
+                {
+                    var token = GenerateToken(acc);
+                    if (token != null)
+                    {
+                        return Ok(token);
+                    }
+                    return BadRequest("Token cannot create");
+                }
+                return NotFound("Account Not Found");
+            }
+            return BadRequest("Password is incorrect");
+
+        }
+
+        private bool CheckPasswordValidation(string password)
+        {
+            // at least 1 Upper, 1 lowwer, 1 special character, 1 number
+            string pattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$";
+
+            // Match the password against the pattern
+            Match match = Regex.Match(password, pattern);
+
+            // If the password matches the pattern, return true (valid)
+            return match.Success;
         }
 
         [HttpGet("CheckAuthenciation")]
@@ -115,19 +138,21 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAccount(int id, Account acc)
+        public async Task<IActionResult> UpdateAccount(int id, AccountDTO acc)
         {
-            if (id != acc.AccountId)
+            if(id != acc.AccountId)
             {
-                return BadRequest();
+                return BadRequest("Id Not Match");
             }
-
-            var result = await _repository.UpdateAccount(acc);
+            acc.Password = _passwordHasher.Hash(acc.Password);
+            var account = _mapper.Map<Account>(acc);
+            
+            var result = await _repository.UpdateAccount(account);
             if (!result)
             {
                 return NotFound();
             }
-            return NoContent();
+            return Ok(account);
         }
 
         private User Authenticate(string username, string password)

@@ -9,6 +9,7 @@ namespace Project_MLD.Mapper
         public MapperConfig()
         {
             CreateMap<Account, AccountDTO>()
+                .ForMember(x => x.AccountId, y => y.MapFrom(src => src.AccountId))
                 .ForMember(x => x.RoleId, y => y.MapFrom(src => src.RoleId))
                 .ForMember(x => x.CreatedDate, y => y.MapFrom(x => DateOnly.FromDateTime(DateTime.Now)))
                 .ForMember(x => x.CreatedBy, y => y.MapFrom(x => "ADMIN"))

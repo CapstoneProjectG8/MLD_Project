@@ -62,7 +62,16 @@ namespace Project_MLD.Service.Repository
                 return false;
             }
 
-            _context.Entry(existDocument1).CurrentValues.SetValues(document1);
+            var properties = typeof(Document1).GetProperties();
+            foreach (var property in properties)
+            {
+                var updatedValue = property.GetValue(document1);
+                if (updatedValue != null)
+                {
+                    property.SetValue(existDocument1, updatedValue);
+                }
+            }
+
             await _context.SaveChangesAsync();
             return true;
         }

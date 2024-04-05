@@ -51,7 +51,17 @@ namespace Project_MLD.Service.Repository
                 return false;
             }
 
-            _context.Entry(existAccount).CurrentValues.SetValues(acc);
+            //NOTE
+            var properties = typeof(Account).GetProperties();
+            foreach (var property in properties)
+            {
+                var updatedValue = property.GetValue(acc);
+                if (updatedValue != null)
+                {
+                    property.SetValue(existAccount, updatedValue);
+                }
+            }
+
             await _context.SaveChangesAsync();
             return true;
         }
