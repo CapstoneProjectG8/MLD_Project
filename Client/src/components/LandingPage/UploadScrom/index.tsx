@@ -1,7 +1,39 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './style.scss'
 
 const UploadScrom = () => {
+    const [tieuDe, setTieuDe] = useState('')
+    const [fileDoc, setFileDoc] = useState<File | null>(null)
+    const [avatar, setAvatar] = useState<File | null>(null)
+    const [nguon, setNguon] = useState('')
+    const [noiDung, setNoiDung] = useState('')
+
+    const handleTieuDeChange = (e: any) => {
+        setTieuDe(e.target.value);
+    };
+    const handleFileDocChange = (e: any) => {
+        const file = e.target.files && e.target.files[0];
+        if (file) {
+            const url = URL.createObjectURL(file);
+            setFileDoc(file);
+        }
+    };
+
+    const handleAvatarChange = (e: any) => {
+        const file = e.target.files && e.target.files[0];
+        if (file) {
+            const url = URL.createObjectURL(file);
+            setAvatar(file);
+        }
+    };
+
+    const handleNguonChange = (e: any) => {
+        setNguon(e.target.value);
+    };
+
+    const handleNoiDungChange = (e: any) => {
+        setNoiDung(e.target.value);
+    };
 
     return (
         <div className='scrom-upload-panel'>
@@ -20,7 +52,7 @@ const UploadScrom = () => {
                         Tiêu đề
                     </div>
                     <div className="upload-input">
-                        <input type="text" />
+                        <input type="text" value={tieuDe} onChange={handleTieuDeChange} />
                     </div>
                 </div>
                 <div className='upload-row'>
@@ -28,7 +60,7 @@ const UploadScrom = () => {
                         File dữ liệu
                     </div>
                     <div className="upload-input-file">
-                        <input type="file" />
+                        <input type="file" onChange={handleFileDocChange} />
                     </div>
                 </div>
                 <div className='upload-row'>
@@ -36,7 +68,7 @@ const UploadScrom = () => {
                         Ảnh đại diện
                     </div>
                     <div className="upload-input-file">
-                        <input type="file" />
+                        <input type="file" onChange={handleAvatarChange} />
                     </div>
                 </div>
                 <div className='upload-row'>
@@ -44,7 +76,7 @@ const UploadScrom = () => {
                         Nguồn
                     </div>
                     <div className="upload-input">
-                        <input type="text" />
+                        <input type="text" value={nguon} onChange={handleNguonChange} />
                     </div>
                 </div>
                 <div className='upload-row' style={{ alignItems: "flex-start" }}>
@@ -52,7 +84,7 @@ const UploadScrom = () => {
                         Nội dung
                     </div>
                     <div className="upload-input">
-                        <textarea name="" id="" rows={10}></textarea>
+                        <textarea name="" id="" rows={10} value={noiDung} onChange={handleNoiDungChange}></textarea>
                     </div>
                 </div>
                 <div className='upload-tutorial'>

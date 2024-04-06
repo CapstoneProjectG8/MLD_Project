@@ -21,6 +21,8 @@ public partial class Document1
 
     public int? ApproveBy { get; set; }
 
+    public bool? IsApprove { get; set; }
+
     public virtual ICollection<Document3> Document3s { get; set; } = new List<Document3>();
 
     public virtual Grade? Grade { get; set; }

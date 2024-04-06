@@ -1,14 +1,17 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Project_MLD.DTO;
 using Project_MLD.Models;
 using Project_MLD.Service.Interface;
-using System.Diagnostics;
+using Project_MLD.Utils.PasswordHash;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
+
 
 namespace Project_MLD.Controllers
 {
@@ -19,28 +22,54 @@ namespace Project_MLD.Controllers
         private IConfiguration _config;
         private readonly MldDatabaseContext _context;
         private readonly IAccountRepository _repository;
-        public AccountController(IConfiguration configuration,IAccountRepository repository, MldDatabaseContext context)
+        private readonly IMapper _mapper;
+        private readonly IPasswordHasher _passwordHasher;
+        public AccountController(IConfiguration configuration, IAccountRepository repository, MldDatabaseContext context, IMapper mapper, IPasswordHasher passwordHasher)
         {
             _config = configuration;
             _context = context;
             _repository = repository;
+            _mapper = mapper;
+            _passwordHasher = passwordHasher;
         }
 
         [AllowAnonymous]
         [HttpPost("Login")]
-        public IActionResult Login([FromBody] Account accountLogin)
+        public IActionResult Login([FromBody] AccountDTO accountLogin)
         {
-            var acc = Authenticate(accountLogin.Username,accountLogin.Password);
-            if (acc != null)
+            if (accountLogin.Username == null || accountLogin.Password == null)
             {
-                var token = Generate(acc);
-                if (token != null)
-                {
-                    return Ok(token);
-                }
-                return BadRequest("ABCDEFGH");
+                return BadRequest("Please fill information");
             }
-            return NotFound("Account Not Found");
+
+            if (CheckPasswordValidation(accountLogin.Password))
+            {
+                var acc = Authenticate(accountLogin.Username, accountLogin.Password);
+                if (acc != null)
+                {
+                    var token = GenerateToken(acc);
+                    if (token != null)
+                    {
+                        return Ok(token);
+                    }
+                    return BadRequest("Token cannot create");
+                }
+                return NotFound("Account Not Found");
+            }
+            return BadRequest("Password is incorrect");
+
+        }
+
+        private bool CheckPasswordValidation(string password)
+        {
+            // at least 1 Upper, 1 lowwer, 1 special character, 1 number
+            string pattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$";
+
+            // Match the password against the pattern
+            Match match = Regex.Match(password, pattern);
+
+            // If the password matches the pattern, return true (valid)
+            return match.Success;
         }
 
         [HttpGet("CheckAuthenciation")]
@@ -54,54 +83,7 @@ namespace Project_MLD.Controllers
             }
             return NotFound();
         }
-        private string Generate(User user)
-        {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var claims = new[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, user.FullName),
-                new Claim(ClaimTypes.Role, user.Account.Role.RoleName)
-            };
-
-            var token = new JwtSecurityToken(
-                claims: claims,
-                issuer: _config["Jwt:Issuer"],
-                audience: _config["Jwt:Audience"],
-                expires: DateTime.Now.AddMinutes(15),
-                signingCredentials: credentials
-                );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
-        private User Authenticate(string username, string password)
-        {
-            var currentAccount = _context.Users
-                .Include(x => x.Account)
-                .ThenInclude(account => account.Role)
-                .FirstOrDefault(x =>
-                x.Account.Username == username.ToLower() &&
-                x.Account.Password == password);
-            if (currentAccount != null)
-                return currentAccount;
-            return null;
-        }
-
-        private string GetCurrentAccount()
-        {
-            var identity = HttpContext.User.Identity as ClaimsIdentity;
-
-            if (identity != null)
-            {
-                var accountClaims = identity.Claims;
-                return (
-                        accountClaims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value
-                        + " " + accountClaims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value);
-            }
-            return null;
-        }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Account>>> GetAllAccount()
@@ -124,10 +106,24 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Account>> AddAccount(Account acc)
+        public async Task<ActionResult<Account>> AddAccount(AccountDTO acc)
         {
-            await _repository.AddAccount(acc);
-            return CreatedAtAction(nameof(GetAccountById), new { id = acc.AccountId }, acc);
+            //Check exist
+            var existAccount = _repository.GetAccountByUsername(acc.Username);
+            if (existAccount != null)
+            {
+                return BadRequest("Account Exist");
+            }
+            acc.Active = true;
+            acc.CreatedBy = "ADMIN";
+            acc.CreatedDate = DateOnly.FromDateTime(DateTime.Now);
+            acc.Password = _passwordHasher.Hash(acc.Password);
+
+            var account = _mapper.Map<Account>(acc);
+
+            var accountCreated = await _repository.AddAccount(account);
+
+            return Ok(accountCreated);
         }
 
         [HttpDelete("{id}")]
@@ -142,19 +138,76 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAccount(int id, Account acc)
+        public async Task<IActionResult> UpdateAccount(int id, AccountDTO acc)
         {
-            if (id != acc.AccountId)
+            if(id != acc.AccountId)
             {
-                return BadRequest();
+                return BadRequest("Id Not Match");
             }
-
-            var result = await _repository.UpdateAccount(acc);
+            acc.Password = _passwordHasher.Hash(acc.Password);
+            var account = _mapper.Map<Account>(acc);
+            
+            var result = await _repository.UpdateAccount(account);
             if (!result)
             {
                 return NotFound();
             }
-            return NoContent();
+            return Ok(account);
+        }
+
+        private User Authenticate(string username, string password)
+        {
+            var currentAccount = _context.Users
+                .Include(x => x.Account).ThenInclude(account => account.Role)
+                .FirstOrDefault(x => x.Account.Username == username.ToLower());
+            if (currentAccount != null)
+            {
+                bool result = _passwordHasher.VerifyPassword(currentAccount.Account.Password, password);
+                if (result)
+                {
+                    return currentAccount;
+                }
+                return null;
+            }
+            return null;
+        }
+
+        private string GetCurrentAccount()
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+
+            if (identity != null)
+            {
+                var accountClaims = identity.Claims;
+                return (
+                        accountClaims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value
+                        + " " + accountClaims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value
+                         + " " + accountClaims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value);
+            }
+            return null;
+        }
+
+        private string GenerateToken(User user)
+        {
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.FullName),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim(ClaimTypes.Role, user.Account.Role.RoleName)
+            };
+
+            var token = new JwtSecurityToken(
+                claims: claims,
+                issuer: _config["Jwt:Issuer"],
+                audience: _config["Jwt:Audience"],
+                expires: DateTime.Now.AddHours(1),
+                signingCredentials: credentials
+                );
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

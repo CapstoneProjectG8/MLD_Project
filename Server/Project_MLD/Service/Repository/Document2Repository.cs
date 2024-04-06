@@ -35,12 +35,25 @@ namespace Project_MLD.Service.Repository
 
         public async Task<IEnumerable<Document2>> GetAllDocument2s()
         {
-            return await _context.Document2s.ToListAsync();
+            return await _context.Document2s.Where(x => x.Status == true).ToListAsync();
         }
 
         public async Task<Document2> GetDocument2ById(int id)
         {
-            return await _context.Document2s.FindAsync(id);
+            return await _context.Document2s
+                .Include(x => x.User)
+                .FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<IEnumerable<Document2>> GetDocument2ByCondition(string condition)
+        {
+            return await _context.Document2s
+                .Include(x => x.User)
+                .Where(x => x.Name == condition ||
+                x.User.FullName.Contains(condition) ||
+                x.User.FirstName.Contains(condition) ||
+                x.User.LastName.Contains(condition))
+                .ToListAsync();
         }
 
         public async Task<bool> UpdateDocument2(Document2 pl2)
@@ -51,9 +64,23 @@ namespace Project_MLD.Service.Repository
                 return false;
             }
 
-            _context.Entry(existDocument2).CurrentValues.SetValues(pl2);
+            var properties = typeof(Document2).GetProperties();
+            foreach (var property in properties)
+            {
+                var updatedValue = property.GetValue(pl2);
+                if (updatedValue != null)
+                {
+                    property.SetValue(existDocument2, updatedValue);
+                }
+            }
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<IEnumerable<Document2>> GetDocument2ByApproval()
+        {
+            return await _context.Document2s
+                .Where(x => x.Status == true && x.IsApprove == true).ToListAsync();
         }
     }
 }

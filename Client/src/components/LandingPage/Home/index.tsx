@@ -19,7 +19,7 @@ const Home = () => {
         navigate("/sub-menu-3/detail-edit")
     }
 
-
+    const Arr = [1, 2, 3, 4, 5, 6, 7, 8, 9]
     return (
         <div className='home-panel'>
             <div className='home-panel-content'>
@@ -45,31 +45,20 @@ const Home = () => {
                                 slidesPerView={3}
                                 loop={true}
                             >
-                                <SwiperSlide>
-                                    <div className='sub-menu-content-detail' onClick={() => navigate('/sub-menu-1/detail-view')}>
+                                {
+                                    Arr.map((a, index) => (
+                                        <SwiperSlide key={index} style={{ display: 'flex', flexDirection: 'column' }}>
+                                            <div className='sub-menu-content-detail' style={{ backgroundImage: `url('https://o.rada.vn/data/image/2022/08/26/Trang-tri-8.jpg')` }} onClick={() => navigate('/sub-menu-1/detail-view')}>
 
-                                    </div>
-                                </SwiperSlide>
-                                <SwiperSlide>
-                                    <div className='sub-menu-content-detail' onClick={() => navigate('/sub-menu-1/detail-view')}>
+                                            </div>
+                                            <div>
+                                                {a}
+                                            </div>
+                                        </SwiperSlide>
+                                    ))
+                                }
 
-                                    </div>
-                                </SwiperSlide>
-                                <SwiperSlide>
-                                    <div className='sub-menu-content-detail' onClick={() => navigate('/sub-menu-1/detail-view')}>
 
-                                    </div>
-                                </SwiperSlide>
-                                <SwiperSlide>
-                                    <div className='sub-menu-content-detail' onClick={() => navigate('/sub-menu-1/detail-view')}>
-
-                                    </div>
-                                </SwiperSlide>
-                                <SwiperSlide>
-                                    <div className='sub-menu-content-detail' onClick={() => navigate('/sub-menu-1/detail-view')}>
-
-                                    </div>
-                                </SwiperSlide>
                             </Swiper>
                         </div>
                     </div>
@@ -96,31 +85,18 @@ const Home = () => {
                                 slidesPerView={3}
                                 loop={true}
                             >
-                                <SwiperSlide>
-                                    <div className='sub-menu-content-detail' onClick={() => navigate('/sub-menu-2/detail-view')}>
+                                {
+                                    Arr.map((a, index) => (
+                                        <SwiperSlide key={index} style={{ display: 'flex', flexDirection: 'column' }}>
+                                            <div className='sub-menu-content-detail' style={{ backgroundImage: `url('https://o.rada.vn/data/image/2022/08/26/Trang-tri-8.jpg')` }} onClick={() => navigate('/sub-menu-1/detail-view')}>
 
-                                    </div>
-                                </SwiperSlide>
-                                <SwiperSlide>
-                                    <div className='sub-menu-content-detail' onClick={() => navigate('/sub-menu-2/detail-view')}>
-
-                                    </div>
-                                </SwiperSlide>
-                                <SwiperSlide>
-                                    <div className='sub-menu-content-detail' onClick={() => navigate('/sub-menu-2/detail-view')}>
-
-                                    </div>
-                                </SwiperSlide>
-                                <SwiperSlide>
-                                    <div className='sub-menu-content-detail' onClick={() => navigate('/sub-menu-2/detail-view')}>
-
-                                    </div>
-                                </SwiperSlide>
-                                <SwiperSlide>
-                                    <div className='sub-menu-content-detail' onClick={() => navigate('/sub-menu-2/detail-view')}>
-
-                                    </div>
-                                </SwiperSlide>
+                                            </div>
+                                            <div>
+                                                {a}
+                                            </div>
+                                        </SwiperSlide>
+                                    ))
+                                }
                             </Swiper>
                         </div>
                     </div>
@@ -147,31 +123,18 @@ const Home = () => {
                                 slidesPerView={3}
                                 loop={true}
                             >
-                                <SwiperSlide>
-                                    <div className='sub-menu-content-detail' onClick={() => navigate('/sub-menu-3/detail-view')}>
+                                {
+                                    Arr.map((a, index) => (
+                                        <SwiperSlide key={index} style={{ display: 'flex', flexDirection: 'column' }}>
+                                            <div className='sub-menu-content-detail' style={{ backgroundImage: `url('https://o.rada.vn/data/image/2022/08/26/Trang-tri-8.jpg')` }} onClick={() => navigate('/sub-menu-1/detail-view')}>
 
-                                    </div>
-                                </SwiperSlide>
-                                <SwiperSlide>
-                                    <div className='sub-menu-content-detail' onClick={() => navigate('/sub-menu-3/detail-view')}>
-
-                                    </div>
-                                </SwiperSlide>
-                                <SwiperSlide>
-                                    <div className='sub-menu-content-detail' onClick={() => navigate('/sub-menu-3/detail-view')}>j
-
-                                    </div>
-                                </SwiperSlide>
-                                <SwiperSlide>
-                                    <div className='sub-menu-content-detail' onClick={() => navigate('/sub-menu-3/detail-view')}>
-
-                                    </div>
-                                </SwiperSlide>
-                                <SwiperSlide>
-                                    <div className='sub-menu-content-detail' onClick={() => navigate('/sub-menu-3/detail-view')}>
-
-                                    </div>
-                                </SwiperSlide>
+                                            </div>
+                                            <div>
+                                                {a}
+                                            </div>
+                                        </SwiperSlide>
+                                    ))
+                                }
                             </Swiper>
                         </div>
                     </div>

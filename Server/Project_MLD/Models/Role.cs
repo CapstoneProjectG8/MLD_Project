@@ -9,17 +9,7 @@ public partial class Role
 
     public string? RoleName { get; set; }
 
-    public string? RoleNote { get; set; }
-
     public bool? Active { get; set; }
-
-    public int? CreatedBy { get; set; }
-
-    public DateOnly? CreatedDate { get; set; }
-
-    public int? ModifiedBy { get; set; }
-
-    public DateOnly? ModifiedDate { get; set; }
 
     public virtual ICollection<Account> Accounts { get; set; } = new List<Account>();
 }

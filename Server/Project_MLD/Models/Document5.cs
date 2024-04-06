@@ -11,9 +11,11 @@ public partial class Document5
 
     public int Document4Id { get; set; }
 
-    public int? EvaluateBy { get; set; }
+    public int? UserId { get; set; }
+
+    public int? Total { get; set; }
 
     public virtual Document4 Document4 { get; set; } = null!;
 
-    public virtual User? EvaluateByNavigation { get; set; }
+    public virtual User? User { get; set; }
 }

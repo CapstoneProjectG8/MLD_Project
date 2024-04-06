@@ -7,11 +7,17 @@ public partial class Document3
 {
     public int Id { get; set; }
 
+    public string? Name { get; set; }
+
     public int? Document1Id { get; set; }
 
     public int? UserId { get; set; }
 
     public bool? Status { get; set; }
+
+    public bool? IsApprove { get; set; }
+
+    public int? ApproveBy { get; set; }
 
     public virtual Document1? Document1 { get; set; }
 

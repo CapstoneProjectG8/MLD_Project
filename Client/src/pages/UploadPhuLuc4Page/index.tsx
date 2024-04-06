@@ -9,5 +9,4 @@ const UploadPhuLuc4Page = () => {
     </Layout>
   )
 }
-
 export default UploadPhuLuc4Page

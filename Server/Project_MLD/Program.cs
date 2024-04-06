@@ -6,11 +6,13 @@ using Project_MLD.Service.Interface;
 using Project_MLD.Service.Repository;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
+using Project_MLD.DTO;
+using Project_MLD.Utils.PasswordHash;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -39,11 +41,16 @@ builder.Services.AddDbContext<MldDatabaseContext>(option =>
 
 //Mapper
 builder.Services.AddAutoMapper(typeof(MapperConfig));
+
 //Dependacy Injection
 builder.Services.AddScoped<ICurriculumDistributionRepository, CurriculumDistributionRepository>();
 builder.Services.AddScoped<IGradeRepository, GradeRepository>();
 builder.Services.AddScoped<ILevelOfTrainningRepository, LevelOfTrainningRepository>();
 builder.Services.AddScoped<IDocument1Repository, Document1Repository>();
+builder.Services.AddScoped<IDocument2Repository, Document2Repository>();
+builder.Services.AddScoped<IDocument3Repository, Document3Repository>();
+builder.Services.AddScoped<IDocument4Repository, Document4Repository>();
+builder.Services.AddScoped<IDocument5Repository, Document5Repository>();
 builder.Services.AddScoped<IProfessionalStandardRepository, ProfessionalStandardRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<ISelectedTopicsRepository, SelectedTopicRepository>();
@@ -53,7 +60,9 @@ builder.Services.AddScoped<ISubjectRoomRepository, SubjectRoomRepository>();
 builder.Services.AddScoped<ITeachingEquipmentRepository, TeachingEquipmentRepository>();
 builder.Services.AddScoped<IDocRepository, DocRepository>();
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 
 //ADD CORS
 builder.Services.AddCors();
@@ -66,6 +75,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+//app.UseSwagger();
+//app.UseSwaggerUI(c =>
+//{
+//    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Project MLD API");
+//    c.RoutePrefix = string.Empty;
+//});
+///swagger/v1/swagger.json
 
 app.UseHttpsRedirection();
 

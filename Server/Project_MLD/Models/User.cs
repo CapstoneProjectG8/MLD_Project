@@ -11,6 +11,8 @@ public partial class User
 
     public string? LastName { get; set; }
 
+    public string? Email { get; set; }
+
     public string? FullName { get; set; }
 
     public byte[]? Photo { get; set; }
@@ -31,7 +33,7 @@ public partial class User
 
     public int? ProfessionalStandardsId { get; set; }
 
-    public int? CreatedBy { get; set; }
+    public string? CreatedBy { get; set; }
 
     public DateOnly? CreatedDate { get; set; }
 
@@ -50,6 +52,8 @@ public partial class User
     public virtual ICollection<Document3> Document3s { get; set; } = new List<Document3>();
 
     public virtual ICollection<Document5> Document5s { get; set; } = new List<Document5>();
+
+    public virtual ICollection<Feedback> Feedbacks { get; set; } = new List<Feedback>();
 
     public virtual LevelOfTrainning? LevelOfTrainning { get; set; }
 

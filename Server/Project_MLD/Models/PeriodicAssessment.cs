@@ -19,7 +19,7 @@ public partial class PeriodicAssessment
 
     public virtual Document1? Document1 { get; set; }
 
-    public virtual TestingCategory? FormCategory { get; set; }
+    public virtual FormCategory? FormCategory { get; set; }
 
-    public virtual FormCategory? TestingCategory { get; set; }
+    public virtual TestingCategory? TestingCategory { get; set; }
 }
