@@ -21,7 +21,7 @@ const SubMenu4 = () => {
                         </div>
                         {
                             grades?.map((grade, index) => (
-                                <div>
+                                <div key={index}>
                                     <div className="grade-name" style={{ fontSize: "24px" }}>Lớp {grade}</div>
                                     <div className="home-panel4-content-sub-menu-item-content-grid"
                                         style={{ borderBottom: index === grades.length - 1 ? 'none' : '1px solid black' }}

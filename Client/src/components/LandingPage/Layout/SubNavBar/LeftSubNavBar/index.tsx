@@ -49,13 +49,13 @@ const LeftSubNavBar = () => {
                                         {
                                             folder.grades.map((grade, index) => (
                                                 <>
-                                                    <div className='sub-nav-bar-item-content-folder-grade' key={index}>
+                                                    <div key={index} className='sub-nav-bar-item-content-folder-grade' >
                                                         <Note style={{ width: "30", height: "30", color: "#008DDA" }} />
                                                         <div>{grade.grade}</div>
                                                     </div>
                                                     {
                                                         grade.courses.map((course, index) => (
-                                                            <div className='sub-nav-bar-item-content-folder-course'>
+                                                            <div key={index} className='sub-nav-bar-item-content-folder-course'>
                                                                 <Article style={{ width: "30", height: "30", color: "#EFB38E" }} />
                                                                 {course}
                                                             </div>

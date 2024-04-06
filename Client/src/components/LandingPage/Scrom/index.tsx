@@ -20,9 +20,9 @@ const Scrom = () => {
                         </div>
                         {
                             grades?.map((grade, index) => (
-                                <div>
-                                    <div className="grade-name" style={{ fontSize: "24px" }} onClick={() => navigate(`${grade}`)}>{grade}</div>
-                                    <div className="scrom-panel-content-sub-menu-item-content-grid"
+                                <div key={index}>
+                                    <div  className="grade-name" style={{ fontSize: "24px" }} onClick={() => navigate(`${grade}`)}>{grade}</div>
+                                    <div  className="scrom-panel-content-sub-menu-item-content-grid"
                                         style={{ borderBottom: index === grades.length - 1 ? 'none' : '1px solid black' }}
                                     >
                                         {
