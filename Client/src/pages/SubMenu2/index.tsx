@@ -1,6 +1,6 @@
 import React from 'react'
-import SubMenu2 from '../../components/SubMenu2'
-import Layout from '../../components/Layout'
+import SubMenu2 from '../../components/LandingPage/SubMenu2'
+import Layout from '../../components/LandingPage/Layout'
 
 const SubMenu2Page = () => {
     return (

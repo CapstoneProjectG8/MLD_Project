@@ -1,6 +1,6 @@
 import React from 'react'
-import Layout from '../../components/Layout'
-import SubMenu4 from '../../components/SubMenu4'
+import Layout from '../../components/LandingPage/Layout'
+import SubMenu4 from '../../components/LandingPage/SubMenu4'
 
 const SubMenu4Page = () => {
     return (
