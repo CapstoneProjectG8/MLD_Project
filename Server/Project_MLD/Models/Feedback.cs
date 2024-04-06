@@ -3,19 +3,13 @@ using System.Collections.Generic;
 
 namespace Project_MLD.Models;
 
-public partial class Document2
+public partial class Feedback
 {
     public int Id { get; set; }
 
-    public string? Name { get; set; }
-
     public int? UserId { get; set; }
 
-    public bool? Status { get; set; }
-
-    public int? ApproveBy { get; set; }
-
-    public bool? IsApprove { get; set; }
+    public string? Content { get; set; }
 
     public virtual User? User { get; set; }
 }

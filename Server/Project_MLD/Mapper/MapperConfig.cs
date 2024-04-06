@@ -24,6 +24,18 @@ namespace Project_MLD.Mapper
                 .ForMember(x => x.CreatedDate, y => y.MapFrom(x => DateOnly.FromDateTime(DateTime.Now)))
                 .ForMember(x => x.CreatedBy, y => y.MapFrom(x => "ADMIN"))
                 .ReverseMap();
+
+            CreateMap<Document1, Document1DTO>()
+                .ForMember(x => x.ApproveByName, y => y.MapFrom(src => src.User.FullName))
+                .ReverseMap();
+            CreateMap<Document2, Document2DTO>()
+                .ReverseMap();
+            CreateMap<Document3, Document3DTO>()
+                .ReverseMap();
+            CreateMap<Document4, Document4DTO>()
+                .ReverseMap();
+            CreateMap<Document5, Document5DTO>()
+                .ReverseMap();
         }
     }
 }

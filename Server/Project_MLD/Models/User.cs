@@ -53,6 +53,8 @@ public partial class User
 
     public virtual ICollection<Document5> Document5s { get; set; } = new List<Document5>();
 
+    public virtual ICollection<Feedback> Feedbacks { get; set; } = new List<Feedback>();
+
     public virtual LevelOfTrainning? LevelOfTrainning { get; set; }
 
     public virtual ProfessionalStandard? ProfessionalStandards { get; set; }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Project_MLD.Models;
 
-public partial class Document5
+public partial class Document5DTO
 {
     public int Id { get; set; }
 
@@ -15,7 +15,4 @@ public partial class Document5
 
     public int? Total { get; set; }
 
-    public virtual Document4 Document4 { get; set; } = null!;
-
-    public virtual User? User { get; set; }
 }

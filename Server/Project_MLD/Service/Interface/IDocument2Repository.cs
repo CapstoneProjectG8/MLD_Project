@@ -9,7 +9,8 @@ namespace Project_MLD.Service.Interface
         Task<Document2> AddDocument2(Document2 pl2);
         Task<bool> UpdateDocument2(Document2 pl2);
         Task<bool> DeleteDocument2(int id);
-        Task<IEnumerable<Document2>> GetDocumentByCondition(string condition);
+        Task<IEnumerable<Document2>> GetDocument2ByCondition(string condition);
+        Task<IEnumerable<Document2>> GetDocument2ByApproval();
 
     }
 }

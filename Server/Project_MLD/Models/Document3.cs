@@ -15,6 +15,10 @@ public partial class Document3
 
     public bool? Status { get; set; }
 
+    public bool? IsApprove { get; set; }
+
+    public int? ApproveBy { get; set; }
+
     public virtual Document1? Document1 { get; set; }
 
     public virtual User? User { get; set; }

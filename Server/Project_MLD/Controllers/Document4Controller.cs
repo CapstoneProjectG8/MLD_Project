@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Project_MLD.Models;
@@ -12,17 +13,23 @@ namespace Project_MLD.Controllers
     public class Document4Controller : ControllerBase
     {
         private readonly IDocument4Repository _repository;
-
-        public Document4Controller(IDocument4Repository repository)
+        private readonly IMapper _mapper;
+        public Document4Controller(IDocument4Repository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Document4>>> GetAllDocument4s()
         {
-            var pl4 = await _repository.GetAllDocument4s();
-            return Ok(pl4);
+            var Document4 = await _repository.GetAllDocument4s();
+            if (Document4 == null || Document4.Count() == 0)
+            {
+                return NotFound("No Document 4 Available");
+            }
+            var mapDocument = _mapper.Map<Document4DTO>(Document4);
+            return Ok(mapDocument);
         }
 
         [HttpGet("ById/{id}")]
@@ -31,7 +38,7 @@ namespace Project_MLD.Controllers
             var existDocument4 = await _repository.GetDocument4ById(id);
             if (existDocument4 == null)
             {
-                return NotFound();
+                return NotFound("No Document 4 Available");
             }
 
             return Ok(existDocument4);
@@ -43,17 +50,17 @@ namespace Project_MLD.Controllers
             var existDocument4 = await _repository.GetDocument4sByCondition(condition);
             if (existDocument4 == null)
             {
-                return NotFound();
+                return NotFound("No Document 4 Available");
             }
 
             return Ok(existDocument4);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Document4>> AddDocument4(Document4 pl4)
+        public async Task<ActionResult<Document4>> AddDocument4(Document4DTO pl4)
         {
-            await _repository.AddDocument4(pl4);
-            return CreatedAtAction(nameof(GetDocument4ById), new { id = pl4.Id }, pl4);
+            var mapDocument = _mapper.Map<Document4>(pl4);
+            return await _repository.AddDocument4(mapDocument);
         }
 
         [HttpDelete("{id}")]
@@ -62,23 +69,23 @@ namespace Project_MLD.Controllers
             var result = await _repository.DeleteDocument4(id);
             if (!result)
             {
-                return NotFound();
+                return NotFound("No Document 4 Available");
             }
             return NoContent();
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateDocument4(int id, Document4 pl4)
+        public async Task<IActionResult> UpdateDocument4(int id, Document4DTO pl4)
         {
             if (id != pl4.Id)
             {
-                return BadRequest();
+                return BadRequest("Id Not Match");
             }
-
-            var result = await _repository.UpdateDocument4(pl4);
+            var mapDocument = _mapper.Map<Document4>(pl4);
+            var result = await _repository.UpdateDocument4(mapDocument);
             if (!result)
             {
-                return NotFound();
+                return NotFound("Error Updating");
             }
             return NoContent();
         }

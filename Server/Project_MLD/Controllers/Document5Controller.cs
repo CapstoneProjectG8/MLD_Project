@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Project_MLD.Models;
@@ -12,10 +13,12 @@ namespace Project_MLD.Controllers
     public class Document5Controller : ControllerBase
     {
         private readonly IDocument5Repository _repository;
+        private readonly IMapper _mapper;
 
-        public Document5Controller(IDocument5Repository repository)
+        public Document5Controller(IDocument5Repository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -37,23 +40,23 @@ namespace Project_MLD.Controllers
             return Ok(existDocument5);
         }
 
-        [HttpGet("ByCondition/{condition}")]
-        public async Task<ActionResult<Document5>> GetDoucment5ByCondition(string condition)
+        [HttpGet("ByDocument4/{id}")]
+        public async Task<ActionResult<Document5>> GetDoucment5ByDoc4(int id)
         {
-            var existDocument5 = await _repository.GetDocument5sByCondition(condition);
+            var existDocument5 = await _repository.GetDoucment5ByDoc4(id);
             if (existDocument5 == null)
             {
-                return NotFound();
+                return NotFound("No Document 1 Available");
             }
 
             return Ok(existDocument5);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Document5>> AddDocument5(Document5 pl5)
+        public async Task<ActionResult<Document5>> AddDocument5(Document5DTO pl5)
         {
-            await _repository.AddDocument5(pl5);
-            return CreatedAtAction(nameof(GetDocument5ById), new { id = pl5.Id }, pl5);
+            var mapDocument = _mapper.Map<Document5>(pl5);
+            return await _repository.AddDocument5(mapDocument);
         }
 
         [HttpDelete("{id}")]
@@ -62,23 +65,23 @@ namespace Project_MLD.Controllers
             var result = await _repository.DeleteDocument5(id);
             if (!result)
             {
-                return NotFound();
+                return NotFound("No Document 5 Available");
             }
             return NoContent();
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateDocument5(int id, Document5 pl5)
+        public async Task<IActionResult> UpdateDocument5(int id, Document5DTO pl5)
         {
             if (id != pl5.Id)
             {
-                return BadRequest();
+                return NotFound("Id Not Match");
             }
-
-            var result = await _repository.UpdateDocument5(pl5);
+            var mapDocument = _mapper.Map<Document5>(pl5);
+            var result = await _repository.UpdateDocument5(mapDocument);
             if (!result)
             {
-                return NotFound();
+                return NotFound("Error Updating");
             }
             return NoContent();
         }

@@ -40,7 +40,7 @@ namespace Project_MLD.Service.Repository
 
         public async Task<Document5> GetDocument5ById(int id)
         {
-            return await _context.Document5s.FindAsync(id);
+            return await _context.Document5s.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<IEnumerable<Document5>> GetDocument5sByCondition(string condition)
@@ -50,6 +50,14 @@ namespace Project_MLD.Service.Repository
                 .Where(x => x.Name.Contains(condition) ||
                 x.User.LastName.Contains(condition) ||
                 x.User.FirstName.Contains(condition))
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Document5>> GetDoucment5ByDoc4(int id)
+        {
+            return await _context.Document5s
+                .Include(x => x.User)
+                .Where(x => x.Document4Id == id)
                 .ToListAsync();
         }
 

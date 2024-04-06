@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Project_MLD.Models;
 
-public partial class Document2
+public partial class Document2DTO
 {
     public int Id { get; set; }
 
@@ -17,5 +17,4 @@ public partial class Document2
 
     public bool? IsApprove { get; set; }
 
-    public virtual User? User { get; set; }
 }
