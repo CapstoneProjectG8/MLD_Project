@@ -107,7 +107,24 @@ const UploadScromPage = Loader(
 const UploadPhuLuc4Page = Loader(
   lazy(() => import('./pages/UploadPhuLuc4Page'))
 );
-
+const LoginPage = Loader(
+  lazy(() => import('src/components/Login/Login'))
+);
+const SubMenu1DetailAd = Loader(
+  lazy(() => import('src/content/pages/Components/SubMenu1Detail'))
+);
+const SubMenu2DetailAd = Loader(
+  lazy(() => import('src/content/pages/Components/SubMenu2Detail'))
+);
+const SubMenu3DetailAd = Loader(
+  lazy(() => import('src/content/pages/Components/SubMenu3Detail'))
+);
+const SubMenu4DetailAd = Loader(
+  lazy(() => import('src/content/pages/Components/SubMenu4Detail'))
+);
+const SubMenu5DetailAd = Loader(
+  lazy(() => import('src/content/pages/Components/SubMenu5Detail'))
+);
 const routes: RouteObject[] = [
   {
     path: 'error',
@@ -229,9 +246,14 @@ const routes: RouteObject[] = [
   {
     path: 'upload-bai-giang',
     element: <UploadScromPage />
-  }, {
+  },
+  {
     path: 'upload-sub-menu-4',
     element: <UploadPhuLuc4Page />
+  },
+  {
+    path: 'login',
+    element: <LoginPage />
   },
   {
     path: 'dashboards',
@@ -246,7 +268,33 @@ const routes: RouteObject[] = [
         element: <ELearning />
       }
     ]
+  },{
+    path: 'components',
+    element: <SidebarLayout />,
+    children: [
+      {
+        path: 'phuluc1',
+        element: <SubMenu1DetailAd />
+      },
+      {
+        path: 'phuluc2',
+        element: <SubMenu2DetailAd />
+      },
+      {
+        path: 'phuluc3',
+        element: <SubMenu3DetailAd />
+      },
+      {
+        path: 'phuluc4',
+        element: <SubMenu4DetailAd />
+      },
+      {
+        path: 'phuluc5',
+        element: <SubMenu5DetailAd />
+      },
+    ]
   },
+
   {
     path: 'management',
     element: <SidebarLayout />,
