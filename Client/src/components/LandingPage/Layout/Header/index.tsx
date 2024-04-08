@@ -64,6 +64,9 @@ const Header = () => {
                 <div className="right-header">
                     <div className="nav-list">
                         <div className="item-header">
+                            <Link to="/dashboards/elearning">Dashboard</Link>
+                        </div>
+                        <div className="item-header">
                             <Link to="/">TRANG CHỦ</Link>
                         </div>
                         <div className="item-header">
@@ -80,7 +83,7 @@ const Header = () => {
                                 </li>
                                 <li>
                                     <Link to="/sub-menu-4">PHỤ LỤC 4</Link>
-                                </li>                                
+                                </li>
                             </ul>
                         </div>
                         <div className="item-header">
@@ -114,7 +117,7 @@ const Header = () => {
                                 </button>
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
                 {/* <div className="hide-header">
