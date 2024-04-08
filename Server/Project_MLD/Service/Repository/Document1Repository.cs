@@ -66,11 +66,12 @@ namespace Project_MLD.Service.Repository
 
         public async Task<Document1> GetDocument1ById(int id)
         {
-            return await _context.Document1s
+            var doc = await _context.Document1s
                 .Include(x => x.User)
                 .Include(x => x.Grade)
                 .Include(x => x.Subject)
                 .FirstOrDefaultAsync(x => x.Id == id);
+            return doc;
         }
 
         public async Task<bool> UpdateDocument1(Document1 document1)

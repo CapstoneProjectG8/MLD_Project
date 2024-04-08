@@ -57,7 +57,6 @@ namespace Project_MLD.Controllers
                 return NotFound("Account Not Found");
             }
             return BadRequest("Password is incorrect");
-
         }
 
         private bool CheckPasswordValidation(string password)
@@ -84,14 +83,12 @@ namespace Project_MLD.Controllers
             return NotFound();
         }
 
-
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Account>>> GetAllAccount()
         {
             var acc = await _repository.GetAllAccounts();
             return Ok(acc);
         }
-
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Account>> GetAccountById(int id)

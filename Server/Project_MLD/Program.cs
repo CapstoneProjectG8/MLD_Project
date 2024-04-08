@@ -9,6 +9,7 @@ using System.Text;
 using Microsoft.AspNetCore.Identity;
 using Project_MLD.DTO;
 using Project_MLD.Utils.PasswordHash;
+using Project_MLD.Utils.GmailSender;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,8 +53,7 @@ builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
 builder.Services.AddScoped<IProfessionalStandardRepository, ProfessionalStandardRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<ILevelOfTrainningRepository, LevelOfTrainningRepository>();
-//Utils
-builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+
 //Document1
 builder.Services.AddScoped<IDocument1Repository, Document1Repository>();
 builder.Services.AddScoped<IDocument1CuriculumDistributionRepository, Document1CuriculumDistributionRepository>();
@@ -80,6 +80,12 @@ builder.Services.AddScoped<ITeachingPlannerRepository, TeachingPlannerRepository
 builder.Services.AddScoped<IDocument5Repository, Document5Repository>();
 //Document
 builder.Services.AddScoped<IDocRepository, DocRepository>();
+
+//Utils
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+builder.Services.AddTransient<IEmailSender, EmailSender>();
+builder.Services.AddTransient<IMailBody, DefaultMailBody>();
+
 
 //ADD CORS
 builder.Services.AddCors();

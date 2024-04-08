@@ -27,7 +27,7 @@ namespace Project_MLD.Controllers
             return Ok(PeriodicAssessment);
         }
 
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<ActionResult<PeriodicAssessment>> GetDocument1PeriodicAssessmentByDocument1ID(int id)
         {
             var PeriodicAssessment = await _repository.GetPeriodicAssessmentByDocument1Id(id);
