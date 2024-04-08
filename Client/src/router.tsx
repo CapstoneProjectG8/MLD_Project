@@ -125,6 +125,10 @@ const SubMenu4DetailAd = Loader(
 const SubMenu5DetailAd = Loader(
   lazy(() => import('src/content/pages/Components/SubMenu5Detail'))
 );
+const Menu = Loader(
+  lazy(() => import('src/content/dashboards/Menu/Menu'))
+);
+
 const routes: RouteObject[] = [
   {
     path: 'error',
@@ -261,11 +265,15 @@ const routes: RouteObject[] = [
     children: [
       {
         path: '',
-        element: <Navigate to="elearning" replace />
+        element: <Navigate to="menu" replace />
       },
       {
         path: 'elearning',
         element: <ELearning />
+      },
+      {
+        path: 'menu',
+        element: <Menu />
       }
     ]
   },{

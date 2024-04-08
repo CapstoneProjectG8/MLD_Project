@@ -200,7 +200,18 @@ function SidebarMenu() {
                 >
                   E-Learning
                 </Button>
-              </ListItem>
+              </ListItem><ListItem component="div">
+              <Button
+                disableRipple
+                component={RouterLink}
+                onClick={closeSidebar}
+                to="/dashboards/menu"
+                startIcon={<BrightnessLowTwoToneIcon />}
+              >
+                Menu
+              </Button>
+            </ListItem>
+
             </List>
           </SubMenuWrapper>
         </List>
