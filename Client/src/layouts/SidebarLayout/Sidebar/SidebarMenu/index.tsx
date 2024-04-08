@@ -200,7 +200,18 @@ function SidebarMenu() {
                 >
                   E-Learning
                 </Button>
-              </ListItem>
+              </ListItem><ListItem component="div">
+              <Button
+                disableRipple
+                component={RouterLink}
+                onClick={closeSidebar}
+                to="/dashboards/menu"
+                startIcon={<BrightnessLowTwoToneIcon />}
+              >
+                Menu
+              </Button>
+            </ListItem>
+
             </List>
           </SubMenuWrapper>
         </List>
@@ -273,29 +284,15 @@ function SidebarMenu() {
         >
           <SubMenuWrapper>
             <List component="div">
-
-            </List>
-          </SubMenuWrapper>
-        </List>
-        <List
-          component="div"
-          subheader={
-            <ListSubheader component="div" disableSticky>
-              Extra Pages
-            </ListSubheader>
-          }
-        >
-          <SubMenuWrapper>
-            <List component="div">
               <ListItem component="div">
                 <Button
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/error/status/404"
+                  to="/components/phuluc1"
                   startIcon={<CheckBoxTwoToneIcon />}
                 >
-                  Error 404
+                  Phu Luc 1
                 </Button>
               </ListItem>
               <ListItem component="div">
@@ -303,10 +300,10 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/error/status/500"
-                  startIcon={<CameraFrontTwoToneIcon />}
+                  to="/components/phuluc2"
+                  startIcon={<CheckBoxTwoToneIcon />}
                 >
-                  Error 500
+                  Phu Luc 2
                 </Button>
               </ListItem>
               <ListItem component="div">
@@ -314,10 +311,10 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/error/status/coming-soon"
-                  startIcon={<ChromeReaderModeTwoToneIcon />}
+                  to="/components/phuluc3"
+                  startIcon={<CheckBoxTwoToneIcon />}
                 >
-                  Coming Soon
+                  Phu Luc 3
                 </Button>
               </ListItem>
               <ListItem component="div">
@@ -325,10 +322,21 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/error/status/maintenance"
-                  startIcon={<WorkspacePremiumTwoToneIcon />}
+                  to="/components/phuluc4"
+                  startIcon={<CheckBoxTwoToneIcon />}
                 >
-                  Maintenance
+                  Phu Luc 4
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/components/phuluc5"
+                  startIcon={<CheckBoxTwoToneIcon />}
+                >
+                  Phu Luc 5
                 </Button>
               </ListItem>
             </List>
