@@ -14,23 +14,9 @@ namespace Project_MLD.Service.Repository
             _context = context;
         }
 
-        public async Task<Document2Grade> AddDocument2Grade(Document2Grade pl2)
+        public Task DeleteDocument2Grade(List<Document2Grade> list)
         {
-            _context.Document2Grades.Add(pl2);
-            await _context.SaveChangesAsync();
-            return pl2;
-        }
-
-        public async Task<bool> DeleteDocument2Grade(int id)
-        {
-            var existDocument2Grade = await GetDocument2GradeById(id);
-            if (existDocument2Grade == null)
-            {
-                return false;
-            }
-            _context.Document2Grades.Remove(existDocument2Grade);
-            await _context.SaveChangesAsync();
-            return true;
+            throw new NotImplementedException();
         }
 
         public async Task<IEnumerable<Document2Grade>> GetAllDocuemnt2Grades()
@@ -38,26 +24,57 @@ namespace Project_MLD.Service.Repository
             return await _context.Document2Grades.ToListAsync();
         }
 
-        public async Task<Document2Grade> GetDocument2GradeById(int id)
+        public async Task<IEnumerable<Document2Grade>> GetDocument2GradeByDocument2Id(int id)
         {
             return await _context.Document2Grades
-                .Include(x => x.Document2)
-                .FirstOrDefaultAsync(x => x.Document2Id == id);
+                .Where(x => x.Document2Id == id).ToListAsync();
         }
 
-        public async Task<bool> UpdateDocument2Grade(Document2Grade pl2)
+        public async Task UpdateDocument2Grade(List<Document2Grade> list)
         {
-            var existDocument2Grade = await GetDocument2GradeById(pl2.Document2.Id);
-            if (existDocument2Grade == null)
+            try
             {
-                return false;
+                foreach (var item in list)
+                {
+                    var existDocument2Grade = await _context.Document2Grades
+                        .FindAsync(item.Document2Id, item.GradeId);
+                    if (existDocument2Grade == null)
+                    {
+                        var newItem = new Document2Grade
+                        {
+                            Document2Id = item.Document2Id,
+                            GradeId = item.GradeId,
+                            TitleName = item.TitleName,
+                            Slot = item.Slot,
+                            Time = item.Time,
+                            Place = item.Place,
+                            HostBy = item.HostBy,
+                            Description = item.Description,
+                            CollaborateWith = item.CollaborateWith,
+                            Condition = item.Condition
+                        };
+                        _context.Document2Grades.Add(newItem);
+                    }
+                    else
+                    {
+                        existDocument2Grade.TitleName = item.TitleName;
+                        existDocument2Grade.Slot = item.Slot;
+                        existDocument2Grade.Time = item.Time;
+                        existDocument2Grade.Place = item.Place;
+                        existDocument2Grade.HostBy = item.HostBy;
+                        existDocument2Grade.Description = item.Description;
+                        existDocument2Grade.CollaborateWith = item.CollaborateWith;
+                        existDocument2Grade.Condition = item.Condition;
+                    }
+                }
+                await _context.SaveChangesAsync();
             }
-
-            _context.Entry(existDocument2Grade).CurrentValues.SetValues(pl2);
-            await _context.SaveChangesAsync();
-            return true;
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while updating Document2 Grades.", ex);
+            }
         }
     }
 
-    
+
 }

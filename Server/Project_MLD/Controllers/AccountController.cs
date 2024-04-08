@@ -108,6 +108,10 @@ namespace Project_MLD.Controllers
         [HttpPost]
         public async Task<ActionResult<Account>> AddAccount(AccountDTO acc)
         {
+            if (!CheckPasswordValidation(acc.Password))
+            {
+                return BadRequest("Password Ko Dat yeu cau");
+            }
             //Check exist
             var existAccount = _repository.GetAccountByUsername(acc.Username);
             if (existAccount != null)
@@ -158,7 +162,8 @@ namespace Project_MLD.Controllers
         private User Authenticate(string username, string password)
         {
             var currentAccount = _context.Users
-                .Include(x => x.Account).ThenInclude(account => account.Role)
+                .Include(x => x.Account)
+                .ThenInclude(account => account.Role)
                 .FirstOrDefault(x => x.Account.Username == username.ToLower());
             if (currentAccount != null)
             {

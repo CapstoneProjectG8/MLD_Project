@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Project_MLD.Models;
 
@@ -11,9 +12,11 @@ using Project_MLD.Models;
 namespace Project_MLD.Migrations
 {
     [DbContext(typeof(MldDatabaseContext))]
-    partial class MldDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240407122134_Migration_v4")]
+    partial class Migration_v4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -375,14 +378,6 @@ namespace Project_MLD.Migrations
 
             modelBuilder.Entity("Project_MLD.Models.Document2Grade", b =>
                 {
-                    b.Property<int>("Document2Id")
-                        .HasColumnType("int")
-                        .HasColumnName("document2_id");
-
-                    b.Property<int>("GradeId")
-                        .HasColumnType("int")
-                        .HasColumnName("grade_id");
-
                     b.Property<string>("CollaborateWith")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("collaborate_with")
@@ -397,6 +392,14 @@ namespace Project_MLD.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("description")
                         .UseCollation("SQL_Latin1_General_CP1_CI_AS");
+
+                    b.Property<int?>("Document2Id")
+                        .HasColumnType("int")
+                        .HasColumnName("document2_id");
+
+                    b.Property<int?>("GradeId")
+                        .HasColumnType("int")
+                        .HasColumnName("grade_id");
 
                     b.Property<string>("HostBy")
                         .HasColumnType("nvarchar(max)")
@@ -421,7 +424,7 @@ namespace Project_MLD.Migrations
                         .HasColumnName("title_name")
                         .UseCollation("SQL_Latin1_General_CP1_CI_AS");
 
-                    b.HasKey("Document2Id", "GradeId");
+                    b.HasIndex("Document2Id");
 
                     b.HasIndex("GradeId");
 
@@ -630,18 +633,6 @@ namespace Project_MLD.Migrations
 
             modelBuilder.Entity("Project_MLD.Models.PeriodicAssessment", b =>
                 {
-                    b.Property<int>("TestingCategoryId")
-                        .HasColumnType("int")
-                        .HasColumnName("testing_category_id");
-
-                    b.Property<int>("FormCategoryId")
-                        .HasColumnType("int")
-                        .HasColumnName("form_category_id");
-
-                    b.Property<int>("Document1Id")
-                        .HasColumnType("int")
-                        .HasColumnName("document1_id");
-
                     b.Property<DateOnly?>("Date")
                         .HasColumnType("date")
                         .HasColumnName("date");
@@ -651,15 +642,27 @@ namespace Project_MLD.Migrations
                         .HasColumnName("description")
                         .UseCollation("SQL_Latin1_General_CP1_CI_AS");
 
+                    b.Property<int?>("Document1Id")
+                        .HasColumnType("int")
+                        .HasColumnName("document1_id");
+
+                    b.Property<int?>("FormCategoryId")
+                        .HasColumnType("int")
+                        .HasColumnName("form_category_id");
+
+                    b.Property<int?>("TestingCategoryId")
+                        .HasColumnType("int")
+                        .HasColumnName("testing_category_id");
+
                     b.Property<int?>("Time")
                         .HasColumnType("int")
                         .HasColumnName("time");
 
-                    b.HasKey("TestingCategoryId", "FormCategoryId", "Document1Id");
-
                     b.HasIndex("Document1Id");
 
                     b.HasIndex("FormCategoryId");
+
+                    b.HasIndex("TestingCategoryId");
 
                     b.ToTable("Periodic Assessment", (string)null);
                 });
@@ -1108,15 +1111,13 @@ namespace Project_MLD.Migrations
             modelBuilder.Entity("Project_MLD.Models.Document2Grade", b =>
                 {
                     b.HasOne("Project_MLD.Models.Document2", "Document2")
-                        .WithMany("Document2Grades")
+                        .WithMany()
                         .HasForeignKey("Document2Id")
-                        .IsRequired()
                         .HasConstraintName("FK_Document2_Grade_Document 2");
 
                     b.HasOne("Project_MLD.Models.Grade", "Grade")
-                        .WithMany("Document2Grades")
+                        .WithMany()
                         .HasForeignKey("GradeId")
-                        .IsRequired()
                         .HasConstraintName("FK_Document2_Grade_Grade");
 
                     b.Navigation("Document2");
@@ -1182,21 +1183,18 @@ namespace Project_MLD.Migrations
             modelBuilder.Entity("Project_MLD.Models.PeriodicAssessment", b =>
                 {
                     b.HasOne("Project_MLD.Models.Document1", "Document1")
-                        .WithMany("PeriodicAssessments")
+                        .WithMany()
                         .HasForeignKey("Document1Id")
-                        .IsRequired()
                         .HasConstraintName("FK_Periodic Assessment_Document 1");
 
                     b.HasOne("Project_MLD.Models.FormCategory", "FormCategory")
-                        .WithMany("PeriodicAssessments")
+                        .WithMany()
                         .HasForeignKey("FormCategoryId")
-                        .IsRequired()
                         .HasConstraintName("FK_Periodic Assessment_Form Category");
 
                     b.HasOne("Project_MLD.Models.TestingCategory", "TestingCategory")
-                        .WithMany("PeriodicAssessments")
+                        .WithMany()
                         .HasForeignKey("TestingCategoryId")
-                        .IsRequired()
                         .HasConstraintName("FK_Periodic Assessment_Testing Category");
 
                     b.Navigation("Document1");
@@ -1292,13 +1290,6 @@ namespace Project_MLD.Migrations
                     b.Navigation("Document1TeachingEquipments");
 
                     b.Navigation("Document3s");
-
-                    b.Navigation("PeriodicAssessments");
-                });
-
-            modelBuilder.Entity("Project_MLD.Models.Document2", b =>
-                {
-                    b.Navigation("Document2Grades");
                 });
 
             modelBuilder.Entity("Project_MLD.Models.Document4", b =>
@@ -1308,18 +1299,11 @@ namespace Project_MLD.Migrations
                     b.Navigation("Document5s");
                 });
 
-            modelBuilder.Entity("Project_MLD.Models.FormCategory", b =>
-                {
-                    b.Navigation("PeriodicAssessments");
-                });
-
             modelBuilder.Entity("Project_MLD.Models.Grade", b =>
                 {
                     b.Navigation("Classes");
 
                     b.Navigation("Document1s");
-
-                    b.Navigation("Document2Grades");
                 });
 
             modelBuilder.Entity("Project_MLD.Models.LevelOfTrainning", b =>
@@ -1367,11 +1351,6 @@ namespace Project_MLD.Migrations
             modelBuilder.Entity("Project_MLD.Models.TeachingPlanner", b =>
                 {
                     b.Navigation("Document4s");
-                });
-
-            modelBuilder.Entity("Project_MLD.Models.TestingCategory", b =>
-                {
-                    b.Navigation("PeriodicAssessments");
                 });
 
             modelBuilder.Entity("Project_MLD.Models.User", b =>

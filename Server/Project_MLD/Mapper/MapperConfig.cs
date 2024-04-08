@@ -28,14 +28,43 @@ namespace Project_MLD.Mapper
             CreateMap<Document1, Document1DTO>()
                 .ForMember(x => x.ApproveByName, y => y.MapFrom(src => src.User.FullName))
                 .ReverseMap();
+            CreateMap<Document1CurriculumDistribution, Document1CurriculumDistributionDTO>()
+               .ForMember(x => x.CurriculumId, y => y.MapFrom(src => src.Curriculum.Id))
+               .ForMember(x => x.Document1Id, y => y.MapFrom(src => src.Document1.Id))
+               .ForMember(x => x.CurriculumName, y => y.MapFrom(src => src.Curriculum.Name))
+               .ReverseMap();
+            CreateMap<Document1TeachingEquipment, Document1TeachingEquipmentsDTO>()
+                .ForMember(x => x.TeachingEquipmentId, y => y.MapFrom(src => src.TeachingEquipment.Id))
+                .ForMember(x => x.Document1Id, y => y.MapFrom(src => src.Document1.Id))
+                .ForMember(x => x.TeachingEquipmentName, y => y.MapFrom(src => src.TeachingEquipment.Name))
+                .ReverseMap();
+            CreateMap<Document1SelectedTopic, Document1SelectedTopicsDTO>()
+                .ForMember(x => x.SelectedTopicsName, y => y.MapFrom(src => src.SelectedTopics.Name))
+                .ForMember(x => x.Document1Id, y => y.MapFrom(src => src.Document1.Id))
+                .ForMember(x => x.SelectedTopicsId, y => y.MapFrom(src => src.SelectedTopics.Id))
+                .ReverseMap();
+            CreateMap<PeriodicAssessment, PeriodicAssessmentDTO>()
+                .ForMember(x => x.FormCategoryId, y => y.MapFrom(src => src.FormCategory.Id))
+                .ForMember(x => x.FormCategoryName, y => y.MapFrom(src => src.FormCategory.Name))
+                .ForMember(x => x.TestingCategoryId, y => y.MapFrom(src => src.TestingCategory.Id))
+                .ForMember(x => x.TestingCategoryName, y => y.MapFrom(src => src.TestingCategory.Name))
+                .ReverseMap();
+
             CreateMap<Document2, Document2DTO>()
                 .ReverseMap();
+            CreateMap<Document2Grade, Document2GradeDTO>()
+                .ReverseMap();
+
             CreateMap<Document3, Document3DTO>()
                 .ReverseMap();
             CreateMap<Document4, Document4DTO>()
                 .ReverseMap();
+            CreateMap<TeachingPlanner, TeachingPlannerDTO>()
+                .ReverseMap();
+
             CreateMap<Document5, Document5DTO>()
                 .ReverseMap();
+
         }
     }
 }

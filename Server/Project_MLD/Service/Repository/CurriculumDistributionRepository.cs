@@ -40,8 +40,10 @@ namespace Project_MLD.Service.Repository
 
         public async Task<CurriculumDistribution> GetCurriculumDistributionById(int id)
         {
-            return await _context.CurriculumDistributions.FindAsync(id);
+            return await _context.CurriculumDistributions.FirstOrDefaultAsync(x => x.Id == id);
         }
+
+
 
         public async Task<bool> UpdateCurriculumDistribution(CurriculumDistribution cd)
         {
