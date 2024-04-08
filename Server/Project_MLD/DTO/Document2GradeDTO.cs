@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Project_MLD.Models;
 
-public partial class Document2Grade
+public partial class Document2GradeDTO
 {
     public int Document2Id { get; set; }
 
@@ -25,7 +25,4 @@ public partial class Document2Grade
 
     public string? Condition { get; set; }
 
-    public virtual Document2 Document2 { get; set; } = null!;
-
-    public virtual Grade Grade { get; set; } = null!;
 }

@@ -43,26 +43,43 @@ builder.Services.AddDbContext<MldDatabaseContext>(option =>
 builder.Services.AddAutoMapper(typeof(MapperConfig));
 
 //Dependacy Injection
-builder.Services.AddScoped<ICurriculumDistributionRepository, CurriculumDistributionRepository>();
-builder.Services.AddScoped<IGradeRepository, GradeRepository>();
-builder.Services.AddScoped<ILevelOfTrainningRepository, LevelOfTrainningRepository>();
-builder.Services.AddScoped<IDocument1Repository, Document1Repository>();
-builder.Services.AddScoped<IDocument2Repository, Document2Repository>();
-builder.Services.AddScoped<IDocument3Repository, Document3Repository>();
-builder.Services.AddScoped<IDocument4Repository, Document4Repository>();
-builder.Services.AddScoped<IDocument5Repository, Document5Repository>();
-builder.Services.AddScoped<IProfessionalStandardRepository, ProfessionalStandardRepository>();
-builder.Services.AddScoped<IRoleRepository, RoleRepository>();
-builder.Services.AddScoped<ISelectedTopicsRepository, SelectedTopicRepository>();
-builder.Services.AddScoped<ISpecializedDepartmentRepository, SpecializedDepartmentRepository>();
-builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
-builder.Services.AddScoped<ISubjectRoomRepository, SubjectRoomRepository>();
-builder.Services.AddScoped<ITeachingEquipmentRepository, TeachingEquipmentRepository>();
-builder.Services.AddScoped<IDocRepository, DocRepository>();
+
+//User-Account-Role
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-
+builder.Services.AddScoped<ISpecializedDepartmentRepository, SpecializedDepartmentRepository>();
+builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
+builder.Services.AddScoped<IProfessionalStandardRepository, ProfessionalStandardRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<ILevelOfTrainningRepository, LevelOfTrainningRepository>();
+//Utils
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+//Document1
+builder.Services.AddScoped<IDocument1Repository, Document1Repository>();
+builder.Services.AddScoped<IDocument1CuriculumDistributionRepository, Document1CuriculumDistributionRepository>();
+builder.Services.AddScoped<IDocument1PeriodicAssessmentRepository, Document1PeriodicAssessmentRepository>();
+builder.Services.AddScoped<IDocument1SelectedTopicsRepository, Document1SelectedTopicsRepository>();
+builder.Services.AddScoped<IDocument1TeachingEquipmentRepository, Document1TeachingEquipmentRepository>();
+
+builder.Services.AddScoped<ISelectedTopicsRepository, SelectedTopicRepository>();
+builder.Services.AddScoped<ISubjectRoomRepository, SubjectRoomRepository>();
+builder.Services.AddScoped<ITeachingEquipmentRepository, TeachingEquipmentRepository>();
+builder.Services.AddScoped<ICurriculumDistributionRepository, CurriculumDistributionRepository>();
+
+//Document2
+builder.Services.AddScoped<IDocument2Repository, Document2Repository>();
+builder.Services.AddScoped<IDocument2GradeRepository, Document2GradeRepository>();
+builder.Services.AddScoped<IGradeRepository, GradeRepository>();
+//Document3
+builder.Services.AddScoped<IDocument3Repository, Document3Repository>();
+//Document4
+builder.Services.AddScoped<IDocument4Repository, Document4Repository>();
+builder.Services.AddScoped<ITeachingPlannerRepository, TeachingPlannerRepository>();
+
+//Document5
+builder.Services.AddScoped<IDocument5Repository, Document5Repository>();
+//Document
+builder.Services.AddScoped<IDocRepository, DocRepository>();
 
 //ADD CORS
 builder.Services.AddCors();

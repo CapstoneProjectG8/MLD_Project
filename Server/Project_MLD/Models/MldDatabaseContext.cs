@@ -83,6 +83,7 @@ public partial class MldDatabaseContext : DbContext
         IConfigurationRoot configuration = builder.Build();
         optionsBuilder.UseSqlServer(configuration.GetConnectionString("MyCnn"));
     }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.UseCollation("Latin1_General_100_CI_AS_SC_UTF8");
@@ -208,23 +209,23 @@ public partial class MldDatabaseContext : DbContext
 
         modelBuilder.Entity<Document1CurriculumDistribution>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("Document1_CurriculumDistribution");
+            entity.HasKey(e => new { e.Document1Id, e.CurriculumId });
 
+            entity.ToTable("Document1_CurriculumDistribution");
+
+            entity.Property(e => e.Document1Id).HasColumnName("document1_id");
             entity.Property(e => e.CurriculumId).HasColumnName("curriculum_id");
             entity.Property(e => e.Description)
                 .UseCollation("SQL_Latin1_General_CP1_CI_AS")
                 .HasColumnName("description");
-            entity.Property(e => e.Document1Id).HasColumnName("document1_id");
             entity.Property(e => e.Slot).HasColumnName("slot");
 
-            entity.HasOne(d => d.Curriculum).WithMany()
+            entity.HasOne(d => d.Curriculum).WithMany(p => p.Document1CurriculumDistributions)
                 .HasForeignKey(d => d.CurriculumId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Document1_CurriculumDistribution_Curriculum Distribution");
 
-            entity.HasOne(d => d.Document1).WithMany()
+            entity.HasOne(d => d.Document1).WithMany(p => p.Document1CurriculumDistributions)
                 .HasForeignKey(d => d.Document1Id)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Document1_CurriculumDistribution_Document 1");
@@ -232,73 +233,79 @@ public partial class MldDatabaseContext : DbContext
 
         modelBuilder.Entity<Document1SelectedTopic>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("Document1_SelectedTopics");
+            entity.HasKey(e => new { e.Document1Id, e.SelectedTopicsId });
 
+            entity.ToTable("Document1_SelectedTopics");
+
+            entity.Property(e => e.Document1Id).HasColumnName("document1_id");
+            entity.Property(e => e.SelectedTopicsId).HasColumnName("selected_topics_id");
             entity.Property(e => e.Description)
                 .UseCollation("SQL_Latin1_General_CP1_CI_AS")
                 .HasColumnName("description");
-            entity.Property(e => e.Document1Id).HasColumnName("document1_id");
-            entity.Property(e => e.SelectedTopicsId).HasColumnName("selected_topics_id");
             entity.Property(e => e.Slot).HasColumnName("slot");
 
-            entity.HasOne(d => d.Document1).WithMany()
+            entity.HasOne(d => d.Document1).WithMany(p => p.Document1SelectedTopics)
                 .HasForeignKey(d => d.Document1Id)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Document1_SelectedTopics_Document 1");
 
-            entity.HasOne(d => d.SelectedTopics).WithMany()
+            entity.HasOne(d => d.SelectedTopics).WithMany(p => p.Document1SelectedTopics)
                 .HasForeignKey(d => d.SelectedTopicsId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Document1_SelectedTopics_Selected Topics");
         });
 
         modelBuilder.Entity<Document1SubjectRoom>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("Document1_Subject Room");
+            entity.HasKey(e => new { e.SubjectRoomId, e.Document1Id });
 
+            entity.ToTable("Document1_Subject Room");
+
+            entity.Property(e => e.SubjectRoomId).HasColumnName("subject_room_id");
+            entity.Property(e => e.Document1Id).HasColumnName("document1_id");
             entity.Property(e => e.Description)
                 .UseCollation("SQL_Latin1_General_CP1_CI_AS")
                 .HasColumnName("description");
-            entity.Property(e => e.Document1Id).HasColumnName("document1_id");
             entity.Property(e => e.Note)
                 .UseCollation("SQL_Latin1_General_CP1_CI_AS")
                 .HasColumnName("note");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
-            entity.Property(e => e.SubjectRoomId).HasColumnName("subject_room_id");
 
-            entity.HasOne(d => d.Document1).WithMany()
+            entity.HasOne(d => d.Document1).WithMany(p => p.Document1SubjectRooms)
                 .HasForeignKey(d => d.Document1Id)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Document1_Subject Room_Document 1");
 
-            entity.HasOne(d => d.SubjectRoom).WithMany()
+            entity.HasOne(d => d.SubjectRoom).WithMany(p => p.Document1SubjectRooms)
                 .HasForeignKey(d => d.SubjectRoomId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Document1_Subject Room_Subject Room");
         });
 
         modelBuilder.Entity<Document1TeachingEquipment>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("Document1_TeachingEquipment");
+            entity.HasKey(e => new { e.Document1Id, e.TeachingEquipmentId });
 
+            entity.ToTable("Document1_TeachingEquipment");
+
+            entity.Property(e => e.Document1Id).HasColumnName("document1_id");
+            entity.Property(e => e.TeachingEquipmentId).HasColumnName("teaching_equipment_id");
             entity.Property(e => e.Description)
                 .UseCollation("SQL_Latin1_General_CP1_CI_AS")
                 .HasColumnName("description");
-            entity.Property(e => e.Document1Id).HasColumnName("document1_id");
             entity.Property(e => e.Note)
                 .UseCollation("SQL_Latin1_General_CP1_CI_AS")
                 .HasColumnName("note");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
-            entity.Property(e => e.TeachingEquipmentId).HasColumnName("teaching_equipment_id");
 
-            entity.HasOne(d => d.Document1).WithMany()
+            entity.HasOne(d => d.Document1).WithMany(p => p.Document1TeachingEquipments)
                 .HasForeignKey(d => d.Document1Id)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Document1_TeachingEquipment_Document 1");
 
-            entity.HasOne(d => d.TeachingEquipment).WithMany()
+            entity.HasOne(d => d.TeachingEquipment).WithMany(p => p.Document1TeachingEquipments)
                 .HasForeignKey(d => d.TeachingEquipmentId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Document1_TeachingEquipment_Teaching Equipment");
         });
 
@@ -324,10 +331,12 @@ public partial class MldDatabaseContext : DbContext
 
         modelBuilder.Entity<Document2Grade>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("Document2_Grade");
+            entity.HasKey(e => new { e.Document2Id, e.GradeId });
 
+            entity.ToTable("Document2_Grade");
+
+            entity.Property(e => e.Document2Id).HasColumnName("document2_id");
+            entity.Property(e => e.GradeId).HasColumnName("grade_id");
             entity.Property(e => e.CollaborateWith)
                 .UseCollation("SQL_Latin1_General_CP1_CI_AS")
                 .HasColumnName("collaborate_with");
@@ -337,8 +346,6 @@ public partial class MldDatabaseContext : DbContext
             entity.Property(e => e.Description)
                 .UseCollation("SQL_Latin1_General_CP1_CI_AS")
                 .HasColumnName("description");
-            entity.Property(e => e.Document2Id).HasColumnName("document2_id");
-            entity.Property(e => e.GradeId).HasColumnName("grade_id");
             entity.Property(e => e.HostBy)
                 .UseCollation("SQL_Latin1_General_CP1_CI_AS")
                 .HasColumnName("host_by");
@@ -351,12 +358,14 @@ public partial class MldDatabaseContext : DbContext
                 .UseCollation("SQL_Latin1_General_CP1_CI_AS")
                 .HasColumnName("title_name");
 
-            entity.HasOne(d => d.Document2).WithMany()
+            entity.HasOne(d => d.Document2).WithMany(p => p.Document2Grades)
                 .HasForeignKey(d => d.Document2Id)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Document2_Grade_Document 2");
 
-            entity.HasOne(d => d.Grade).WithMany()
+            entity.HasOne(d => d.Grade).WithMany(p => p.Document2Grades)
                 .HasForeignKey(d => d.GradeId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Document2_Grade_Grade");
         });
 
@@ -484,29 +493,32 @@ public partial class MldDatabaseContext : DbContext
 
         modelBuilder.Entity<PeriodicAssessment>(entity =>
         {
-            entity
-                .HasNoKey()
-                .ToTable("Periodic Assessment");
+            entity.HasKey(e => new { e.TestingCategoryId, e.FormCategoryId, e.Document1Id });
 
+            entity.ToTable("Periodic Assessment");
+
+            entity.Property(e => e.TestingCategoryId).HasColumnName("testing_category_id");
+            entity.Property(e => e.FormCategoryId).HasColumnName("form_category_id");
+            entity.Property(e => e.Document1Id).HasColumnName("document1_id");
             entity.Property(e => e.Date).HasColumnName("date");
             entity.Property(e => e.Description)
                 .UseCollation("SQL_Latin1_General_CP1_CI_AS")
                 .HasColumnName("description");
-            entity.Property(e => e.Document1Id).HasColumnName("document1_id");
-            entity.Property(e => e.FormCategoryId).HasColumnName("form_category_id");
-            entity.Property(e => e.TestingCategoryId).HasColumnName("testing_category_id");
             entity.Property(e => e.Time).HasColumnName("time");
 
-            entity.HasOne(d => d.Document1).WithMany()
+            entity.HasOne(d => d.Document1).WithMany(p => p.PeriodicAssessments)
                 .HasForeignKey(d => d.Document1Id)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Periodic Assessment_Document 1");
 
-            entity.HasOne(d => d.FormCategory).WithMany()
+            entity.HasOne(d => d.FormCategory).WithMany(p => p.PeriodicAssessments)
                 .HasForeignKey(d => d.FormCategoryId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Periodic Assessment_Form Category");
 
-            entity.HasOne(d => d.TestingCategory).WithMany()
+            entity.HasOne(d => d.TestingCategory).WithMany(p => p.PeriodicAssessments)
                 .HasForeignKey(d => d.TestingCategoryId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Periodic Assessment_Testing Category");
         });
 
