@@ -6,6 +6,8 @@ using Microsoft.IdentityModel.Tokens;
 using Project_MLD.DTO;
 using Project_MLD.Models;
 using Project_MLD.Service.Interface;
+using Project_MLD.Utils.GenerateCode;
+using Project_MLD.Utils.GmailSender;
 using Project_MLD.Utils.PasswordHash;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -24,13 +26,20 @@ namespace Project_MLD.Controllers
         private readonly IAccountRepository _repository;
         private readonly IMapper _mapper;
         private readonly IPasswordHasher _passwordHasher;
-        public AccountController(IConfiguration configuration, IAccountRepository repository, MldDatabaseContext context, IMapper mapper, IPasswordHasher passwordHasher)
+        private readonly IEmailSender _emailSender;
+        private readonly IMailBody _mailBody;
+        private static string codeGenerate = "";
+        public AccountController(IConfiguration configuration, IAccountRepository repository,
+            MldDatabaseContext context, IMapper mapper, IPasswordHasher passwordHasher,
+            IEmailSender emailSender, IMailBody mailBody)
         {
             _config = configuration;
             _context = context;
             _repository = repository;
             _mapper = mapper;
             _passwordHasher = passwordHasher;
+            _emailSender = emailSender;
+            _mailBody = mailBody;
         }
 
         [AllowAnonymous]
@@ -141,13 +150,13 @@ namespace Project_MLD.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAccount(int id, AccountDTO acc)
         {
-            if(id != acc.AccountId)
+            if (id != acc.AccountId)
             {
                 return BadRequest("Id Not Match");
             }
             acc.Password = _passwordHasher.Hash(acc.Password);
             var account = _mapper.Map<Account>(acc);
-            
+
             var result = await _repository.UpdateAccount(account);
             if (!result)
             {
@@ -210,6 +219,40 @@ namespace Project_MLD.Controllers
                 );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+
+        [HttpPost("SendMailResetPassword")]
+        public async Task<IActionResult> SendMailResetPassword(string mail)
+        {
+            var currentAccount = _context.Users.Where(x => x.Email == mail).FirstOrDefault();
+            if (currentAccount != null)
+            {
+                try
+                {
+                    codeGenerate = GenerateCode.GenerateRandomCode();
+                    await _emailSender
+                        .SendEmailAsync(mail, _mailBody.SubjectTitleResetPassword(codeGenerate),
+                        _mailBody.EmailBodyResetPassword(codeGenerate));
+                    return Ok("Sent to " + mail);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest("Failed to send email. Please check the details and try again.");
+                }
+            }
+            return BadRequest("User Not Found");
+
+        }
+
+        [HttpPost("CheckVerifyCode")]
+        public ActionResult CheckVerifyCode(string code)
+        {
+            if (code == null || codeGenerate != code)
+            {
+                return BadRequest("Code Not Match");
+            }
+            return Ok("Matched");
         }
     }
 }

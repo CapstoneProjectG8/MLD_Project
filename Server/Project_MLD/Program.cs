@@ -84,7 +84,7 @@ builder.Services.AddScoped<IDocRepository, DocRepository>();
 //Utils
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
-builder.Services.AddTransient<IMailBody, DefaultMailBody>();
+builder.Services.AddTransient<IMailBody, MailBody>();
 
 
 //ADD CORS

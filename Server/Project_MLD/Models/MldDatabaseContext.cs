@@ -53,6 +53,8 @@ public partial class MldDatabaseContext : DbContext
 
     public virtual DbSet<LevelOfTrainning> LevelOfTrainnings { get; set; }
 
+    public virtual DbSet<Notification> Notifications { get; set; }
+
     public virtual DbSet<PeriodicAssessment> PeriodicAssessments { get; set; }
 
     public virtual DbSet<ProfessionalStandard> ProfessionalStandards { get; set; }
@@ -489,6 +491,23 @@ public partial class MldDatabaseContext : DbContext
             entity.Property(e => e.Name)
                 .UseCollation("SQL_Latin1_General_CP1_CI_AS")
                 .HasColumnName("name");
+        });
+
+        modelBuilder.Entity<Notification>(entity =>
+        {
+            entity.ToTable("Notification");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("id");
+            entity.Property(e => e.Message).HasColumnName("message");
+            entity.Property(e => e.TitleName).HasColumnName("title_name");
+            entity.Property(e => e.Type).HasColumnName("type");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+
+            entity.HasOne(d => d.User).WithMany(p => p.Notifications)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("FK_Notification_User");
         });
 
         modelBuilder.Entity<PeriodicAssessment>(entity =>

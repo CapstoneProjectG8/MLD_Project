@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Project_MLD.Utils.GenerateCode;
 using Project_MLD.Utils.GmailSender;
 using IEmailSender = Project_MLD.Utils.GmailSender.IEmailSender;
 
@@ -22,7 +23,9 @@ namespace Project_MLD.Controllers
         {
             try
             {
-                await _emailSender.SendEmailAsync(receiver, _mailBody.SubjectTitle, _mailBody.EmailBody);
+                var code = GenerateCode.GenerateRandomCode();
+                await _emailSender.SendEmailAsync(receiver, _mailBody.SubjectTitleResetPassword(code),
+                    _mailBody.EmailBodyResetPassword(code));
                 return Ok("Done");
             }
             catch (Exception ex)
