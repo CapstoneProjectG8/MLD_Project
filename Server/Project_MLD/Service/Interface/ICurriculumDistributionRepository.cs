@@ -9,6 +9,5 @@ namespace Project_MLD.Service.Interface
         Task<CurriculumDistribution> AddCurriculumDistribution(CurriculumDistribution cd);
         Task<bool> UpdateCurriculumDistribution(CurriculumDistribution cd);
         Task<bool> DeleteCurriculumDistribution(int id);
-
     }
 }

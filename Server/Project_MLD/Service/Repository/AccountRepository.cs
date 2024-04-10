@@ -50,8 +50,6 @@ namespace Project_MLD.Service.Repository
             {
                 return false;
             }
-
-            //NOTE
             var properties = typeof(Account).GetProperties();
             foreach (var property in properties)
             {

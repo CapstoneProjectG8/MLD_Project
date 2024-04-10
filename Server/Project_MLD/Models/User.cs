@@ -57,6 +57,8 @@ public partial class User
 
     public virtual LevelOfTrainning? LevelOfTrainning { get; set; }
 
+    public virtual ICollection<Notification> Notifications { get; set; } = new List<Notification>();
+
     public virtual ProfessionalStandard? ProfessionalStandards { get; set; }
 
     public virtual SpecializedDepartment? SpecializedDepartment { get; set; }

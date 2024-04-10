@@ -48,14 +48,15 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, User cl)
+        public async Task<IActionResult> UpdateUser(int id, UserDTO user)
         {
-            if (id != cl.Id)
+            if (id != user.Id)
             {
-                return BadRequest();
+                return BadRequest("Id Not Match");
             }
+            var mapUser = _mapper.Map<User>(user);
 
-            var result = await _repository.UpdateUser(cl);
+            var result = await _repository.UpdateUser(mapUser);
             if (!result)
             {
                 return NotFound();

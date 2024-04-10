@@ -1,6 +1,6 @@
 import React from 'react'
-import Layout from '../../components/LandingPage/Layout'
-import Home from '../../components/LandingPage/Home'
+import Layout from '../../components/Layout'
+import Home from '../../components/Home'
 import { Swiper, SwiperSlide } from "swiper/react";
 
 // Import Swiper styles
@@ -14,7 +14,7 @@ import "./slider.scss";
 import { Pagination } from "swiper/modules";
 
 import './styles.css';
-import Question from '../../components/LandingPage/Home/question/Question';
+import Question from '../../components/Home/question/Question';
 const HomePage = () => {
     const pagination = {
         clickable: true,

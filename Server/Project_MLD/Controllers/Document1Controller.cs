@@ -29,8 +29,8 @@ namespace Project_MLD.Controllers
             {
                 return NotFound("No Document 1 Available");
             }
-            var mapDocument = _mapper.Map<Document1DTO>(Document1);
-            return Ok(mapDocument);
+            var mappedDocuments = _mapper.Map<List<Document1DTO>>(Document1);
+            return Ok(mappedDocuments);
         }
 
         [HttpGet("ById/{id}")]
@@ -41,30 +41,31 @@ namespace Project_MLD.Controllers
             {
                 return NotFound("No Document 1 Available");
             }
-            return Ok(Document1);
+            var mappedDocuments = _mapper.Map<Document1DTO>(Document1);
+            return Ok(mappedDocuments);
         }
 
         [HttpGet("ByCondition/{condition}")]
-        public async Task<ActionResult<Document1>> GetDocument1ByCondition(string condition)
+        public async Task<ActionResult<IEnumerable<Document1>>> GetDocument1ByCondition(string condition)
         {
             var Document1 = await _repository.GetDocument1ByCondition(condition);
             if (Document1 == null)
             {
                 return NotFound("No Document 1 Found");
             }
-            var mapDocument = _mapper.Map<Document1DTO>(Document1);
+            var mapDocument = _mapper.Map<List<Document1DTO>>(Document1);
             return Ok(mapDocument);
         }
 
         [HttpGet("ByApprove")]
-        public async Task<ActionResult<Document1>> GetDocument1ByApproval()
+        public async Task<ActionResult<IEnumerable<Document1>>> GetDocument1ByApproval()
         {
             var Document1 = await _repository.GetDocument1ByApproval();
             if (Document1 == null)
             {
                 return NotFound("No Document 1 Found");
             }
-            var mapDocument = _mapper.Map<Document1DTO>(Document1);
+            var mapDocument = _mapper.Map<List<Document1DTO>>(Document1);
             return Ok(mapDocument);
         }
 

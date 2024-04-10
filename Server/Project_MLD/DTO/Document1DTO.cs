@@ -9,11 +9,11 @@ public partial class Document1DTO
 
     public string? Name { get; set; }
 
-    public int? SubjectId { get; set; }
+    public string? SubjectName { get; set; }
 
-    public int? GradeId { get; set; }
+    public string? GradeName { get; set; }
 
-    public int? UserId { get; set; }
+    public string? UserName { get; set; }
 
     public string? Note { get; set; }
 

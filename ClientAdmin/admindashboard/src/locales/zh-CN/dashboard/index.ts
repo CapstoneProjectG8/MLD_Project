@@ -1,0 +1,17 @@
+export const zhCN_dashboard = {
+  'app.dashboard.overview.totalSales': 'Tổng doanh số',
+  'app.dashboard.overview.visits': 'Lượt truy cập',
+  'app.dashboard.overview.payments': 'Thanh toán',
+  'app.dashboard.overview.operationalEffect': 'Hiệu quả hoạt động',
+  'app.dashboard.overview.wowChange': 'Thay đổi tuần này so với tuần trước',
+  'app.dashboard.overview.dodChange': 'Thay đổi ngày này so với ngày hôm qua',
+  'app.dashboard.overview.dailySales': 'Doanh số hàng ngày',
+  'app.dashboard.overview.visits.dailyVisits': 'Lượt truy cập hàng ngày',
+  'app.dashboard.overview.conversionRate': 'Tỷ lệ chuyển đổi',
+  'app.dashboard.salePercent.proportionOfSales': 'Tỷ trọng doanh số',
+  'app.dashboard.salePercent.all': 'Tất cả',
+  'app.dashboard.salePercent.online': 'Trực tuyến',
+  'app.dashboard.salePercent.offline': 'Ngoại tuyến',
+  'app.dashboard.timeline.traffic': 'Lưu lượng truy cập',
+  'app.dashboard.timeline.payments': 'Thanh toán',
+};

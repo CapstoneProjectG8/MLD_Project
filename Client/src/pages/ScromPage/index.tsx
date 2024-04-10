@@ -1,6 +1,6 @@
 import React from 'react'
-import Layout from '../../components/LandingPage/Layout'
-import Scrom from '../../components/LandingPage/Scrom'
+import Layout from '../../components/Layout'
+import Scrom from '../../components/Scrom'
 
 const ScromPage = () => {
     return (

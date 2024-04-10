@@ -6,6 +6,8 @@ using Microsoft.IdentityModel.Tokens;
 using Project_MLD.DTO;
 using Project_MLD.Models;
 using Project_MLD.Service.Interface;
+using Project_MLD.Utils.GenerateCode;
+using Project_MLD.Utils.GmailSender;
 using Project_MLD.Utils.PasswordHash;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -24,13 +26,20 @@ namespace Project_MLD.Controllers
         private readonly IAccountRepository _repository;
         private readonly IMapper _mapper;
         private readonly IPasswordHasher _passwordHasher;
-        public AccountController(IConfiguration configuration, IAccountRepository repository, MldDatabaseContext context, IMapper mapper, IPasswordHasher passwordHasher)
+        private readonly IEmailSender _emailSender;
+        private readonly IMailBody _mailBody;
+        private static string codeGenerate = "";
+        public AccountController(IConfiguration configuration, IAccountRepository repository,
+            MldDatabaseContext context, IMapper mapper, IPasswordHasher passwordHasher,
+            IEmailSender emailSender, IMailBody mailBody)
         {
             _config = configuration;
             _context = context;
             _repository = repository;
             _mapper = mapper;
             _passwordHasher = passwordHasher;
+            _emailSender = emailSender;
+            _mailBody = mailBody;
         }
 
         [AllowAnonymous]
@@ -57,19 +66,6 @@ namespace Project_MLD.Controllers
                 return NotFound("Account Not Found");
             }
             return BadRequest("Password is incorrect");
-
-        }
-
-        private bool CheckPasswordValidation(string password)
-        {
-            // at least 1 Upper, 1 lowwer, 1 special character, 1 number
-            string pattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$";
-
-            // Match the password against the pattern
-            Match match = Regex.Match(password, pattern);
-
-            // If the password matches the pattern, return true (valid)
-            return match.Success;
         }
 
         [HttpGet("CheckAuthenciation")]
@@ -84,14 +80,12 @@ namespace Project_MLD.Controllers
             return NotFound();
         }
 
-
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Account>>> GetAllAccount()
         {
             var acc = await _repository.GetAllAccounts();
             return Ok(acc);
         }
-
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Account>> GetAccountById(int id)
@@ -108,6 +102,10 @@ namespace Project_MLD.Controllers
         [HttpPost]
         public async Task<ActionResult<Account>> AddAccount(AccountDTO acc)
         {
+            if (!CheckPasswordValidation(acc.Password))
+            {
+                return BadRequest("Password Ko Dat yeu cau");
+            }
             //Check exist
             var existAccount = _repository.GetAccountByUsername(acc.Username);
             if (existAccount != null)
@@ -140,13 +138,13 @@ namespace Project_MLD.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAccount(int id, AccountDTO acc)
         {
-            if(id != acc.AccountId)
+            if (id != acc.AccountId)
             {
                 return BadRequest("Id Not Match");
             }
             acc.Password = _passwordHasher.Hash(acc.Password);
             var account = _mapper.Map<Account>(acc);
-            
+
             var result = await _repository.UpdateAccount(account);
             if (!result)
             {
@@ -155,10 +153,65 @@ namespace Project_MLD.Controllers
             return Ok(account);
         }
 
+        [HttpPost("SendMailResetPassword")]
+        public async Task<IActionResult> SendMailResetPassword(string mail)
+        {
+            var currentAccount = _context.Users.Where(x => x.Email == mail).FirstOrDefault();
+            if (currentAccount != null)
+            {
+                try
+                {
+                    codeGenerate = GenerateCode.GenerateRandomCode();
+                    await _emailSender
+                        .SendEmailAsync(
+                        mail,
+                        _mailBody.SubjectTitleResetPassword(codeGenerate),
+                        _mailBody.EmailBodyResetPassword(codeGenerate)
+                        );
+                    return Ok("Sent to " + mail);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest("Failed to send email. Please check the details and try again." +ex.Message);
+                }
+            }
+            return BadRequest("User Not Found");
+
+        }
+
+        [HttpPost("CheckVerifyCode")]
+        public ActionResult CheckVerifyCode(string code)
+        {
+            if (code == null || codeGenerate != code)
+            {
+                return BadRequest("Code Not Match");
+            }
+            return Ok("Matched");
+        }
+
+        [HttpPost("ChangePassword")]
+        public IActionResult ChangePassword(AccountDTO accountLogin)
+        {
+            if (accountLogin.Password == null)
+            {
+                return BadRequest("Please fill information");
+            }
+
+            if (CheckPasswordValidation(accountLogin.Password))
+            {
+                var acc = Authenticate(accountLogin.Username, accountLogin.Password);
+                if (acc != null)
+                {
+                    return Ok("Allow to Change Password");
+                }
+            }
+            return BadRequest("Password is invalid");
+        }
         private User Authenticate(string username, string password)
         {
             var currentAccount = _context.Users
-                .Include(x => x.Account).ThenInclude(account => account.Role)
+                .Include(x => x.Account)
+                .ThenInclude(account => account.Role)
                 .FirstOrDefault(x => x.Account.Username == username.ToLower());
             if (currentAccount != null)
             {
@@ -171,7 +224,6 @@ namespace Project_MLD.Controllers
             }
             return null;
         }
-
         private string GetCurrentAccount()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -186,7 +238,6 @@ namespace Project_MLD.Controllers
             }
             return null;
         }
-
         private string GenerateToken(User user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
@@ -208,6 +259,17 @@ namespace Project_MLD.Controllers
                 );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+        private bool CheckPasswordValidation(string password)
+        {
+            // at least 1 Upper, 1 lowwer, 1 special character, 1 number
+            string pattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$";
+
+            // Match the password against the pattern
+            Match match = Regex.Match(password, pattern);
+
+            // If the password matches the pattern, return true (valid)
+            return match.Success;
         }
     }
 }
