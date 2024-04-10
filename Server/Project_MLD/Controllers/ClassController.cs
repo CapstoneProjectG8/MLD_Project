@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Project_MLD.Models;
@@ -12,17 +13,20 @@ namespace Project_MLD.Controllers
     public class ClassController : ControllerBase
     {
         private readonly IClassRepository _repository;
+        private readonly IMapper _mapper;
 
-        public ClassController(IClassRepository repository)
+        public ClassController(IClassRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Class>>> GetAllClasss()
         {
-            var Classs = await _repository.GetAllClasss();
-            return Ok(Classs);
+            var classes = await _repository.GetAllClasss();
+            var mapClass = _mapper.Map<List<Class>>(classes);
+            return Ok(mapClass);
         }
 
         [HttpGet("{id}")]
