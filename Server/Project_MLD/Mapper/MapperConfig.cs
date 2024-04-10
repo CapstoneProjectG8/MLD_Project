@@ -16,6 +16,7 @@ namespace Project_MLD.Mapper
                 .ReverseMap();
 
             CreateMap<User, UserDTO>()
+                .ForMember(x => x.Id,y => y.MapFrom(src => src.Id))
                 .ForMember(x => x.AccountId, y => y.MapFrom(src => src.AccountId))
                 .ForMember(x => x.FullName, y => y.MapFrom(src => src.LastName + " " + src.FirstName))
                 .ForMember(x => x.LevelOfTrainningId, y => y.MapFrom(src => src.LevelOfTrainningId))

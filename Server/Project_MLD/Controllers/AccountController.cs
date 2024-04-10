@@ -68,18 +68,6 @@ namespace Project_MLD.Controllers
             return BadRequest("Password is incorrect");
         }
 
-        private bool CheckPasswordValidation(string password)
-        {
-            // at least 1 Upper, 1 lowwer, 1 special character, 1 number
-            string pattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$";
-
-            // Match the password against the pattern
-            Match match = Regex.Match(password, pattern);
-
-            // If the password matches the pattern, return true (valid)
-            return match.Success;
-        }
-
         [HttpGet("CheckAuthenciation")]
         [Authorize(Roles = "Admin")]
         public IActionResult Check()
@@ -165,6 +153,60 @@ namespace Project_MLD.Controllers
             return Ok(account);
         }
 
+        [HttpPost("SendMailResetPassword")]
+        public async Task<IActionResult> SendMailResetPassword(string mail)
+        {
+            var currentAccount = _context.Users.Where(x => x.Email == mail).FirstOrDefault();
+            if (currentAccount != null)
+            {
+                try
+                {
+                    codeGenerate = GenerateCode.GenerateRandomCode();
+                    await _emailSender
+                        .SendEmailAsync(
+                        mail,
+                        _mailBody.SubjectTitleResetPassword(codeGenerate),
+                        _mailBody.EmailBodyResetPassword(codeGenerate)
+                        );
+                    return Ok("Sent to " + mail);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest("Failed to send email. Please check the details and try again." +ex.Message);
+                }
+            }
+            return BadRequest("User Not Found");
+
+        }
+
+        [HttpPost("CheckVerifyCode")]
+        public ActionResult CheckVerifyCode(string code)
+        {
+            if (code == null || codeGenerate != code)
+            {
+                return BadRequest("Code Not Match");
+            }
+            return Ok("Matched");
+        }
+
+        [HttpPost("ChangePassword")]
+        public IActionResult ChangePassword(AccountDTO accountLogin)
+        {
+            if (accountLogin.Password == null)
+            {
+                return BadRequest("Please fill information");
+            }
+
+            if (CheckPasswordValidation(accountLogin.Password))
+            {
+                var acc = Authenticate(accountLogin.Username, accountLogin.Password);
+                if (acc != null)
+                {
+                    return Ok("Allow to Change Password");
+                }
+            }
+            return BadRequest("Password is invalid");
+        }
         private User Authenticate(string username, string password)
         {
             var currentAccount = _context.Users
@@ -182,7 +224,6 @@ namespace Project_MLD.Controllers
             }
             return null;
         }
-
         private string GetCurrentAccount()
         {
             var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -197,7 +238,6 @@ namespace Project_MLD.Controllers
             }
             return null;
         }
-
         private string GenerateToken(User user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
@@ -220,39 +260,16 @@ namespace Project_MLD.Controllers
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
-
-
-        [HttpPost("SendMailResetPassword")]
-        public async Task<IActionResult> SendMailResetPassword(string mail)
+        private bool CheckPasswordValidation(string password)
         {
-            var currentAccount = _context.Users.Where(x => x.Email == mail).FirstOrDefault();
-            if (currentAccount != null)
-            {
-                try
-                {
-                    codeGenerate = GenerateCode.GenerateRandomCode();
-                    await _emailSender
-                        .SendEmailAsync(mail, _mailBody.SubjectTitleResetPassword(codeGenerate),
-                        _mailBody.EmailBodyResetPassword(codeGenerate));
-                    return Ok("Sent to " + mail);
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest("Failed to send email. Please check the details and try again.");
-                }
-            }
-            return BadRequest("User Not Found");
+            // at least 1 Upper, 1 lowwer, 1 special character, 1 number
+            string pattern = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$";
 
-        }
+            // Match the password against the pattern
+            Match match = Regex.Match(password, pattern);
 
-        [HttpPost("CheckVerifyCode")]
-        public ActionResult CheckVerifyCode(string code)
-        {
-            if (code == null || codeGenerate != code)
-            {
-                return BadRequest("Code Not Match");
-            }
-            return Ok("Matched");
+            // If the password matches the pattern, return true (valid)
+            return match.Success;
         }
     }
 }

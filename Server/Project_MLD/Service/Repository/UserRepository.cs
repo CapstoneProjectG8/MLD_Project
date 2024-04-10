@@ -43,15 +43,23 @@ namespace Project_MLD.Service.Repository
             return await _context.Users.FindAsync(id);
         }
 
-        public async Task<bool> UpdateUser(User User)
+        public async Task<bool> UpdateUser(User user)
         {
-            var existUser = await GetUserById(User.Id);
+            var existUser = await GetUserById(user.Id);
             if (existUser == null)
             {
                 return false;
             }
+            var properties = typeof(User).GetProperties();
+            foreach (var property in properties)
+            {
+                var updateValue = property.GetValue(user);
+                if (updateValue != null)
+                {
+                    property.SetValue(existUser, updateValue);
+                }
+            }
 
-            _context.Entry(existUser).CurrentValues.SetValues(User);
             await _context.SaveChangesAsync();
             return true;
         }
