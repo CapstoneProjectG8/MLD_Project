@@ -5,7 +5,7 @@ using Project_MLD.Service.Repository;
 using System.Threading.Tasks;
 using System.Linq;
 
-namespace Project_MLD.Tests
+namespace TestProject1
 {
     public class AccountRepositoryTests
     {
@@ -13,9 +13,7 @@ namespace Project_MLD.Tests
         private AccountRepository _repo;
         public AccountRepositoryTests()
         {
-            
 
-      
             _context.Database.EnsureDeleted();
             _context.Database.EnsureCreated();
             _repo = new AccountRepository(_context);
