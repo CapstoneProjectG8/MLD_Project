@@ -1,13 +1,13 @@
 import React from 'react'
+import SubMenu from '../../components/SubMenu'
 import Layout from '../../components/Layout'
-import Scrom from '../../components/Scrom'
 
-const ScromPage = () => {
+const SubMenuPage = () => {
     return (
         <Layout>
-            <Scrom />
+            <SubMenu />
         </Layout>
     )
 }
 
-export default ScromPage
+export default SubMenuPage

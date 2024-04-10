@@ -1,6 +1,6 @@
 import React from 'react'
-import Layout from '../../components/LandingPage/Layout'
-import UploadScrom from '../../components/LandingPage/UploadScrom'
+import Layout from '../../components/Layout'
+import UploadScrom from '../../components/UploadScrom'
 
 const UploadScromPage = () => {
     return (
