@@ -37,8 +37,8 @@ namespace Project_MLD.Controllers
             {
                 return NotFound();
             }
-
-            return Ok(exClass);
+            var _mapperClass = _mapper.Map<Class>(exClass);
+            return Ok(_mapperClass);
         }
 
         [HttpPost]
