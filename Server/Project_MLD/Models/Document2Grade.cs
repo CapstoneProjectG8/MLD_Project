@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Project_MLD.Models;
 
 public partial class Document2Grade
 {
-    public int? Document2Id { get; set; }
+    [Key]
+    public int Document2Id { get; set; }
 
     public int? GradeId { get; set; }
 

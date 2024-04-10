@@ -13,9 +13,7 @@ namespace TestProject1
         private AccountRepository _repo;
         public AccountRepositoryTests()
         {
-            
 
-      
             _context.Database.EnsureDeleted();
             _context.Database.EnsureCreated();
             _repo = new AccountRepository(_context);

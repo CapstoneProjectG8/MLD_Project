@@ -24,7 +24,7 @@ namespace Project_MLD.Tests
         public async Task AddDocument2Grade_ShouldReturnDocument2Grade_WhenDocument2GradeIsAdded()
         {
             // Arrange
-            var document2Grade = new Document2Grade { Document2Id = 1 };
+            var document2Grade = new Document2Grade();
 
             // Act
             var result = await _repo.AddDocument2Grade(document2Grade);
