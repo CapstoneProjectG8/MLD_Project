@@ -59,7 +59,12 @@ namespace Project_MLD.Controllers
                     var token = GenerateToken(acc);
                     if (token != null)
                     {
-                        return Ok(token);
+                        return Ok(new
+                        {
+                            token,
+                            accountLogin.Username,
+                            accountLogin.Password
+                        });
                     }
                     return BadRequest("Token cannot create");
                 }

@@ -42,10 +42,11 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Class>> AddClass(Class cl)
+        public async Task<ActionResult<Class>> AddClass(ClassDTO classDTO)
         {
-            await _repository.AddClass(cl);
-            return CreatedAtAction(nameof(GetClassById), new { id = cl.Id }, cl);
+            var _mapperClass = _mapper.Map<Class>(classDTO);
+            await _repository.AddClass(_mapperClass);
+            return CreatedAtAction(nameof(GetClassById), new { id = _mapperClass.Id }, _mapperClass);
         }
 
         [HttpDelete("{id}")]
@@ -54,23 +55,23 @@ namespace Project_MLD.Controllers
             var result = await _repository.DeleteClass(id);
             if (!result)
             {
-                return NotFound();
+                return BadRequest("Can Not Delete Class");
             }
             return NoContent();
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateClass(int id, Class cl)
+        public async Task<IActionResult> UpdateClass(int id, ClassDTO classDTO)
         {
-            if (id != cl.Id)
+            if (id != classDTO.Id)
             {
-                return BadRequest();
+                return BadRequest("Id Not Match");
             }
-
-            var result = await _repository.UpdateClass(cl);
+            var _mapperClass = _mapper.Map<Class>(classDTO);
+            var result = await _repository.UpdateClass(_mapperClass);
             if (!result)
             {
-                return NotFound();
+                return NotFound("Can not Update Class");
             }
             return NoContent();
         }
