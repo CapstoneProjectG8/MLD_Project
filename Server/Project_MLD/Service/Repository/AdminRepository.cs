@@ -73,5 +73,15 @@ namespace Project_MLD.Service.Repository
             }
             return existAccount;
         }
+
+        public async Task<IEnumerable<Notification>> GetAllNotification()
+        {
+           return await _context.Notifications.ToListAsync();
+        }
+
+        public async Task<IEnumerable<Feedback>> GetAllFeedback()
+        {
+            return await _context.Feedbacks.ToListAsync();
+        }
     }
 }

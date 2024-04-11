@@ -9,5 +9,7 @@ namespace Project_MLD.Service.Interface
         Task<Account> AddAccount(Account acc);
         Task<bool> UpdateAccount(Account acc);
         Task<Account> GetAccountByUsername(string username);
+        Task<IEnumerable<Notification>> GetAllNotification();
+        Task<IEnumerable<Feedback>> GetAllFeedback();
     }
 }

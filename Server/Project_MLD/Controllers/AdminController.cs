@@ -27,7 +27,20 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<IEnumerable<Account>>> GetAllAccount()
         {
             var acc = await _repository.GetAllAccounts();
-            return Ok(acc);
+            var mapper = _mapper.Map<AccountDTO>(acc);
+            return Ok(mapper);
+        }
+        [HttpGet("GetAllNotification")]
+        public async Task<ActionResult<IEnumerable<Notification>>> GetAllNotification()
+        {
+            var noti = await _repository.GetAllNotification();
+            return Ok(noti);
+        }
+        [HttpGet("GetAllFeedback")]
+        public async Task<ActionResult<IEnumerable<Feedback>>> GetAllFeedback()
+        {
+            var feedbacks = await _repository.GetAllFeedback();
+            return Ok(feedbacks);
         }
 
         [HttpPost]
@@ -96,6 +109,8 @@ namespace Project_MLD.Controllers
             }
             return Ok(account);
         }
+
+
 
         private bool CheckPasswordValidation(string password)
         {
