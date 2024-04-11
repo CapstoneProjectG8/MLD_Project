@@ -45,6 +45,8 @@ builder.Services.AddAutoMapper(typeof(MapperConfig));
 
 //Dependacy Injection
 
+//Admin
+builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 //User-Account-Role
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
