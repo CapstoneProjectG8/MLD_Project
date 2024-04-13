@@ -19,6 +19,12 @@ public partial class Document3
 
     public int? ApproveBy { get; set; }
 
+    public DateOnly? CreatedDate { get; set; }
+
+    public string? LinkFile { get; set; }
+
+    public string? LinkImage { get; set; }
+
     public virtual Document1? Document1 { get; set; }
 
     public virtual User? User { get; set; }

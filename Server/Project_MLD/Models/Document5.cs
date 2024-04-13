@@ -15,6 +15,12 @@ public partial class Document5
 
     public int? Total { get; set; }
 
+    public string? CreatedDate { get; set; }
+
+    public string? LinkFile { get; set; }
+
+    public string? LinkImage { get; set; }
+
     public virtual Document4 Document4 { get; set; } = null!;
 
     public virtual User? User { get; set; }

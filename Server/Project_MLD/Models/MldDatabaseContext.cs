@@ -184,8 +184,11 @@ public partial class MldDatabaseContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.ApproveBy).HasColumnName("approve_by");
+            entity.Property(e => e.CreatedDate).HasColumnName("created_date");
             entity.Property(e => e.GradeId).HasColumnName("grade_id");
             entity.Property(e => e.IsApprove).HasColumnName("isApprove");
+            entity.Property(e => e.LinkFile).HasColumnName("link_file");
+            entity.Property(e => e.LinkImage).HasColumnName("link_image");
             entity.Property(e => e.Name)
                 .UseCollation("SQL_Latin1_General_CP1_CI_AS")
                 .HasColumnName("name");
@@ -319,7 +322,10 @@ public partial class MldDatabaseContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.ApproveBy).HasColumnName("approve_by");
+            entity.Property(e => e.CreatedDate).HasColumnName("created_date");
             entity.Property(e => e.IsApprove).HasColumnName("isApprove");
+            entity.Property(e => e.LinkFile).HasColumnName("link_file");
+            entity.Property(e => e.LinkImage).HasColumnName("link_image");
             entity.Property(e => e.Name)
                 .UseCollation("SQL_Latin1_General_CP1_CI_AS")
                 .HasColumnName("name");
@@ -379,8 +385,11 @@ public partial class MldDatabaseContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.ApproveBy).HasColumnName("approve_by");
+            entity.Property(e => e.CreatedDate).HasColumnName("created_date");
             entity.Property(e => e.Document1Id).HasColumnName("document1_id");
             entity.Property(e => e.IsApprove).HasColumnName("isApprove");
+            entity.Property(e => e.LinkFile).HasColumnName("link_file");
+            entity.Property(e => e.LinkImage).HasColumnName("link_image");
             entity.Property(e => e.Name)
                 .UseCollation("SQL_Latin1_General_CP1_CI_AS")
                 .HasColumnName("name");
@@ -403,6 +412,12 @@ public partial class MldDatabaseContext : DbContext
             entity.ToTable("Document 4");
 
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.CreatedDate)
+                .HasMaxLength(10)
+                .IsFixedLength()
+                .HasColumnName("created_date");
+            entity.Property(e => e.LinkFile).HasColumnName("link_file");
+            entity.Property(e => e.LinkImage).HasColumnName("link_image");
             entity.Property(e => e.Name)
                 .UseCollation("SQL_Latin1_General_CP1_CI_AS")
                 .HasColumnName("name");
@@ -421,7 +436,13 @@ public partial class MldDatabaseContext : DbContext
             entity.ToTable("Document 5");
 
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.CreatedDate)
+                .HasMaxLength(10)
+                .IsFixedLength()
+                .HasColumnName("created_date");
             entity.Property(e => e.Document4Id).HasColumnName("document4_id");
+            entity.Property(e => e.LinkFile).HasColumnName("link_file");
+            entity.Property(e => e.LinkImage).HasColumnName("link_image");
             entity.Property(e => e.Name)
                 .UseCollation("SQL_Latin1_General_CP1_CI_AS")
                 .HasColumnName("name");
