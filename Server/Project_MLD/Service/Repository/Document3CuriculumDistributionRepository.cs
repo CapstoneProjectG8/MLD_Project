@@ -59,6 +59,7 @@ namespace Project_MLD.Service.Repository
                             Name = item.Curriculum.Name
                         };
                         _context.CurriculumDistributions.Add(curriculum);
+                        _context.SaveChanges();
                     }
 
                     var equipment = await _context.TeachingEquipments
@@ -70,17 +71,18 @@ namespace Project_MLD.Service.Repository
                             Name = item.Equipment.Name
                         };
                         _context.TeachingEquipments.Add(equipment);
+                        _context.SaveChanges();
                     }
 
                     var existingItem = await _context.Document3CurriculumDistributions
-                        .FindAsync(item.Document3Id, item.CurriculumId, item.EquipmentId);
+                        .FindAsync(item.Document3Id, curriculum.Id, equipment.Id);
                     if (existingItem == null)
                     {
                         var newItem = new Document3CurriculumDistribution
                         {
                             Document3Id = item.Document3Id,
-                            CurriculumId = item.CurriculumId,
-                            EquipmentId = item.EquipmentId,
+                            CurriculumId = curriculum.Id,
+                            EquipmentId = equipment.Id,
                             Slot = item.Slot,
                             Time = item.Time,
                             SubjectRoomName = item.SubjectRoomName

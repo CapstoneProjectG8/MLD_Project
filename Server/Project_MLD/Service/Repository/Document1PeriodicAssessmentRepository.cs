@@ -44,14 +44,14 @@ namespace Project_MLD.Service.Repository
                     }
 
                     var existPeriodicAssessment = await _context.PeriodicAssessments
-                        .FindAsync(item.Document1Id, item.FormCategoryId,item.TestingCategoryId);
+                        .FindAsync(item.Document1Id, existFormCategory.Id, existTestingCategory.Id);
                     if (existPeriodicAssessment == null)
                     {
                         var newItem = new PeriodicAssessment
                         {
                             Document1Id = item.Document1Id,
-                            TestingCategoryId = item.TestingCategoryId,
-                            FormCategoryId = item.FormCategoryId,
+                            TestingCategoryId = existTestingCategory.Id,
+                            FormCategoryId = existFormCategory.Id,
                             Time = item.Time,
                             Date = item.Date,
                             Description = item.Description

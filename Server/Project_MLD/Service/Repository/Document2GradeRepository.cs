@@ -52,14 +52,19 @@ namespace Project_MLD.Service.Repository
             {
                 foreach (var item in list)
                 {
+                    var existGrade = await _context.Grades.FindAsync(item.GradeId);
+                    if (existGrade == null)
+                    {
+                        throw new Exception("There is no exist Grade");
+                    }
                     var existDocument2Grade = await _context.Document2Grades
-                        .FindAsync(item.Document2Id, item.GradeId);
+                        .FindAsync(item.Document2Id, existGrade.Id);
                     if (existDocument2Grade == null)
                     {
                         var newItem = new Document2Grade
                         {
                             Document2Id = item.Document2Id,
-                            GradeId = item.GradeId,
+                            GradeId = existGrade.Id,
                             TitleName = item.TitleName,
                             Slot = item.Slot,
                             Time = item.Time,

@@ -50,7 +50,8 @@ namespace Project_MLD.Service.Repository
             {
                 foreach (var item in list)
                 {
-                    var existSelectedTopics = await _context.SelectedTopics.FindAsync(item.SelectedTopicsId);
+                    var existSelectedTopics = await _context.SelectedTopics
+                        .FindAsync(item.SelectedTopicsId);
                     if (existSelectedTopics == null)
                     {
                         existSelectedTopics = new SelectedTopic
@@ -58,14 +59,16 @@ namespace Project_MLD.Service.Repository
                             Name = item.SelectedTopics.Name
                         };
                         _context.SelectedTopics.Add(existSelectedTopics);
+                        _context.SaveChanges();
                     }
-                    var existDocument1SelectedTopics = await _context.Document1SelectedTopics.FindAsync(item.Document1Id, item.SelectedTopicsId);
+                    var existDocument1SelectedTopics = await _context.Document1SelectedTopics
+                        .FindAsync(item.Document1Id, existSelectedTopics.Id);
                     if (existDocument1SelectedTopics == null)
                     {
                         var newItem = new Document1SelectedTopic
                         {
                             Document1Id = item.Document1Id,
-                            SelectedTopicsId = item.SelectedTopicsId,
+                            SelectedTopicsId = existSelectedTopics.Id,
                             Slot = item.Slot,
                             Description = item.Description
                         };

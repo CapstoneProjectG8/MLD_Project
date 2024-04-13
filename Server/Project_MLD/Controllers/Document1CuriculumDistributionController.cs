@@ -45,6 +45,7 @@ namespace Project_MLD.Controllers
                         return BadRequest("Id Not Match");
                     }
                 }
+
                 var mapRequests = _mapper.Map<List<Document1CurriculumDistribution>>(requests);
 
                 await _repository.UpdateDocument1CurriculumDistribution(mapRequests);

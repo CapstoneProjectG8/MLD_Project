@@ -37,15 +37,16 @@ namespace Project_MLD.Service.Repository
                             Name = item.Curriculum.Name
                         };
                         _context.CurriculumDistributions.Add(curriculum);
+                        _context.SaveChanges();
                     }
                     var existingItem = await _context.Document1CurriculumDistributions
-                        .FindAsync(item.Document1Id, item.CurriculumId);
+                        .FindAsync(item.Document1Id, curriculum.Id);
                     if (existingItem == null)
                     {
                         var newItem = new Document1CurriculumDistribution
                         {
                             Document1Id = item.Document1Id,
-                            CurriculumId = item.CurriculumId,
+                            CurriculumId = curriculum.Id,
                             Slot = item.Slot,
                             Description = item.Description
                         };

@@ -59,15 +59,16 @@ namespace Project_MLD.Service.Repository
                             Name = item.TeachingEquipment.Name
                         };
                         _context.TeachingEquipments.Add(existTeachingEquipments);
+                        _context.SaveChanges();
                     }
                     var existDocument1TeachingEquipment = await _context.Document1TeachingEquipments
-                        .FindAsync(item.Document1Id, item.TeachingEquipmentId);
+                        .FindAsync(item.Document1Id, existTeachingEquipments.Id);
                     if (existDocument1TeachingEquipment == null)
                     {
                         var newItem = new Document1TeachingEquipment
                         {
                             Document1Id = item.Document1Id,
-                            TeachingEquipmentId = item.TeachingEquipmentId,
+                            TeachingEquipmentId = existTeachingEquipments.Id,
                             Quantity = item.Quantity,
                             Note = item.Note,
                             Description = item.Description
