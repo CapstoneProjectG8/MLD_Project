@@ -11,6 +11,7 @@ using Project_MLD.DTO;
 using Project_MLD.Utils.PasswordHash;
 using Project_MLD.Utils.GmailSender;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -75,6 +76,8 @@ builder.Services.AddScoped<IDocument2GradeRepository, Document2GradeRepository>(
 builder.Services.AddScoped<IGradeRepository, GradeRepository>();
 //Document3
 builder.Services.AddScoped<IDocument3Repository, Document3Repository>();
+builder.Services.AddScoped<IDocument3CurriculumDistributionRepository, Document3CuriculumDistributionRepository>();
+builder.Services.AddScoped<IDocument3SelectedTopicsRepository, Document3SelectedTopicsRepository>();
 //Document4
 builder.Services.AddScoped<IDocument4Repository, Document4Repository>();
 builder.Services.AddScoped<ITeachingPlannerRepository, TeachingPlannerRepository>();

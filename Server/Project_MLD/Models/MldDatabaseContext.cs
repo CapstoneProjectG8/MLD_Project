@@ -41,6 +41,10 @@ public partial class MldDatabaseContext : DbContext
 
     public virtual DbSet<Document3> Document3s { get; set; }
 
+    public virtual DbSet<Document3CurriculumDistribution> Document3CurriculumDistributions { get; set; }
+
+    public virtual DbSet<Document3SelectedTopic> Document3SelectedTopics { get; set; }
+
     public virtual DbSet<Document4> Document4s { get; set; }
 
     public virtual DbSet<Document5> Document5s { get; set; }
@@ -393,6 +397,7 @@ public partial class MldDatabaseContext : DbContext
             entity.Property(e => e.Name)
                 .UseCollation("SQL_Latin1_General_CP1_CI_AS")
                 .HasColumnName("name");
+            entity.Property(e => e.OtherTasks).HasColumnName("other_tasks");
             entity.Property(e => e.Status).HasColumnName("status");
             entity.Property(e => e.UserId).HasColumnName("user_id");
 
@@ -403,6 +408,64 @@ public partial class MldDatabaseContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.Document3s)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("FK_Document 3_User");
+        });
+
+        modelBuilder.Entity<Document3CurriculumDistribution>(entity =>
+        {
+            entity.HasKey(e => new { e.Document3Id, e.CurriculumId, e.EquipmentId });
+
+            entity.ToTable("Document3_CurriculumDistribution");
+
+            entity.Property(e => e.Document3Id).HasColumnName("document3_id");
+            entity.Property(e => e.CurriculumId).HasColumnName("curriculum_id");
+            entity.Property(e => e.EquipmentId).HasColumnName("equipment_id");
+            entity.Property(e => e.Slot).HasColumnName("slot");
+            entity.Property(e => e.SubjectRoomName).HasColumnName("subject_room_name");
+            entity.Property(e => e.Time).HasColumnName("time");
+
+            entity.HasOne(d => d.Curriculum).WithMany(p => p.Document3CurriculumDistributions)
+                .HasForeignKey(d => d.CurriculumId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Document3_CurriculumDistribution_Curriculum Distribution");
+
+            entity.HasOne(d => d.Document3).WithMany(p => p.Document3CurriculumDistributions)
+                .HasForeignKey(d => d.Document3Id)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Document3_CurriculumDistribution_Document 3");
+
+            entity.HasOne(d => d.Equipment).WithMany(p => p.Document3CurriculumDistributions)
+                .HasForeignKey(d => d.EquipmentId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Document3_CurriculumDistribution_Teaching Equipment");
+        });
+
+        modelBuilder.Entity<Document3SelectedTopic>(entity =>
+        {
+            entity.HasKey(e => new { e.Document3Id, e.SelectedTopicsId, e.EquipmentId });
+
+            entity.ToTable("Document3_SelectedTopics");
+
+            entity.Property(e => e.Document3Id).HasColumnName("document3_id");
+            entity.Property(e => e.SelectedTopicsId).HasColumnName("selectedTopics_id");
+            entity.Property(e => e.EquipmentId).HasColumnName("equipment_id");
+            entity.Property(e => e.Slot).HasColumnName("slot");
+            entity.Property(e => e.SubjectRoomName).HasColumnName("subject_room_name");
+            entity.Property(e => e.Time).HasColumnName("time");
+
+            entity.HasOne(d => d.Document3).WithMany(p => p.Document3SelectedTopics)
+                .HasForeignKey(d => d.Document3Id)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Document3_SelectedTopics_Document 3");
+
+            entity.HasOne(d => d.Equipment).WithMany(p => p.Document3SelectedTopics)
+                .HasForeignKey(d => d.EquipmentId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Document3_SelectedTopics_Teaching Equipment");
+
+            entity.HasOne(d => d.SelectedTopics).WithMany(p => p.Document3SelectedTopics)
+                .HasForeignKey(d => d.SelectedTopicsId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Document3_SelectedTopics_Selected Topics");
         });
 
         modelBuilder.Entity<Document4>(entity =>

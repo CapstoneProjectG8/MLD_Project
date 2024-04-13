@@ -61,6 +61,20 @@ namespace Project_MLD.Mapper
 
             CreateMap<Document3, Document3DTO>()
                 .ReverseMap();
+            CreateMap<Document3CurriculumDistribution, Document3CurriculumDistributionDTO>()
+                .ForMember(x => x.CurriculumId, y => y.MapFrom(src => src.Curriculum.Id))
+                .ForMember(x => x.Document3Id, y => y.MapFrom(src => src.Document3.Id))
+                .ForMember(x => x.EquipmentId, y => y.MapFrom(src => src.Equipment.Id))
+                .ForMember(x => x.CurriculumName, y => y.MapFrom(src => src.Curriculum.Name))
+                .ForMember(x => x.EquipmentName, y => y.MapFrom(src => src.Equipment.Name))
+                .ReverseMap();
+            CreateMap<Document3SelectedTopic, Document3SelectedTopicDTO>()
+                .ForMember(x => x.SelectedTopicsId, y => y.MapFrom(src => src.SelectedTopics.Id))
+                .ForMember(x => x.Document3Id, y => y.MapFrom(src => src.Document3.Id))
+                .ForMember(x => x.EquipmentId, y => y.MapFrom(src => src.Equipment.Id))
+                .ForMember(x => x.SelectedTopicsName, y => y.MapFrom(src => src.SelectedTopics.Name))
+                .ForMember(x => x.EquipmentName, y => y.MapFrom(src => src.Equipment.Name))
+                .ReverseMap();
             CreateMap<Document4, Document4DTO>()
                 .ReverseMap();
             CreateMap<TeachingPlanner, TeachingPlannerDTO>()

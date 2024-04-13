@@ -54,7 +54,7 @@ namespace Project_MLD.Controllers
             catch (Exception ex)
             {
                 // Log the exception or handle it accordingly
-                return StatusCode(500, $"An error occurred while updating Document1CurriculumDistribution: {ex.Message}");
+                return StatusCode(500, $"An error occurred while updating Document1 CurriculumDistribution: {ex.Message}");
             }
         }
     }
