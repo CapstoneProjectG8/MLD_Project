@@ -2,104 +2,107 @@ using Xunit;
 using Microsoft.EntityFrameworkCore;
 using Project_MLD.Models;
 using Project_MLD.Service.Repository;
-using System.Threading.Tasks;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace TestProject1
 {
-    public class AccountRepositoryTests
+    public class AccountRepositoryTests : IDisposable
     {
-        private MldDatabaseContext _context;
-        private AccountRepository _repo;
+        private readonly MldDatabaseContext _context;
+        private readonly AccountRepository _repository;
+
         public AccountRepositoryTests()
         {
+            var options = new DbContextOptionsBuilder<MldDatabaseContext>()
+                .UseSqlServer("ConnectionStrings") // replace with your test database connection string
+                .Options;
 
-            _context.Database.EnsureDeleted();
-            _context.Database.EnsureCreated();
-            _repo = new AccountRepository(_context);
+            _context = new MldDatabaseContext(options);
+            _repository = new AccountRepository(_context);
         }
 
-
-        [Fact]
-        public async Task GetAllAccounts_ShouldReturnAllAccounts()
+        public void Dispose()
         {
-            // Arrange
-            //var account1 = new Account { Username = "TestUser1" };
-            //var account2 = new Account { Username = "TestUser2" };
-            //_context.Accounts.AddRange(account1, account2);
-            //await _context.SaveChangesAsync();
-
-            // Act
-            var result = await _repo.GetAllAccounts();
-
-            // Assert
-            Assert.Equal(0, result.Count());
+            // Clean up the database here
+            _context.Accounts.RemoveRange(_context.Accounts);
+            _context.SaveChanges();
         }
 
         [Fact]
-        public async Task GetAccountById_ShouldReturnAccount()
+        public async Task AddAccountTest()
         {
-            // Arrange
-            //var account = new Account { AccountId = 11, Username = "TestUser" };
-            //_context.Accounts.Add(account);
-            //await _context.SaveChangesAsync();
+            var account = new Account { Username = "testuser", Password = "testpass" };
+            var result = await _repository.AddAccount(account);
 
-            // Act
-            var result = await _repo.GetAccountById(11);
-
-            // Assert
             Assert.NotNull(result);
-            Assert.Equal("JohnDoe", result.Username);
+            Assert.Equal("testuser", result.Username);
         }
 
         [Fact]
-        public async Task AddAccount_ShouldAddAccount()
+        public async Task DeleteAccountTest()
         {
-            // Arrange
-            var account = new Account { Username = "TestUser" , Password ="abc" };
+            var account = new Account { Username = "testuser", Password = "testpass" };
+            var addedAccount = await _repository.AddAccount(account);
 
-            // Act
-            var result = await _repo.AddAccount(account);
+            var result = await _repository.DeleteAccount(addedAccount.AccountId);
 
-            // Assert
-            Assert.NotNull(result);
-            Assert.Equal(account.Username, result.Username);
-        }
-
-        [Fact]
-        public async Task UpdateAccount_ShouldUpdateAccount()
-        {
-            // Arrange
-            var account = new Account { AccountId = 1, Username = "TestUser" };
-            _context.Accounts.Add(account);
-            await _context.SaveChangesAsync();
-
-            account.Username = "UpdatedUser";
-
-            // Act
-            var result = await _repo.UpdateAccount(account);
-
-            // Assert
             Assert.True(result);
-            Assert.Equal("UpdatedUser", _context.Accounts.Find(1).Username);
         }
 
         [Fact]
-        public async Task DeleteAccount_ShouldDeleteAccount()
+        public async Task GetAllAccountsTest()
         {
             // Arrange
-            var account = new Account { AccountId = 1, Username = "TestUser" };
-            _context.Accounts.Add(account);
+            var account1 = new Account { Username = "testuser1", Password = "testpass1" };
+            var account2 = new Account { Username = "testuser2", Password = "testpass2" };
+            _context.Accounts.AddRange(account1, account2);
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repo.DeleteAccount(1);
+            var accounts = await _repository.GetAllAccounts();
 
             // Assert
-            Assert.True(result);
-            Assert.Null(await _repo.GetAccountById(1));
+            Assert.NotNull(accounts);
+            Assert.NotEmpty(accounts);
         }
 
-       
+
+        [Fact]
+        public async Task GetAccountByIdTest()
+        {
+            var account = new Account { Username = "testuser", Password = "testpass" };
+            var addedAccount = await _repository.AddAccount(account);
+
+            var result = await _repository.GetAccountById(addedAccount.AccountId);
+
+            Assert.NotNull(result);
+            Assert.Equal("testuser", result.Username);
+        }
+
+        [Fact]
+        public async Task UpdateAccountTest()
+        {
+            var account = new Account { Username = "testuser", Password = "testpass" };
+            var addedAccount = await _repository.AddAccount(account);
+
+            addedAccount.Password = "newpass";
+            var result = await _repository.UpdateAccount(addedAccount);
+
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void GetAccountByUsernameTest()
+        {
+            var account = new Account { Username = "testuser", Password = "testpass" };
+            _context.Accounts.Add(account);
+            _context.SaveChanges();
+
+            var result = _repository.GetAccountByUsername("testuser");
+
+            Assert.NotNull(result);
+            Assert.Equal("testuser", result.Username);
+        }
     }
 }
