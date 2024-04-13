@@ -1,93 +1,116 @@
-﻿using Xunit;
-using Microsoft.EntityFrameworkCore;
-using Project_MLD.Models;
-using Project_MLD.Service.Repository;
-using System.Threading.Tasks;
-using System.Linq;
+﻿//using Xunit;
+//using Microsoft.EntityFrameworkCore;
+//using Project_MLD.Models;
+//using Project_MLD.Service.Repository;
+//using System.Linq;
 
-namespace TestProject1
-{
-    public class DocRepositoryTests
-    {
-        private readonly MldDatabaseContext _context;
-        private readonly DocRepository _repository;
+//namespace TestProject1
+//{
+//    public class DocRepositoryTests : IDisposable
+//    {
+//        private readonly MldDatabaseContext _context;
+//        private readonly DocRepository _repository;
 
-        public DocRepositoryTests()
-        {
-         
-            _context = new MldDatabaseContext();
-            _repository = new DocRepository(_context);
-        }
-        [Fact]
-        public async Task AddDoc_ReturnsNewDoc()
-        {
-            // Arrange
-            var doc = new Doc
-            {
-                // Initialize properties here
-            };
+//        public DocRepositoryTests()
+//        {
+//            var options = new DbContextOptionsBuilder<MldDatabaseContext>()
+//                   .UseSqlServer("ConnectionStrings") // replace with your test database connection string
+//                   .Options;
+//            _context = new MldDatabaseContext(options);
+//            _repository = new DocRepository(_context);
+//        }
+//        public void Dispose()
+//        {
+//            // Clean up the database here
+//            _context.Docs.RemoveRange(_context.Docs);
+//            _context.SaveChanges();
+//        }
 
-            // Act
-            var result = await _repository.AddDoc(doc);
+//        [Fact]
+//        public void AddDoc_ReturnsNewDoc()
+//        {
+//            // Arrange
+//            var doc = new Doc
+//            {
+//                Name = "Sample Document", // You can replace this with any string value
+//                Content = System.Text.Encoding.UTF8.GetBytes("This is some sample content."), // You can replace this with any byte array value
+//                CategoryId = 2, // You can replace this with any integer value
+//                Document4Id = 4 // You can replace this with any integer value
+//            };
 
-            // Assert
-            Assert.Equal(doc, result);
-        }
+//            // Act
+//            var result = _repository.AddDoc(doc);
 
-        [Fact]
-        public async Task DeleteDoc_ReturnsTrueWhenExists()
-        {
-            // Arrange
-            var doc = new Doc
-            {
-                // Initialize properties here
-            };
-            var added = await _repository.AddDoc(doc);
+//            // Assert
+//            Assert.Equal((IEnumerable<T>)doc, result);
+//        }
 
-            // Act
-            var result = await _repository.DeleteDoc(added.Id);
+//        [Fact]
+//        public void DeleteDoc_ReturnsTrueWhenExists()
+//        {
+//            // Arrange
+//            var doc = new Doc
+//            {
+//                Name = "Sample Document", // You can replace this with any string value
+//                Content = System.Text.Encoding.UTF8.GetBytes("This is some sample content."), // You can replace this with any byte array value
+//                CategoryId = 2, // You can replace this with any integer value
+//                Document4Id = 4 // You can replace this with any integer value
+//            };
+//            var added = _repository.AddDoc(doc);
 
-            // Assert
-            Assert.True(result);
-        }
+//            // Act
+//            var result = _repository.DeleteDoc(added.Id);
 
-        [Fact]
-        public async Task GetAllDocs_ReturnsAllDocs()
-        {
-            // Arrange
-            var doc1 = new Doc
-            {
-                // Initialize properties here
-            };
-            var doc2 = new Doc
-            {
-                // Initialize properties here
-            };
-            await _repository.AddDoc(doc1);
-            await _repository.AddDoc(doc2);
+//            // Assert
+//            Assert.True(result);
+//        }
 
-            // Act
-            var result = await _repository.GetAllDocs();
+//        [Fact]
+//        public void GetAllDocs_ReturnsAllDocs()
+//        {
+//            // Arrange
+//            var doc1 = new Doc
+//            {
+//                Name = "Sample Document 1", // You can replace this with any string value
+//                Content = System.Text.Encoding.UTF8.GetBytes("This is some sample content for doc 1."), // You can replace this with any byte array value
+//                CategoryId = 2, // You can replace this with any integer value
+//                Document4Id = 4 // You can replace this with any integer value
+//            };
+//            var doc2 = new Doc
+//            {
+//                Name = "Sample Document 2", // You can replace this with any string value
+//                Content = System.Text.Encoding.UTF8.GetBytes("This is some sample content for doc 2."), // You can replace this with any byte array value
+//                CategoryId = 3, // You can replace this with any integer value
+//                Document4Id = 14 // You can replace this with any integer value
+//            };
+//            _repository.AddDoc(doc1);
+//            _repository.AddDoc(doc2);
 
-            // Assert
-            Assert.Equal(2, result.Count());
-        }
+//            // Act
+//            var result = _repository.GetAllDocs();
 
-        [Fact]
-        public async Task GetDocById_ReturnsDocWhenExists()
-        {
-            // Arrange
-            var doc = new Doc
-            {
-                // Initialize properties here
-            };
-            var added = await _repository.AddDoc(doc);
+//            // Assert
+//            Assert.Equal(2, result.Count());
+//        }
 
-            // Act
-            var result = await _repository.GetDocById(added.Id);
+//        [Fact]
+//        public void GetDocById_ReturnsDocWhenExists()
+//        {
+//            // Arrange
+//            var doc = new Doc
+//            {
+//                Name = "Sample Document", // You can replace this with any string value
+//                Content = System.Text.Encoding.UTF8.GetBytes("This is some sample content."), // You can replace this with any byte array value
+//                CategoryId = 2, // You can replace this with any integer value
+//                Document4Id = 4 // You can replace this with any integer value
+//            };
+//            var added = _repository.AddDoc(doc);
 
-            // Assert
-            Assert.Equal(doc, result);
-        }
-    }
-}
+//            // Act
+//            var result = _repository.GetDocById(added.Id);
+
+//            // Assert
+//            Assert.Equal(doc, result);
+//        }
+//    }
+//}

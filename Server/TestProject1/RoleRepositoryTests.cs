@@ -14,8 +14,10 @@ namespace TestProject1
 
         public RoleRepositoryTests()
         {
-
-            _context = new MldDatabaseContext();
+            var options = new DbContextOptionsBuilder<MldDatabaseContext>()
+                .UseSqlServer("ConnectionStrings") // replace with your test database connection string
+                .Options;
+            _context = new MldDatabaseContext(options);
             _repository = new RoleRepository(_context);
         }
 
