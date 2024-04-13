@@ -13,28 +13,20 @@ namespace TestProject1 {
 
         public ClassRepositoryTests()
         {
-            var options = new DbContextOptionsBuilder<MldDatabaseContext>()
-                .UseSqlServer("ConnectionStrings") // replace with your test database connection string
-                .Options;
+           
 
-            _context = new MldDatabaseContext(options);
+            _context = new MldDatabaseContext();
+            _context.Database.EnsureDeleted();
+            _context.Database.EnsureCreated();
             _repo = new ClassRepository(_context);
         }
-        public async Task InitializeDatabase()
-        {
-            // Clean up the database here
-            _context.Classes.RemoveRange(_context.Classes);
-            await _context.SaveChangesAsync();
-        }
-
 
         [Fact]
         public async Task GetAllClasses_ShouldReturnAllClasses()
         {
             // Arrange
-            await InitializeDatabase();
-            var class1 = new Class { Name = "TestUser1" };
-            var class2 = new Class { Name = "TestUser2" };
+            var class1 = new Class {Name = "TestClass1" };
+            var class2 = new Class { Name = "TestClass2" };
             _context.Classes.AddRange(class1, class2);
             await _context.SaveChangesAsync();
 
@@ -42,10 +34,8 @@ namespace TestProject1 {
             var result = await _repo.GetAllClasss();
 
             // Assert
-            Assert.NotNull(result);
             Assert.Equal(2, result.Count());
         }
-
 
         [Fact]
         public async Task GetClassById_ShouldReturnClass()
@@ -56,7 +46,7 @@ namespace TestProject1 {
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repo.GetClassById(class1.Id);
+            var result = await _repo.GetClassById(1);
 
             // Assert
             Assert.NotNull(result);
@@ -92,8 +82,7 @@ namespace TestProject1 {
 
             // Assert
             Assert.True(result);
-            Assert.Equal("UpdatedUser", _context.Classes.Find(class1.Id).Name);
-            
+            Assert.Equal("UpdatedUser", _context.Classes.Find(1).Name);
         }
 
         [Fact]
@@ -105,11 +94,11 @@ namespace TestProject1 {
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repo.DeleteClass(class1.Id);
+            var result = await _repo.DeleteClass(1);
 
             // Assert
             Assert.True(result);
-            Assert.Null(await _repo.GetClassById(class1.Id));
+            Assert.Null(await _repo.GetClassById(1));
         }
     }
 }

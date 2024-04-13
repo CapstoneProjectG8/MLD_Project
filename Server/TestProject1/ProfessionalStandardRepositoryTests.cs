@@ -14,10 +14,7 @@ namespace TestProject1
 
         public ProfessionalStandardRepositoryTests()
         {
-            var options = new DbContextOptionsBuilder<MldDatabaseContext>()
-                .UseSqlServer("ConnectionStrings") // replace with your test database connection string
-                .Options;
-            _context = new MldDatabaseContext(options);
+            _context = new MldDatabaseContext();
             _repository = new ProfessionalStandardRepository(_context);
         }
 

@@ -14,10 +14,8 @@ namespace TestProject1
 
         public Document5RepositoryTests()
         {
-            var options = new DbContextOptionsBuilder<MldDatabaseContext>()
-                .UseSqlServer("ConnectionStrings") // replace with your test database connection string
-                .Options;
-            _context = new MldDatabaseContext(options);
+
+            _context = new MldDatabaseContext();
             _repository = new Document5Repository(_context);
         }
 
