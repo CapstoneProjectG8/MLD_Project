@@ -60,10 +60,10 @@ namespace Project_MLD.Controllers
                     }
                 }
                 var mapRequests = _mapper.Map<List<Document2Grade>>(requests);
-                foreach (var item in requests)
-                {
-                    await _repository.UpdateDocument2Grade(mapRequests);
-                }
+
+
+                await _repository.UpdateDocument2Grade(mapRequests);
+
                 return Ok("Update Successfully");
             }
             catch (Exception ex)

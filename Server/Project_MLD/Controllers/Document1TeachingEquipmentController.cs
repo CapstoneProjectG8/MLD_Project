@@ -41,10 +41,9 @@ namespace Project_MLD.Controllers
                     }
                 }
                 var mapRequests = _mapper.Map<List<Document1TeachingEquipment>>(requests);
-                foreach (var item in requests)
-                {
-                    await _repository.UpdateDocument1TeachingEquipment(mapRequests);
-                }
+
+                await _repository.UpdateDocument1TeachingEquipment(mapRequests);
+
                 return Ok("Update Successfully");
             }
             catch (Exception ex)

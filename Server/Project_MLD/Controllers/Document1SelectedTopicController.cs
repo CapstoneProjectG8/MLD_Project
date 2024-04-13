@@ -46,10 +46,9 @@ namespace Project_MLD.Controllers
                     }
                 }
                 var mapRequests = _mapper.Map<List<Document1SelectedTopic>>(requests);
-                foreach (var item in requests)
-                {
-                    await _repository.UpdateDocument1SelectedTopic(mapRequests);
-                }
+
+                await _repository.UpdateDocument1SelectedTopic(mapRequests);
+
                 return Ok("Update Successfully");
             }
             catch (Exception ex)
