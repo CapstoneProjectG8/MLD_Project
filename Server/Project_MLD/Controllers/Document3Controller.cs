@@ -57,15 +57,15 @@ namespace Project_MLD.Controllers
         }
 
         [HttpGet("ByCondition/{condition}")]
-        public async Task<ActionResult<Document3>> GetDoucment3ByCondition(string condition)
+        public async Task<ActionResult<IEnumerable<Document3>>> GetDoucment3ByCondition(string condition)
         {
             var existDocument3 = await _repository.GetDocument3sByCondition(condition);
             if (existDocument3 == null)
             {
                 return NotFound("No Document 3 Available");
             }
-
-            return Ok(existDocument3);
+            var mapDocument = _mapper.Map<List<Document3DTO>>(existDocument3);
+            return Ok(mapDocument);
         }
 
         [HttpPost]
