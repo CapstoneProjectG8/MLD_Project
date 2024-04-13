@@ -24,8 +24,9 @@ namespace Project_MLD.Controllers
         [HttpGet]
         public async Task<ActionResult<Document3SelectedTopic>> GetDocument3SelectedTopicsByDocument3ID(int id)
         {
-            var cd = await _repository.GetDocument3SelectedTopicsByDocument3ID(id);
-            return Ok(cd);
+            var cd = await _repository.GetDocument3SelectedTopicsByDocument3Id(id);
+            var mapper = _mapper.Map<List<Document3SelectedTopicDTO>>(cd);
+            return Ok(mapper);
         }
 
         [HttpPut]
@@ -43,7 +44,7 @@ namespace Project_MLD.Controllers
                 var mapRequests = _mapper.Map<List<Document3SelectedTopic>>(requests);
                 foreach (var item in requests)
                 {
-                    await _repository.UpdateDocument3SelectedTopic(mapRequests);
+                    await _repository.UpdateDocument3SelectedTopics(mapRequests);
                 }
                 return Ok("Update Successfully");
             }

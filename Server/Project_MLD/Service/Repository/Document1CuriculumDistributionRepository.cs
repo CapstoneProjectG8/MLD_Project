@@ -65,9 +65,25 @@ namespace Project_MLD.Service.Repository
             }
         }
 
-        public Task DeleteDocument1CurriculumDistribution(List<Document1CurriculumDistribution> list)
+        public async Task DeleteDocument1CurriculumDistribution(List<Document1CurriculumDistribution> list)
         {
-            throw new NotImplementedException();
+            if (list == null || !list.Any())
+            {
+                return; // Nothing to delete
+            }
+
+            foreach (var item in list)
+            {
+                var existingItem = await _context.Document1CurriculumDistributions
+                  .FindAsync(item.Document1Id, item.CurriculumId);
+
+                if (existingItem != null)
+                {
+                    _context.Document1CurriculumDistributions.Remove(existingItem);
+                }
+            }
+
+            await _context.SaveChangesAsync();
         }
 
     }

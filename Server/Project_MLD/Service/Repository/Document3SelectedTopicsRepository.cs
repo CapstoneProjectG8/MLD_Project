@@ -14,9 +14,25 @@ namespace Project_MLD.Service.Repository
             _context = context;
         }
 
-        public Task DeleteDocument3SelectedTopics(List<Document3SelectedTopic> dc)
+        public async Task DeleteDocument3SelectedTopics(List<Document3SelectedTopic> list)
         {
-            throw new NotImplementedException();
+            if (list == null || !list.Any())
+            {
+                return; // Nothing to delete
+            }
+
+            foreach (var item in list)
+            {
+                var existingItem = await _context.Document3SelectedTopics
+                  .FindAsync(item.Document3Id, item.SelectedTopicsId);
+
+                if (existingItem != null)
+                {
+                    _context.Document3SelectedTopics.Remove(existingItem);
+                }
+            }
+
+            await _context.SaveChangesAsync();
         }
 
         

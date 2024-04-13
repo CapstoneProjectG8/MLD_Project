@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Azure.Core;
+using Microsoft.EntityFrameworkCore;
 using Project_MLD.Models;
 using Project_MLD.Service.Interface;
 using System;
+using System.Reflection.Metadata;
 
 namespace Project_MLD.Service.Repository
 {
@@ -13,9 +15,25 @@ namespace Project_MLD.Service.Repository
         {
             _context = context;
         }
-        public Task DeleteDocument1TeachingEquipment(List<Document1TeachingEquipment> list)
+        public async Task DeleteDocument1TeachingEquipment(List<Document1TeachingEquipment> list)
         {
-            throw new NotImplementedException();
+            if (list == null || !list.Any())
+            {
+                return; // Nothing to delete
+            }
+
+            foreach (var item in list)
+            {
+                var existingItem = await _context.Document1TeachingEquipments
+                  .FindAsync(item.Document1Id, item.TeachingEquipmentId);
+
+                if (existingItem != null)
+                {
+                    _context.Document1TeachingEquipments.Remove(existingItem);
+                }
+            }
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Document1TeachingEquipment>> GetTeachingEquipmentByDocument1Id(int id)

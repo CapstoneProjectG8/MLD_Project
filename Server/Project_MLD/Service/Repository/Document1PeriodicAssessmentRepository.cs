@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Azure.Core;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Logging;
 using Project_MLD.Models;
 using Project_MLD.Service.Interface;
 using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata;
 
 namespace Project_MLD.Service.Repository
 {
@@ -71,9 +73,25 @@ namespace Project_MLD.Service.Repository
             }
         }
 
-        public Task DeleteDocument1PeriodicAssessment(List<PeriodicAssessment> dc)
+        public async Task DeleteDocument1PeriodicAssessment(List<PeriodicAssessment> list)
         {
-            throw new NotImplementedException();
+            if (list == null || !list.Any())
+            {
+                throw new Exception("An error occurred while delete Periodic Assessments.");
+            }
+
+            foreach (var item in list)
+            {
+                var existingItem = await _context.Document1CurriculumDistributions
+                  .FindAsync(item.Document1Id, item.FormCategoryId, item.TestingCategoryId);
+
+                if (existingItem != null)
+                {
+                    _context.Document1CurriculumDistributions.Remove(existingItem);
+                }
+            }
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<PeriodicAssessment>> GetAllPeriodicAssessment()

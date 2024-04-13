@@ -24,7 +24,8 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<PeriodicAssessment>> GetAllPeriodicAssessment()
         {
             var PeriodicAssessment = await _repository.GetAllPeriodicAssessment();
-            return Ok(PeriodicAssessment);
+            var mapper = _mapper.Map<List<PeriodicAssessmentDTO>>(PeriodicAssessment);
+            return Ok(mapper);
         }
 
         [HttpGet("{id}")]
@@ -47,10 +48,34 @@ namespace Project_MLD.Controllers
                     }
                 }
                 var mapRequests = _mapper.Map<List<PeriodicAssessment>>(requests);
-                foreach (var item in requests)
+
+                await _repository.UpdateDocument1PeriodicAssessment(mapRequests);
+
+                return Ok("Update Successfully");
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it accordingly
+                return StatusCode(500, $"An error occurred while updating Periodic Assessment: {ex.Message}");
+            }
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteDocument1PeriodicAssessment(int documentId, List<PeriodicAssessment> requests)
+        {
+            try
+            {
+                foreach (var request in requests)
                 {
-                    await _repository.UpdateDocument1PeriodicAssessment(mapRequests);
+                    if (request.Document1Id != documentId)
+                    {
+                        return BadRequest("Id Not Match");
+                    }
                 }
+                var mapRequests = _mapper.Map<List<PeriodicAssessment>>(requests);
+
+                await _repository.DeleteDocument1PeriodicAssessment(mapRequests);
+
                 return Ok("Update Successfully");
             }
             catch (Exception ex)

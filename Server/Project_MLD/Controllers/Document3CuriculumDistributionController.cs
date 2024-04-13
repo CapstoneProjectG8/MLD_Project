@@ -11,10 +11,10 @@ namespace Project_MLD.Controllers
     [ApiController]
     public class Document3CuriculumDistributionController : ControllerBase
     {
-        private readonly IDocument3SelectedTopicsRepository _repository;
+        private readonly IDocument3CurriculumDistributionRepository _repository;
         private readonly IMapper _mapper;
 
-        public Document3CuriculumDistributionController(IDocument3SelectedTopicsRepository repository, IMapper mapper)
+        public Document3CuriculumDistributionController(IDocument3CurriculumDistributionRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
@@ -24,7 +24,8 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<Document3CurriculumDistribution>> GetDocument3CuriculumDistributionByDocument3ID(int id)
         {
             var cd = await _repository.GetCurriculumDistributionByDocument3Id(id);
-            return Ok(cd);
+            var mapper = _mapper.Map<List<Document3CurriculumDistributionDTO>>(cd);
+            return Ok(mapper);
         }
 
         [HttpPut]

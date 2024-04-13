@@ -29,7 +29,8 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<Document1SelectedTopic>> GetDocument1SelectedTopicByDocument1ID(int id)
         {
             var selectedTopic = await _repository.GetSelectedTopicByDocument1Id(id);
-            return Ok(selectedTopic);
+            var mapper = _mapper.Map<Document1SelectedTopicsDTO>(selectedTopic);
+            return Ok(mapper);
         }
 
         [HttpPut]
@@ -55,6 +56,30 @@ namespace Project_MLD.Controllers
             {
                 // Log the exception or handle it accordingly
                 return StatusCode(500, $"An error occurred while updating Document1 SelectedTopic: {ex.Message}");
+            }
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteDocument1SelectedTopic(int documentId, List<Document1SelectedTopicsDTO> requests)
+        {
+            try
+            {
+                foreach (var request in requests)
+                {
+                    if (request.Document1Id != documentId)
+                    {
+                        return BadRequest("Id Not Match");
+                    }
+                }
+                var mapRequests = _mapper.Map<List<Document1SelectedTopic>>(requests);
+                await _repository.DeleteDocument1SelectedTopic(mapRequests);
+
+                return Ok("Delete Successfully");
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it accordingly
+                return StatusCode(500, $"An error occurred while delete Document1 Selected Topics: {ex.Message}");
             }
         }
     }

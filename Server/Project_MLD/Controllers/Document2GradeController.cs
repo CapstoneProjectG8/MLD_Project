@@ -3,6 +3,7 @@ using Azure.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Project_MLD.DTO;
 using Project_MLD.Models;
 using Project_MLD.Service.Interface;
 using Project_MLD.Service.Repository;
@@ -69,6 +70,31 @@ namespace Project_MLD.Controllers
             {
                 // Log the exception or handle it accordingly
                 return StatusCode(500, $"An error occurred while updating Document2 Grade: {ex.Message}");
+            }
+        }
+
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteDocument2Grad(int documentId, List<Document2GradeDTO> requests)
+        {
+            try
+            {
+                foreach (var request in requests)
+                {
+                    if (request.Document2Id != documentId)
+                    {
+                        return BadRequest("Id Not Match");
+                    }
+                }
+                var mapRequests = _mapper.Map<List<Document2Grade>>(requests);
+                await _repository.DeleteDocument2Grade(mapRequests);
+
+                return Ok("Delete Successfully");
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it accordingly
+                return StatusCode(500, $"An error occurred while delete Document1 CurriculumDistribution: {ex.Message}");
             }
         }
     }

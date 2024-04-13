@@ -2,6 +2,7 @@
 using Project_MLD.Models;
 using Project_MLD.Service.Interface;
 using System;
+using System.Collections.Generic;
 
 namespace Project_MLD.Service.Repository
 {
@@ -14,9 +15,25 @@ namespace Project_MLD.Service.Repository
             _context = context;
         }
 
-        public Task DeleteDocument1SelectedTopic(List<Document1SelectedTopic> dc)
+        public async Task DeleteDocument1SelectedTopic(List<Document1SelectedTopic> list)
         {
-            throw new NotImplementedException();
+            if (list == null || !list.Any())
+            {
+                return; // Nothing to delete
+            }
+
+            foreach (var item in list)
+            {
+                var existingItem = await _context.Document1SelectedTopics
+                  .FindAsync(item.Document1Id, item.SelectedTopicsId);
+
+                if (existingItem != null)
+                {
+                    _context.Document1SelectedTopics.Remove(existingItem);
+                }
+            }
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Document1SelectedTopic>> GetSelectedTopicByDocument1Id(int id)

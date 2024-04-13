@@ -14,9 +14,25 @@ namespace Project_MLD.Service.Repository
             _context = context;
         }
 
-        public Task DeleteDocument2Grade(List<Document2Grade> list)
+        public async Task DeleteDocument2Grade(List<Document2Grade> list)
         {
-            throw new NotImplementedException();
+            if (list == null || !list.Any())
+            {
+                return; // Nothing to delete
+            }
+
+            foreach (var item in list)
+            {
+                var existingItem = await _context.Document2Grades
+                  .FindAsync(item.Document2Id, item.GradeId);
+
+                if (existingItem != null)
+                {
+                    _context.Document2Grades.Remove(existingItem);
+                }
+            }
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Document2Grade>> GetAllDocuemnt2Grades()

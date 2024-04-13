@@ -2,6 +2,7 @@
 using Project_MLD.Models;
 using Project_MLD.Service.Interface;
 using System;
+using System.Collections.Generic;
 
 namespace Project_MLD.Service.Repository
 {
@@ -14,9 +15,25 @@ namespace Project_MLD.Service.Repository
             _context = context;
         }
 
-        public Task DeleteDocument3CurriculumDistribution(List<Document3CurriculumDistribution> dc)
+        public async Task DeleteDocument3CurriculumDistribution(List<Document3CurriculumDistribution> list)
         {
-            throw new NotImplementedException();
+            if (list == null || !list.Any())
+            {
+                return; // Nothing to delete
+            }
+
+            foreach (var item in list)
+            {
+                var existingItem = await _context.Document3CurriculumDistributions
+                  .FindAsync(item.Document3Id, item.CurriculumId);
+
+                if (existingItem != null)
+                {
+                    _context.Document3CurriculumDistributions.Remove(existingItem);
+                }
+            }
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Document3CurriculumDistribution>> GetCurriculumDistributionByDocument3Id(int id)
