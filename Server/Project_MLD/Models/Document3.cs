@@ -13,6 +13,8 @@ public partial class Document3
 
     public int? UserId { get; set; }
 
+    public string? ClaasName { get; set; }
+
     public bool? Status { get; set; }
 
     public bool? IsApprove { get; set; }

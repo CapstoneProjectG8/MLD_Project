@@ -389,6 +389,7 @@ public partial class MldDatabaseContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.ApproveBy).HasColumnName("approve_by");
+            entity.Property(e => e.ClaasName).HasColumnName("claas_name");
             entity.Property(e => e.CreatedDate).HasColumnName("created_date");
             entity.Property(e => e.Document1Id).HasColumnName("document1_id");
             entity.Property(e => e.IsApprove).HasColumnName("isApprove");
