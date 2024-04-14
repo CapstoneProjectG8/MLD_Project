@@ -75,7 +75,7 @@ namespace Project_MLD.Controllers
 
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteDocument2Grad(int documentId, List<Document2GradeDTO> requests)
+        public async Task<IActionResult> DeleteDocument2Grade(int documentId, List<Document2GradeDTO> requests)
         {
             try
             {

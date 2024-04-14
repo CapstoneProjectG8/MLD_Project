@@ -61,7 +61,7 @@ namespace Project_MLD.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteDocument1PeriodicAssessment(int documentId, List<PeriodicAssessment> requests)
+        public async Task<IActionResult> DeleteDocument1PeriodicAssessment(int documentId, List<PeriodicAssessmentDTO> requests)
         {
             try
             {

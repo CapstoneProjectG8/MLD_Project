@@ -55,6 +55,29 @@ namespace Project_MLD.Controllers
             }
         }
 
+        [HttpDelete]
+        public async Task<IActionResult> DeleteDocument3SelectedTopics(int documentId, List<Document3SelectedTopicDTO> requests)
+        {
+            try
+            {
+                foreach (var request in requests)
+                {
+                    if (request.Document3Id != documentId)
+                    {
+                        return BadRequest("Id Not Match");
+                    }
+                }
+                var mapRequests = _mapper.Map<List<Document3SelectedTopic>>(requests);
+                await _repository.DeleteDocument3SelectedTopics(mapRequests);
+
+                return Ok("Delete Successfully");
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it accordingly
+                return StatusCode(500, $"An error occurred while delete Document3 Selected Topics: {ex.Message}");
+            }
+        }
 
     }
 }
