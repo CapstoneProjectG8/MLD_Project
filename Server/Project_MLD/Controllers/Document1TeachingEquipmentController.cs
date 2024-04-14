@@ -24,7 +24,7 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<Document1TeachingEquipment>> GetDocument1TeachingEquipmentByDocument1ID(int id)
         {
             var TeachingEquipment = await _repository.GetTeachingEquipmentByDocument1Id(id);
-            var mapper = _mapper.Map<List<Document1TeachingEquipment>>(TeachingEquipment);
+            var mapper = _mapper.Map<List<Document1TeachingEquipmentsDTO>>(TeachingEquipment);
             return Ok(mapper);
         }
 

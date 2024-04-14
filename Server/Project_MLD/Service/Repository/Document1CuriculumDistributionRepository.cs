@@ -69,7 +69,7 @@ namespace Project_MLD.Service.Repository
         {
             if (list == null || !list.Any())
             {
-                throw new Exception("An error occurred while delete Periodic Assessments.");
+                throw new Exception("An error occurred while delete Curriculum Distributions.");
             }
 
             foreach (var item in list)
