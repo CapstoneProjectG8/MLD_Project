@@ -28,7 +28,7 @@ namespace Project_MLD.Controllers
             {
                 return NotFound("No Document 3 Available");
             }
-            var mapDocument = _mapper.Map<Document3DTO>(document3s);
+            var mapDocument = _mapper.Map<List<Document3DTO>>(document3s);
             return Ok(mapDocument);
         }
 

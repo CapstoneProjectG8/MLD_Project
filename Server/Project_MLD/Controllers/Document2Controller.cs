@@ -29,7 +29,7 @@ namespace Project_MLD.Controllers
             {
                 return NotFound("No Document 2 Found");
             }
-            var mapDocumemt = _mapper.Map<Document2DTO>(pl2);
+            var mapDocumemt = _mapper.Map<List<Document2DTO>>(pl2);
             return Ok(mapDocumemt);
         }
 
