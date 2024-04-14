@@ -37,16 +37,15 @@ namespace Project_MLD.Service.Repository
                             Name = item.Curriculum.Name
                         };
                         _context.CurriculumDistributions.Add(curriculum);
-                        _context.SaveChanges();
                     }
                     var existingItem = await _context.Document1CurriculumDistributions
-                        .FindAsync(item.Document1Id, curriculum.Id);
+                        .FindAsync(item.Document1Id, item.CurriculumId);
                     if (existingItem == null)
                     {
                         var newItem = new Document1CurriculumDistribution
                         {
                             Document1Id = item.Document1Id,
-                            CurriculumId = curriculum.Id,
+                            CurriculumId = item.CurriculumId,
                             Slot = item.Slot,
                             Description = item.Description
                         };
@@ -66,25 +65,9 @@ namespace Project_MLD.Service.Repository
             }
         }
 
-        public async Task DeleteDocument1CurriculumDistribution(List<Document1CurriculumDistribution> list)
+        public Task DeleteDocument1CurriculumDistribution(List<Document1CurriculumDistribution> list)
         {
-            if (list == null || !list.Any())
-            {
-                return; // Nothing to delete
-            }
-
-            foreach (var item in list)
-            {
-                var existingItem = await _context.Document1CurriculumDistributions
-                  .FindAsync(item.Document1Id, item.CurriculumId);
-
-                if (existingItem != null)
-                {
-                    _context.Document1CurriculumDistributions.Remove(existingItem);
-                }
-            }
-
-            await _context.SaveChangesAsync();
+            throw new NotImplementedException();
         }
 
     }
