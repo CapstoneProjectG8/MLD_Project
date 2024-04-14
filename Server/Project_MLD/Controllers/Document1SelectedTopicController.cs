@@ -25,11 +25,11 @@ namespace Project_MLD.Controllers
 
         }
 
-        [HttpGet]
-        public async Task<ActionResult<Document1SelectedTopic>> GetDocument1SelectedTopicByDocument1ID(int id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<IEnumerable<Document1SelectedTopic>>> GetDocument1SelectedTopicByDocument1ID(int id)
         {
             var selectedTopic = await _repository.GetSelectedTopicByDocument1Id(id);
-            var mapper = _mapper.Map<Document1SelectedTopicsDTO>(selectedTopic);
+            var mapper = _mapper.Map<List<Document1SelectedTopicsDTO>>(selectedTopic);
             return Ok(mapper);
         }
 

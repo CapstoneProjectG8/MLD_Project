@@ -47,6 +47,11 @@ namespace Project_MLD.Mapper
                 .ForMember(x => x.Document1Id, y => y.MapFrom(src => src.Document1.Id))
                 .ForMember(x => x.SelectedTopicsId, y => y.MapFrom(src => src.SelectedTopics.Id))
                 .ReverseMap();
+            CreateMap<Document1SubjectRoom, Document1SubjectRoomDTO>()
+                .ForMember(x => x.SubjectRoomId, y => y.MapFrom(src => src.SubjectRoom.Id))
+                .ForMember(x => x.Document1Id, y => y.MapFrom(src => src.Document1.Id))
+                .ForMember(x => x.SubjectRoomName, y => y.MapFrom(src => src.SubjectRoom.Name))
+                .ReverseMap();
             CreateMap<PeriodicAssessment, PeriodicAssessmentDTO>()
                 .ForMember(x => x.FormCategoryId, y => y.MapFrom(src => src.FormCategory.Id))
                 .ForMember(x => x.FormCategoryName, y => y.MapFrom(src => src.FormCategory.Name))

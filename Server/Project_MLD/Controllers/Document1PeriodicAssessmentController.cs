@@ -21,7 +21,7 @@ namespace Project_MLD.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<PeriodicAssessment>> GetAllPeriodicAssessment()
+        public async Task<ActionResult<IEnumerable<PeriodicAssessment>>> GetAllPeriodicAssessment()
         {
             var PeriodicAssessment = await _repository.GetAllPeriodicAssessment();
             var mapper = _mapper.Map<List<PeriodicAssessmentDTO>>(PeriodicAssessment);
@@ -29,15 +29,15 @@ namespace Project_MLD.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<PeriodicAssessment>> GetDocument1PeriodicAssessmentByDocument1ID(int id)
+        public async Task<ActionResult<IEnumerable<PeriodicAssessment>>> GetDocument1PeriodicAssessmentByDocument1ID(int id)
         {
             var PeriodicAssessment = await _repository.GetPeriodicAssessmentByDocument1Id(id);
-            var mapper = _mapper.Map<List<PeriodicAssessmentDTO>>(PeriodicAssessment);
+            var mapper = _mapper.Map<List<List<PeriodicAssessmentDTO>>>(PeriodicAssessment);
             return Ok(mapper);
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateDocument1PeriodicAssessment(int documentId, List<PeriodicAssessment> requests)
+        public async Task<IActionResult> UpdateDocument1PeriodicAssessment(int documentId, List<PeriodicAssessmentDTO> requests)
         {
             try
             {

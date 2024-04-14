@@ -21,6 +21,9 @@ namespace Project_MLD.Service.Repository
         public async Task<IEnumerable<PeriodicAssessment>> GetPeriodicAssessmentByDocument1Id(int id)
         {
             var pa = await _context.PeriodicAssessments
+                .Include(x => x.Document1)
+                .Include(x => x.FormCategory)
+                .Include(x => x.TestingCategory)
                 .Where(x => x.Document1Id == id)
                 .ToListAsync();
             return pa;

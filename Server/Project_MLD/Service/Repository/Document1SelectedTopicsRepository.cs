@@ -39,6 +39,8 @@ namespace Project_MLD.Service.Repository
         public async Task<IEnumerable<Document1SelectedTopic>> GetSelectedTopicByDocument1Id(int id)
         {
             var st = await _context.Document1SelectedTopics
+                .Include(x => x.Document1)
+                .Include(x => x.SelectedTopics)
                 .Where(x => x.Document1Id == id)
                 .ToListAsync();
             return st;

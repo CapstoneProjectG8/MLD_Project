@@ -26,7 +26,7 @@ namespace Project_MLD.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<Document1SubjectRoom>> GetDocument1SubjectRoomByDocument1ID(int id)
+        public async Task<ActionResult<IEnumerable<Document1SubjectRoom>>> GetDocument1SubjectRoomByDocument1ID(int id)
         {
             var subjectRoom = await _repository.GetSubjectRoomsByDocument1Id(id);
             var mapper = _mapper.Map<List<Document1SubjectRoomDTO>>(subjectRoom);

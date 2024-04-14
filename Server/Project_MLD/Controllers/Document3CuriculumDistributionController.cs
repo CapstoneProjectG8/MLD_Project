@@ -21,7 +21,7 @@ namespace Project_MLD.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<Document3CurriculumDistribution>> GetDocument3CuriculumDistributionByDocument3ID(int id)
+        public async Task<ActionResult<IEnumerable<Document3CurriculumDistribution>>> GetDocument3CuriculumDistributionByDocument3ID(int id)
         {
             var cd = await _repository.GetCurriculumDistributionByDocument3Id(id);
             var mapper = _mapper.Map<List<Document3CurriculumDistributionDTO>>(cd);

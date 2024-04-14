@@ -37,12 +37,17 @@ namespace Project_MLD.Service.Repository
 
         public async Task<IEnumerable<Document2Grade>> GetAllDocuemnt2Grades()
         {
-            return await _context.Document2Grades.ToListAsync();
+            return await _context.Document2Grades
+                .Include(x => x.Grade)
+                .Include(x => x.Document2)
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<Document2Grade>> GetDocument2GradeByDocument2Id(int id)
         {
             return await _context.Document2Grades
+                .Include(x => x.Grade)
+                .Include(x => x.Document2)
                 .Where(x => x.Document2Id == id).ToListAsync();
         }
 

@@ -39,6 +39,8 @@ namespace Project_MLD.Service.Repository
         public async Task<IEnumerable<Document1TeachingEquipment>> GetTeachingEquipmentByDocument1Id(int id)
         {
             var te = await _context.Document1TeachingEquipments
+                .Include(x => x.TeachingEquipment)
+                .Include(x => x.Document1)
                .Where(x => x.Document1Id == id)
                .ToListAsync();
             return te;

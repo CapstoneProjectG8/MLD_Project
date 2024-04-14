@@ -17,6 +17,8 @@ namespace Project_MLD.Service.Repository
         public async Task<IEnumerable<Document1SubjectRoom>> GetSubjectRoomsByDocument1Id(int id)
         {
             var subjectRooms = await _context.Document1SubjectRooms
+                .Include(x => x.Document1)
+                .Include(x => x.SubjectRoom)
                 .Where(x => x.Document1Id == id)
                 .ToListAsync();
             return subjectRooms;

@@ -39,6 +39,8 @@ namespace Project_MLD.Service.Repository
         public async Task<IEnumerable<Document3CurriculumDistribution>> GetCurriculumDistributionByDocument3Id(int id)
         {
             var cd = await _context.Document3CurriculumDistributions
+                .Include(x => x.Document3)
+                .Include(x => x.Curriculum)
                  .Where(x => x.Document3Id == id)
                  .ToListAsync();
             return cd;
