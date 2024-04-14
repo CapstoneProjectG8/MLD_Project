@@ -58,14 +58,14 @@ namespace Project_MLD.Controllers
         }
 
         [HttpGet("ByApprove")]
-        public async Task<ActionResult<Document1>> GetDocument2ByApproval()
+        public async Task<ActionResult<IEnumerable<Document2>>> GetDocument2ByApproval()
         {
             var document2 = await _repository.GetDocument2ByApproval();
             if (document2 == null)
             {
                 return NotFound("No Document 2 Found");
             }
-            var mapDocument = _mapper.Map<Document2DTO>(document2);
+            var mapDocument = _mapper.Map<List<Document2DTO>>(document2);
             return Ok(mapDocument);
         }
 

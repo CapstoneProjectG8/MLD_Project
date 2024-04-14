@@ -33,14 +33,14 @@ namespace Project_MLD.Controllers
         }
 
         [HttpGet("ByApprove")]
-        public async Task<ActionResult<Document3>> GetDocument3ByApproval()
+        public async Task<ActionResult<IEnumerable<Document3>>> GetDocument3ByApproval()
         {
             var Document3 = await _repository.GetDocument3ByApproval();
             if (Document3 == null)
             {
                 return NotFound("No Document 3 Found");
             }
-            var mapDocument = _mapper.Map<Document3DTO>(Document3);
+            var mapDocument = _mapper.Map<List<Document3DTO>>(Document3);
             return Ok(mapDocument);
         }
 
