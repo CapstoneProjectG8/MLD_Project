@@ -30,7 +30,7 @@ namespace Project_MLD.Controllers
         {
             var curriculumDistribution = await _repository.GetCurriculumDistributionByDocument1Id(id);
             var mapper = _mapper.Map<List<Document1CurriculumDistributionDTO>>(curriculumDistribution);
-            return Ok(curriculumDistribution);
+            return Ok(mapper);
         }
 
         [HttpPut]

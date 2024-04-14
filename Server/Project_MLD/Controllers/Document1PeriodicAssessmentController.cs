@@ -32,7 +32,8 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<PeriodicAssessment>> GetDocument1PeriodicAssessmentByDocument1ID(int id)
         {
             var PeriodicAssessment = await _repository.GetPeriodicAssessmentByDocument1Id(id);
-            return Ok(PeriodicAssessment);
+            var mapper = _mapper.Map<List<PeriodicAssessmentDTO>>(PeriodicAssessment);
+            return Ok(mapper);
         }
 
         [HttpPut]
