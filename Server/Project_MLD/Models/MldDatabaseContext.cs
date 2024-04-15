@@ -63,6 +63,8 @@ public partial class MldDatabaseContext : DbContext
 
     public virtual DbSet<Role> Roles { get; set; }
 
+    public virtual DbSet<S3FileMetadatum> S3FileMetadata { get; set; }
+
     public virtual DbSet<Scorm> Scorms { get; set; }
 
     public virtual DbSet<SelectedTopic> SelectedTopics { get; set; }
@@ -82,37 +84,24 @@ public partial class MldDatabaseContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        var builder = new ConfigurationBuilder()
-                              .SetBasePath(Directory.GetCurrentDirectory())
-                              .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-        IConfigurationRoot configuration = builder.Build();
-        optionsBuilder.UseSqlServer(configuration.GetConnectionString("MyCnn"));
-    }
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("server =localhost; database = MLD_Database;uid=sa;pwd=sa;TrustServerCertificate=true");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.UseCollation("Latin1_General_100_CI_AS_SC_UTF8");
-
         modelBuilder.Entity<Account>(entity =>
         {
             entity.ToTable("Account");
 
             entity.Property(e => e.AccountId).HasColumnName("account_id");
             entity.Property(e => e.Active).HasColumnName("active");
-            entity.Property(e => e.CreatedBy)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("created_by");
+            entity.Property(e => e.CreatedBy).HasColumnName("created_by");
             entity.Property(e => e.CreatedDate).HasColumnName("created_date");
             entity.Property(e => e.LoginAttempt).HasColumnName("login_attempt");
             entity.Property(e => e.LoginLast).HasColumnName("login_last");
-            entity.Property(e => e.Password)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("password");
+            entity.Property(e => e.Password).HasColumnName("password");
             entity.Property(e => e.RoleId).HasColumnName("role_id");
-            entity.Property(e => e.Username)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("username");
+            entity.Property(e => e.Username).HasColumnName("username");
 
             entity.HasOne(d => d.Role).WithMany(p => p.Accounts)
                 .HasForeignKey(d => d.RoleId)
@@ -123,9 +112,7 @@ public partial class MldDatabaseContext : DbContext
         {
             entity.ToTable("Category");
 
-            entity.Property(e => e.Name)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name");
         });
 
         modelBuilder.Entity<Class>(entity =>
@@ -136,9 +123,7 @@ public partial class MldDatabaseContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.GradeId).HasColumnName("grade_ id");
-            entity.Property(e => e.Name)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name");
 
             entity.HasOne(d => d.Grade).WithMany(p => p.Classes)
                 .HasForeignKey(d => d.GradeId)
@@ -152,9 +137,7 @@ public partial class MldDatabaseContext : DbContext
             entity.ToTable("Curriculum Distribution");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name");
         });
 
         modelBuilder.Entity<Document1>(entity =>
@@ -170,12 +153,8 @@ public partial class MldDatabaseContext : DbContext
             entity.Property(e => e.IsApprove).HasColumnName("isApprove");
             entity.Property(e => e.LinkFile).HasColumnName("link_file");
             entity.Property(e => e.LinkImage).HasColumnName("link_image");
-            entity.Property(e => e.Name)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("name");
-            entity.Property(e => e.Note)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("note");
+            entity.Property(e => e.Name).HasColumnName("name");
+            entity.Property(e => e.Note).HasColumnName("note");
             entity.Property(e => e.OtherTasks).HasColumnName("other_tasks");
             entity.Property(e => e.Status).HasColumnName("status");
             entity.Property(e => e.SubjectId).HasColumnName("subject_id");
@@ -202,9 +181,7 @@ public partial class MldDatabaseContext : DbContext
 
             entity.Property(e => e.Document1Id).HasColumnName("document1_id");
             entity.Property(e => e.CurriculumId).HasColumnName("curriculum_id");
-            entity.Property(e => e.Description)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("description");
+            entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.Slot).HasColumnName("slot");
 
             entity.HasOne(d => d.Curriculum).WithMany(p => p.Document1CurriculumDistributions)
@@ -226,9 +203,7 @@ public partial class MldDatabaseContext : DbContext
 
             entity.Property(e => e.Document1Id).HasColumnName("document1_id");
             entity.Property(e => e.SelectedTopicsId).HasColumnName("selected_topics_id");
-            entity.Property(e => e.Description)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("description");
+            entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.Slot).HasColumnName("slot");
 
             entity.HasOne(d => d.Document1).WithMany(p => p.Document1SelectedTopics)
@@ -250,12 +225,8 @@ public partial class MldDatabaseContext : DbContext
 
             entity.Property(e => e.SubjectRoomId).HasColumnName("subject_room_id");
             entity.Property(e => e.Document1Id).HasColumnName("document1_id");
-            entity.Property(e => e.Description)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("description");
-            entity.Property(e => e.Note)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("note");
+            entity.Property(e => e.Description).HasColumnName("description");
+            entity.Property(e => e.Note).HasColumnName("note");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
 
             entity.HasOne(d => d.Document1).WithMany(p => p.Document1SubjectRooms)
@@ -277,12 +248,8 @@ public partial class MldDatabaseContext : DbContext
 
             entity.Property(e => e.Document1Id).HasColumnName("document1_id");
             entity.Property(e => e.TeachingEquipmentId).HasColumnName("teaching_equipment_id");
-            entity.Property(e => e.Description)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("description");
-            entity.Property(e => e.Note)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("note");
+            entity.Property(e => e.Description).HasColumnName("description");
+            entity.Property(e => e.Note).HasColumnName("note");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
 
             entity.HasOne(d => d.Document1).WithMany(p => p.Document1TeachingEquipments)
@@ -308,9 +275,7 @@ public partial class MldDatabaseContext : DbContext
             entity.Property(e => e.IsApprove).HasColumnName("isApprove");
             entity.Property(e => e.LinkFile).HasColumnName("link_file");
             entity.Property(e => e.LinkImage).HasColumnName("link_image");
-            entity.Property(e => e.Name)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name");
             entity.Property(e => e.Status).HasColumnName("status");
             entity.Property(e => e.UserId).HasColumnName("user_id");
 
@@ -327,26 +292,14 @@ public partial class MldDatabaseContext : DbContext
 
             entity.Property(e => e.Document2Id).HasColumnName("document2_id");
             entity.Property(e => e.GradeId).HasColumnName("grade_id");
-            entity.Property(e => e.CollaborateWith)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("collaborate_with");
-            entity.Property(e => e.Condition)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("condition");
-            entity.Property(e => e.Description)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("description");
-            entity.Property(e => e.HostBy)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("host_by");
-            entity.Property(e => e.Place)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("place");
+            entity.Property(e => e.CollaborateWith).HasColumnName("collaborate_with");
+            entity.Property(e => e.Condition).HasColumnName("condition");
+            entity.Property(e => e.Description).HasColumnName("description");
+            entity.Property(e => e.HostBy).HasColumnName("host_by");
+            entity.Property(e => e.Place).HasColumnName("place");
             entity.Property(e => e.Slot).HasColumnName("slot");
             entity.Property(e => e.Time).HasColumnName("time");
-            entity.Property(e => e.TitleName)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("title_name");
+            entity.Property(e => e.TitleName).HasColumnName("title_name");
 
             entity.HasOne(d => d.Document2).WithMany(p => p.Document2Grades)
                 .HasForeignKey(d => d.Document2Id)
@@ -373,9 +326,7 @@ public partial class MldDatabaseContext : DbContext
             entity.Property(e => e.IsApprove).HasColumnName("isApprove");
             entity.Property(e => e.LinkFile).HasColumnName("link_file");
             entity.Property(e => e.LinkImage).HasColumnName("link_image");
-            entity.Property(e => e.Name)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name");
             entity.Property(e => e.OtherTasks).HasColumnName("other_tasks");
             entity.Property(e => e.Status).HasColumnName("status");
             entity.Property(e => e.UserId).HasColumnName("user_id");
@@ -460,9 +411,7 @@ public partial class MldDatabaseContext : DbContext
                 .HasColumnName("created_date");
             entity.Property(e => e.LinkFile).HasColumnName("link_file");
             entity.Property(e => e.LinkImage).HasColumnName("link_image");
-            entity.Property(e => e.Name)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name");
             entity.Property(e => e.Status).HasColumnName("status");
             entity.Property(e => e.TeachingPlannerId).HasColumnName("teaching_planner_id");
 
@@ -485,9 +434,7 @@ public partial class MldDatabaseContext : DbContext
             entity.Property(e => e.Document4Id).HasColumnName("document4_id");
             entity.Property(e => e.LinkFile).HasColumnName("link_file");
             entity.Property(e => e.LinkImage).HasColumnName("link_image");
-            entity.Property(e => e.Name)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name");
             entity.Property(e => e.Total).HasColumnName("total");
             entity.Property(e => e.UserId).HasColumnName("user_id");
 
@@ -508,9 +455,7 @@ public partial class MldDatabaseContext : DbContext
             entity.Property(e => e.Id)
                 .ValueGeneratedNever()
                 .HasColumnName("id");
-            entity.Property(e => e.Content)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("content");
+            entity.Property(e => e.Content).HasColumnName("content");
             entity.Property(e => e.UserId).HasColumnName("user_id");
 
             entity.HasOne(d => d.User).WithMany(p => p.Feedbacks)
@@ -525,9 +470,7 @@ public partial class MldDatabaseContext : DbContext
             entity.ToTable("Form Category");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name");
         });
 
         modelBuilder.Entity<Grade>(entity =>
@@ -537,9 +480,7 @@ public partial class MldDatabaseContext : DbContext
             entity.ToTable("Grade");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name");
             entity.Property(e => e.TotalStudent).HasColumnName("total_student");
             entity.Property(e => e.TotalStudentSelectedTopics).HasColumnName("total_student_selected_topics");
         });
@@ -551,9 +492,7 @@ public partial class MldDatabaseContext : DbContext
             entity.ToTable("Level Of Trainning");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name");
         });
 
         modelBuilder.Entity<Notification>(entity =>
@@ -583,9 +522,7 @@ public partial class MldDatabaseContext : DbContext
             entity.Property(e => e.FormCategoryId).HasColumnName("form_category_id");
             entity.Property(e => e.Document1Id).HasColumnName("document1_id");
             entity.Property(e => e.Date).HasColumnName("date");
-            entity.Property(e => e.Description)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("description");
+            entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.Time).HasColumnName("time");
 
             entity.HasOne(d => d.Document1).WithMany(p => p.PeriodicAssessments)
@@ -609,9 +546,7 @@ public partial class MldDatabaseContext : DbContext
             entity.ToTable("Professional Standards");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name");
         });
 
         modelBuilder.Entity<Role>(entity =>
@@ -620,9 +555,23 @@ public partial class MldDatabaseContext : DbContext
 
             entity.Property(e => e.RoleId).HasColumnName("role_id");
             entity.Property(e => e.Active).HasColumnName("active");
-            entity.Property(e => e.RoleName)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("role_name");
+            entity.Property(e => e.RoleName).HasColumnName("role_name");
+        });
+
+        modelBuilder.Entity<S3FileMetadatum>(entity =>
+        {
+            entity.ToTable("s3_file_metadata");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.ExpirationDatetime)
+                .HasColumnType("datetime")
+                .HasColumnName("expiration_datetime");
+            entity.Property(e => e.FileKey)
+                .HasMaxLength(200)
+                .HasColumnName("file_key");
+            entity.Property(e => e.PresignedUrl)
+                .HasMaxLength(250)
+                .HasColumnName("presigned_url");
         });
 
         modelBuilder.Entity<Scorm>(entity =>
@@ -635,9 +584,7 @@ public partial class MldDatabaseContext : DbContext
             entity.Property(e => e.CategoryId).HasColumnName("category_id");
             entity.Property(e => e.Content).HasColumnName("content");
             entity.Property(e => e.Document4Id).HasColumnName("document4_id");
-            entity.Property(e => e.Name)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name");
 
             entity.HasOne(d => d.Category).WithMany(p => p.Scorms)
                 .HasForeignKey(d => d.CategoryId)
@@ -657,9 +604,7 @@ public partial class MldDatabaseContext : DbContext
             entity.ToTable("Selected Topics");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name");
         });
 
         modelBuilder.Entity<SpecializedDepartment>(entity =>
@@ -669,9 +614,7 @@ public partial class MldDatabaseContext : DbContext
             entity.ToTable("Specialized Department");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name");
         });
 
         modelBuilder.Entity<Subject>(entity =>
@@ -681,9 +624,7 @@ public partial class MldDatabaseContext : DbContext
             entity.ToTable("Subject");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name");
         });
 
         modelBuilder.Entity<SubjectRoom>(entity =>
@@ -693,9 +634,7 @@ public partial class MldDatabaseContext : DbContext
             entity.ToTable("Subject Room");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name");
         });
 
         modelBuilder.Entity<TeachingEquipment>(entity =>
@@ -705,9 +644,7 @@ public partial class MldDatabaseContext : DbContext
             entity.ToTable("Teaching Equipment");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name");
         });
 
         modelBuilder.Entity<TeachingPlanner>(entity =>
@@ -741,9 +678,7 @@ public partial class MldDatabaseContext : DbContext
             entity.ToTable("Testing Category");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("name");
+            entity.Property(e => e.Name).HasColumnName("name");
         });
 
         modelBuilder.Entity<User>(entity =>
@@ -753,34 +688,20 @@ public partial class MldDatabaseContext : DbContext
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.AccountId).HasColumnName("account_id");
             entity.Property(e => e.Active).HasColumnName("active");
-            entity.Property(e => e.Address)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("address");
+            entity.Property(e => e.Address).HasColumnName("address");
             entity.Property(e => e.Age).HasColumnName("age");
-            entity.Property(e => e.CreatedBy)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("created_by");
+            entity.Property(e => e.CreatedBy).HasColumnName("created_by");
             entity.Property(e => e.CreatedDate).HasColumnName("created_date");
-            entity.Property(e => e.Email)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("email");
-            entity.Property(e => e.FirstName)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("first_name");
-            entity.Property(e => e.FullName)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("full_name");
+            entity.Property(e => e.Email).HasColumnName("email");
+            entity.Property(e => e.FirstName).HasColumnName("first_name");
+            entity.Property(e => e.FullName).HasColumnName("full_name");
             entity.Property(e => e.Gender).HasColumnName("gender");
-            entity.Property(e => e.LastName)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("last_name");
+            entity.Property(e => e.LastName).HasColumnName("last_name");
             entity.Property(e => e.LevelOfTrainningId).HasColumnName("level_of_trainning_id");
             entity.Property(e => e.ModifiedBy).HasColumnName("modified_by");
             entity.Property(e => e.ModifiedDate).HasColumnName("modified_date");
             entity.Property(e => e.Photo).HasColumnName("photo");
-            entity.Property(e => e.PlaceOfBirth)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("place_of_birth");
+            entity.Property(e => e.PlaceOfBirth).HasColumnName("place_of_birth");
             entity.Property(e => e.ProfessionalStandardsId).HasColumnName("professional_standards_id");
             entity.Property(e => e.SpecializedDepartmentId).HasColumnName("specialized_department_id");
 
