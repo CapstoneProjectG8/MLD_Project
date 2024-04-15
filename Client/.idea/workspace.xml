@@ -4,7 +4,36 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="be828d7c-dbf1-4b62-8bf4-1f83e0ab14e4" name="Changes" comment="fix dashboard, add components Phu luc" />
+    <list default="true" id="be828d7c-dbf1-4b62-8bf4-1f83e0ab14e4" name="Changes" comment="fix dashboard, add components Phu luc">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/font/font-times-new-roman.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/pages/doucumentation/phuluc1.docx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/pages/doucumentation/phuluc1.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/pages/doucumentation/style.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ClientAdmin/admindashboard/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../ClientAdmin/admindashboard/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ClientAdmin/admindashboard/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../ClientAdmin/admindashboard/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/api/permission/role.api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/api/permission/role.api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/api/user.api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/api/user.api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/interface/user/login.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/interface/user/login.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/pages/doucumentation/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/pages/doucumentation/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/pages/doucumentation2/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/pages/doucumentation2/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/pages/doucumentation3/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/pages/doucumentation3/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/pages/doucumentation4/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/pages/doucumentation4/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/pages/doucumentation5/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/pages/doucumentation5/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/pages/login/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/pages/login/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/stores/user.action.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/stores/user.action.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ClientAdmin/admindashboard/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/../ClientAdmin/admindashboard/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ClientAdmin/admindashboard/vite.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../ClientAdmin/admindashboard/vite.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ClientAdmin/admindashboard/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../ClientAdmin/admindashboard/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Project_MLD.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Project_MLD.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Project_MLD.sln" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Project_MLD.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/appsettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/appsettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/TestProject1/Document2GradeRepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/TestProject1/Document2GradeRepositoryTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/TestProject1/TestProject1.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/TestProject1/TestProject1.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../script.sql" beforeDir="false" afterPath="$PROJECT_DIR$/../script.sql" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -54,25 +83,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;anhdhn&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/damhu/OneDrive/Desktop/SEP490/MLD_Project/ClientAdmin/admindashboard&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;SCSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;npm.deploy.executor&quot;: &quot;Run&quot;,
-    &quot;npm.dev.executor&quot;: &quot;Run&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\damhu\\OneDrive\\Desktop\\SEP490\\MLD_Project\\Client\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "anhdhn",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/FPT Univer/DOANNNNNNNNN/Final/MLD_Project/Client",
+    "list.type.of.created.stylesheet": "SCSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "npm.deploy.executor": "Run",
+    "npm.dev.executor": "Run",
+    "ts.external.directory.path": "C:\\Users\\damhu\\AppData\\Local\\JetBrains\\Toolbox\\apps\\IDEA-U\\ch-0\\233.14808.21\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\damhu\OneDrive\Desktop\SEP490\MLD_Project\Client\src\content\pages\Components" />
@@ -136,6 +166,10 @@
       <workItem from="1712414653602" duration="9694000" />
       <workItem from="1712484260403" duration="9244000" />
       <workItem from="1712576908444" duration="11412000" />
+      <workItem from="1712947941353" duration="1727000" />
+      <workItem from="1713110106830" duration="6000" />
+      <workItem from="1713110133502" duration="196000" />
+      <workItem from="1713110370848" duration="873000" />
     </task>
     <task id="LOCAL-00001" summary="fix dashboard, add components Phu luc">
       <option name="closed" value="true" />

@@ -10,8 +10,16 @@ using Microsoft.AspNetCore.Identity;
 using Project_MLD.DTO;
 using Project_MLD.Utils.PasswordHash;
 using Project_MLD.Utils.GmailSender;
+using Amazon;
+using Amazon.Extensions.NETCore.Setup;
+using Amazon.Runtime;
+using Amazon.S3;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var configuration = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional:false,reloadOnChange:true).Build();
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -44,6 +52,20 @@ builder.Services.AddDbContext<MldDatabaseContext>(option =>
 builder.Services.AddAutoMapper(typeof(MapperConfig));
 
 //Dependacy Injection
+
+//Configuage AWS S3 client
+var awsSettings = configuration.GetSection("AWS");
+var credential = new BasicAWSCredentials(awsSettings["AccessKeyId"], awsSettings["SecretAccessKey"]);
+
+//Configuage AWS options
+var awsOptions = configuration.GetAWSOptions();
+awsOptions.Credentials = credential;
+awsOptions.Region = RegionEndpoint.APSoutheast2;
+builder.Services.AddDefaultAWSOptions(awsOptions);
+
+//Add the AWS S3 Service
+builder.Services.AddAWSService<IAmazonS3>();
+
 
 //Admin
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();

@@ -12,12 +12,6 @@ import { formatSearch } from '@/utils/formatSearch';
 
 import { loginAsync } from '../../stores/user.action';
 
-const initialValues: LoginParams = {
-  username: 'guest',
-  password: 'guest',
-  // remember: true
-};
-
 const LoginForm: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -37,8 +31,8 @@ const LoginForm: FC = () => {
 
   return (
     <div className="login-page">
-      <Form<LoginParams> onFinish={onFinished} className="login-page-form" initialValues={initialValues}>
-        <h2>REACT ANTD ADMIN</h2>
+      <Form<LoginParams> onFinish={onFinished} className="login-page-form">
+        <h2>MANAGEMENT E-LESSON DESIGN</h2>
         <Form.Item
           name="username"
           rules={[
