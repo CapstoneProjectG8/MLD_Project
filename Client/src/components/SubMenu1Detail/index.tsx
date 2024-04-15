@@ -3,8 +3,10 @@ import React, { useMemo, useState } from 'react'
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControlLabel, Paper, Radio, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import './style.scss'
 import { Add, Remove } from '@mui/icons-material';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import DocViewer, { PDFRenderer } from '@cyntler/react-doc-viewer';
+import { useAppSelector } from '../../hook/useTypedSelector';
+import { apiPostSubMenu1 } from '../../api/subMenu1';
 
 interface Row1 {
     stt: number | null;
@@ -37,6 +39,8 @@ interface Row4 {
 
 const SubMenu1Detail = () => {
     const location = useLocation()
+    const navigate = useNavigate()
+    const user = useAppSelector(state => state.auth.user)
     const [rows1, setRows1] = useState<Row1[]>([{ stt: null, thietBiDayHoc: '', soLuong: null, baiThiNghiem: '', ghiChu: '' }]);
     const [rows2, setRows2] = useState<Row2[]>([{ stt: null, tenPhong: '', soLuong: null, phamViNoiDung: '', ghiChu: '' }]);
     const [rows3, setRows3] = useState<Row3[]>([{ stt: null, baiHoc: '', soTiet: null, yeuCau: '' }]);
@@ -46,6 +50,7 @@ const SubMenu1Detail = () => {
     const [openAccept, setOpenAccept] = useState(false);
     const [openDeny, setOpenDeny] = useState(false);
     const [openReport, setOpenReport] = useState(false);
+    const [openRemove, setOpenRemove] = useState(false);
 
     const [truong, setTruong] = useState('');
     const [to, setTo] = useState('');
@@ -63,10 +68,27 @@ const SubMenu1Detail = () => {
     const [tot, setTot] = useState('');
     const [kha, setKha] = useState('');
     const [chuaDat, setChuaDat] = useState('');
+    const [documentId, setDocumentId] = useState('');
 
-    const handleClickOpen = () => {
+    const handleClickOpen = async () => {
         setOpen(true);
+        if (khoiLop && user && hoadDong) {
+            const post = await apiPostSubMenu1({
+                name: "KẾ HOẠCH DẠY HỌC CỦA TỔ CHUYÊN MÔN MÔN HỌC/HOẠT ĐỘNG GIÁO DỤC",
+                subjectName: hoadDong,
+                gradeName: khoiLop,
+                username: user.username,
+                note: "",
+                status: true,
+                approveByName: ""
+            })
+            if (post)
+                // setDocumentId(post?.id)
+                console.log(post)
+        }
     };
+
+    console.log("user: ", user)
 
     const handleClose = () => {
         setOpen(false);
@@ -94,6 +116,18 @@ const SubMenu1Detail = () => {
 
     const handleCloseReport = () => {
         setOpenReport(false);
+    };
+
+    const handleClickOpenRemove = () => {
+        setOpenRemove(true);
+    };
+
+    const handleCloseRemove = () => {
+        setOpenRemove(false);
+    };
+
+    const handleClickSave = () => {
+        navigate(`/sub-menu-1/detail-edit/${location.pathname.split('/')[1].split('-')[2]}`)
     };
 
     const docs = useMemo(() => [
@@ -535,6 +569,16 @@ const SubMenu1Detail = () => {
                             }}
                         // toolbar="code"
                         /> */}
+                        <div>
+                            <div className="sub-menu-action">
+                                <div className="verify" style={{ justifyContent: "center" }}>
+                                    <div style={{ display: "flex", columnGap: "10px" }}>
+                                        <div className='action-button' onClick={handleClickSave}>Sửa</div>
+                                        <div className='action-button' onClick={handleClickOpenRemove}>Xóa</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div className="sub-menu-infomation">
                             <div className="sub-menu-row">
                                 <div><i>(Tài liệu chưa được thẩm định)</i></div>
@@ -716,6 +760,28 @@ const SubMenu1Detail = () => {
                     <Button onClick={handleCloseDeny} style={{ color: "#000", fontWeight: 600 }} >Hủy bỏ</Button>
                     <Button onClick={handleCloseDeny} className='button-mui' autoFocus>
                         Từ chối
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            <Dialog
+                open={openRemove}
+                onClose={handleCloseRemove}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+
+            >
+                <DialogTitle id="alert-dialog-title" style={{ textAlign: "center", fontWeight: 600 }}>
+                    Bạn có chắc chắn không
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description" style={{ textAlign: "center", fontWeight: 600 }}>
+                        Bạn có chắc muốn xóa thay đổi không?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions >
+                    <Button onClick={handleCloseRemove} style={{ color: "#000", fontWeight: 600 }} >Hủy bỏ</Button>
+                    <Button onClick={handleCloseRemove} className='button-mui' autoFocus>
+                        Xóa
                     </Button>
                 </DialogActions>
             </Dialog>

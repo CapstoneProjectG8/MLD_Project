@@ -12,4 +12,10 @@ public partial class Document4DTO
     public int? TeachingPlannerId { get; set; }
 
     public bool? Status { get; set; }
+
+    public string? CreatedDate { get; set; }
+
+    public string? LinkFile { get; set; }
+
+    public string? LinkImage { get; set; }
 }

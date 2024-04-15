@@ -29,7 +29,7 @@ namespace Project_MLD.Controllers
             {
                 return NotFound("No Document 2 Found");
             }
-            var mapDocumemt = _mapper.Map<Document2DTO>(pl2);
+            var mapDocumemt = _mapper.Map<List<Document2DTO>>(pl2);
             return Ok(mapDocumemt);
         }
 
@@ -46,26 +46,26 @@ namespace Project_MLD.Controllers
         }
 
         [HttpGet("ByCondition/{condition}")]
-        public async Task<ActionResult<Document2>> GetDoucment2ByCondition(string condition)
+        public async Task<ActionResult<IEnumerable<Document2>>> GetDoucment2ByCondition(string condition)
         {
             var existDocument2 = await _repository.GetDocument2ByCondition(condition);
             if (existDocument2 == null)
             {
                 return NotFound("No Document 2 Found");
             }
-            var mapDocumemt = _mapper.Map<Document2DTO>(existDocument2);
+            var mapDocumemt = _mapper.Map<List<Document2DTO>>(existDocument2);
             return Ok(mapDocumemt);
         }
 
         [HttpGet("ByApprove")]
-        public async Task<ActionResult<Document1>> GetDocument2ByApproval()
+        public async Task<ActionResult<IEnumerable<Document2>>> GetDocument2ByApproval()
         {
             var document2 = await _repository.GetDocument2ByApproval();
             if (document2 == null)
             {
                 return NotFound("No Document 2 Found");
             }
-            var mapDocument = _mapper.Map<Document2DTO>(document2);
+            var mapDocument = _mapper.Map<List<Document2DTO>>(document2);
             return Ok(mapDocument);
         }
 

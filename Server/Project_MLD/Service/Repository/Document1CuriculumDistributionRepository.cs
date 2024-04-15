@@ -17,6 +17,8 @@ namespace Project_MLD.Service.Repository
         public async Task<IEnumerable<Document1CurriculumDistribution>> GetCurriculumDistributionByDocument1Id(int id)
         {
             var cd = await _context.Document1CurriculumDistributions
+                .Include(x => x.Curriculum)
+                .Include(x => x.Document1)
                 .Where(x => x.Document1Id == id)
                 .ToListAsync();
             return cd;
@@ -39,13 +41,13 @@ namespace Project_MLD.Service.Repository
                         _context.CurriculumDistributions.Add(curriculum);
                     }
                     var existingItem = await _context.Document1CurriculumDistributions
-                        .FindAsync(item.Document1Id, item.CurriculumId);
+                        .FindAsync(item.Document1Id, curriculum.Id);
                     if (existingItem == null)
                     {
                         var newItem = new Document1CurriculumDistribution
                         {
                             Document1Id = item.Document1Id,
-                            CurriculumId = item.CurriculumId,
+                            CurriculumId = curriculum.Id,
                             Slot = item.Slot,
                             Description = item.Description
                         };
@@ -65,9 +67,25 @@ namespace Project_MLD.Service.Repository
             }
         }
 
-        public Task DeleteDocument1CurriculumDistribution(List<Document1CurriculumDistribution> list)
+        public async Task DeleteDocument1CurriculumDistribution(List<Document1CurriculumDistribution> list)
         {
-            throw new NotImplementedException();
+            if (list == null || !list.Any())
+            {
+                throw new Exception("An error occurred while delete Curriculum Distributions.");
+            }
+
+            foreach (var item in list)
+            {
+                var existingItem = await _context.Document1CurriculumDistributions
+                  .FindAsync(item.Document1Id, item.CurriculumId);
+
+                if (existingItem != null)
+                {
+                    _context.Document1CurriculumDistributions.Remove(existingItem);
+                }
+            }
+
+            await _context.SaveChangesAsync();
         }
 
     }

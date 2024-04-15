@@ -28,7 +28,7 @@ namespace Project_MLD.Controllers
             {
                 return NotFound("No Document 4 Available");
             }
-            var mapDocument = _mapper.Map<Document4DTO>(Document4);
+            var mapDocument = _mapper.Map<List<Document4DTO>>(Document4);
             return Ok(mapDocument);
         }
 
@@ -45,15 +45,16 @@ namespace Project_MLD.Controllers
         }
 
         [HttpGet("ByCondition/{condition}")]
-        public async Task<ActionResult<Document4>> GetDoucment4sByCondition(string condition)
+        public async Task<ActionResult<IEnumerable<Document4>>> GetDoucment4sByCondition(string condition)
         {
             var existDocument4 = await _repository.GetDocument4sByCondition(condition);
             if (existDocument4 == null)
             {
                 return NotFound("No Document 4 Available");
             }
+            var mapDocumemt = _mapper.Map<List<Document4DTO>>(existDocument4);
 
-            return Ok(existDocument4);
+            return Ok(mapDocumemt);
         }
 
         [HttpPost]

@@ -21,10 +21,11 @@ namespace Project_MLD.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<Document1TeachingEquipment>> GetDocument1TeachingEquipmentByDocument1ID(int id)
+        public async Task<ActionResult<IEnumerable<Document1TeachingEquipment>>> GetDocument1TeachingEquipmentByDocument1ID(int id)
         {
             var TeachingEquipment = await _repository.GetTeachingEquipmentByDocument1Id(id);
-            return Ok(TeachingEquipment);
+            var mapper = _mapper.Map<List<Document1TeachingEquipmentsDTO>>(TeachingEquipment);
+            return Ok(mapper);
         }
 
         [HttpPut]
@@ -40,16 +41,39 @@ namespace Project_MLD.Controllers
                     }
                 }
                 var mapRequests = _mapper.Map<List<Document1TeachingEquipment>>(requests);
-                foreach (var item in requests)
-                {
-                    await _repository.UpdateDocument1TeachingEquipment(mapRequests);
-                }
+
+                await _repository.UpdateDocument1TeachingEquipment(mapRequests);
+
                 return Ok("Update Successfully");
             }
             catch (Exception ex)
             {
                 // Log the exception or handle it accordingly
                 return StatusCode(500, $"An error occurred while updating Document1 TeachingEquipment: {ex.Message}");
+            }
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteDocument1TeachingEquipment(int documentId, List<Document1TeachingEquipmentsDTO> requests)
+        {
+            try
+            {
+                foreach (var request in requests)
+                {
+                    if (request.Document1Id != documentId)
+                    {
+                        return BadRequest("Id Not Match");
+                    }
+                }
+                var mapRequests = _mapper.Map<List<Document1TeachingEquipment>>(requests);
+                await _repository.DeleteDocument1TeachingEquipment(mapRequests);
+
+                return Ok("Delete Successfully");
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it accordingly
+                return StatusCode(500, $"An error occurred while delete Document1 Teaaching Equipment: {ex.Message}");
             }
         }
     }

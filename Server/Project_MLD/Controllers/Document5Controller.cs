@@ -41,14 +41,13 @@ namespace Project_MLD.Controllers
         }
 
         [HttpGet("ByDocument4/{id}")]
-        public async Task<ActionResult<Document5>> GetDoucment5ByDoc4(int id)
+        public async Task<ActionResult<IEnumerable<Document5>>> GetDoucment5ByDoc4(int id)
         {
             var existDocument5 = await _repository.GetDoucment5ByDoc4(id);
             if (existDocument5 == null)
             {
                 return NotFound("No Document 1 Available");
             }
-
             return Ok(existDocument5);
         }
 

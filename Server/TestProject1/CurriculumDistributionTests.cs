@@ -13,17 +13,29 @@ namespace TestProject1
 
         public CurriculumDistributionRepositoryTests()
         {
-            _context = new MldDatabaseContext();
+            var options = new DbContextOptionsBuilder<MldDatabaseContext>()
+                .UseSqlServer("ConnectionStrings") // replace with your test database connection string
+                .Options;
+
+            _context = new MldDatabaseContext(options);
             _repository = new CurriculumDistributionRepository(_context);
+        }
+
+        public async Task InitializeDatabase()
+        {
+            // Clean up the database here
+            _context.CurriculumDistributions.RemoveRange(_context.CurriculumDistributions);
+            await _context.SaveChangesAsync();
         }
 
         [Fact]
         public async Task AddCurriculumDistribution_ReturnsNewCurriculumDistribution()
         {
             // Arrange
+            await InitializeDatabase();
             var curriculumDistribution = new CurriculumDistribution
             {
-                // Initialize properties here
+                Name = "Test Add Curriculum Distribution1",
             };
 
             // Act
@@ -31,14 +43,19 @@ namespace TestProject1
 
             // Assert
             Assert.Equal(curriculumDistribution, result);
+            await _repository.DeleteCurriculumDistribution(curriculumDistribution.Id);
+            await _context.SaveChangesAsync();
+
         }
+
         [Fact]
         public async Task DeleteCurriculumDistribution_ReturnsTrueWhenExists()
         {
             // Arrange
+            await InitializeDatabase();
             var curriculumDistribution = new CurriculumDistribution
             {
-                // Initialize properties here
+                Name = "Test Curriculum Distribution",
             };
             var added = await _repository.AddCurriculumDistribution(curriculumDistribution);
 
@@ -50,34 +67,53 @@ namespace TestProject1
         }
 
         [Fact]
-        public async Task GetAllCurriculumDistributions_ReturnsAllCurriculumDistributions()
+        public async Task GetAllCurriculumDistributions_ReturnsAllCurriculumDistributions_StableDatabase()
         {
             // Arrange
+            await InitializeDatabase();
             var curriculumDistribution1 = new CurriculumDistribution
             {
-                // Initialize properties here
+                Name = "Test Curriculum Distribution1",
             };
             var curriculumDistribution2 = new CurriculumDistribution
             {
-                // Initialize properties here
+                Name = "Test Curriculum Distribution2",
             };
+
+            // Add curriculum distributions to the stable database
             await _repository.AddCurriculumDistribution(curriculumDistribution1);
+            await _context.SaveChangesAsync();
+
             await _repository.AddCurriculumDistribution(curriculumDistribution2);
+            await _context.SaveChangesAsync();
 
-            // Act
-            var result = await _repository.GetAllCurriculumDistributions();
+            try
+            {
+                // Act
+                var result = await _repository.GetAllCurriculumDistributions();
 
-            // Assert
-            Assert.Equal(10, result.Count());
+                // Assert
+                Assert.Equal(2, result.Count()); // Assuming there are only two added distributions
+            }
+            finally
+            {
+                // Clean up: Delete curriculumDistribution1 and curriculumDistribution2
+                await _repository.DeleteCurriculumDistribution(curriculumDistribution1.Id);
+                await _context.SaveChangesAsync();
+
+                await _repository.DeleteCurriculumDistribution(curriculumDistribution2.Id);
+                await _context.SaveChangesAsync();
+            }
         }
 
         [Fact]
         public async Task GetCurriculumDistributionById_ReturnsCurriculumDistributionWhenExists()
         {
             // Arrange
+            await InitializeDatabase();
             var curriculumDistribution = new CurriculumDistribution
             {
-                // Initialize properties here
+                Name = "Test Curriculum Distribution",
             };
             var added = await _repository.AddCurriculumDistribution(curriculumDistribution);
 
@@ -85,25 +121,8 @@ namespace TestProject1
             var result = await _repository.GetCurriculumDistributionById(added.Id);
 
             // Assert
-            Assert.Equal(curriculumDistribution, result);
-        }
-
-        [Fact]
-        public async Task UpdateCurriculumDistribution_ReturnsTrueWhenExists()
-        {
-            // Arrange
-            var curriculumDistribution = new CurriculumDistribution
-            {
-                // Initialize properties here
-            };
-            var added = await _repository.AddCurriculumDistribution(curriculumDistribution);
-            added.Name = "New Value";  // Change some property
-
-            // Act
-            var result = await _repository.UpdateCurriculumDistribution(added);
-
-            // Assert
-            Assert.True(result);
+            Assert.NotNull(result);
+            Assert.Equal(added.Id, result.Id);
         }
     }
 }

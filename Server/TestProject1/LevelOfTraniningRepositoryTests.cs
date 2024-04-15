@@ -13,9 +13,11 @@ namespace TestProject1
         private readonly LevelOfTrainningRepository _repository;
 
         public LevelOfTrainningRepositoryTests()
-        {;
-
-            _context = new MldDatabaseContext();
+        {
+            var options = new DbContextOptionsBuilder<MldDatabaseContext>()
+                .UseSqlServer("ConnectionStrings") // replace with your test database connection string
+                .Options;
+            _context = new MldDatabaseContext(options);
             _repository = new LevelOfTrainningRepository(_context);
         }
 

@@ -14,19 +14,40 @@ namespace Project_MLD.Service.Repository
             _context = context;
         }
 
-        public Task DeleteDocument2Grade(List<Document2Grade> list)
+        public async Task DeleteDocument2Grade(List<Document2Grade> list)
         {
-            throw new NotImplementedException();
+            if (list == null || !list.Any())
+            {
+                return; // Nothing to delete
+            }
+
+            foreach (var item in list)
+            {
+                var existingItem = await _context.Document2Grades
+                  .FindAsync(item.Document2Id, item.GradeId);
+
+                if (existingItem != null)
+                {
+                    _context.Document2Grades.Remove(existingItem);
+                }
+            }
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Document2Grade>> GetAllDocuemnt2Grades()
         {
-            return await _context.Document2Grades.ToListAsync();
+            return await _context.Document2Grades
+                .Include(x => x.Grade)
+                .Include(x => x.Document2)
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<Document2Grade>> GetDocument2GradeByDocument2Id(int id)
         {
             return await _context.Document2Grades
+                .Include(x => x.Grade)
+                .Include(x => x.Document2)
                 .Where(x => x.Document2Id == id).ToListAsync();
         }
 
@@ -36,14 +57,19 @@ namespace Project_MLD.Service.Repository
             {
                 foreach (var item in list)
                 {
+                    var existGrade = await _context.Grades.FindAsync(item.GradeId);
+                    if (existGrade == null)
+                    {
+                        throw new Exception("There is no exist Grade");
+                    }
                     var existDocument2Grade = await _context.Document2Grades
-                        .FindAsync(item.Document2Id, item.GradeId);
+                        .FindAsync(item.Document2Id, existGrade.Id);
                     if (existDocument2Grade == null)
                     {
                         var newItem = new Document2Grade
                         {
                             Document2Id = item.Document2Id,
-                            GradeId = item.GradeId,
+                            GradeId = existGrade.Id,
                             TitleName = item.TitleName,
                             Slot = item.Slot,
                             Time = item.Time,

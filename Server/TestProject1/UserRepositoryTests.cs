@@ -11,7 +11,10 @@ namespace TestProject1 {
 
         public UserRepositoryTests()
         {
-            _mockContext = new Mock<MldDatabaseContext>();
+            var options = new DbContextOptionsBuilder<MldDatabaseContext>()
+                .UseSqlServer("ConnectionStrings") // replace with your test database connection string
+                .Options;
+            _mockContext = new Mock<MldDatabaseContext>(options);
             _repository = new UserRepository(_mockContext.Object);
         }
 

@@ -25,11 +25,12 @@ namespace Project_MLD.Controllers
 
         }
 
-        [HttpGet]
-        public async Task<ActionResult<Document1CurriculumDistribution>> GetDocument1CuriculumDistributionByDocument1ID(int id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<IEnumerable<Document1CurriculumDistribution>>> GetDocument1CuriculumDistributionByDocument1ID(int id)
         {
             var curriculumDistribution = await _repository.GetCurriculumDistributionByDocument1Id(id);
-            return Ok(curriculumDistribution);
+            var mapper = _mapper.Map<List<Document1CurriculumDistributionDTO>>(curriculumDistribution);
+            return Ok(mapper);
         }
 
         [HttpPut]
@@ -44,17 +45,41 @@ namespace Project_MLD.Controllers
                         return BadRequest("Id Not Match");
                     }
                 }
+
                 var mapRequests = _mapper.Map<List<Document1CurriculumDistribution>>(requests);
-                foreach (var item in requests)
-                {
-                    await _repository.UpdateDocument1CurriculumDistribution(mapRequests);
-                }
+
+                await _repository.UpdateDocument1CurriculumDistribution(mapRequests);
+
                 return Ok("Update Successfully");
             }
             catch (Exception ex)
             {
                 // Log the exception or handle it accordingly
-                return StatusCode(500, $"An error occurred while updating Document1CurriculumDistribution: {ex.Message}");
+                return StatusCode(500, $"An error occurred while updating Document1 CurriculumDistribution: {ex.Message}");
+            }
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteDocument1CurriculumDistribution(int documentId, List<Document1CurriculumDistributionDTO> requests)
+        {
+            try
+            {
+                foreach (var request in requests)
+                {
+                    if (request.Document1Id != documentId)
+                    {
+                        return BadRequest("Id Not Match");
+                    }
+                }
+                var mapRequests = _mapper.Map<List<Document1CurriculumDistribution>>(requests);
+                await _repository.DeleteDocument1CurriculumDistribution(mapRequests);
+
+                return Ok("Delete Successfully");
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it accordingly
+                return StatusCode(500, $"An error occurred while delete Document1 CurriculumDistribution: {ex.Message}");
             }
         }
     }

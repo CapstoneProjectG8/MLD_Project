@@ -15,6 +15,7 @@ using Amazon.Extensions.NETCore.Setup;
 using Amazon.Runtime;
 using Amazon.S3;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 var configuration = new ConfigurationBuilder()
@@ -85,6 +86,7 @@ builder.Services.AddScoped<IDocument1CuriculumDistributionRepository, Document1C
 builder.Services.AddScoped<IDocument1PeriodicAssessmentRepository, Document1PeriodicAssessmentRepository>();
 builder.Services.AddScoped<IDocument1SelectedTopicsRepository, Document1SelectedTopicsRepository>();
 builder.Services.AddScoped<IDocument1TeachingEquipmentRepository, Document1TeachingEquipmentRepository>();
+builder.Services.AddScoped<IDocument1SubjectRoomsRepository, Document1SubjectRoomsRepository>();
 
 builder.Services.AddScoped<ISelectedTopicsRepository, SelectedTopicRepository>();
 builder.Services.AddScoped<ISubjectRoomRepository, SubjectRoomRepository>();
@@ -97,6 +99,8 @@ builder.Services.AddScoped<IDocument2GradeRepository, Document2GradeRepository>(
 builder.Services.AddScoped<IGradeRepository, GradeRepository>();
 //Document3
 builder.Services.AddScoped<IDocument3Repository, Document3Repository>();
+builder.Services.AddScoped<IDocument3CurriculumDistributionRepository, Document3CuriculumDistributionRepository>();
+builder.Services.AddScoped<IDocument3SelectedTopicsRepository, Document3SelectedTopicsRepository>();
 //Document4
 builder.Services.AddScoped<IDocument4Repository, Document4Repository>();
 builder.Services.AddScoped<ITeachingPlannerRepository, TeachingPlannerRepository>();
@@ -104,7 +108,6 @@ builder.Services.AddScoped<ITeachingPlannerRepository, TeachingPlannerRepository
 //Document5
 builder.Services.AddScoped<IDocument5Repository, Document5Repository>();
 //Document
-builder.Services.AddScoped<IDocRepository, DocRepository>();
 
 //Utils
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();

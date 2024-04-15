@@ -19,6 +19,7 @@ namespace Project_MLD.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles ="Admin")]
     public class AccountController : ControllerBase
     {
         private IConfiguration _config;
@@ -29,6 +30,7 @@ namespace Project_MLD.Controllers
         private readonly IEmailSender _emailSender;
         private readonly IMailBody _mailBody;
         private static string codeGenerate = "";
+
         public AccountController(IConfiguration configuration, IAccountRepository repository,
             MldDatabaseContext context, IMapper mapper, IPasswordHasher passwordHasher,
             IEmailSender emailSender, IMailBody mailBody)
@@ -86,6 +88,7 @@ namespace Project_MLD.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles ="Admin")]
         public async Task<ActionResult<IEnumerable<Account>>> GetAllAccount()
         {
             var acc = await _repository.GetAllAccounts();

@@ -15,4 +15,11 @@ public partial class Document5DTO
 
     public int? Total { get; set; }
 
+    public string? CreatedDate { get; set; }
+
+    public string? LinkFile { get; set; }
+
+    public string? LinkImage { get; set; }
+
+    public string? UserName { get; set; }
 }

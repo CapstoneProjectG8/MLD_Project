@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Azure.Core;
+using Microsoft.EntityFrameworkCore;
 using Project_MLD.Models;
 using Project_MLD.Service.Interface;
 using System;
+using System.Reflection.Metadata;
 
 namespace Project_MLD.Service.Repository
 {
@@ -13,14 +15,32 @@ namespace Project_MLD.Service.Repository
         {
             _context = context;
         }
-        public Task DeleteDocument1TeachingEquipment(List<Document1TeachingEquipment> list)
+        public async Task DeleteDocument1TeachingEquipment(List<Document1TeachingEquipment> list)
         {
-            throw new NotImplementedException();
+            if (list == null || !list.Any())
+            {
+                return; // Nothing to delete
+            }
+
+            foreach (var item in list)
+            {
+                var existingItem = await _context.Document1TeachingEquipments
+                  .FindAsync(item.Document1Id, item.TeachingEquipmentId);
+
+                if (existingItem != null)
+                {
+                    _context.Document1TeachingEquipments.Remove(existingItem);
+                }
+            }
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Document1TeachingEquipment>> GetTeachingEquipmentByDocument1Id(int id)
         {
             var te = await _context.Document1TeachingEquipments
+                .Include(x => x.TeachingEquipment)
+                .Include(x => x.Document1)
                .Where(x => x.Document1Id == id)
                .ToListAsync();
             return te;
@@ -41,15 +61,16 @@ namespace Project_MLD.Service.Repository
                             Name = item.TeachingEquipment.Name
                         };
                         _context.TeachingEquipments.Add(existTeachingEquipments);
+                        _context.SaveChanges();
                     }
                     var existDocument1TeachingEquipment = await _context.Document1TeachingEquipments
-                        .FindAsync(item.Document1Id, item.TeachingEquipmentId);
+                        .FindAsync(item.Document1Id, existTeachingEquipments.Id);
                     if (existDocument1TeachingEquipment == null)
                     {
                         var newItem = new Document1TeachingEquipment
                         {
                             Document1Id = item.Document1Id,
-                            TeachingEquipmentId = item.TeachingEquipmentId,
+                            TeachingEquipmentId = existTeachingEquipments.Id,
                             Quantity = item.Quantity,
                             Note = item.Note,
                             Description = item.Description

@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Azure.Core;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Logging;
 using Project_MLD.Models;
 using Project_MLD.Service.Interface;
 using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata;
 
 namespace Project_MLD.Service.Repository
 {
@@ -19,6 +21,9 @@ namespace Project_MLD.Service.Repository
         public async Task<IEnumerable<PeriodicAssessment>> GetPeriodicAssessmentByDocument1Id(int id)
         {
             var pa = await _context.PeriodicAssessments
+                .Include(x => x.Document1)
+                .Include(x => x.FormCategory)
+                .Include(x => x.TestingCategory)
                 .Where(x => x.Document1Id == id)
                 .ToListAsync();
             return pa;
@@ -42,14 +47,14 @@ namespace Project_MLD.Service.Repository
                     }
 
                     var existPeriodicAssessment = await _context.PeriodicAssessments
-                        .FindAsync(item.Document1Id, item.FormCategoryId,item.TestingCategoryId);
+                        .FindAsync(item.Document1Id, existFormCategory.Id, existTestingCategory.Id);
                     if (existPeriodicAssessment == null)
                     {
                         var newItem = new PeriodicAssessment
                         {
                             Document1Id = item.Document1Id,
-                            TestingCategoryId = item.TestingCategoryId,
-                            FormCategoryId = item.FormCategoryId,
+                            TestingCategoryId = existTestingCategory.Id,
+                            FormCategoryId = existFormCategory.Id,
                             Time = item.Time,
                             Date = item.Date,
                             Description = item.Description
@@ -71,9 +76,25 @@ namespace Project_MLD.Service.Repository
             }
         }
 
-        public Task DeleteDocument1PeriodicAssessment(List<PeriodicAssessment> dc)
+        public async Task DeleteDocument1PeriodicAssessment(List<PeriodicAssessment> list)
         {
-            throw new NotImplementedException();
+            if (list == null || !list.Any())
+            {
+                throw new Exception("An error occurred while delete Periodic Assessments.");
+            }
+
+            foreach (var item in list)
+            {
+                var existingItem = await _context.Document1CurriculumDistributions
+                  .FindAsync(item.Document1Id, item.FormCategoryId, item.TestingCategoryId);
+
+                if (existingItem != null)
+                {
+                    _context.Document1CurriculumDistributions.Remove(existingItem);
+                }
+            }
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<PeriodicAssessment>> GetAllPeriodicAssessment()
