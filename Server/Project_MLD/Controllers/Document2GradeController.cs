@@ -37,7 +37,7 @@ namespace Project_MLD.Controllers
         }
 
         [HttpGet("ById/{id}")]
-        public async Task<ActionResult<Document2>> GetDocument2GradeById(int id)
+        public async Task<ActionResult<IEnumerable<Document2>>> GetDocument2GradeById(int id)
         {
             var existDocument2 = await _repository.GetDocument2GradeByDocument2Id(id);
             if (existDocument2 == null)
