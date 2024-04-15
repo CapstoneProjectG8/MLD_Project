@@ -28,7 +28,7 @@ namespace Project_MLD.Controllers
             {
                 return NotFound("No Document 4 Available");
             }
-            var mapDocument = _mapper.Map<Document4DTO>(Document4);
+            var mapDocument = _mapper.Map<List<Document4DTO>>(Document4);
             return Ok(mapDocument);
         }
 

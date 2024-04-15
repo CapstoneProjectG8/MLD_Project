@@ -19,6 +19,10 @@ public partial class Account
 
     public int? RoleId { get; set; }
 
+    public int? LoginAttempt { get; set; }
+
+    public int? LoginLast { get; set; }
+
     public virtual Role? Role { get; set; }
 
     public virtual ICollection<User> Users { get; set; } = new List<User>();

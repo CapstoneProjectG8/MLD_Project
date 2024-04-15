@@ -104,6 +104,8 @@ public partial class MldDatabaseContext : DbContext
                 .UseCollation("SQL_Latin1_General_CP1_CI_AS")
                 .HasColumnName("created_by");
             entity.Property(e => e.CreatedDate).HasColumnName("created_date");
+            entity.Property(e => e.LoginAttempt).HasColumnName("login_attempt");
+            entity.Property(e => e.LoginLast).HasColumnName("login_last");
             entity.Property(e => e.Password)
                 .UseCollation("SQL_Latin1_General_CP1_CI_AS")
                 .HasColumnName("password");
