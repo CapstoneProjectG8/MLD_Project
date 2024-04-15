@@ -25,7 +25,7 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPost("upload")]
-        public async Task<IActionResult> UploadFiles(ICollection<IFormFile> files)
+        public async Task<IActionResult> UploadFiles(ICollection<IFormFile> files, string? prefix)
         {
             if (files == null || files.Count == 0)
             {
@@ -33,7 +33,7 @@ namespace Project_MLD.Controllers
             }
 
             string bucketName = "meldsep490";
-
+            var uploadedFileUrls = new List<string>();
             foreach (var file in files)
             {
                 if (file.Length == 0)
@@ -42,7 +42,7 @@ namespace Project_MLD.Controllers
                     continue; // Skip empty files
                 }
 
-                string fileKey = "doc1/" + Guid.NewGuid() + Path.GetExtension(file.FileName);
+                string fileKey = prefix + Guid.NewGuid() + Path.GetExtension(file.FileName);
 
                 try
                 {
@@ -62,7 +62,15 @@ namespace Project_MLD.Controllers
                         {
                             await transferUtility.UploadAsync(putRequest);
                         }
-
+                        // Generate pre-signed URL
+                        var getPresignedUrlRequest = new GetPreSignedUrlRequest
+                        {
+                            BucketName = bucketName,
+                            Key = fileKey,
+                            Expires = DateTime.UtcNow.AddYears(1) // Adjust expiration as needed
+                        };
+                        string presignedUrl = _s3Client.GetPreSignedURL(getPresignedUrlRequest);
+                        uploadedFileUrls.Add(presignedUrl);
                         _logger.LogInformation("File uploaded to S3 successfully: {FileKey}", fileKey);
                     }
                 }
@@ -78,13 +86,12 @@ namespace Project_MLD.Controllers
                 }
             }
 
-            return Ok("All files uploaded to S3 successfully!");
+            return Ok(new { fileUrls = uploadedFileUrls });
         }
         [HttpGet]
-        public async Task<IActionResult> GetAllFilesFormS3(string bucketName, string? prefix)
+        public async Task<IActionResult> GetAllFilesFormS3(string? prefix)
         {
-            var bucketExists = await Amazon.S3.Util.AmazonS3Util.DoesS3BucketExistV2Async(_s3Client, bucketName);
-            if (!bucketExists) return NotFound($"Bucket {bucketName} does not exist.");
+            string bucketName = "meldsep490";
             var request = new ListObjectsV2Request()
             {
                 BucketName = bucketName,
@@ -107,11 +114,19 @@ namespace Project_MLD.Controllers
             });
             return Ok(s3Ojects);
         }
-        [HttpDelete]
-        public async Task<IActionResult> DeleteFileS3(string bucketName, string key)
+
+        [HttpGet("preview")]
+        public async Task<IActionResult> GetFilebyKey(string key)
         {
-            var bucketExists = await Amazon.S3.Util.AmazonS3Util.DoesS3BucketExistV2Async(_s3Client, bucketName);
-            if (!bucketExists) return NotFound($"Bucket {bucketName} does not exist.");
+            string bucketName = "meldsep490";
+            var s3Object =  await _s3Client.GetObjectAsync(bucketName, key);
+            return File(s3Object.ResponseStream, s3Object.Headers.ContentType);
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteFileS3(string key)
+        {
+            string bucketName = "meldsep490";
             await _s3Client.DeleteObjectAsync(bucketName, key);
             return NoContent();
         }
