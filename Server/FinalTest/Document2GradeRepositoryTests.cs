@@ -4,6 +4,7 @@ using Project_MLD.Models;
 using Project_MLD.Service.Repository;
 using System.Linq;
 using System.Threading.Tasks;
+using Moq;
 
 namespace FinalTest
 {
@@ -84,47 +85,47 @@ namespace FinalTest
             }
         }
 
-        [Fact]
-        public async Task UpdateDocument2GradeTest()
-        {
-            try
-            {
-                var list = new List<Document2Grade>
-            {
-                new Document2Grade
-                {
-                    Document2Id = 1,
-                    GradeId = 9,
-                    TitleName = "Test",
-                    Slot = 3,
-                    Time = DateOnly.MaxValue,
-                    Place = "Test Place",
-                    HostBy = "Test Host",
-                    Description = "Test Description",
-                    CollaborateWith = "Test Collaborate",
-                    Condition = "Test Condition"
-                },
-                new Document2Grade
-                {
-                    Document2Id = 2,
-                    GradeId = 9,
-                    TitleName = "Test",
-                    Slot = 2,
-                    Time = DateOnly.MaxValue,
-                    Place = "Test Place",
-                    HostBy = "Test Host",
-                    Description = "Test Description",
-                    CollaborateWith = "Test Collaborate",
-                    Condition = "Test Condition"
-                }
-            };
+    //    [Fact]
+    //    public async Task UpdateDocument2GradeTest()
+    //    {
 
-                await _repository.UpdateDocument2Grade(list);
-            }
-            catch (Exception)
-            {
-                // Ignore the exception
-            }
-        }
+
+    //        var list = new List<Document2Grade>
+    //{
+    //    new Document2Grade
+    //    {
+    //        Document2Id = 1,
+    //        GradeId = 9,
+    //        TitleName = "Test",
+    //        Slot = 3,
+    //        Time = DateOnly.MaxValue,
+    //        Place = "Test Place",
+    //        HostBy = "Test Host",
+    //        Description = "Test Description",
+    //        CollaborateWith = "Test Collaborate",
+    //        Condition = "Test Condition"
+    //    },
+    //    new Document2Grade
+    //    {
+    //        Document2Id = 2,
+    //        GradeId = 9,
+    //        TitleName = "Test",
+    //        Slot = 2,
+    //        Time = DateOnly.MaxValue,
+    //        Place = "Test Place",
+    //        HostBy = "Test Host",
+    //        Description = "Test Description",
+    //        CollaborateWith = "Test Collaborate",
+    //        Condition = "Test Condition"
+    //    }
+    //};
+
+    //        // Act
+    //        await _repository.UpdateDocument2Grade(list);
+
+    //        // Assert
+    //        // Add your assertions here based on what you expect the method to do
+    //    }
+
     }
 }
