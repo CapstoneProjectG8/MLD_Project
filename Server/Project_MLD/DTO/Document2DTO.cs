@@ -26,5 +26,3 @@ public partial class Document2DTO
     public string? UserName { get; set; }
     public string? ApproveByName { get; set; }
 }
-
-}

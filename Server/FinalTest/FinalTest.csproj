@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Project_MLD\Project_MLD.csproj" />
+    <ProjectReference Include="C:\Users\damhu\OneDrive\Desktop\SEP490\MLD_Project\Server\Project_MLD\Project_MLD.csproj" />
   </ItemGroup>
 
 </Project>

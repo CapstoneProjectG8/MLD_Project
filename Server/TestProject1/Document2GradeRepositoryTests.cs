@@ -22,6 +22,39 @@
 //            _repository = new Document2GradeRepository(_context);
 //        }
 
+<<<<<<< HEAD
+        [Fact]
+        public async Task AddDocument2Grade_ShouldReturnDocument2Grade_WhenDocument2GradeIsAdded()
+        {
+            //// Arrange
+            //var document2Grade = new Document2Grade();
+
+            //// Act
+            //var result = await _repo.AddDocument2Grade(document2Grade);
+
+            //// Assert
+            //Assert.Equal(document2Grade, result);
+
+            //// Clean up
+            //_context.Document2Grades.Remove(document2Grade);
+            //await _context.SaveChangesAsync();
+        }
+
+        [Fact]
+        public async Task DeleteDocument2Grade_ShouldReturnTrue_WhenDocument2GradeExists()
+        {
+            //// Arrange
+            //var document2Grade = new Document2Grade ();
+            //_context.Document2Grades.Add(document2Grade);
+            //await _context.SaveChangesAsync();
+
+            //// Act
+            //var result = await _repo.DeleteDocument2Grade(document2Grade.Document2Id);
+
+            //// Assert
+            //Assert.True(result);
+        }
+=======
 //        public void Dispose()
 //        {
 //            // Clean up the database here
@@ -72,6 +105,7 @@
 //        {
 //            var document2Grade = new Document2Grade { /* initialize properties here */ };
 //            var addedDocument2Grade = await _repository.UpdateDocument2Grade(document2Grade.Document2Id);
+>>>>>>> 5bbb1ea1cec9a404b7a2890cee7b60abae09cdba
 
 //            // Update properties of addedDocument2Grade here
 //            var result = await _repository.UpdateDocument2Grade(addedDocument2Grade);
@@ -79,6 +113,58 @@
 //            Assert.True(result);
 //        }
 
+<<<<<<< HEAD
+            // Assert
+            Assert.Contains(document2Grade, result);
+
+            // Clean up
+            _context.Document2Grades.Remove(document2Grade);
+            await _context.SaveChangesAsync();
+        }
+
+        [Fact]
+        public async Task GetDocument2GradeById_ShouldReturnDocument2Grade_WhenDocument2GradeExists()
+        {
+            //// Arrange
+            //var document2Grade = new Document2Grade ();
+            //_context.Document2Grades.Add(document2Grade);
+            //await _context.SaveChangesAsync();
+
+            //// Act
+            //var result = await _repo.GetDocument2GradeById(document2Grade.Document2Id);
+
+            //// Assert
+            //Assert.Equal(document2Grade, result);
+
+            //// Clean up
+            //_context.Document2Grades.Remove(document2Grade);
+            //await _context.SaveChangesAsync();
+        }
+
+        [Fact]
+        public async Task UpdateDocument2Grade_ShouldReturnTrue_WhenDocument2GradeExists()
+        {
+            //// Arrange
+            //var document2Grade = new Document2Grade ();
+            //_context.Document2Grades.Add(document2Grade);
+            //await _context.SaveChangesAsync();
+
+           
+
+            //// Act
+            //var result = await _repo.UpdateDocument2Grade(document2Grade);
+
+            //// Assert
+            //Assert.True(result);
+
+            //// Clean up
+            //_context.Document2Grades.Remove(document2Grade);
+            //await _context.SaveChangesAsync();
+        }
+    }
+}
+=======
 //        // ... other tests ...
 //    }
 //}
+>>>>>>> 5bbb1ea1cec9a404b7a2890cee7b60abae09cdba
