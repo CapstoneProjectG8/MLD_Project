@@ -17,4 +17,14 @@ public partial class Document2DTO
 
     public bool? IsApprove { get; set; }
 
+    public DateOnly? CreatedDate { get; set; }
+
+    public string? LinkFile { get; set; }
+
+    public string? LinkImage { get; set; }
+
+    public string? UserName { get; set; }
+    public string? ApproveByName { get; set; }
+}
+
 }
