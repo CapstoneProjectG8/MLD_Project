@@ -63,6 +63,7 @@ namespace Project_MLD.Service.Repository
                         };
                         _context.SelectedTopics.Add(topics);
                         _context.SaveChanges();
+                        //throw new Exception("Selected Topics Id not Exist");
                     }
 
                     var equipment = await _context.TeachingEquipments
@@ -75,6 +76,7 @@ namespace Project_MLD.Service.Repository
                         };
                         _context.TeachingEquipments.Add(equipment);
                         _context.SaveChanges();
+                        //throw new Exception("Teaching Equipments Id not Exist");
                     }
 
                     var existingItem = await _context.Document3SelectedTopics
@@ -103,7 +105,7 @@ namespace Project_MLD.Service.Repository
             }
             catch (Exception ex)
             {
-                throw new Exception("An error occurred while updating Selected Topics.", ex);
+                throw new Exception("error while Updating");
             }
         }
     }

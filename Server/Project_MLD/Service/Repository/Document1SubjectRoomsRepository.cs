@@ -39,6 +39,7 @@ namespace Project_MLD.Service.Repository
                             Name = item.SubjectRoom.Name
                         };
                         _context.SubjectRooms.Add(subjectRoom);
+                        //throw new Exception("Subject Room Is Not Exist");
                     }
                     var existingItem = await _context.Document1SubjectRooms
                         .FindAsync(item.Document1Id, subjectRoom.Id);

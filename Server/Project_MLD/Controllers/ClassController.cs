@@ -25,7 +25,7 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<IEnumerable<Class>>> GetAllClasss()
         {
             var classes = await _repository.GetAllClasss();
-            var mapClass = _mapper.Map<List<Class>>(classes);
+            var mapClass = _mapper.Map<List<ClassDTO>>(classes);
             return Ok(mapClass);
         }
 
@@ -41,39 +41,39 @@ namespace Project_MLD.Controllers
             return Ok(_mapperClass);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Class>> AddClass(ClassDTO classDTO)
-        {
-            var _mapperClass = _mapper.Map<Class>(classDTO);
-            await _repository.AddClass(_mapperClass);
-            return CreatedAtAction(nameof(GetClassById), new { id = _mapperClass.Id }, _mapperClass);
-        }
+        //[HttpPost]
+        //public async Task<ActionResult<Class>> AddClass(ClassDTO classDTO)
+        //{
+        //    var _mapperClass = _mapper.Map<Class>(classDTO);
+        //    await _repository.AddClass(_mapperClass);
+        //    return CreatedAtAction(nameof(GetClassById), new { id = _mapperClass.Id }, _mapperClass);
+        //}
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteClass(int id)
-        {
-            var result = await _repository.DeleteClass(id);
-            if (!result)
-            {
-                return BadRequest("Can Not Delete Class");
-            }
-            return NoContent();
-        }
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteClass(int id)
+        //{
+        //    var result = await _repository.DeleteClass(id);
+        //    if (!result)
+        //    {
+        //        return BadRequest("Can Not Delete Class");
+        //    }
+        //    return NoContent();
+        //}
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateClass(int id, ClassDTO classDTO)
-        {
-            if (id != classDTO.Id)
-            {
-                return BadRequest("Id Not Match");
-            }
-            var _mapperClass = _mapper.Map<Class>(classDTO);
-            var result = await _repository.UpdateClass(_mapperClass);
-            if (!result)
-            {
-                return NotFound("Can not Update Class");
-            }
-            return NoContent();
-        }
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> UpdateClass(int id, ClassDTO classDTO)
+        //{
+        //    if (id != classDTO.Id)
+        //    {
+        //        return BadRequest("Id Not Match");
+        //    }
+        //    var _mapperClass = _mapper.Map<Class>(classDTO);
+        //    var result = await _repository.UpdateClass(_mapperClass);
+        //    if (!result)
+        //    {
+        //        return NotFound("Can not Update Class");
+        //    }
+        //    return NoContent();
+        //}
     }
 }

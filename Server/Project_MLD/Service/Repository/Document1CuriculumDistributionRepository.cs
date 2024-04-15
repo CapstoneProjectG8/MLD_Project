@@ -39,6 +39,8 @@ namespace Project_MLD.Service.Repository
                             Name = item.Curriculum.Name
                         };
                         _context.CurriculumDistributions.Add(curriculum);
+                        _context.SaveChanges();
+                        //throw new Exception("Curriculum Distribution ID is not Exist");
                     }
                     var existingItem = await _context.Document1CurriculumDistributions
                         .FindAsync(item.Document1Id, curriculum.Id);
@@ -63,7 +65,7 @@ namespace Project_MLD.Service.Repository
             }
             catch (Exception ex)
             {
-                throw new Exception("An error occurred while updating CurriculumDistributions.", ex);
+                throw new Exception(ex.Message);
             }
         }
 

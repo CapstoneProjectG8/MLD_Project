@@ -76,19 +76,21 @@ namespace Project_MLD.Service.Repository
 
         public async Task<bool> UpdateDocument1(Document1 document1)
         {
-            var existDocument1 = await GetDocument1ById(document1.Id);
+            var existDocument1 = await _context.Document1s.FindAsync(document1.Id);
             if (existDocument1 == null)
             {
                 return false;
             }
 
-            var properties = typeof(Document1).GetProperties();
+            var entityType = typeof(Document1);
+            var properties = entityType.GetProperties();
+
             foreach (var property in properties)
             {
-                var updatedValue = property.GetValue(document1);
-                if (updatedValue != null)
+                var newValue = property.GetValue(document1);
+                if (newValue != null)
                 {
-                    property.SetValue(existDocument1, updatedValue);
+                    property.SetValue(existDocument1, newValue);
                 }
             }
 

@@ -97,7 +97,7 @@ namespace Project_MLD.Service.Repository
             }
             catch (Exception ex)
             {
-                throw new Exception("An error occurred while updating Document2 Grades.", ex);
+                throw new Exception(ex.Message);
             }
         }
     }

@@ -70,10 +70,12 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Document1>> AddDocument1(Document1DTO document1)
+        public async Task<ActionResult<Document1>> AddDocument1(Document1 doc1)
         {
-            var mapDocument = _mapper.Map<Document1>(document1);
-            return await _repository.AddDocument1(mapDocument);
+
+            var document = await _repository.AddDocument1(doc1);
+            var mapper = _mapper.Map<Document1DTO>(document);
+            return Ok(mapper);
         }
 
         [HttpDelete("{id}")]
@@ -88,19 +90,18 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateDocument1(int id, Document1DTO document1)
+        public async Task<IActionResult> UpdateDocument1(int id, Document1 document1)
         {
             if (id != document1.Id)
             {
                 return NotFound("Id Not Match");
             }
-            var mapDocument = _mapper.Map<Document1>(document1);
-            var result = await _repository.UpdateDocument1(mapDocument);
+            var result = await _repository.UpdateDocument1(document1);
             if (!result)
             {
-                return BadRequest("Error Updating");
+                return BadRequest("Error Updating Document 1");
             }
-            return NoContent();
+            return Ok("Update Success");
         }
     }
 }

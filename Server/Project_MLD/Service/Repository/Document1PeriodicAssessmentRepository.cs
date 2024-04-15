@@ -72,7 +72,7 @@ namespace Project_MLD.Service.Repository
             }
             catch (Exception ex)
             {
-                throw new Exception("An error occurred while updating Periodic Assessments.", ex);
+                throw new Exception(ex.Message);
             }
         }
 

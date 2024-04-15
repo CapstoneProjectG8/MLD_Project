@@ -62,6 +62,7 @@ namespace Project_MLD.Service.Repository
                         };
                         _context.SelectedTopics.Add(existSelectedTopics);
                         _context.SaveChanges();
+                        //throw new Exception("Selected Topics Id is not Exist");
                     }
                     var existDocument1SelectedTopics = await _context.Document1SelectedTopics
                         .FindAsync(item.Document1Id, existSelectedTopics.Id);
@@ -86,7 +87,7 @@ namespace Project_MLD.Service.Repository
             }
             catch (Exception ex)
             {
-                throw new Exception("An error occurred while updating SelectedTopics.", ex);
+                throw new Exception(ex.Message);
             }
         }
     }

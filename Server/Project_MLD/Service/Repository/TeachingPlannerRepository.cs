@@ -8,6 +8,11 @@ namespace Project_MLD.Service.Repository
     public class TeachingPlannerRepository : ITeachingPlannerRepository
     {
         private readonly MldDatabaseContext _context;
+
+        public TeachingPlannerRepository(MldDatabaseContext context)
+        {
+            _context = context;
+        }
         public async Task<bool> DeleteTeachingPlanner(int id)
         {
             var existTeachingPlanner = await _context.TeachingPlanners.FirstOrDefaultAsync(x => x.Id == id);

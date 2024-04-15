@@ -28,6 +28,10 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<IEnumerable<TeachingPlanner>>> GetAllTeachingPlanner()
         {
             var TeachingPlanner = await _repository.GetAllTeachingPlanner();
+            if(TeachingPlanner == null)
+            {
+                return NotFound("Null");
+            }
             return Ok(TeachingPlanner);
         }
 

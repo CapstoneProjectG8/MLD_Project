@@ -27,12 +27,12 @@ namespace Project_MLD.Mapper
                 .ReverseMap();
 
             CreateMap<Document1, Document1DTO>()
-                .ForMember(x => x.SubjectId, y => y.MapFrom(src => src.Subject.Id))
+                .ForMember(x => x.SubjectId, y => y.MapFrom(src => src.SubjectId))
+                .ForMember(x => x.GradeId, y => y.MapFrom(src => src.GradeId))
+                .ForMember(x => x.UserId, y => y.MapFrom(src => src.UserId))
                 .ForMember(x => x.SubjectName, y => y.MapFrom(src => src.Subject.Name))
-                .ForMember(x => x.GradeId, y => y.MapFrom(src => src.Grade.Id))
                 .ForMember(x => x.GradeName, y => y.MapFrom(src => src.Grade.Name))
-                .ForMember(x => x.UserId, y => y.MapFrom(src => src.User.Id))
-                .ForMember(x => x.UserName, y => y.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
+                .ForMember(x => x.UserName, y => y.MapFrom(src => src.User.LastName + " " + src.User.FirstName))
                 .ReverseMap();
 
             CreateMap<Document1CurriculumDistribution, Document1CurriculumDistributionDTO>()
@@ -105,7 +105,10 @@ namespace Project_MLD.Mapper
                 .ForMember(x => x.Id, y => y.MapFrom(src => src.Id))
                 .ForMember(x => x.UserName, y => y.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
                 .ReverseMap();
-
+            CreateMap<Class, ClassDTO>()
+                .ForMember(x => x.GradeId, y => y.MapFrom(src => src.Grade.Id))
+                .ForMember(x => x.GradeName ,y => y.MapFrom(src => src.Grade.Name))
+                .ReverseMap();
         }
     }
 }

@@ -56,24 +56,26 @@ namespace Project_MLD.Service.Repository
                         .FindAsync(item.CurriculumId);
                     if (curriculum == null)
                     {
-                        curriculum = new CurriculumDistribution
-                        {
-                            Name = item.Curriculum.Name
-                        };
-                        _context.CurriculumDistributions.Add(curriculum);
-                        _context.SaveChanges();
+                        //curriculum = new CurriculumDistribution
+                        //{
+                        //    Name = item.Curriculum.Name
+                        //};
+                        //_context.CurriculumDistributions.Add(curriculum);
+                        //_context.SaveChanges();
+                        throw new Exception("Curriculum Distribution Id is not Exist");
                     }
 
                     var equipment = await _context.TeachingEquipments
                         .FindAsync(item.EquipmentId);
                     if (equipment == null)
                     {
-                        equipment = new TeachingEquipment
-                        {
-                            Name = item.Equipment.Name
-                        };
-                        _context.TeachingEquipments.Add(equipment);
-                        _context.SaveChanges();
+                        //equipment = new TeachingEquipment
+                        //{
+                        //    Name = item.Equipment.Name
+                        //};
+                        //_context.TeachingEquipments.Add(equipment);
+                        //_context.SaveChanges();
+                        throw new Exception("Teaching Equipments Id is not Exist");
                     }
 
                     var existingItem = await _context.Document3CurriculumDistributions
@@ -102,7 +104,7 @@ namespace Project_MLD.Service.Repository
             }
             catch (Exception ex)
             {
-                throw new Exception("An error occurred while updating Curriculum Distributions.", ex);
+                throw new Exception(ex.Message);
             }
         }
 

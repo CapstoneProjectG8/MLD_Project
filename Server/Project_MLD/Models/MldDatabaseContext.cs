@@ -84,8 +84,13 @@ public partial class MldDatabaseContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("server =localhost; database = MLD_Database;uid=sa;pwd=sa;TrustServerCertificate=true");
+    {
+        var builder = new ConfigurationBuilder()
+                              .SetBasePath(Directory.GetCurrentDirectory())
+                              .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+        IConfigurationRoot configuration = builder.Build();
+        optionsBuilder.UseSqlServer(configuration.GetConnectionString("MyCnn"));
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -121,7 +126,9 @@ public partial class MldDatabaseContext : DbContext
 
             entity.ToTable("Class");
 
-            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("id");
             entity.Property(e => e.GradeId).HasColumnName("grade_ id");
             entity.Property(e => e.Name).HasColumnName("name");
 
@@ -479,7 +486,9 @@ public partial class MldDatabaseContext : DbContext
 
             entity.ToTable("Grade");
 
-            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("id");
             entity.Property(e => e.Name).HasColumnName("name");
             entity.Property(e => e.TotalStudent).HasColumnName("total_student");
             entity.Property(e => e.TotalStudentSelectedTopics).HasColumnName("total_student_selected_topics");
@@ -623,7 +632,9 @@ public partial class MldDatabaseContext : DbContext
 
             entity.ToTable("Subject");
 
-            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("id");
             entity.Property(e => e.Name).HasColumnName("name");
         });
 
@@ -677,7 +688,9 @@ public partial class MldDatabaseContext : DbContext
 
             entity.ToTable("Testing Category");
 
-            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("id");
             entity.Property(e => e.Name).HasColumnName("name");
         });
 

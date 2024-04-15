@@ -5,7 +5,7 @@ namespace Project_MLD.Models;
 
 public partial class Document1DTO
 {
-    public int Id { get; set; }
+    public int? Id { get; set; }
 
     public string? Name { get; set; }
 
