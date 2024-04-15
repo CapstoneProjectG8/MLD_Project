@@ -19,7 +19,6 @@ namespace Project_MLD.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles ="Admin")]
     public class AccountController : ControllerBase
     {
         private IConfiguration _config;
@@ -76,7 +75,6 @@ namespace Project_MLD.Controllers
         }
 
         [HttpGet("CheckAuthenciation")]
-        [Authorize(Roles = "Admin")]
         public IActionResult Check()
         {
             var s = GetCurrentAccount();
@@ -88,7 +86,6 @@ namespace Project_MLD.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles ="Admin")]
         public async Task<ActionResult<IEnumerable<Account>>> GetAllAccount()
         {
             var acc = await _repository.GetAllAccounts();
