@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Project_MLD.Migrations
 {
     /// <inheritdoc />
-    public partial class Migrations : Migration
+    public partial class Migration_v1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,7 +17,7 @@ namespace Project_MLD.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS")
                 },
                 constraints: table =>
                 {
@@ -30,7 +30,7 @@ namespace Project_MLD.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS")
                 },
                 constraints: table =>
                 {
@@ -43,7 +43,7 @@ namespace Project_MLD.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS")
                 },
                 constraints: table =>
                 {
@@ -56,7 +56,7 @@ namespace Project_MLD.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS"),
                     total_student = table.Column<int>(type: "int", nullable: true),
                     total_student_selected_topics = table.Column<int>(type: "int", nullable: true)
                 },
@@ -71,7 +71,7 @@ namespace Project_MLD.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS")
                 },
                 constraints: table =>
                 {
@@ -84,7 +84,7 @@ namespace Project_MLD.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS")
                 },
                 constraints: table =>
                 {
@@ -97,13 +97,8 @@ namespace Project_MLD.Migrations
                 {
                     role_id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    role_name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    role_note = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    active = table.Column<bool>(type: "bit", nullable: true),
-                    created_by = table.Column<int>(type: "int", nullable: true),
-                    created_date = table.Column<DateOnly>(type: "date", nullable: true),
-                    modified_by = table.Column<int>(type: "int", nullable: true),
-                    modified_date = table.Column<DateOnly>(type: "date", nullable: true)
+                    role_name = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS"),
+                    active = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -116,7 +111,7 @@ namespace Project_MLD.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS")
                 },
                 constraints: table =>
                 {
@@ -129,7 +124,7 @@ namespace Project_MLD.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS")
                 },
                 constraints: table =>
                 {
@@ -142,7 +137,7 @@ namespace Project_MLD.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS")
                 },
                 constraints: table =>
                 {
@@ -155,7 +150,7 @@ namespace Project_MLD.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS")
                 },
                 constraints: table =>
                 {
@@ -168,7 +163,7 @@ namespace Project_MLD.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS")
                 },
                 constraints: table =>
                 {
@@ -181,7 +176,7 @@ namespace Project_MLD.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS")
                 },
                 constraints: table =>
                 {
@@ -192,15 +187,16 @@ namespace Project_MLD.Migrations
                 name: "Class",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS"),
                     grade_id = table.Column<int>(name: "grade_ id", type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Lớp", x => x.id);
                     table.ForeignKey(
-                        name: "FK_Lớp_Khối Lớp",
+                        name: "FK_Class_Grade",
                         column: x => x.grade_id,
                         principalTable: "Grade",
                         principalColumn: "id");
@@ -212,10 +208,10 @@ namespace Project_MLD.Migrations
                 {
                     account_id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    username = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    password = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    username = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS"),
+                    password = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS"),
                     active = table.Column<bool>(type: "bit", nullable: true),
-                    created_by = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    created_by = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS"),
                     created_date = table.Column<DateOnly>(type: "date", nullable: true),
                     role_id = table.Column<int>(type: "int", nullable: true)
                 },
@@ -223,7 +219,7 @@ namespace Project_MLD.Migrations
                 {
                     table.PrimaryKey("PK_Account", x => x.account_id);
                     table.ForeignKey(
-                        name: "FK_Account_Role",
+                        name: "FK_Account_Role1",
                         column: x => x.role_id,
                         principalTable: "Role",
                         principalColumn: "role_id");
@@ -235,20 +231,20 @@ namespace Project_MLD.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    first_name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    last_name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    full_name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    first_name = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS"),
+                    last_name = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS"),
+                    email = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS"),
+                    full_name = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS"),
                     photo = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    address = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    address = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS"),
                     gender = table.Column<bool>(type: "bit", nullable: true),
-                    place_of_birth = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    place_of_birth = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS"),
                     age = table.Column<int>(type: "int", nullable: true),
                     level_of_trainning_id = table.Column<int>(type: "int", nullable: true),
                     specialized_department_id = table.Column<int>(type: "int", nullable: true),
                     account_id = table.Column<int>(type: "int", nullable: true),
                     professional_standards_id = table.Column<int>(type: "int", nullable: true),
-                    created_by = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    created_by = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS"),
                     created_date = table.Column<DateOnly>(type: "date", nullable: true),
                     modified_by = table.Column<int>(type: "int", nullable: true),
                     modified_date = table.Column<DateOnly>(type: "date", nullable: true),
@@ -258,12 +254,12 @@ namespace Project_MLD.Migrations
                 {
                     table.PrimaryKey("PK_User", x => x.id);
                     table.ForeignKey(
-                        name: "FK_User_Account1",
+                        name: "FK_User_Account",
                         column: x => x.account_id,
                         principalTable: "Account",
                         principalColumn: "account_id");
                     table.ForeignKey(
-                        name: "FK_User_LevelOfTrainning",
+                        name: "FK_User_Level Of Trainning",
                         column: x => x.level_of_trainning_id,
                         principalTable: "Level Of Trainning",
                         principalColumn: "id");
@@ -273,7 +269,7 @@ namespace Project_MLD.Migrations
                         principalTable: "Professional Standards",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_User_Tổ chuyên Môn",
+                        name: "FK_User_Specialized Department",
                         column: x => x.specialized_department_id,
                         principalTable: "Specialized Department",
                         principalColumn: "id");
@@ -285,24 +281,29 @@ namespace Project_MLD.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS"),
                     subject_id = table.Column<int>(type: "int", nullable: true),
                     grade_id = table.Column<int>(type: "int", nullable: true),
                     user_id = table.Column<int>(type: "int", nullable: true),
-                    note = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    note = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS"),
                     status = table.Column<bool>(type: "bit", nullable: true),
-                    approve_by = table.Column<int>(type: "int", nullable: true)
+                    approve_by = table.Column<int>(type: "int", nullable: true),
+                    isApprove = table.Column<bool>(type: "bit", nullable: true),
+                    created_date = table.Column<DateOnly>(type: "date", nullable: true),
+                    link_file = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    link_image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    other_tasks = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Kế Hoạch Dạy Học", x => x.id);
                     table.ForeignKey(
-                        name: "FK_Kế Hoạch Dạy Học_Khối Lớp",
+                        name: "FK_Document 1_Grade",
                         column: x => x.grade_id,
                         principalTable: "Grade",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_Kế Hoạch Dạy Học_Môn học",
+                        name: "FK_Document 1_Subject",
                         column: x => x.subject_id,
                         principalTable: "Subject",
                         principalColumn: "id");
@@ -319,15 +320,58 @@ namespace Project_MLD.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS"),
                     user_id = table.Column<int>(type: "int", nullable: true),
-                    status = table.Column<bool>(type: "bit", nullable: true)
+                    status = table.Column<bool>(type: "bit", nullable: true),
+                    approve_by = table.Column<int>(type: "int", nullable: true),
+                    isApprove = table.Column<bool>(type: "bit", nullable: true),
+                    created_date = table.Column<DateOnly>(type: "date", nullable: true),
+                    link_file = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    link_image = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Kế hoạch Tổ chức Hoạt Động Giáo Dục", x => x.id);
                     table.ForeignKey(
                         name: "FK_Kế hoạch Tổ chức Hoạt Động Giáo Dục_User",
+                        column: x => x.user_id,
+                        principalTable: "User",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Feedback",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false),
+                    user_id = table.Column<int>(type: "int", nullable: true),
+                    content = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Feedback", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_Feedback_User",
+                        column: x => x.user_id,
+                        principalTable: "User",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Notification",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false),
+                    title_name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    type = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    user_id = table.Column<int>(type: "int", nullable: true),
+                    message = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notification", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_Notification_User",
                         column: x => x.user_id,
                         principalTable: "User",
                         principalColumn: "id");
@@ -346,19 +390,19 @@ namespace Project_MLD.Migrations
                 {
                     table.PrimaryKey("PK_User - Lớp - Mon", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_GV - Lớp_Lớp",
+                        name: "FK_Teaching Planner_Class",
                         column: x => x.class_id,
                         principalTable: "Class",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_GV - Lớp_User",
-                        column: x => x.user_id,
-                        principalTable: "User",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "FK_User - Lớp - Mon_Môn học1",
+                        name: "FK_Teaching Planner_Subject",
                         column: x => x.subject_id,
                         principalTable: "Subject",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_Teaching Planner_User",
+                        column: x => x.user_id,
+                        principalTable: "User",
                         principalColumn: "id");
                 });
 
@@ -368,20 +412,28 @@ namespace Project_MLD.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS"),
                     document1_id = table.Column<int>(type: "int", nullable: true),
                     user_id = table.Column<int>(type: "int", nullable: true),
-                    status = table.Column<bool>(type: "bit", nullable: true)
+                    claas_name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    status = table.Column<bool>(type: "bit", nullable: true),
+                    isApprove = table.Column<bool>(type: "bit", nullable: true),
+                    approve_by = table.Column<int>(type: "int", nullable: true),
+                    created_date = table.Column<DateOnly>(type: "date", nullable: true),
+                    link_file = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    link_image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    other_tasks = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Kế hoạch giáo dục của GV", x => x.id);
                     table.ForeignKey(
-                        name: "FK_Kế hoạch giáo dục của GV_Kế Hoạch Dạy Học",
+                        name: "FK_Document 3_Document 1",
                         column: x => x.document1_id,
                         principalTable: "Document 1",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_Kế hoạch giáo dục của GV_User",
+                        name: "FK_Document 3_User",
                         column: x => x.user_id,
                         principalTable: "User",
                         principalColumn: "id");
@@ -394,19 +446,20 @@ namespace Project_MLD.Migrations
                     document1_id = table.Column<int>(type: "int", nullable: false),
                     curriculum_id = table.Column<int>(type: "int", nullable: false),
                     slot = table.Column<int>(type: "int", nullable: false),
-                    description = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    description = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS")
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_Document1_CurriculumDistribution", x => new { x.document1_id, x.curriculum_id });
                     table.ForeignKey(
-                        name: "FK_khdh-pptc_Kế Hoạch Dạy Học",
-                        column: x => x.document1_id,
-                        principalTable: "Document 1",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "FK_khdh-pptc_Phân phối chương trình",
+                        name: "FK_Document1_CurriculumDistribution_Curriculum Distribution",
                         column: x => x.curriculum_id,
                         principalTable: "Curriculum Distribution",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_Document1_CurriculumDistribution_Document 1",
+                        column: x => x.document1_id,
+                        principalTable: "Document 1",
                         principalColumn: "id");
                 });
 
@@ -414,22 +467,23 @@ namespace Project_MLD.Migrations
                 name: "Document1_SelectedTopics",
                 columns: table => new
                 {
-                    document1_id = table.Column<int>(type: "int", nullable: true),
-                    selected_topics_id = table.Column<int>(type: "int", nullable: true),
+                    document1_id = table.Column<int>(type: "int", nullable: false),
+                    selected_topics_id = table.Column<int>(type: "int", nullable: false),
                     slot = table.Column<int>(type: "int", nullable: true),
-                    description = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    description = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS")
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_Document1_SelectedTopics", x => new { x.document1_id, x.selected_topics_id });
                     table.ForeignKey(
-                        name: "FK_khdh _ CD / BH_Chuyên đề / Bài Học",
-                        column: x => x.selected_topics_id,
-                        principalTable: "Selected Topics",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "FK_khdh _ CD / BH_Kế Hoạch Dạy Học",
+                        name: "FK_Document1_SelectedTopics_Document 1",
                         column: x => x.document1_id,
                         principalTable: "Document 1",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_Document1_SelectedTopics_Selected Topics",
+                        column: x => x.selected_topics_id,
+                        principalTable: "Selected Topics",
                         principalColumn: "id");
                 });
 
@@ -437,21 +491,22 @@ namespace Project_MLD.Migrations
                 name: "Document1_Subject Room",
                 columns: table => new
                 {
-                    subject_room_id = table.Column<int>(type: "int", nullable: true),
-                    document1_id = table.Column<int>(type: "int", nullable: true),
+                    subject_room_id = table.Column<int>(type: "int", nullable: false),
+                    document1_id = table.Column<int>(type: "int", nullable: false),
                     quantity = table.Column<int>(type: "int", nullable: true),
-                    description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    note = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    description = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS"),
+                    note = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS")
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_Document1_Subject Room", x => new { x.subject_room_id, x.document1_id });
                     table.ForeignKey(
-                        name: "FK_khdh - Phòng bộ môn_Kế Hoạch Dạy Học",
+                        name: "FK_Document1_Subject Room_Document 1",
                         column: x => x.document1_id,
                         principalTable: "Document 1",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_khdh - Phòng bộ môn_Phòng Bộ Môn",
+                        name: "FK_Document1_Subject Room_Subject Room",
                         column: x => x.subject_room_id,
                         principalTable: "Subject Room",
                         principalColumn: "id");
@@ -461,21 +516,22 @@ namespace Project_MLD.Migrations
                 name: "Document1_TeachingEquipment",
                 columns: table => new
                 {
-                    document1_id = table.Column<int>(type: "int", nullable: true),
-                    teaching_equipment_id = table.Column<int>(type: "int", nullable: true),
+                    document1_id = table.Column<int>(type: "int", nullable: false),
+                    teaching_equipment_id = table.Column<int>(type: "int", nullable: false),
                     quantity = table.Column<int>(type: "int", nullable: true),
-                    note = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    description = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    note = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS"),
+                    description = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS")
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_Document1_TeachingEquipment", x => new { x.document1_id, x.teaching_equipment_id });
                     table.ForeignKey(
-                        name: "FK_KHDH_TBDH_Kế Hoạch Dạy Học",
+                        name: "FK_Document1_TeachingEquipment_Document 1",
                         column: x => x.document1_id,
                         principalTable: "Document 1",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_KHDH_TBDH_Thiết bị dậy học",
+                        name: "FK_Document1_TeachingEquipment_Teaching Equipment",
                         column: x => x.teaching_equipment_id,
                         principalTable: "Teaching Equipment",
                         principalColumn: "id");
@@ -485,28 +541,29 @@ namespace Project_MLD.Migrations
                 name: "Periodic Assessment",
                 columns: table => new
                 {
-                    testing_category_id = table.Column<int>(type: "int", nullable: true),
-                    form_category_id = table.Column<int>(type: "int", nullable: true),
+                    testing_category_id = table.Column<int>(type: "int", nullable: false),
+                    form_category_id = table.Column<int>(type: "int", nullable: false),
+                    document1_id = table.Column<int>(type: "int", nullable: false),
                     time = table.Column<int>(type: "int", nullable: true),
                     date = table.Column<DateOnly>(type: "date", nullable: true),
-                    description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    document1_id = table.Column<int>(type: "int", nullable: true)
+                    description = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS")
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_Periodic Assessment", x => new { x.testing_category_id, x.form_category_id, x.document1_id });
                     table.ForeignKey(
-                        name: "FK_Kiểm tra, đánh giá định kỳ_Hình thức thi",
-                        column: x => x.testing_category_id,
-                        principalTable: "Form Category",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "FK_Kiểm tra, đánh giá định kỳ_Kế Hoạch Dạy Học",
+                        name: "FK_Periodic Assessment_Document 1",
                         column: x => x.document1_id,
                         principalTable: "Document 1",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_Kiểm tra, đánh giá định kỳ_Loại Bài kiểm tra",
+                        name: "FK_Periodic Assessment_Form Category",
                         column: x => x.form_category_id,
+                        principalTable: "Form Category",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_Periodic Assessment_Testing Category",
+                        column: x => x.testing_category_id,
                         principalTable: "Testing Category",
                         principalColumn: "id");
                 });
@@ -515,28 +572,29 @@ namespace Project_MLD.Migrations
                 name: "Document2_Grade",
                 columns: table => new
                 {
-                    document2_id = table.Column<int>(type: "int", nullable: true),
-                    grade_id = table.Column<int>(type: "int", nullable: true),
-                    title_name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    document2_id = table.Column<int>(type: "int", nullable: false),
+                    grade_id = table.Column<int>(type: "int", nullable: false),
+                    title_name = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS"),
+                    description = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS"),
                     slot = table.Column<int>(type: "int", nullable: true),
                     time = table.Column<DateOnly>(type: "date", nullable: true),
-                    place = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    host_by = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    collaborate_with = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    condition = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    place = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS"),
+                    host_by = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS"),
+                    collaborate_with = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS"),
+                    condition = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS")
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_Document2_Grade", x => new { x.document2_id, x.grade_id });
                     table.ForeignKey(
-                        name: "FK_KHTCHDGD - KHỐI LỚP_Khối Lớp",
-                        column: x => x.grade_id,
-                        principalTable: "Grade",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "FK_KHTCHDGD - KHỐI LỚP_Kế hoạch Tổ chức Hoạt Động Giáo Dục",
+                        name: "FK_Document2_Grade_Document 2",
                         column: x => x.document2_id,
                         principalTable: "Document 2",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_Document2_Grade_Grade",
+                        column: x => x.grade_id,
+                        principalTable: "Grade",
                         principalColumn: "id");
                 });
 
@@ -546,43 +604,82 @@ namespace Project_MLD.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS"),
                     teaching_planner_id = table.Column<int>(type: "int", nullable: true),
-                    status = table.Column<bool>(type: "bit", nullable: true)
+                    status = table.Column<bool>(type: "bit", nullable: true),
+                    created_date = table.Column<string>(type: "nchar(10)", fixedLength: true, maxLength: 10, nullable: true),
+                    link_file = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    link_image = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Phu Luc 4", x => x.id);
                     table.ForeignKey(
-                        name: "FK_Phu Luc 4_User - Lớp - Mon",
+                        name: "FK_Document 4_Teaching Planner",
                         column: x => x.teaching_planner_id,
                         principalTable: "Teaching Planner",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "Doc",
+                name: "Document3_CurriculumDistribution",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    content = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
-                    category_id = table.Column<int>(type: "int", nullable: false),
-                    document4_id = table.Column<int>(type: "int", nullable: false)
+                    document3_id = table.Column<int>(type: "int", nullable: false),
+                    curriculum_id = table.Column<int>(type: "int", nullable: false),
+                    equipment_id = table.Column<int>(type: "int", nullable: false),
+                    subject_room_name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    slot = table.Column<int>(type: "int", nullable: true),
+                    time = table.Column<DateOnly>(type: "date", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Document", x => x.id);
+                    table.PrimaryKey("PK_Document3_CurriculumDistribution", x => new { x.document3_id, x.curriculum_id, x.equipment_id });
                     table.ForeignKey(
-                        name: "FK_Document_Category",
-                        column: x => x.category_id,
-                        principalTable: "Category",
-                        principalColumn: "Id");
+                        name: "FK_Document3_CurriculumDistribution_Curriculum Distribution",
+                        column: x => x.curriculum_id,
+                        principalTable: "Curriculum Distribution",
+                        principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_Document_Phu Luc 4",
-                        column: x => x.document4_id,
-                        principalTable: "Document 4",
+                        name: "FK_Document3_CurriculumDistribution_Document 3",
+                        column: x => x.document3_id,
+                        principalTable: "Document 3",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_Document3_CurriculumDistribution_Teaching Equipment",
+                        column: x => x.equipment_id,
+                        principalTable: "Teaching Equipment",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Document3_SelectedTopics",
+                columns: table => new
+                {
+                    document3_id = table.Column<int>(type: "int", nullable: false),
+                    selectedTopics_id = table.Column<int>(type: "int", nullable: false),
+                    equipment_id = table.Column<int>(type: "int", nullable: false),
+                    subject_room_name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    slot = table.Column<int>(type: "int", nullable: true),
+                    time = table.Column<DateOnly>(type: "date", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Document3_SelectedTopics", x => new { x.document3_id, x.selectedTopics_id, x.equipment_id });
+                    table.ForeignKey(
+                        name: "FK_Document3_SelectedTopics_Document 3",
+                        column: x => x.document3_id,
+                        principalTable: "Document 3",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_Document3_SelectedTopics_Selected Topics",
+                        column: x => x.selectedTopics_id,
+                        principalTable: "Selected Topics",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_Document3_SelectedTopics_Teaching Equipment",
+                        column: x => x.equipment_id,
+                        principalTable: "Teaching Equipment",
                         principalColumn: "id");
                 });
 
@@ -592,22 +689,52 @@ namespace Project_MLD.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS"),
                     document4_id = table.Column<int>(type: "int", nullable: false),
-                    evaluate_by = table.Column<int>(type: "int", nullable: true)
+                    user_id = table.Column<int>(type: "int", nullable: true),
+                    total = table.Column<int>(type: "int", nullable: true),
+                    created_date = table.Column<string>(type: "nchar(10)", fixedLength: true, maxLength: 10, nullable: true),
+                    link_file = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    link_image = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Phu Luc 5", x => x.id);
                     table.ForeignKey(
-                        name: "FK_Phu Luc 5_Phu Luc 4",
+                        name: "FK_Document 5_Document 4",
                         column: x => x.document4_id,
                         principalTable: "Document 4",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_Phu Luc 5_User",
-                        column: x => x.evaluate_by,
+                        name: "FK_Document 5_User",
+                        column: x => x.user_id,
                         principalTable: "User",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Scorm",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    name = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "SQL_Latin1_General_CP1_CI_AS"),
+                    content = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    category_id = table.Column<int>(type: "int", nullable: false),
+                    document4_id = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Document", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_Doc_Category",
+                        column: x => x.category_id,
+                        principalTable: "Category",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Doc_Document 4",
+                        column: x => x.document4_id,
+                        principalTable: "Document 4",
                         principalColumn: "id");
                 });
 
@@ -620,16 +747,6 @@ namespace Project_MLD.Migrations
                 name: "IX_Class_grade_ id",
                 table: "Class",
                 column: "grade_ id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Doc_category_id",
-                table: "Doc",
-                column: "category_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Doc_document4_id",
-                table: "Doc",
-                column: "document4_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Document 1_grade_id",
@@ -672,24 +789,14 @@ namespace Project_MLD.Migrations
                 column: "document4_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Document 5_evaluate_by",
+                name: "IX_Document 5_user_id",
                 table: "Document 5",
-                column: "evaluate_by");
+                column: "user_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Document1_CurriculumDistribution_curriculum_id",
                 table: "Document1_CurriculumDistribution",
                 column: "curriculum_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Document1_CurriculumDistribution_document1_id",
-                table: "Document1_CurriculumDistribution",
-                column: "document1_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Document1_SelectedTopics_document1_id",
-                table: "Document1_SelectedTopics",
-                column: "document1_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Document1_SelectedTopics_selected_topics_id",
@@ -702,29 +809,44 @@ namespace Project_MLD.Migrations
                 column: "document1_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Document1_Subject Room_subject_room_id",
-                table: "Document1_Subject Room",
-                column: "subject_room_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Document1_TeachingEquipment_document1_id",
-                table: "Document1_TeachingEquipment",
-                column: "document1_id");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Document1_TeachingEquipment_teaching_equipment_id",
                 table: "Document1_TeachingEquipment",
                 column: "teaching_equipment_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Document2_Grade_document2_id",
-                table: "Document2_Grade",
-                column: "document2_id");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Document2_Grade_grade_id",
                 table: "Document2_Grade",
                 column: "grade_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Document3_CurriculumDistribution_curriculum_id",
+                table: "Document3_CurriculumDistribution",
+                column: "curriculum_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Document3_CurriculumDistribution_equipment_id",
+                table: "Document3_CurriculumDistribution",
+                column: "equipment_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Document3_SelectedTopics_equipment_id",
+                table: "Document3_SelectedTopics",
+                column: "equipment_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Document3_SelectedTopics_selectedTopics_id",
+                table: "Document3_SelectedTopics",
+                column: "selectedTopics_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Feedback_user_id",
+                table: "Feedback",
+                column: "user_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Notification_user_id",
+                table: "Notification",
+                column: "user_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Periodic Assessment_document1_id",
@@ -737,9 +859,14 @@ namespace Project_MLD.Migrations
                 column: "form_category_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Periodic Assessment_testing_category_id",
-                table: "Periodic Assessment",
-                column: "testing_category_id");
+                name: "IX_Scorm_category_id",
+                table: "Scorm",
+                column: "category_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Scorm_document4_id",
+                table: "Scorm",
+                column: "document4_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Teaching Planner_class_id",
@@ -781,12 +908,6 @@ namespace Project_MLD.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Doc");
-
-            migrationBuilder.DropTable(
-                name: "Document 3");
-
-            migrationBuilder.DropTable(
                 name: "Document 5");
 
             migrationBuilder.DropTable(
@@ -805,7 +926,46 @@ namespace Project_MLD.Migrations
                 name: "Document2_Grade");
 
             migrationBuilder.DropTable(
+                name: "Document3_CurriculumDistribution");
+
+            migrationBuilder.DropTable(
+                name: "Document3_SelectedTopics");
+
+            migrationBuilder.DropTable(
+                name: "Feedback");
+
+            migrationBuilder.DropTable(
+                name: "Notification");
+
+            migrationBuilder.DropTable(
                 name: "Periodic Assessment");
+
+            migrationBuilder.DropTable(
+                name: "Scorm");
+
+            migrationBuilder.DropTable(
+                name: "Subject Room");
+
+            migrationBuilder.DropTable(
+                name: "Document 2");
+
+            migrationBuilder.DropTable(
+                name: "Curriculum Distribution");
+
+            migrationBuilder.DropTable(
+                name: "Document 3");
+
+            migrationBuilder.DropTable(
+                name: "Selected Topics");
+
+            migrationBuilder.DropTable(
+                name: "Teaching Equipment");
+
+            migrationBuilder.DropTable(
+                name: "Form Category");
+
+            migrationBuilder.DropTable(
+                name: "Testing Category");
 
             migrationBuilder.DropTable(
                 name: "Category");
@@ -814,28 +974,7 @@ namespace Project_MLD.Migrations
                 name: "Document 4");
 
             migrationBuilder.DropTable(
-                name: "Curriculum Distribution");
-
-            migrationBuilder.DropTable(
-                name: "Selected Topics");
-
-            migrationBuilder.DropTable(
-                name: "Subject Room");
-
-            migrationBuilder.DropTable(
-                name: "Teaching Equipment");
-
-            migrationBuilder.DropTable(
-                name: "Document 2");
-
-            migrationBuilder.DropTable(
-                name: "Form Category");
-
-            migrationBuilder.DropTable(
                 name: "Document 1");
-
-            migrationBuilder.DropTable(
-                name: "Testing Category");
 
             migrationBuilder.DropTable(
                 name: "Teaching Planner");
@@ -844,10 +983,10 @@ namespace Project_MLD.Migrations
                 name: "Class");
 
             migrationBuilder.DropTable(
-                name: "User");
+                name: "Subject");
 
             migrationBuilder.DropTable(
-                name: "Subject");
+                name: "User");
 
             migrationBuilder.DropTable(
                 name: "Grade");

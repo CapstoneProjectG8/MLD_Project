@@ -23,8 +23,6 @@ public partial class MldDatabaseContext : DbContext
 
     public virtual DbSet<CurriculumDistribution> CurriculumDistributions { get; set; }
 
-    public virtual DbSet<Doc> Docs { get; set; }
-
     public virtual DbSet<Document1> Document1s { get; set; }
 
     public virtual DbSet<Document1CurriculumDistribution> Document1CurriculumDistributions { get; set; }
@@ -64,6 +62,8 @@ public partial class MldDatabaseContext : DbContext
     public virtual DbSet<ProfessionalStandard> ProfessionalStandards { get; set; }
 
     public virtual DbSet<Role> Roles { get; set; }
+
+    public virtual DbSet<Scorm> Scorms { get; set; }
 
     public virtual DbSet<SelectedTopic> SelectedTopics { get; set; }
 
@@ -155,31 +155,6 @@ public partial class MldDatabaseContext : DbContext
                 .HasColumnName("name");
         });
 
-        modelBuilder.Entity<Doc>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK_Document");
-
-            entity.ToTable("Doc");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.CategoryId).HasColumnName("category_id");
-            entity.Property(e => e.Content).HasColumnName("content");
-            entity.Property(e => e.Document4Id).HasColumnName("document4_id");
-            entity.Property(e => e.Name)
-                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
-                .HasColumnName("name");
-
-            entity.HasOne(d => d.Category).WithMany(p => p.Docs)
-                .HasForeignKey(d => d.CategoryId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Doc_Category");
-
-            entity.HasOne(d => d.Document4).WithMany(p => p.Docs)
-                .HasForeignKey(d => d.Document4Id)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Doc_Document 4");
-        });
-
         modelBuilder.Entity<Document1>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("PK_Kế Hoạch Dạy Học");
@@ -199,6 +174,7 @@ public partial class MldDatabaseContext : DbContext
             entity.Property(e => e.Note)
                 .UseCollation("SQL_Latin1_General_CP1_CI_AS")
                 .HasColumnName("note");
+            entity.Property(e => e.OtherTasks).HasColumnName("other_tasks");
             entity.Property(e => e.Status).HasColumnName("status");
             entity.Property(e => e.SubjectId).HasColumnName("subject_id");
             entity.Property(e => e.UserId).HasColumnName("user_id");
@@ -645,6 +621,31 @@ public partial class MldDatabaseContext : DbContext
             entity.Property(e => e.RoleName)
                 .UseCollation("SQL_Latin1_General_CP1_CI_AS")
                 .HasColumnName("role_name");
+        });
+
+        modelBuilder.Entity<Scorm>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_Document");
+
+            entity.ToTable("Scorm");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.CategoryId).HasColumnName("category_id");
+            entity.Property(e => e.Content).HasColumnName("content");
+            entity.Property(e => e.Document4Id).HasColumnName("document4_id");
+            entity.Property(e => e.Name)
+                .UseCollation("SQL_Latin1_General_CP1_CI_AS")
+                .HasColumnName("name");
+
+            entity.HasOne(d => d.Category).WithMany(p => p.Scorms)
+                .HasForeignKey(d => d.CategoryId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Doc_Category");
+
+            entity.HasOne(d => d.Document4).WithMany(p => p.Scorms)
+                .HasForeignKey(d => d.Document4Id)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Doc_Document 4");
         });
 
         modelBuilder.Entity<SelectedTopic>(entity =>

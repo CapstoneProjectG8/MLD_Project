@@ -19,9 +19,9 @@ public partial class Document4
 
     public string? LinkImage { get; set; }
 
-    public virtual ICollection<Doc> Docs { get; set; } = new List<Doc>();
-
     public virtual ICollection<Document5> Document5s { get; set; } = new List<Document5>();
+
+    public virtual ICollection<Scorm> Scorms { get; set; } = new List<Scorm>();
 
     public virtual TeachingPlanner? TeachingPlanner { get; set; }
 }

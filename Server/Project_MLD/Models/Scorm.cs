@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Project_MLD.Models;
 
-public partial class Doc
+public partial class Scorm
 {
     public int Id { get; set; }
 

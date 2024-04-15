@@ -86,7 +86,6 @@ builder.Services.AddScoped<ITeachingPlannerRepository, TeachingPlannerRepository
 //Document5
 builder.Services.AddScoped<IDocument5Repository, Document5Repository>();
 //Document
-builder.Services.AddScoped<IDocRepository, DocRepository>();
 
 //Utils
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();

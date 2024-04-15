@@ -29,6 +29,8 @@ public partial class Document1
 
     public string? LinkImage { get; set; }
 
+    public string? OtherTasks { get; set; }
+
     public virtual ICollection<Document1CurriculumDistribution> Document1CurriculumDistributions { get; set; } = new List<Document1CurriculumDistribution>();
 
     public virtual ICollection<Document1SelectedTopic> Document1SelectedTopics { get; set; } = new List<Document1SelectedTopic>();
