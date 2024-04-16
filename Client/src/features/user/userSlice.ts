@@ -35,7 +35,6 @@ export const checkAuthenticationUser = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const res = await authService.checkAuthentication();
-      console.log("res: ", res)
       if (res.trim() !== "") {
         const words = res.split(' ');
         const email = words.find((word: string) => word.includes('@'));
