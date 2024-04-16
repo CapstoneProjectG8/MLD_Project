@@ -173,7 +173,11 @@ namespace Project_MLD.Controllers
                         _mailBody.SubjectTitleResetPassword(codeGenerate),
                         _mailBody.EmailBodyResetPassword(codeGenerate)
                         );
-                    return Ok("Sent to " + mail);
+                    return Ok(new
+                    {
+                        message = "send to " + mail,
+                        user = currentAccount
+                    });
                 }
                 catch (Exception ex)
                 {
@@ -239,7 +243,8 @@ namespace Project_MLD.Controllers
                 return (
                         accountClaims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value
                         + " " + accountClaims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value
-                         + " " + accountClaims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value);
+                         + " " + accountClaims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value
+                         );
             }
             return null;
         }
@@ -250,9 +255,10 @@ namespace Project_MLD.Controllers
 
             var claims = new[]
             {
+                
                 new Claim(ClaimTypes.NameIdentifier, user.FullName),
                 new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Role, user.Account.Role.RoleName)
+                new Claim(ClaimTypes.Role, user.Account.Role.RoleName+" "+user.Id.ToString())
             };
 
             var token = new JwtSecurityToken(
