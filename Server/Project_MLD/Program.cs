@@ -141,7 +141,10 @@ app.UseAuthorization();
 
 app.UseCors(builder =>
 {
-    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+    builder.WithOrigins("http://localhost:3000")
+           .AllowAnyMethod()
+           .AllowAnyHeader()
+           .AllowCredentials();
 });
 
 app.MapControllers();
