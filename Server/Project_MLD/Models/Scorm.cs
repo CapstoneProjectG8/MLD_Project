@@ -15,6 +15,8 @@ public partial class Scorm
 
     public int Document4Id { get; set; }
 
+    public int? UserId { get; set; }
+
     public virtual Category Category { get; set; } = null!;
 
     public virtual Document4 Document4 { get; set; } = null!;

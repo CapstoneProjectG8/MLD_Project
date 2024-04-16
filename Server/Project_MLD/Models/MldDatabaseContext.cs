@@ -594,6 +594,7 @@ public partial class MldDatabaseContext : DbContext
             entity.Property(e => e.Content).HasColumnName("content");
             entity.Property(e => e.Document4Id).HasColumnName("document4_id");
             entity.Property(e => e.Name).HasColumnName("name");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
 
             entity.HasOne(d => d.Category).WithMany(p => p.Scorms)
                 .HasForeignKey(d => d.CategoryId)

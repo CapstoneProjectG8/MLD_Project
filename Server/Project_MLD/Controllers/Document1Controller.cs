@@ -101,7 +101,12 @@ namespace Project_MLD.Controllers
             {
                 return BadRequest("Error Updating Document 1");
             }
-            return Ok("Update Success");
+            var mapper = _mapper.Map<Document1DTO>(document1);
+            return Ok(new
+            {
+                message = "Update Success",
+                mapper
+            });
         }
     }
 }
