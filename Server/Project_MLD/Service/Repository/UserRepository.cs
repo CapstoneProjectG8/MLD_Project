@@ -63,5 +63,48 @@ namespace Project_MLD.Service.Repository
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<IEnumerable<object>> GetTotalTeacherLevelOfTrainning()
+        {
+            var levelCounts = await _context.LevelOfTrainnings
+                .Include(x => x.Users) 
+                .Select(x => new
+                {
+                    LevelName = x.Name,
+                    UserCount = x.Users.Count()
+                })
+                .ToListAsync();
+
+            return levelCounts;
+        }
+
+        public async Task<IEnumerable<object>> GetTotalTeacherProfessionalStandard()
+        {
+            var professionalCount = await _context.ProfessionalStandards
+                .Include(x => x.Users)
+                .Select(x => new
+                {
+                    LevelName = x.Name,
+                    UserCount = x.Users.Count()
+                })
+                .ToListAsync();
+
+            return professionalCount;
+        }
+
+        public async Task<IEnumerable<object>> GetTotalUserBySpecializedDepartmentId(int id)
+        {
+            var professionalCount = await _context.ProfessionalStandards
+                .Include(x => x.Users)
+                .Select(x => new
+                {
+                    ProfessionalStandardName = x.Name,
+                    UserCount = x.Users.Count()
+                })
+                .ToListAsync();
+
+            return professionalCount;
+        }
+
     }
 }

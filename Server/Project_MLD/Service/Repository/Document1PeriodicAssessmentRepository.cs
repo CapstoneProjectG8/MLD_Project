@@ -102,5 +102,25 @@ namespace Project_MLD.Service.Repository
             var pa = await _context.PeriodicAssessments.ToListAsync();
             return pa;
         }
+
+        public async Task<IEnumerable<FormCategory>> GetAllFormCategory()
+        {
+            return await _context.FormCategories.ToListAsync();
+        }
+
+        public async Task<IEnumerable<TestingCategory>> GetAllTestingCategory()
+        {
+            return await _context.TestingCategories.ToListAsync();
+        }
+
+        public async Task<FormCategory> GetFormCategoryById(int id)
+        {
+            return await _context.FormCategories.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<TestingCategory> GetTestingCategoryById(int id)
+        {
+            return await _context.TestingCategories.FirstOrDefaultAsync(x => x.Id == id);
+        }
     }
 }

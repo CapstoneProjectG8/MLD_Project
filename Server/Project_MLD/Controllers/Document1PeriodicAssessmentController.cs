@@ -1,8 +1,10 @@
-﻿using AutoMapper;
+﻿using Amazon.Runtime.Internal.Auth;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Project_MLD.DTO;
 using Project_MLD.Models;
 using Project_MLD.Service.Interface;
+using System.Drawing.Printing;
 
 namespace Project_MLD.Controllers
 {
@@ -84,6 +86,34 @@ namespace Project_MLD.Controllers
                 // Log the exception or handle it accordingly
                 return StatusCode(500, $"An error occurred while updating Periodic Assessment: {ex.Message}");
             }
+        }
+
+        [HttpGet("GetAllTestingCategory")]
+        public async Task<ActionResult<IEnumerable<TestingCategory>>> GetAllTestingCategory()
+        {
+            var allTestingCategory = await _repository.GetAllTestingCategory();
+            return Ok(allTestingCategory);
+        }
+
+        [HttpGet("GetAllFormCategory")]
+        public async Task<ActionResult<IEnumerable<FormCategory>>> GetAllFormCategory()
+        {
+            var allFormCategory = await _repository.GetAllFormCategory();
+            return Ok(allFormCategory);
+        }
+
+        [HttpGet("GetTestingCategoryById/{id}")]
+        public async Task<ActionResult<TestingCategory>> GetTestingCategoryById(int id)
+        {
+            var allTestingCategory = await _repository.GetTestingCategoryById(id);
+            return Ok(allTestingCategory);
+        }
+
+        [HttpGet("GetFormCategoryById/{id}")]
+        public async Task<ActionResult<FormCategory>> GetFormCategoryById(int id)
+        {
+            var allFormCategory = await _repository.GetFormCategoryById(id);
+            return Ok(allFormCategory);
         }
     }
 }

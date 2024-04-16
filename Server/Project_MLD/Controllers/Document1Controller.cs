@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Amazon.Runtime.Internal.Util;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,11 +15,14 @@ namespace Project_MLD.Controllers
     {
         private readonly IDocument1Repository _repository;
         private readonly IMapper _mapper;
-
-        public Document1Controller(IDocument1Repository repository, IMapper mapper)
+        private readonly IGradeRepository _gradeRepository;
+        private readonly IUserRepository _userRepository;
+        public Document1Controller(IDocument1Repository repository, IMapper mapper, IGradeRepository gradeRepository, IUserRepository userRepository)
         {
             _repository = repository;
             _mapper = mapper;
+            _gradeRepository = gradeRepository;
+            _userRepository = userRepository;
         }
 
         [HttpGet]
@@ -106,6 +110,47 @@ namespace Project_MLD.Controllers
             {
                 message = "Update Success",
                 mapper
+            });
+        }
+
+        [HttpGet("GetTotalClassByGradeId")]
+        public async Task<IActionResult> GetTotalClassAndStudentByGradeId(int gradeId)
+        {
+            if (gradeId == 0)
+            {
+                return BadRequest("Grade Id is Null");
+            }
+            var totalClass = await _gradeRepository.GetTotalClassByGradeId(gradeId);
+
+            var totalStudent = await _gradeRepository.GetTotalStudentByGradeId(gradeId);
+
+            var totalStudentSelected = await _gradeRepository.GetTotalStudentSelectedTopicsByGradeId(gradeId);
+            return Ok(new
+            {
+                totalClass = totalClass,
+                totalStudent = totalStudent,
+                totalStudentSelected = totalStudentSelected
+            });
+        }
+
+
+        [HttpGet("GetTeacherInformation")]
+        public async Task<IActionResult> GetTeacherInformation(int specializedDepartmentId)
+        {
+            if (specializedDepartmentId == 0)
+            {
+                return BadRequest("specialized Department Id is Null");
+            }
+            var totalTeacher = await _userRepository.GetTotalUserBySpecializedDepartmentId(specializedDepartmentId);
+            var totalTeacherProfessionalStandard = await _userRepository.GetTotalTeacherProfessionalStandard();
+            var totalTeacherLevelOfTrainning = await _userRepository.GetTotalTeacherLevelOfTrainning();
+
+
+            return Ok(new
+            {
+                totalTeacher = totalTeacher,
+                totalTeacherProfessionalStandard = totalTeacherProfessionalStandard,
+                totalTeacherLevelOfTrainning = totalTeacherLevelOfTrainning
             });
         }
     }

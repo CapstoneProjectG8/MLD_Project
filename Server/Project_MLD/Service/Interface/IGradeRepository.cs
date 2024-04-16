@@ -9,6 +9,8 @@ namespace Project_MLD.Service.Interface
         Task<Grade> AddGrade(Grade grade);
         Task<bool> UpdateGrade(Grade grade);
         Task<bool> DeleteGrade(int id);
-
+        Task<int> GetTotalClassByGradeId(int id);
+        Task<int> GetTotalStudentByGradeId(int id);
+        Task<int> GetTotalStudentSelectedTopicsByGradeId(int id);
     }
 }
