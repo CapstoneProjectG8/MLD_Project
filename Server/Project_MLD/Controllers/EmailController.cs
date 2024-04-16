@@ -11,11 +11,13 @@ namespace Project_MLD.Controllers
     {
         private readonly IEmailSender _emailSender;
         private readonly IMailBody _mailBody;
+        private readonly IGenerateCode _generateCode;
 
-        public EmailController(IEmailSender emailSender,IMailBody mailBody)
+        public EmailController(IEmailSender emailSender,IMailBody mailBody, IGenerateCode generateCode)
         {
             _emailSender = emailSender;
             _mailBody = mailBody;
+            _generateCode = generateCode;
         }
 
         [HttpPost]
@@ -23,9 +25,9 @@ namespace Project_MLD.Controllers
         {
             try
             {
-                var code = GenerateCode.GenerateRandomCode();
+                var code = _generateCode.GenerateRandomCode();
                 await _emailSender.SendEmailAsync(receiver, _mailBody.SubjectTitleResetPassword(code),
-                    _mailBody.EmailBodyResetPassword(code));
+                    _mailBody.EmailBodyResetPassword("testUser",code));
                 return Ok("Done");
             }
             catch (Exception ex)

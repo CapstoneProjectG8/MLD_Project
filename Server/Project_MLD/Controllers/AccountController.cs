@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Amazon.S3.Model;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -28,11 +29,11 @@ namespace Project_MLD.Controllers
         private readonly IPasswordHasher _passwordHasher;
         private readonly IEmailSender _emailSender;
         private readonly IMailBody _mailBody;
-        private static string codeGenerate = "";
+        private readonly IGenerateCode _codeGenerate;
 
         public AccountController(IConfiguration configuration, IAccountRepository repository,
             MldDatabaseContext context, IMapper mapper, IPasswordHasher passwordHasher,
-            IEmailSender emailSender, IMailBody mailBody)
+            IEmailSender emailSender, IMailBody mailBody, IGenerateCode codeGenerate)
         {
             _config = configuration;
             _context = context;
@@ -41,6 +42,7 @@ namespace Project_MLD.Controllers
             _passwordHasher = passwordHasher;
             _emailSender = emailSender;
             _mailBody = mailBody;
+            _codeGenerate = codeGenerate;
         }
 
         [AllowAnonymous]
@@ -52,21 +54,19 @@ namespace Project_MLD.Controllers
                 return BadRequest("Please fill information");
             }
 
-            if (CheckPasswordValidation(accountLogin.Password))
+
+            var acc = Authenticate(accountLogin.Username, accountLogin.Password);
+            if (acc != null)
             {
-                var acc = Authenticate(accountLogin.Username, accountLogin.Password);
-                if (acc != null)
+                var token = GenerateToken(acc);
+                if (token != null)
                 {
-                    var token = GenerateToken(acc);
-                    if (token != null)
-                    {
-                        return Ok(token);
-                    }
-                    return BadRequest("Token cannot create");
+                    return Ok(token);
                 }
-                return NotFound("Account Not Found");
+                return BadRequest("Token cannot create");
             }
-            return BadRequest("Password is incorrect");
+            return NotFound("Account Not Found");
+
         }
 
         [HttpGet("CheckAuthenciation")]
@@ -98,6 +98,8 @@ namespace Project_MLD.Controllers
 
             return Ok(exAcc);
         }
+
+
 
         [HttpPost]
         public async Task<ActionResult<Account>> AddAccount(AccountDTO acc)
@@ -156,41 +158,89 @@ namespace Project_MLD.Controllers
         [HttpPost("SendMailResetPassword")]
         public async Task<IActionResult> SendMailResetPassword(string mail)
         {
-            var currentAccount = _context.Users.Where(x => x.Email == mail).FirstOrDefault();
+            var currentAccount = await _context.Users.FirstOrDefaultAsync(x => x.Email == mail);
+
             if (currentAccount != null)
             {
                 try
                 {
-                    codeGenerate = GenerateCode.GenerateRandomCode();
-                    await _emailSender
-                        .SendEmailAsync(
-                        mail,
-                        _mailBody.SubjectTitleResetPassword(codeGenerate),
-                        _mailBody.EmailBodyResetPassword(codeGenerate)
-                        );
-                    return Ok(new
+                    var account = await _context.Accounts.Where(x => x.AccountId == currentAccount.AccountId).FirstOrDefaultAsync();
+
+                    if (account != null)
                     {
-                        message = "send to " + mail,
-                        user = currentAccount
-                    });
+                        var codeGenerate = _codeGenerate.GenerateRandomCode();
+
+                        var hashedPassword = _passwordHasher.Hash(codeGenerate);
+                        account.Password = hashedPassword;
+
+                        // Update account password
+                        _context.Accounts.Update(account);
+                        await _context.SaveChangesAsync();
+
+                        // Send email
+                        await _emailSender.SendEmailAsync(
+                            mail,
+                            _mailBody.SubjectTitleResetPassword(codeGenerate),
+                            _mailBody.EmailBodyResetPassword(account.Username, codeGenerate)
+                        );
+
+                        return Ok(new
+                        {
+                            message = "Reset password email sent to " + mail
+                        });
+                    }
+                    else
+                    {
+                        return BadRequest("Account not found for the user.");
+                    }
                 }
                 catch (Exception ex)
                 {
-                    return BadRequest("Failed to send email. Please check the details and try again." + ex.Message);
+                    return BadRequest("Failed to send email. Please check the details and try again. " + ex.Message);
                 }
             }
-            return BadRequest("User Not Found");
-
-        }
-
-        [HttpPost("CheckVerifyCode")]
-        public ActionResult CheckVerifyCode(string code)
-        {
-            if (code == null || codeGenerate != code)
+            else
             {
-                return BadRequest("Code Not Match");
+                return BadRequest("User not found.");
             }
-            return Ok("Matched");
+        }
+        [HttpPost("CheckVerifyPassword")]
+        public ActionResult CheckVerifyPassword(string username, string currentPassword, string newPassword)
+        {
+            try
+            {
+                var account = _context.Accounts.FirstOrDefault(x => x.Username == username);
+
+
+                if (account == null)
+                {
+                    return BadRequest("User not found.");
+                }
+
+                if (!_passwordHasher.VerifyPassword(account.Password, currentPassword))
+                {
+                    return BadRequest("Incorrect current password.");
+                }
+
+
+                if (!CheckPasswordValidation(newPassword))
+                {
+                    return BadRequest("At least 8 characters including 1 special case, 1 lowwer case, 1 uppercase and 1 number");
+                }
+
+                var hashedNewPassword = _passwordHasher.Hash(newPassword);
+
+
+                account.Password = hashedNewPassword;
+                _context.Accounts.Update(account);
+                _context.SaveChanges();
+
+                return Ok("Password updated successfully.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Failed to update password. Please try again. " + ex.Message);
+            }
         }
 
         [HttpPost("ChangePassword")]

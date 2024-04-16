@@ -14,6 +14,7 @@ using Amazon;
 using Amazon.Extensions.NETCore.Setup;
 using Amazon.Runtime;
 using Amazon.S3;
+using Project_MLD.Utils.GenerateCode;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -113,6 +114,7 @@ builder.Services.AddScoped<IDocument5Repository, Document5Repository>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.AddTransient<IMailBody, MailBody>();
+builder.Services.AddScoped<IGenerateCode,GenerateCode>();
 
 
 //ADD CORS

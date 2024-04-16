@@ -4,7 +4,7 @@ namespace Project_MLD.Utils.GmailSender
 {
     public class MailBody : IMailBody
     {
-        public string EmailBodyResetPassword(string randomCode)
+        public string EmailBodyResetPassword(string username, string randomCode)
         {
             return @"
             <html lang=""en"">" +
@@ -93,7 +93,9 @@ namespace Project_MLD.Utils.GmailSender
                 @"
                     <p>Did you request a password change?</p>" +
                 @"
-                    <p>To reset your password, we have sent you a code.</p>" +
+                    <p>To reset your password, we have sent you a new password.</p>" +
+                    @"
+                    <p><strong>User:</strong> " + username + "</p>" +
                 @"
                     <p><strong>Code:</strong> " + randomCode + "</p>" +
                 @"

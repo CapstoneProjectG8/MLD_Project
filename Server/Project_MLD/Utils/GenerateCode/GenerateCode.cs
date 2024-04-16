@@ -2,21 +2,39 @@
 
 namespace Project_MLD.Utils.GenerateCode
 {
-    public class GenerateCode
+    public class GenerateCode : IGenerateCode
     {
-        public static string GenerateRandomCode()
-        {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            StringBuilder code = new StringBuilder();
 
+        public string GenerateRandomCode()
+        {
+            const string upperCaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            const string numberChars = "0123456789";
+
+            StringBuilder code = new StringBuilder();
             Random random = new Random();
 
+            // Generate one uppercase letter
+            code.Append(upperCaseChars[random.Next(upperCaseChars.Length)]);
+
+            // Generate one number
+            code.Append(numberChars[random.Next(numberChars.Length)]);
+
+            // Generate the rest of the code with uppercase letters and numbers
             for (int i = 0; i < 6; i++)
             {
-                code.Append(chars[random.Next(chars.Length)]);
+                string allChars = upperCaseChars + numberChars;
+
+                // Ensure that the random index is within the bounds of the combined set
+                if (allChars.Length > 0)
+                {
+                    code.Append(allChars[random.Next(allChars.Length)]);
+                }
             }
 
-            return code.ToString();
+            // Shuffle the code to ensure randomness
+            string shuffledCode = new string(code.ToString().OrderBy(x => random.Next()).ToArray());
+
+            return shuffledCode;
         }
     }
 }
