@@ -5,144 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="be828d7c-dbf1-4b62-8bf4-1f83e0ab14e4" name="Changes" comment="fix dashboard, add components Phu luc">
-      <change afterPath="$PROJECT_DIR$/src/api/subMenu1.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/subMenu2.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/api/subMenu3.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/app/store.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/user/userService.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/features/user/userSlice.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/hook/useTypedSelector.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/subMenu.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/axiosConfig.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/baseUrl.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/FinalTest/AccountRepositoryTests.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/FinalTest/ClassRepositoryTests.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/FinalTest/CurriculumDistributionTests.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/FinalTest/DocRepositoryTests.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/FinalTest/Document1CuriculumDistributionRepositoryTests.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/FinalTest/Document1RepositoryTests.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/FinalTest/Document2GradeRepositoryTests.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/FinalTest/Document2RepositoryTests.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/FinalTest/Document3RepositoryTests.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/FinalTest/Document4RepositoryTests.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/FinalTest/Document5RepositoryTests.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/FinalTest/GradeRepositoryTests.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/FinalTest/LevelOfTraniningRepositoryTests.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/FinalTest/ProfessionalStandardRepositoryTests.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/FinalTest/RoleRepositoryTests.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/FinalTest/SelectedTopicRepositoryTests.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/FinalTest/SpecializedDepartmentRepositoryTests.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/FinalTest/SubjectRepositoryTests.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/FinalTest/SubjectRoomRepositoryTests.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/FinalTest/TeachingEquipmentRepositoryTests.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/FinalTest/UserRepositoryTests.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/Project_MLD/Controllers/Document1SubjectRoomsController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/Project_MLD/Controllers/Document3CuriculumDistributionController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/Project_MLD/Controllers/Document3SelectedTopicsController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/Project_MLD/Controllers/PrincipleController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/Project_MLD/DTO/Document1SubjectRoomDTO.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/Project_MLD/DTO/Document3CurriculumDistributionDTO.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/Project_MLD/DTO/Document3SelectedTopicDTO.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/Project_MLD/Models/Document3CurriculumDistribution.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/Project_MLD/Models/Document3SelectedTopic.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/Project_MLD/Service/Interface/IDocument1SubjectRoomsRepository.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/Project_MLD/Service/Interface/IDocument3CurriculumDistributionRepository.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/Project_MLD/Service/Interface/IDocument3SelectedTopicsRepository.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/Project_MLD/Service/Repository/Document1SubjectRoomsRepository.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/Project_MLD/Service/Repository/Document3CuriculumDistributionRepository.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Server/Project_MLD/Service/Repository/Document3SelectedTopicsRepository.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Home/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Home/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Home/style.scss" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Home/style.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Layout/Header/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Layout/Header/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/SubMenu/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SubMenu/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/SubMenu1Detail/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SubMenu1Detail/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/SubMenu2Detail/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SubMenu2Detail/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/SubMenu3Detail/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SubMenu3Detail/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/SubMenu4Detail/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SubMenu4Detail/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/SubMenu5Detail/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SubMenu5Detail/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../ClientAdmin/admindashboard/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../ClientAdmin/admindashboard/yarn.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Controllers/AccountController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Controllers/AccountController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Controllers/DocController.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Controllers/Document1CuriculumDistributionController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Controllers/Document1CuriculumDistributionController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Controllers/Document1PeriodicAssessmentController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Controllers/Document1PeriodicAssessmentController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Controllers/Document1SelectedTopicController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Controllers/Document1SelectedTopicController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Controllers/Document1TeachingEquipmentController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Controllers/Document1TeachingEquipmentController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Controllers/Document2Controller.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Controllers/Document2Controller.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Controllers/Document2GradeController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Controllers/Document2GradeController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Controllers/Document3Controller.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Controllers/Document3Controller.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Controllers/Document4Controller.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Controllers/Document4Controller.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Controllers/Document5Controller.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Controllers/Document5Controller.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/DTO/Document1DTO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/DTO/Document1DTO.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/DTO/Document1SelectedTopicsDTO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/DTO/Document1SelectedTopicsDTO.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/DTO/Document1TeachingEquipmentsDTO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/DTO/Document1TeachingEquipmentsDTO.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/DTO/Document2DTO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/DTO/Document2DTO.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/DTO/Document3DTO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/DTO/Document3DTO.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/DTO/Document4DTO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/DTO/Document4DTO.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/DTO/Document5DTO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/DTO/Document5DTO.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Mapper/MapperConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Mapper/MapperConfig.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Migrations/20240405055247_Migrations.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Migrations/20240405055247_Migrations.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Migrations/20240415092406_Migration_v1.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Migrations/20240405154248_Migration_v1.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Migrations/20240405154248_Migration_v1.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Migrations/20240405155141_Migration_v2.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Migrations/20240405155141_Migration_v2.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Migrations/20240406134357_Migration_v3.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Migrations/20240406134357_Migration_v3.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Migrations/20240407122134_Migration_v4.Designer.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Migrations/20240407122134_Migration_v4.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Migrations/20240408110442_Migration_v5.Designer.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Migrations/20240415092406_Migration_v1.Designer.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Migrations/20240408110442_Migration_v5.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Migrations/MldDatabaseContextModelSnapshot.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Migrations/MldDatabaseContextModelSnapshot.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Models/Account.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Models/Account.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Models/Category.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Models/Category.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Models/CurriculumDistribution.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Models/CurriculumDistribution.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Models/Doc.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Models/Scorm.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Models/Document1.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Models/Document1.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Models/Document2.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Models/Document2.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Models/Document2Grade.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Models/Document2Grade.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Models/Document3.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Models/Document3.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Models/Document4.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Models/Document4.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Models/Document5.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Models/Document5.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Models/MldDatabaseContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Models/MldDatabaseContext.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Models/SelectedTopic.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Models/SelectedTopic.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Models/TeachingEquipment.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Models/TeachingEquipment.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Project_MLD.sln" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Project_MLD.sln" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Service/Interface/IDocRepository.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Service/Repository/DocRepository.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Service/Repository/Document1CuriculumDistributionRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Service/Repository/Document1CuriculumDistributionRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Service/Repository/Document1PeriodicAssessmentRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Service/Repository/Document1PeriodicAssessmentRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Service/Repository/Document1SelectedTopicsRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Service/Repository/Document1SelectedTopicsRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Service/Repository/Document1TeachingEquipmentRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Service/Repository/Document1TeachingEquipmentRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Service/Repository/Document2GradeRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Service/Repository/Document2GradeRepository.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/TestProject1/AccountRepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/TestProject1/AccountRepositoryTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/TestProject1/ClassRepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/TestProject1/ClassRepositoryTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/TestProject1/CurriculumDistributionTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/TestProject1/CurriculumDistributionTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/TestProject1/DocRepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/TestProject1/DocRepositoryTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/TestProject1/Document1RepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/TestProject1/Document1RepositoryTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/TestProject1/Document2GradeRepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/TestProject1/Document2GradeRepositoryTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/TestProject1/Document2RepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/TestProject1/Document2RepositoryTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/TestProject1/Document3RepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/TestProject1/Document3RepositoryTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/TestProject1/Document4RepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/TestProject1/Document4RepositoryTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/TestProject1/Document5RepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/TestProject1/Document5RepositoryTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/TestProject1/GlobalUsings.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/FinalTest/GlobalUsings.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/TestProject1/GradeRepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/TestProject1/GradeRepositoryTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/TestProject1/LevelOfTraniningRepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/TestProject1/LevelOfTraniningRepositoryTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/TestProject1/ProfessionalStandardRepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/TestProject1/ProfessionalStandardRepositoryTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/TestProject1/RoleRepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/TestProject1/RoleRepositoryTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/TestProject1/SelectedTopicRepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/TestProject1/SelectedTopicRepositoryTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/TestProject1/SpecializedDepartmentRepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/TestProject1/SpecializedDepartmentRepositoryTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/TestProject1/SubjectRepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/TestProject1/SubjectRepositoryTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/TestProject1/SubjectRoomRepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/TestProject1/SubjectRoomRepositoryTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/TestProject1/TeachingEquipmentRepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/TestProject1/TeachingEquipmentRepositoryTests.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/TestProject1/TestProject1.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/FinalTest/FinalTest.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/TestProject1/UnitTest1.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/FinalTest/UnitTest1.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Server/TestProject1/UserRepositoryTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/TestProject1/UserRepositoryTests.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/api/permission/role.api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/api/permission/role.api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/api/request.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/api/request.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/api/user.api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/api/user.api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/interface/user/login.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/interface/user/login.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/mock/user/menu.mock.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/mock/user/menu.mock.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/pages/login/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/pages/login/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/routes/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../ClientAdmin/admindashboard/src/routes/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Server/Project_MLD/Controllers/S3FileUploadController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Server/Project_MLD/Controllers/S3FileUploadController.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -193,26 +64,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "Merging anhdhn",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/FPT Univer/DOANNNNNNNNN/Final/MLD_Project/Client",
-    "list.type.of.created.stylesheet": "SCSS",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "npm.deploy.executor": "Run",
-    "npm.dev.executor": "Run",
-    "ts.external.directory.path": "C:\\Users\\damhu\\AppData\\Local\\JetBrains\\Toolbox\\apps\\IDEA-U\\ch-0\\233.14808.21\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;anhdhn&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/FPT Univer/DOANNNNNNNNN/Final/MLD_Project/Client&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;SCSS&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.deploy.executor&quot;: &quot;Run&quot;,
+    &quot;npm.dev.executor&quot;: &quot;Run&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\damhu\\AppData\\Local\\JetBrains\\Toolbox\\apps\\IDEA-U\\ch-0\\233.14808.21\\plugins\\javascript-impl\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\damhu\OneDrive\Desktop\SEP490\MLD_Project\Client\src\content\pages\Components" />
@@ -226,17 +97,7 @@
       <recent name="C:\Users\damhu\OneDrive\Desktop\SEP490\MLD_Project\Client\src\components\LandingPage" />
     </key>
   </component>
-  <component name="RunManager" selected="npm.dev">
-    <configuration name="deploy" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
-      <package-json value="$PROJECT_DIR$/package.json" />
-      <command value="run" />
-      <scripts>
-        <script value="deploy" />
-      </scripts>
-      <node-interpreter value="project" />
-      <envs />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager">
     <configuration name="dev" type="js.build_tools.npm" temporary="true" nameIsGenerated="true">
       <package-json value="$PROJECT_DIR$/package.json" />
       <command value="run" />
@@ -250,7 +111,6 @@
     <recent_temporary>
       <list>
         <item itemvalue="npm.dev" />
-        <item itemvalue="npm.deploy" />
       </list>
     </recent_temporary>
   </component>
@@ -281,6 +141,9 @@
       <workItem from="1713110133502" duration="196000" />
       <workItem from="1713110370848" duration="873000" />
       <workItem from="1713187273940" duration="683000" />
+      <workItem from="1713269704739" duration="108000" />
+      <workItem from="1713269828465" duration="1661000" />
+      <workItem from="1713284442115" duration="652000" />
     </task>
     <task id="LOCAL-00001" summary="fix dashboard, add components Phu luc">
       <option name="closed" value="true" />

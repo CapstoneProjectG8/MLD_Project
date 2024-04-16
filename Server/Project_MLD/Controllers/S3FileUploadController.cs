@@ -80,7 +80,42 @@ namespace Project_MLD.Controllers
                             PresignedUrl = presignedUrl,
                             ExpirationDatetime = DateTime.UtcNow.AddYears(1)
                         };
-
+                        // Add URL to corresponding Document and save to database
+                        switch (prefix)
+                        {
+                            case "doc1/":
+                                var document1 = new Document1();
+                                document1.LinkFile = presignedUrl;
+                                _context.Document1s.Add(document1);
+                                uploadedFileUrls.Add(presignedUrl);
+                                break;
+                            case "doc2/":
+                                var document2 = new Document2();
+                                document2.LinkFile = presignedUrl;
+                                _context.Document2s.Add(document2);
+                                uploadedFileUrls.Add(presignedUrl);
+                                break;
+                            case "doc3/":
+                                var document3 = new Document1();
+                                document3.LinkFile = presignedUrl;
+                                _context.Document1s.Add(document3);
+                                uploadedFileUrls.Add(presignedUrl);
+                                break;
+                            case "doc4/":
+                                var document4 = new Document2();
+                                document4.LinkFile = presignedUrl;
+                                _context.Document2s.Add(document4);
+                                uploadedFileUrls.Add(presignedUrl);
+                                break;
+                            case "doc5/":
+                                var document5 = new Document1();
+                                document5.LinkFile = presignedUrl;
+                                _context.Document1s.Add(document5);
+                                uploadedFileUrls.Add(presignedUrl);
+                                break;
+                            default:
+                                return BadRequest("Invalid prefix");
+                        }
                         // Add file metadata to database
                         _context.S3FileMetadata.Add(fileMetadata);
                         await _context.SaveChangesAsync();

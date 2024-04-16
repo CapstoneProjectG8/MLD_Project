@@ -56,7 +56,7 @@ axiosInstance.interceptors.response.use(
     let errorMessage = '系统异常';
 
     if (error?.message?.includes('Network Error')) {
-      errorMessage = '网络错误，请检查您的网络';
+      errorMessage = 'Lỗi kết nối';
     } else {
       errorMessage = error?.message;
     }
