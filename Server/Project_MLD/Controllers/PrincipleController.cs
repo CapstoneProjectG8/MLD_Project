@@ -39,79 +39,83 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<IEnumerable<Document1>>> GetAllDocument1()
         {
             var document1 = await _document1Repository.GetAllDocument1s();
-            var mapperDocument1 = _mapper.Map<IEnumerable<Document1DTO>>(document1);
+            var mapperDocument1 = _mapper.Map<List<Document1DTO>>(document1);
             return Ok(mapperDocument1);
         }
 
         [HttpGet("GetAllDocument2")]
-        public async Task<ActionResult<IEnumerable<Document1>>> GetAllDocument2()
+        public async Task<ActionResult<IEnumerable<Document2>>> GetAllDocument2()
         {
             var document2 = await _document2Repository.GetAllDocument2s();
-            var mapperDocument2 = _mapper.Map<IEnumerable<Document2DTO>>(document2);
+            var mapperDocument2 = _mapper.Map<List<Document2DTO>>(document2);
             return Ok(mapperDocument2);
         }
 
         [HttpGet("GetAllDocument3")]
-        public async Task<ActionResult<IEnumerable<Document1>>> GetAllDocument3()
+        public async Task<ActionResult<IEnumerable<Document3>>> GetAllDocument3()
         {
             var document3 = await _document3Repository.GetAllDocument3s();
-            var mapperDocument3 = _mapper.Map<IEnumerable<Document3DTO>>(document3);
+            var mapperDocument3 = _mapper.Map<List<Document3DTO>>(document3);
             return Ok(mapperDocument3);
         }
 
         [HttpGet("GetAllDocument4")]
-        public async Task<ActionResult<IEnumerable<Document1>>> GetAllDocument4()
+        public async Task<ActionResult<IEnumerable<Document4>>> GetAllDocument4()
         {
             var document4 = await _document4Repository.GetAllDocument4s();
-            var mapperDocument4 = _mapper.Map<IEnumerable<Document4DTO>>(document4);
+            var mapperDocument4 = _mapper.Map<List<Document4DTO>>(document4);
             return Ok(mapperDocument4);
         }
 
         [HttpGet("GetAllDocument5")]
-        public async Task<ActionResult<IEnumerable<Document1>>> GetAllDocument5()
+        public async Task<ActionResult<IEnumerable<Document5>>> GetAllDocument5()
         {
             var document5 = await _document5Repository.GetAllDocument5s();
-            var mapperDocument5 = _mapper.Map<IEnumerable<Document5DTO>>(document5);
+            var mapperDocument5 = _mapper.Map<List<Document5DTO>>(document5);
             return Ok(mapperDocument5);
         }
 
         [HttpPost("RateDocument4ByDocument5")]
-        public async Task<ActionResult<Document5>> RateDocument4ByDocument5(Document5DTO pl5)
+        public async Task<ActionResult<Document5>> RateDocument4ByDocument5(Document5 pl5)
         {
-            var mapDocument = _mapper.Map<Document5>(pl5);
-            return await _document5Repository.AddDocument5(mapDocument);
+
+            var doc = await _document5Repository.AddDocument5(pl5);
+            var mapDocument = _mapper.Map<Document5DTO>(doc);
+            return Ok(mapDocument);
         }
 
         [HttpPut("ApproveDocument1/{id}")]
-        public async Task<ActionResult<Document5>> ApproveDocument1(int id,Document1DTO pl1)
+        public async Task<ActionResult<Document5>> ApproveDocument1(int id, Document1 pl1)
         {
             if (id != pl1.Id)
             {
                 return NotFound("Id Not Match");
             }
-            var mapDocument = _mapper.Map<Document1>(pl1);
-            var result = await _document1Repository.UpdateDocument1(mapDocument);
+
+            var result = await _document1Repository.UpdateDocument1(pl1);
             if (!result)
             {
                 return BadRequest("Error Updating");
             }
-            return NoContent();
+            var mapDocument = _mapper.Map<Document1>(pl1);
+            return Ok(mapDocument);
         }
 
         [HttpPut("ApproveDocument2/{id}")]
-        public async Task<ActionResult<Document5>> ApproveDocument2(int id, Document2DTO pl2)
+        public async Task<ActionResult<Document5>> ApproveDocument2(int id, Document2 pl2)
         {
             if (id != pl2.Id)
             {
                 return NotFound("Id Not Match");
             }
-            var mapDocument = _mapper.Map<Document2>(pl2);
-            var result = await _document2Repository.UpdateDocument2(mapDocument);
+
+            var result = await _document2Repository.UpdateDocument2(pl2);
             if (!result)
             {
                 return BadRequest("Error Updating");
             }
-            return NoContent();
+            var mapDocument = _mapper.Map<Document2>(pl2);
+            return Ok(mapDocument);
         }
     }
 }

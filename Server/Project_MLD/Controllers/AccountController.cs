@@ -60,12 +60,7 @@ namespace Project_MLD.Controllers
                     var token = GenerateToken(acc);
                     if (token != null)
                     {
-                        return Ok(new
-                        {
-                            token,
-                            accountLogin.Username,
-                            accountLogin.Password
-                        });
+                        return Ok(token);
                     }
                     return BadRequest("Token cannot create");
                 }
@@ -173,11 +168,15 @@ namespace Project_MLD.Controllers
                         _mailBody.SubjectTitleResetPassword(codeGenerate),
                         _mailBody.EmailBodyResetPassword(codeGenerate)
                         );
-                    return Ok("Sent to " + mail);
+                    return Ok(new
+                    {
+                        message = "send to " + mail,
+                        user = currentAccount
+                    });
                 }
                 catch (Exception ex)
                 {
-                    return BadRequest("Failed to send email. Please check the details and try again." +ex.Message);
+                    return BadRequest("Failed to send email. Please check the details and try again." + ex.Message);
                 }
             }
             return BadRequest("User Not Found");
@@ -236,8 +235,8 @@ namespace Project_MLD.Controllers
             if (identity != null)
             {
                 var accountClaims = identity.Claims;
-                return (
-                        accountClaims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value
+                return (accountClaims.FirstOrDefault(x => x.Type == ClaimTypes.Name)?.Value
+                       + " " + accountClaims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value
                         + " " + accountClaims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value
                          + " " + accountClaims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value);
             }
@@ -250,6 +249,7 @@ namespace Project_MLD.Controllers
 
             var claims = new[]
             {
+                new Claim(ClaimTypes.Name, user.Id.ToString()),
                 new Claim(ClaimTypes.NameIdentifier, user.FullName),
                 new Claim(ClaimTypes.Email, user.Email),
                 new Claim(ClaimTypes.Role, user.Account.Role.RoleName)
