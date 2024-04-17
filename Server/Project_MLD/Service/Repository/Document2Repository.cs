@@ -82,5 +82,7 @@ namespace Project_MLD.Service.Repository
             return await _context.Document2s
                 .Where(x => x.Status == true && x.IsApprove == true).ToListAsync();
         }
+
+       
     }
 }
