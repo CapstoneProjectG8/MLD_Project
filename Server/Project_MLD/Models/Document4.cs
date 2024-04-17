@@ -21,7 +21,5 @@ public partial class Document4
 
     public virtual ICollection<Document5> Document5s { get; set; } = new List<Document5>();
 
-    public virtual ICollection<Scorm> Scorms { get; set; } = new List<Scorm>();
-
     public virtual TeachingPlanner? TeachingPlanner { get; set; }
 }

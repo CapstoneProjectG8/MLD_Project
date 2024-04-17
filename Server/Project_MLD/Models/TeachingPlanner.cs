@@ -17,6 +17,8 @@ public partial class TeachingPlanner
 
     public virtual ICollection<Document4> Document4s { get; set; } = new List<Document4>();
 
+    public virtual ICollection<Scorm> Scorms { get; set; } = new List<Scorm>();
+
     public virtual Subject? Subject { get; set; }
 
     public virtual User? User { get; set; }

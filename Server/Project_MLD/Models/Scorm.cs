@@ -13,11 +13,17 @@ public partial class Scorm
 
     public int CategoryId { get; set; }
 
-    public int Document4Id { get; set; }
+    public int TeachingPlannerId { get; set; }
 
-    public int? UserId { get; set; }
+    public bool? IsAprrove { get; set; }
+
+    public bool? Status { get; set; }
+
+    public string? LinkFile { get; set; }
+
+    public string? LinkImage { get; set; }
 
     public virtual Category Category { get; set; } = null!;
 
-    public virtual Document4 Document4 { get; set; } = null!;
+    public virtual TeachingPlanner TeachingPlanner { get; set; } = null!;
 }
