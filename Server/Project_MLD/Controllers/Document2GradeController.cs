@@ -47,7 +47,7 @@ namespace Project_MLD.Controllers
             return Ok(existDocument2);
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("{document2Id}")]
         public async Task<IActionResult> UpdateDocument2Grade(int document2Id, List<Document2GradeDTO> requests)
         {
             try
