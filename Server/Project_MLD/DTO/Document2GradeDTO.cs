@@ -19,7 +19,7 @@ public partial class Document2GradeDTO
 
     public string? Place { get; set; }
 
-    public string? HostBy { get; set; }
+    public int? HostBy { get; set; }
 
     public string? CollaborateWith { get; set; }
 
