@@ -29,7 +29,7 @@ namespace Project_MLD.Controllers
             return Ok(mapClass);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetClassById/{id}")]
         public async Task<ActionResult<Class>> GetClassById(int id)
         {
             var exClass = await _repository.GetClassById(id);
@@ -39,6 +39,17 @@ namespace Project_MLD.Controllers
             }
             var _mapperClass = _mapper.Map<Class>(exClass);
             return Ok(_mapperClass);
+        }
+
+        [HttpGet("GetClassByGradeId/{Gradeid}")]
+        public async Task<ActionResult<Class>> GetClassByGradeId(int Gradeid)
+        {
+            var exClass = await _repository.GetClassesByGradeId(Gradeid);
+            if (exClass == null)
+            {
+                return NotFound();
+            }
+            return Ok(exClass);
         }
 
         //[HttpPost]

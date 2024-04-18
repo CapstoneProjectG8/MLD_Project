@@ -31,8 +31,6 @@ public partial class Document1DTO
 
     public string? OtherTasks { get; set; }
 
-    public string? ApproveByName { get; set; }
-
     public string? UserName { get; set; }
 
     public string? SubjectName { get; set; }

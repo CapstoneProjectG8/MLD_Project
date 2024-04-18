@@ -9,6 +9,7 @@ namespace Project_MLD.Service.Interface
         Task<Class> AddClass(Class cl);
         Task<bool> UpdateClass(Class cl);
         Task<bool> DeleteClass(int id);
+        Task<IEnumerable<Class>> GetClassesByGradeId(int gradeId);
 
     }
 }
