@@ -9,7 +9,7 @@ public partial class Document2DTO
 
     public string? Name { get; set; }
 
-    public int? UserId { get; set; }
+    public int UserId { get; set; }
 
     public bool? Status { get; set; }
 
@@ -23,6 +23,7 @@ public partial class Document2DTO
 
     public string? LinkImage { get; set; }
 
-    public string? UserName { get; set; }
     public string? ApproveByName { get; set; }
+
+    public string? UserName { get; set; }
 }

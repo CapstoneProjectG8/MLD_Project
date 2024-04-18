@@ -30,6 +30,9 @@ public partial class Document3DTO
     public string? OtherTasks { get; set; }
 
     public string? UserName { get; set; }
+
     public string? ApproveByName { get; set;}
+
+    public string? Document1Name { get; set; }
 
 }

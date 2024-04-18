@@ -71,11 +71,23 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Document2>> AddDocument2(Document2 pl2)
+        public async Task<ActionResult<Document2>> AddDocument2(Document2DTO doc2)
         {
-            var document2 = await _repository.AddDocument2(pl2);
-            var mapperDoc = _mapper.Map<Document2DTO>(document2);
-            return Ok(mapperDoc);
+            try
+            {
+                var document = _mapper.Map<Document2>(doc2);
+                var addedDocument = await _repository.AddDocument2(document);
+                if (addedDocument == null)
+                {
+                    return BadRequest("Error Adding Document1");
+                }
+                var addedDocumentDTO = _mapper.Map<Document2DTO>(addedDocument);
+                return Ok(addedDocumentDTO);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Can not add Error, " + ex.Message);
+            }
         }
 
         [HttpDelete("{id}")]
