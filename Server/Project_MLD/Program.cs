@@ -21,7 +21,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("appsettings.json", optional:false,reloadOnChange:true).Build();
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true).Build();
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -114,7 +114,7 @@ builder.Services.AddScoped<IDocument5Repository, Document5Repository>();
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.AddTransient<IMailBody, MailBody>();
-builder.Services.AddScoped<IGenerateCode,GenerateCode>();
+builder.Services.AddScoped<IGenerateCode, GenerateCode>();
 
 
 //ADD CORS
@@ -143,7 +143,7 @@ app.UseAuthorization();
 
 app.UseCors(builder =>
 {
-    builder.WithOrigins("http://localhost:3000")
+    builder.WithOrigins("http://localhost:3000", "http://localhost:8889")
            .AllowAnyMethod()
            .AllowAnyHeader()
            .AllowCredentials();

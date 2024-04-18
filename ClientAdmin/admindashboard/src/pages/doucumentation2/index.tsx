@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import React from 'react';
 import { InboxOutlined } from '@ant-design/icons';
 import type { UploadProps } from 'antd';
@@ -6,6 +6,7 @@ import { message, Upload } from 'antd';
 import { Typography } from 'antd';
 
 import { LocaleFormatter } from '@/locales';
+import axios from 'axios';
 
 const { Title, Paragraph } = Typography;
 
@@ -15,7 +16,7 @@ const { Dragger } = Upload;
 const props: UploadProps = {
   name: 'file',
   multiple: true,
-  action: 'https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload',
+  action: 'https://localhost:7241/api/S3FileUpload/upload?prefix=doc2%2F',
   onChange(info) {
     const { status } = info.file;
     if (status !== 'uploading') {
@@ -32,6 +33,21 @@ const props: UploadProps = {
   },
 };
 const DocumentationPage2: FC = () => {
+  const [documentList, setDocumentList] = useState<string[]>([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('https://localhost:7241/api/S3FileUpload', {
+          params: { prefix: 'doc2/' }
+        });
+        setDocumentList(response.data.fileUrls); // Assuming the API response contains an array of file URLs
+      } catch (error) {
+        console.error('Error fetching document list:', error);
+      }
+    };
+
+    fetchData();
+  }, []);
   return (
     <Dragger {...props}>
       <p className="ant-upload-drag-icon">

@@ -10,6 +10,7 @@ namespace Project_MLD.DTO
         public string? LastName { get; set; }
 
         public string? FullName { get; set; }
+        public string? Email { get; set; }
 
         public byte[]? Photo { get; set; }
 

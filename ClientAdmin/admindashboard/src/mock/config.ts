@@ -25,13 +25,13 @@ export function intercepter(data: any, page?: PageParams) {
 
     return {
       status: true,
-      message: '成功',
+      message: 'Success',
       result,
     };
   } else {
     return {
       status: true,
-      message: '成功',
+      message: 'Success',
       result: data,
     };
   }
