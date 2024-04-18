@@ -14,7 +14,7 @@ namespace Project_MLD.Controllers
     {
         private readonly IDocument3Repository _repository;
         private readonly IMapper _mapper;
-        public Document3Controller(IDocument3Repository repository,IMapper mapper)
+        public Document3Controller(IDocument3Repository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
@@ -100,7 +100,12 @@ namespace Project_MLD.Controllers
             {
                 return BadRequest("Error Updating");
             }
-            return NoContent();
+            var dataMap = _mapper.Map<Document3DTO>(mapDocument);
+            return Ok(new
+            {
+                message = "Update Success",
+                dataMap
+            });
         }
     }
 }

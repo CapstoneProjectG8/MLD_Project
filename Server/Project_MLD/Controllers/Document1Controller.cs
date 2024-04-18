@@ -105,22 +105,23 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateDocument1(int id, Document1 document1)
+        public async Task<IActionResult> UpdateDocument1(int id, Document1DTO document1)
         {
             if (id != document1.Id)
             {
                 return NotFound("Id Not Match");
             }
-            var result = await _repository.UpdateDocument1(document1);
+            var mapper = _mapper.Map<Document1>(document1);
+            var result = await _repository.UpdateDocument1(mapper);
             if (!result)
             {
                 return BadRequest("Error Updating Document 1");
             }
-            var mapper = _mapper.Map<Document1DTO>(document1);
+            var dataMap = _mapper.Map<Document1DTO>(mapper);
             return Ok(new
             {
                 message = "Update Success",
-                mapper
+                dataMap
             });
         }
 

@@ -112,9 +112,14 @@ namespace Project_MLD.Controllers
             var result = await _repository.UpdateDocument2(mapDocument);
             if (!result)
             {
-                return BadRequest("Error Updating");
+                return BadRequest("Error Updating Document 2");
             }
-            return NoContent();
+            var data = _mapper.Map<Document2DTO>(mapDocument);
+            return Ok(new
+            {
+                message = "Update Success",
+                data
+            });
         }
     }
 }

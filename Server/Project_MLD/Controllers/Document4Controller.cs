@@ -89,7 +89,12 @@ namespace Project_MLD.Controllers
             {
                 return NotFound("Error Updating");
             }
-            return NoContent();
+            var dataMap = _mapper.Map<Document4>(mapDocument);
+            return Ok(new
+            {
+                message = "Update Success",
+                dataMap
+            });
         }
     }
 }

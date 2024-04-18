@@ -83,7 +83,12 @@ namespace Project_MLD.Controllers
             {
                 return NotFound("Error Updating");
             }
-            return NoContent();
+            var dataMap = _mapper.Map<Document5DTO>(mapDocument);
+            return Ok(new
+            {
+                message = "Update Success",
+                dataMap
+            });
         }
     }
 }
