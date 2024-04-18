@@ -58,33 +58,29 @@ namespace Project_MLD.Service.Repository
 
         public async Task<int> GetTotalClassByGradeId(int id)
         {
-            var classes = await _context.Classes
+            var totalClass = await _context.Classes
                 .Where(x => x.GradeId == id).CountAsync();
-            return classes;
+
+            return (int)totalClass;
         }
 
         public async Task<int> GetTotalStudentByGradeId(int id)
         {
-            var grade = await _context.Grades.FindAsync(id);
-            if(grade == null)
-            {
-                return 0;
-            }
-            var totalStudet = 1;
-            return (int)totalStudet;
+            var totalStudent = await _context.Classes
+                .Where(x => x.GradeId == id)
+                .SumAsync(x => x.TotalStudent);
+
+            return (int)totalStudent;
 
         }
 
         public async Task<int> GetTotalStudentSelectedTopicsByGradeId(int id)
         {
-            var grade = await _context.Grades.FindAsync(id);
-            if (grade == null)
-            {
-                return 0;
-            }
-            var totalStudetSelected = 1;
-            return (int)totalStudetSelected;
+            var totalStudentSt = await _context.Classes
+                .Where(x => x.GradeId == id)
+                .SumAsync(x => x.TotalStudentSelectedTopics);
 
+            return (int)totalStudentSt;
         }
     }
 }

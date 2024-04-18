@@ -16,12 +16,14 @@ namespace Project_MLD.Controllers
     public class Document2GradeController : ControllerBase
     {
         private readonly IDocument2GradeRepository _repository;
+        private readonly IGradeRepository _gradeRepository;
         private readonly IMapper _mapper;
 
-        public Document2GradeController(IDocument2GradeRepository repository, IMapper mapper)
+        public Document2GradeController(IDocument2GradeRepository repository, IMapper mapper, IGradeRepository gradeRepository )
         {
             _repository = repository;
             _mapper = mapper;
+            _gradeRepository = gradeRepository;
         }
 
         [HttpGet]
@@ -96,6 +98,21 @@ namespace Project_MLD.Controllers
                 // Log the exception or handle it accordingly
                 return StatusCode(500, $"An error occurred while delete Document1 CurriculumDistribution: {ex.Message}");
             }
+        }
+
+        [HttpGet("{gradeId}")]
+        public async Task<IActionResult> GetTotalStudentByGradeId(int gradeId)
+        {
+            if(gradeId == 0)
+            {
+                return BadRequest("Grade Id is null");
+            }
+            var totalStudent = await _gradeRepository.GetTotalStudentByGradeId(gradeId);
+
+            return Ok(new
+            {
+                totalStudent = totalStudent
+            });
         }
     }
 }

@@ -13,14 +13,12 @@ namespace Project_MLD.Controllers
     public class Document2Controller : ControllerBase
     {
         private readonly IDocument2Repository _repository;
-        private readonly IGradeRepository _gradeRepository;
         private readonly IMapper _mapper;
 
-        public Document2Controller(IDocument2Repository repository, IMapper mapper, IGradeRepository gradeRepository)
+        public Document2Controller(IDocument2Repository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
-            _gradeRepository = gradeRepository;
         }
 
 
@@ -104,21 +102,6 @@ namespace Project_MLD.Controllers
                 return BadRequest("Error Updating");
             }
             return NoContent();
-        }
-
-        [HttpGet("GetTotalStudentByGradeId/{id}")]
-        public async Task<IActionResult> GetTotalClassByGradeId(int gradeId)
-        {
-            if (gradeId == 0)
-            {
-                return BadRequest("Grade Id is Null");
-            }
-            var totalClass = await _gradeRepository.GetTotalClassByGradeId(gradeId);
-
-            return Ok(new
-            {
-                totalClass = totalClass
-            });
         }
     }
 }

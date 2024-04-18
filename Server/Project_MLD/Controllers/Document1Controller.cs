@@ -142,8 +142,8 @@ namespace Project_MLD.Controllers
                 return BadRequest("specialized Department Id is Null");
             }
             var totalTeacher = await _userRepository.GetTotalUserBySpecializedDepartmentId(specializedDepartmentId);
-            var totalTeacherProfessionalStandard = await _userRepository.GetTotalTeacherProfessionalStandard();
-            var totalTeacherLevelOfTrainning = await _userRepository.GetTotalTeacherLevelOfTrainning();
+            var totalTeacherProfessionalStandard = await _userRepository.GetTotalUserProfessionalStandard();
+            var totalTeacherLevelOfTrainning = await _userRepository.GetTotalUserLevelOfTrainning();
 
 
             return Ok(new

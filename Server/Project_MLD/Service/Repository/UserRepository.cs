@@ -64,7 +64,7 @@ namespace Project_MLD.Service.Repository
             return true;
         }
 
-        public async Task<IEnumerable<object>> GetTotalTeacherLevelOfTrainning()
+        public async Task<IEnumerable<object>> GetTotalUserLevelOfTrainning()
         {
             var levelCounts = await _context.LevelOfTrainnings
                 .Include(x => x.Users) 
@@ -78,7 +78,7 @@ namespace Project_MLD.Service.Repository
             return levelCounts;
         }
 
-        public async Task<IEnumerable<object>> GetTotalTeacherProfessionalStandard()
+        public async Task<IEnumerable<object>> GetTotalUserProfessionalStandard()
         {
             var professionalCount = await _context.ProfessionalStandards
                 .Include(x => x.Users)
@@ -99,7 +99,6 @@ namespace Project_MLD.Service.Repository
                 .Where(x => x.Id == id)
                 .Select(x => new
                 {
-                    SpecializedDepartmentId = x.Id,
                     SpecializedDepartmentName = x.Name,
                     UserCount = x.Users.Count()
                 })
