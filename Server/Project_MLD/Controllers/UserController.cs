@@ -43,6 +43,7 @@ namespace Project_MLD.Controllers
         {
             user.CreatedBy = 1;
             user.CreatedDate = DateOnly.FromDateTime(DateTime.Now);
+            user.FullName = user.FirstName + " " + user.LastName;
             var u = await _repository.AddUser(_mapper.Map<User>(user));
             return Ok(u);
         }

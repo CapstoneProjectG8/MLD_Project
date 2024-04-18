@@ -53,10 +53,10 @@ axiosInstance.interceptors.response.use(
     );
     // if needs to navigate to login page when request exception
     // history.replace('/login');
-    let errorMessage = '系统异常';
+    let errorMessage = 'Network Error';
 
     if (error?.message?.includes('Network Error')) {
-      errorMessage = '网络错误，请检查您的网络';
+      errorMessage = 'Network Error';
     } else {
       errorMessage = error?.message;
     }

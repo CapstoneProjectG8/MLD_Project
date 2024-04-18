@@ -91,6 +91,14 @@ const mockMenuList: MenuList = [
         },
         path: '/permission/404',
       },
+      {
+        code: 'mangementAccount',
+        label: {
+          zh_CN: 'Tài khoản',
+          en_US: 'Account',
+        },
+        path: '/permission/account',
+      },
     ],
   },
 ];

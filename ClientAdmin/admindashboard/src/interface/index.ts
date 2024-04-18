@@ -1,5 +1,5 @@
 export interface Locales<T = any> {
-  /** Chinese */
+  /** Vietnamese*/
   zh_CN: T;
   /** English */
   en_US: T;
