@@ -1,203 +1,181 @@
-import { FC, useMemo, useState } from 'react';
-
-import { Typography } from 'antd';
-
-import { LocaleFormatter } from '@/locales';
-import { useLocation } from 'react-router-dom';
+import React, { FC, useEffect, useState } from 'react';
+import { Button, Col, Form, Input, Modal, Row, Table, Typography } from 'antd';
 
 const { Title, Paragraph } = Typography;
 
-const div = <div style={{ height: 200 }}>2333</div>;
-
-interface Row1 {
-  stt: number | null;
-  thietBiDayHoc: string;
-  soLuong: number | null;
-  baiThiNghiem: string;
-  ghiChu: string;
-}
-
-interface Row2 {
-  stt: number | null;
-  tenPhong: string;
-  soLuong: number | null;
-  phamViNoiDung: string;
-  ghiChu: string;
-}
-
-interface Row3 {
-  stt: number | null;
-  baiHoc: string;
-  soTiet: number | null;
-  yeuCau: string;
-}
-
-interface Row4 {
-  stt: number | null;
-  chuyenDe: string;
-  soTiet: number | null;
-  yeuCau: string;
+interface Document {
+  id: string;
+  name: string;
+  note: string;
+  status: boolean;
+  isApprove: boolean;
+  createdDate: string;
+  linkFile: string;
+  linkImage: string;
+  otherTasks: string;
+  approveByName: string;
+  userName: string;
+  subjectName: string;
+  gradeName: string;
 }
 
 const DocumentationPage1: FC = () => {
-  const location = useLocation();
-  const [rows1, setRows1] = useState<Row1[]>([{
-      stt: null,
-      thietBiDayHoc: '',
-      soLuong: null,
-      baiThiNghiem: '',
-      ghiChu: '',
+  const [documents, setDocuments] = useState<Document[]>([]);
+  const [selectedDocument, setSelectedDocument] = useState<Document | null>(null);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [form] = Form.useForm();
+
+  useEffect(() => {
+    fetch('https://localhost:7241/api/Document1')
+      .then(response => response.json())
+      .then(data => setDocuments(data))
+      .catch(error => console.error('Error fetching data:', error));
+  }, []);
+
+  const handleDetail = (record: Document) => {
+    setSelectedDocument(record);
+    setModalVisible(true);
+  };
+
+  const handleConfirmBanUnban = (record: Document, action: 'ban' | 'unban') => {
+    // Thay đổi trạng thái của boolean status true/false
+    const updatedDocuments = documents.map(doc => {
+      if (doc.id === record.id) {
+        return {
+          ...doc,
+          status: action === 'ban' ? false : true,
+        };
+      }
+      return doc;
+    });
+    setDocuments(updatedDocuments);
+  };
+
+  const handleCloseModal = () => {
+    setModalVisible(false);
+    form.resetFields();
+  };
+  const handViewFileModal = () => {
+    if (selectedDocument?.linkFile) {
+      window.open(selectedDocument.linkFile, '_blank');
+    }
+  }
+  const columns = [
+    {
+      title: 'Index',
+      dataIndex: 'index',
+      key: 'index',
+      width: '70px',
+      render: (text, record, index) => index + 1,
     },
-  ]);
-  const [rows2, setRows2] = useState<Row2[]>([{
-      stt: null,
-      tenPhong: '',
-      soLuong: null,
-      phamViNoiDung: '',
-      ghiChu: '',
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      key: 'name',
+      width: '500px',
+      ellipsis: true,
     },
-  ]);
-  const [rows3, setRows3] = useState<Row3[]>([{ stt: null, baiHoc: '', soTiet: null, yeuCau: '' }]);
-  const [rows4, setRows4] = useState<Row4[]>([{ stt: null, chuyenDe: '', soTiet: null, yeuCau: '' }]);
-  const [login, setLogin] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [openAccept, setOpenAccept] = useState(false);
-  const [openDeny, setOpenDeny] = useState(false);
-  const [openReport, setOpenReport] = useState(false);
-
-  const [truong, setTruong] = useState('');
-  const [to, setTo] = useState('');
-  const [hoadDong, setHoatDong] = useState('');
-  const [khoiLop, setKhoiLop] = useState('');
-  const [startYear, setStartYear] = useState('');
-  const [endYear, setEndYear] = useState('');
-  const [soLop, setSoLop] = useState('');
-  const [soHocSinh, setSoHocSinh] = useState('');
-  const [soHocSinhChuyenDe, setSoHocSinhChuyenDe] = useState('');
-  const [soGiaoVien, setSoGiaoVien] = useState('');
-  const [caoDang, setCaoDang] = useState('');
-  const [daiHoc, setDaiHoc] = useState('');
-  const [trenDaiHoc, setTrenDaiHoc] = useState('');
-  const [tot, setTot] = useState('');
-  const [kha, setKha] = useState('');
-  const [chuaDat, setChuaDat] = useState('');
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const handleClickOpenAccept = () => {
-    setOpenAccept(true);
-  };
-
-  const handleCloseAccept = () => {
-    setOpenAccept(false);
-  };
-
-  const handleClickOpenDeny = () => {
-    setOpenDeny(true);
-  };
-
-  const handleCloseDeny = () => {
-    setOpenDeny(false);
-  };
-
-  const handleClickOpenReport = () => {
-    setOpenReport(true);
-  };
-
-  const handleCloseReport = () => {
-    setOpenReport(false);
-  };
-
-  // const docs = useMemo(() => [
-  //   { uri: require("./phuluc1.pdf") },
-  // ], []);
-
-  const handleAddRow1 = () => {
-    const newRow = {
-      stt: null,
-      thietBiDayHoc: '',
-      soLuong: null,
-      baiThiNghiem: '',
-      ghiChu: ''
-    };
-    setRows1([...rows1, newRow]);
-  };
-  const handleAddRow2 = () => {
-    const newRow = {
-      stt: null,
-      tenPhong: '',
-      soLuong: null,
-      phamViNoiDung: '',
-      ghiChu: ''
-    };
-    setRows2([...rows2, newRow]);
-  };
-  const handleAddRow3 = () => {
-    const newRow = {
-      stt: null,
-      baiHoc: '',
-      soTiet: null,
-      yeuCau: '',
-    };
-    setRows3([...rows3, newRow]);
-  };
-  const handleAddRow4 = () => {
-    const newRow = {
-      stt: null,
-      chuyenDe: '',
-      soTiet: null,
-      yeuCau: '',
-    };
-    setRows4([...rows4, newRow]);
-  };
-
-  const handleRemoveRow1 = () => {
-    if (rows1.length > 1) {
-      const updatedRows = [...rows1];
-      updatedRows.pop();
-      setRows1(updatedRows);
-    }
-  };
-
-  const handleRemoveRow2 = () => {
-    if (rows2.length > 1) {
-      const updatedRows = [...rows2];
-      updatedRows.pop();
-      setRows2(updatedRows);
-    }
-  };
-
-  const handleRemoveRow3 = () => {
-    if (rows1.length > 1) {
-      const updatedRows = [...rows3];
-      updatedRows.pop();
-      setRows3(updatedRows);
-    }
-  };
-
-  const handleRemoveRow4 = () => {
-    if (rows1.length > 1) {
-      const updatedRows = [...rows4];
-      updatedRows.pop();
-      setRows4(updatedRows);
-    }
-  };
-
-  const displayRow1 = () => {
-    setOpen(false)
-  };
+    {
+      title: 'User Name',
+      dataIndex: 'userName',
+      key: 'userName',
+    },
+    {
+      title: 'Is Approve',
+      dataIndex: 'isApprove',
+      key: 'isApprove',
+      render: isApprove => (isApprove ? 'Yes' : 'No'),
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      render: status => (status ? 'Active' : 'Inactive'),
+    },
+    {
+      title: 'Created Date',
+      dataIndex: 'createdDate',
+      key: 'createdDate',
+    },
+    {
+      title: 'Action',
+      key: 'action',
+      render: (text: string, record: Document) => (
+        <span>
+          <Button onClick={() => handleDetail(record)}>Detail</Button>
+          <Button onClick={() => handleConfirmBanUnban(record, record.status ? 'ban' : 'unban')}>
+            {record.status ? 'Ban' : 'Unban'}
+          </Button>
+        </span>
+      ),
+    },
+  ];
 
   return (
-    <div>
-      <Typography className="innerText">
-        <div>Đang test theo kiểu anh An nhưng lỗi</div>
-      </Typography>
-    </div>
+    <>
+      <Table columns={columns} dataSource={documents} rowKey="id" />
+
+      <Modal
+        title="Document Details"
+        visible={modalVisible}
+        onCancel={handleCloseModal}
+        width={1000}
+        footer={[
+          <Button key="submit" onClick={handViewFileModal}>View file</Button>,
+          <Button key="cancel" onClick={handleCloseModal}>
+            Close
+          </Button>
+        ]}
+      >
+        <Form form={form} layout="vertical">
+          <Row gutter={16}>
+            <Col span={12}>
+              <Form.Item label="ID">
+                <Input value={selectedDocument?.id} disabled />
+              </Form.Item>
+              <Form.Item label="Name">
+                <Input value={selectedDocument?.name} disabled />
+              </Form.Item>
+              <Form.Item label="Note">
+                <Input value={selectedDocument?.note} disabled />
+              </Form.Item>
+              <Form.Item label="Status">
+                <Input value={selectedDocument?.status ? 'Active' : 'Inactive'} disabled />
+              </Form.Item>
+              <Form.Item label="Is Approve">
+                <Input value={selectedDocument?.isApprove ? 'Yes' : 'No'} disabled />
+              </Form.Item>
+              <Form.Item label="Created Date">
+                <Input value={selectedDocument?.createdDate} disabled />
+              </Form.Item>
+              <Form.Item label="Link File">
+                <Input value={selectedDocument?.linkFile} disabled />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item label="Link Image">
+                <Input value={selectedDocument?.linkImage} disabled />
+              </Form.Item>
+              <Form.Item label="Other Tasks">
+                <Input value={selectedDocument?.otherTasks} disabled />
+              </Form.Item>
+              <Form.Item label="Approve By Name">
+                <Input value={selectedDocument?.approveByName} disabled />
+              </Form.Item>
+              <Form.Item label="User Name">
+                <Input value={selectedDocument?.userName} disabled />
+              </Form.Item>
+              <Form.Item label="Subject Name">
+                <Input value={selectedDocument?.subjectName} disabled />
+              </Form.Item>
+              <Form.Item label="Grade Name">
+                <Input value={selectedDocument?.gradeName} disabled />
+              </Form.Item>
+            </Col>
+          </Row>
+        </Form>
+      </Modal>
+    </>
   );
 };
 
