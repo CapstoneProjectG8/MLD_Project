@@ -153,5 +153,7 @@ namespace Project_MLD.Controllers
                 totalTeacherLevelOfTrainning = totalTeacherLevelOfTrainning
             });
         }
+
+        //GetDepartByUserID
     }
 }

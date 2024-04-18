@@ -47,6 +47,8 @@ public partial class MldDatabaseContext : DbContext
 
     public virtual DbSet<Document5> Document5s { get; set; }
 
+    public virtual DbSet<Evaluate> Evaluates { get; set; }
+
     public virtual DbSet<Feedback> Feedbacks { get; set; }
 
     public virtual DbSet<FormCategory> FormCategories { get; set; }
@@ -91,7 +93,6 @@ public partial class MldDatabaseContext : DbContext
         IConfigurationRoot configuration = builder.Build();
         optionsBuilder.UseSqlServer(configuration.GetConnectionString("MyCnn"));
     }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Account>(entity =>
@@ -131,9 +132,12 @@ public partial class MldDatabaseContext : DbContext
                 .HasColumnName("id");
             entity.Property(e => e.GradeId).HasColumnName("grade_ id");
             entity.Property(e => e.Name).HasColumnName("name");
+            entity.Property(e => e.TotalStudent).HasColumnName("total_student");
+            entity.Property(e => e.TotalStudentSelectedTopics).HasColumnName("total_student_selected_topics");
 
             entity.HasOne(d => d.Grade).WithMany(p => p.Classes)
                 .HasForeignKey(d => d.GradeId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Class_Grade");
         });
 
@@ -169,14 +173,17 @@ public partial class MldDatabaseContext : DbContext
 
             entity.HasOne(d => d.Grade).WithMany(p => p.Document1s)
                 .HasForeignKey(d => d.GradeId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Document 1_Grade");
 
             entity.HasOne(d => d.Subject).WithMany(p => p.Document1s)
                 .HasForeignKey(d => d.SubjectId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Document 1_Subject");
 
             entity.HasOne(d => d.User).WithMany(p => p.Document1s)
                 .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Phu Luc 1_User");
         });
 
@@ -284,6 +291,7 @@ public partial class MldDatabaseContext : DbContext
 
             entity.HasOne(d => d.User).WithMany(p => p.Document2s)
                 .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Kế hoạch Tổ chức Hoạt Động Giáo Dục_User");
         });
 
@@ -315,6 +323,7 @@ public partial class MldDatabaseContext : DbContext
 
             entity.HasOne(d => d.HostByNavigation).WithMany(p => p.Document2Grades)
                 .HasForeignKey(d => d.HostBy)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Document2_Grade_User");
         });
 
@@ -339,10 +348,12 @@ public partial class MldDatabaseContext : DbContext
 
             entity.HasOne(d => d.Document1).WithMany(p => p.Document3s)
                 .HasForeignKey(d => d.Document1Id)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Document 3_Document 1");
 
             entity.HasOne(d => d.User).WithMany(p => p.Document3s)
                 .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Document 3_User");
         });
 
@@ -409,10 +420,7 @@ public partial class MldDatabaseContext : DbContext
             entity.ToTable("Document 4");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.CreatedDate)
-                .HasMaxLength(10)
-                .IsFixedLength()
-                .HasColumnName("created_date");
+            entity.Property(e => e.CreatedDate).HasColumnName("created_date");
             entity.Property(e => e.LinkFile).HasColumnName("link_file");
             entity.Property(e => e.LinkImage).HasColumnName("link_image");
             entity.Property(e => e.Name).HasColumnName("name");
@@ -421,8 +429,8 @@ public partial class MldDatabaseContext : DbContext
 
             entity.HasOne(d => d.TeachingPlanner).WithMany(p => p.Document4s)
                 .HasForeignKey(d => d.TeachingPlannerId)
-                .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("FK_Document 4_Teaching Planner1");
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Document 4_Teaching Planner");
         });
 
         modelBuilder.Entity<Document5>(entity =>
@@ -432,24 +440,49 @@ public partial class MldDatabaseContext : DbContext
             entity.ToTable("Document 5");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.CreatedDate)
-                .HasMaxLength(10)
-                .IsFixedLength()
-                .HasColumnName("created_date");
+            entity.Property(e => e.CreatedDate).HasColumnName("created_date");
+            entity.Property(e => e.Date).HasColumnName("date");
             entity.Property(e => e.Document4Id).HasColumnName("document4_id");
             entity.Property(e => e.LinkFile).HasColumnName("link_file");
             entity.Property(e => e.LinkImage).HasColumnName("link_image");
             entity.Property(e => e.Name).HasColumnName("name");
+            entity.Property(e => e.Slot).HasColumnName("slot");
             entity.Property(e => e.Total).HasColumnName("total");
             entity.Property(e => e.UserId).HasColumnName("user_id");
 
             entity.HasOne(d => d.Document4).WithMany(p => p.Document5s)
                 .HasForeignKey(d => d.Document4Id)
-                .HasConstraintName("FK_Document 5_Document 41");
+                .HasConstraintName("FK_Document 5_Document 4");
 
             entity.HasOne(d => d.User).WithMany(p => p.Document5s)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("FK_Document 5_User");
+        });
+
+        modelBuilder.Entity<Evaluate>(entity =>
+        {
+            entity.ToTable("Evaluate");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("id");
+            entity.Property(e => e.Document5Id).HasColumnName("document5_id");
+            entity.Property(e => e.Evaluate11).HasColumnName("evaluate_1_1");
+            entity.Property(e => e.Evaluate12).HasColumnName("evaluate_1_2");
+            entity.Property(e => e.Evaluate13).HasColumnName("evaluate_1_3");
+            entity.Property(e => e.Evaluate14).HasColumnName("evaluate_1_4");
+            entity.Property(e => e.Evaluate21).HasColumnName("evaluate_2_1");
+            entity.Property(e => e.Evaluate22).HasColumnName("evaluate_2_2");
+            entity.Property(e => e.Evaluate23).HasColumnName("evaluate_2_3");
+            entity.Property(e => e.Evaluate24).HasColumnName("evaluate_2_4");
+            entity.Property(e => e.Evaluate31).HasColumnName("evaluate_3_1");
+            entity.Property(e => e.Evaluate32).HasColumnName("evaluate_3_2");
+            entity.Property(e => e.Evaluate33).HasColumnName("evaluate_3_3");
+            entity.Property(e => e.Evaluate34).HasColumnName("evaluate_3_4");
+
+            entity.HasOne(d => d.Document5).WithMany(p => p.Evaluates)
+                .HasForeignKey(d => d.Document5Id)
+                .HasConstraintName("FK_Evaluate_Document 5");
         });
 
         modelBuilder.Entity<Feedback>(entity =>
@@ -487,8 +520,6 @@ public partial class MldDatabaseContext : DbContext
                 .ValueGeneratedNever()
                 .HasColumnName("id");
             entity.Property(e => e.Name).HasColumnName("name");
-            entity.Property(e => e.TotalStudent).HasColumnName("total_student");
-            entity.Property(e => e.TotalStudentSelectedTopics).HasColumnName("total_student_selected_topics");
         });
 
         modelBuilder.Entity<LevelOfTrainning>(entity =>
@@ -515,6 +546,7 @@ public partial class MldDatabaseContext : DbContext
 
             entity.HasOne(d => d.User).WithMany(p => p.Notifications)
                 .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Notification_User");
         });
 
@@ -572,12 +604,8 @@ public partial class MldDatabaseContext : DbContext
             entity.Property(e => e.ExpirationDatetime)
                 .HasColumnType("datetime")
                 .HasColumnName("expiration_datetime");
-            entity.Property(e => e.FileKey)
-                .HasMaxLength(200)
-                .HasColumnName("file_key");
-            entity.Property(e => e.PresignedUrl)
-                .HasMaxLength(250)
-                .HasColumnName("presigned_url");
+            entity.Property(e => e.FileKey).HasColumnName("file_key");
+            entity.Property(e => e.PresignedUrl).HasColumnName("presigned_url");
         });
 
         modelBuilder.Entity<Scorm>(entity =>
@@ -671,14 +699,17 @@ public partial class MldDatabaseContext : DbContext
 
             entity.HasOne(d => d.Class).WithMany(p => p.TeachingPlanners)
                 .HasForeignKey(d => d.ClassId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Teaching Planner_Class");
 
             entity.HasOne(d => d.Subject).WithMany(p => p.TeachingPlanners)
                 .HasForeignKey(d => d.SubjectId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Teaching Planner_Subject");
 
             entity.HasOne(d => d.User).WithMany(p => p.TeachingPlanners)
                 .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Teaching Planner_User");
         });
 
@@ -720,18 +751,22 @@ public partial class MldDatabaseContext : DbContext
 
             entity.HasOne(d => d.Account).WithMany(p => p.Users)
                 .HasForeignKey(d => d.AccountId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_User_Account");
 
             entity.HasOne(d => d.LevelOfTrainning).WithMany(p => p.Users)
                 .HasForeignKey(d => d.LevelOfTrainningId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_User_Level Of Trainning");
 
             entity.HasOne(d => d.ProfessionalStandards).WithMany(p => p.Users)
                 .HasForeignKey(d => d.ProfessionalStandardsId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_User_Professional Standards");
 
             entity.HasOne(d => d.SpecializedDepartment).WithMany(p => p.Users)
                 .HasForeignKey(d => d.SpecializedDepartmentId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_User_Specialized Department");
         });
 

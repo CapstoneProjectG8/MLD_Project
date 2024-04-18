@@ -9,9 +9,9 @@ public partial class Document3
 
     public string? Name { get; set; }
 
-    public int? Document1Id { get; set; }
+    public int Document1Id { get; set; }
 
-    public int? UserId { get; set; }
+    public int UserId { get; set; }
 
     public string? ClaasName { get; set; }
 
@@ -29,11 +29,11 @@ public partial class Document3
 
     public string? OtherTasks { get; set; }
 
-    public virtual Document1? Document1 { get; set; }
+    public virtual Document1 Document1 { get; set; } = null!;
 
     public virtual ICollection<Document3CurriculumDistribution> Document3CurriculumDistributions { get; set; } = new List<Document3CurriculumDistribution>();
 
     public virtual ICollection<Document3SelectedTopic> Document3SelectedTopics { get; set; } = new List<Document3SelectedTopic>();
 
-    public virtual User? User { get; set; }
+    public virtual User User { get; set; } = null!;
 }

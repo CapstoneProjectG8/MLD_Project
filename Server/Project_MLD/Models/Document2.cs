@@ -9,7 +9,7 @@ public partial class Document2
 
     public string? Name { get; set; }
 
-    public int? UserId { get; set; }
+    public int UserId { get; set; }
 
     public bool? Status { get; set; }
 
@@ -25,5 +25,5 @@ public partial class Document2
 
     public virtual ICollection<Document2Grade> Document2Grades { get; set; } = new List<Document2Grade>();
 
-    public virtual User? User { get; set; }
+    public virtual User User { get; set; } = null!;
 }

@@ -70,7 +70,7 @@ namespace Project_MLD.Service.Repository
             {
                 return 0;
             }
-            var totalStudet = grade.TotalStudent;
+            var totalStudet = 1;
             return (int)totalStudet;
 
         }
@@ -82,7 +82,7 @@ namespace Project_MLD.Service.Repository
             {
                 return 0;
             }
-            var totalStudetSelected = grade.TotalStudentSelectedTopics;
+            var totalStudetSelected = 1;
             return (int)totalStudetSelected;
 
         }

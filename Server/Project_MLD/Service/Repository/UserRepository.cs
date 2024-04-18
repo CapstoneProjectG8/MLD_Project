@@ -94,16 +94,18 @@ namespace Project_MLD.Service.Repository
 
         public async Task<IEnumerable<object>> GetTotalUserBySpecializedDepartmentId(int id)
         {
-            var professionalCount = await _context.ProfessionalStandards
+            var specializedDepartment = await _context.SpecializedDepartments
                 .Include(x => x.Users)
+                .Where(x => x.Id == id)
                 .Select(x => new
                 {
-                    ProfessionalStandardName = x.Name,
+                    SpecializedDepartmentId = x.Id,
+                    SpecializedDepartmentName = x.Name,
                     UserCount = x.Users.Count()
                 })
                 .ToListAsync();
 
-            return professionalCount;
+            return specializedDepartment;
         }
 
     }

@@ -9,9 +9,13 @@ public partial class Class
 
     public string? Name { get; set; }
 
-    public int? GradeId { get; set; }
+    public int? TotalStudent { get; set; }
 
-    public virtual Grade? Grade { get; set; }
+    public int? TotalStudentSelectedTopics { get; set; }
+
+    public int GradeId { get; set; }
+
+    public virtual Grade Grade { get; set; } = null!;
 
     public virtual ICollection<TeachingPlanner> TeachingPlanners { get; set; } = new List<TeachingPlanner>();
 }

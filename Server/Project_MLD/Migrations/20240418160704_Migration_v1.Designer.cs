@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Project_MLD.Models;
 
@@ -11,9 +12,11 @@ using Project_MLD.Models;
 namespace Project_MLD.Migrations
 {
     [DbContext(typeof(MldDatabaseContext))]
-    partial class MldDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240418160704_Migration_v1")]
+    partial class Migration_v1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -384,7 +387,7 @@ namespace Project_MLD.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("description");
 
-                    b.Property<int>("HostBy")
+                    b.Property<int?>("HostBy")
                         .HasColumnType("int")
                         .HasColumnName("host_by");
 
@@ -1351,7 +1354,6 @@ namespace Project_MLD.Migrations
                     b.HasOne("Project_MLD.Models.User", "HostByNavigation")
                         .WithMany("Document2Grades")
                         .HasForeignKey("HostBy")
-                        .IsRequired()
                         .HasConstraintName("FK_Document2_Grade_User");
 
                     b.Navigation("Document2");

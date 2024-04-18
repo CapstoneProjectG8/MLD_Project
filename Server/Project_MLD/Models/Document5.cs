@@ -13,15 +13,21 @@ public partial class Document5
 
     public int? UserId { get; set; }
 
+    public int? Slot { get; set; }
+
+    public DateOnly? Date { get; set; }
+
     public int? Total { get; set; }
 
-    public string? CreatedDate { get; set; }
+    public DateOnly? CreatedDate { get; set; }
 
     public string? LinkFile { get; set; }
 
     public string? LinkImage { get; set; }
 
     public virtual Document4 Document4 { get; set; } = null!;
+
+    public virtual ICollection<Evaluate> Evaluates { get; set; } = new List<Evaluate>();
 
     public virtual User? User { get; set; }
 }

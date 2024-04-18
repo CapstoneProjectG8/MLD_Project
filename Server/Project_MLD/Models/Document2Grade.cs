@@ -19,7 +19,7 @@ public partial class Document2Grade
 
     public string? Place { get; set; }
 
-    public int? HostBy { get; set; }
+    public int HostBy { get; set; }
 
     public string? CollaborateWith { get; set; }
 
@@ -29,5 +29,5 @@ public partial class Document2Grade
 
     public virtual Grade Grade { get; set; } = null!;
 
-    public virtual User? HostByNavigation { get; set; }
+    public virtual User HostByNavigation { get; set; } = null!;
 }

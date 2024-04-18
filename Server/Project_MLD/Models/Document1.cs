@@ -9,11 +9,11 @@ public partial class Document1
 
     public string? Name { get; set; }
 
-    public int? SubjectId { get; set; }
+    public int SubjectId { get; set; }
 
-    public int? GradeId { get; set; }
+    public int GradeId { get; set; }
 
-    public int? UserId { get; set; }
+    public int UserId { get; set; }
 
     public string? Note { get; set; }
 
@@ -41,11 +41,11 @@ public partial class Document1
 
     public virtual ICollection<Document3> Document3s { get; set; } = new List<Document3>();
 
-    public virtual Grade? Grade { get; set; }
+    public virtual Grade Grade { get; set; } = null!;
 
     public virtual ICollection<PeriodicAssessment> PeriodicAssessments { get; set; } = new List<PeriodicAssessment>();
 
-    public virtual Subject? Subject { get; set; }
+    public virtual Subject Subject { get; set; } = null!;
 
-    public virtual User? User { get; set; }
+    public virtual User User { get; set; } = null!;
 }
