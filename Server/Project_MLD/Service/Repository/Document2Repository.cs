@@ -35,7 +35,9 @@ namespace Project_MLD.Service.Repository
 
         public async Task<IEnumerable<Document2>> GetAllDocument2s()
         {
-            return await _context.Document2s.Where(x => x.Status == true).ToListAsync();
+            return await _context.Document2s
+                .Include(x => x.User)
+                .Where(x => x.Status == true).ToListAsync();
         }
 
         public async Task<Document2> GetDocument2ById(int id)
