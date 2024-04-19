@@ -126,16 +126,16 @@ namespace Project_MLD.Controllers
             return Ok(accountCreated);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAccount(int id)
-        {
-            var result = await _repository.DeleteAccount(id);
-            if (!result)
-            {
-                return NotFound();
-            }
-            return NoContent();
-        }
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteAccount(int id)
+        //{
+        //    var result = await _repository.DeleteAccount(id);
+        //    if (!result)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return NoContent();
+        //}
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAccount(int id, AccountDTO acc)
@@ -243,24 +243,24 @@ namespace Project_MLD.Controllers
             }
         }
 
-        [HttpPost("ChangePassword")]
-        public IActionResult ChangePassword(AccountDTO accountLogin)
-        {
-            if (accountLogin.Password == null)
-            {
-                return BadRequest("Please fill information");
-            }
+        //[HttpPost("ChangePassword")]
+        //public IActionResult ChangePassword(AccountDTO accountLogin)
+        //{
+        //    if (accountLogin.Password == null)
+        //    {
+        //        return BadRequest("Please fill information");
+        //    }
 
-            if (CheckPasswordValidation(accountLogin.Password))
-            {
-                var acc = Authenticate(accountLogin.Username, accountLogin.Password);
-                if (acc != null)
-                {
-                    return Ok("Allow to Change Password");
-                }
-            }
-            return BadRequest("Password is invalid");
-        }
+        //    if (CheckPasswordValidation(accountLogin.Password))
+        //    {
+        //        var acc = Authenticate(accountLogin.Username, accountLogin.Password);
+        //        if (acc != null)
+        //        {
+        //            return Ok("Allow to Change Password");
+        //        }
+        //    }
+        //    return BadRequest("Password is invalid");
+        //}
         private User Authenticate(string username, string password)
         {
             var currentAccount = _context.Users

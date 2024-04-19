@@ -17,7 +17,7 @@ public partial class Document3
 
     public bool? Status { get; set; }
 
-    public bool? IsApprove { get; set; }
+    public int? IsApprove { get; set; }
 
     public int? ApproveBy { get; set; }
 

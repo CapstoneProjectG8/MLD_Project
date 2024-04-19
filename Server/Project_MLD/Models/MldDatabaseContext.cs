@@ -756,17 +756,14 @@ public partial class MldDatabaseContext : DbContext
 
             entity.HasOne(d => d.LevelOfTrainning).WithMany(p => p.Users)
                 .HasForeignKey(d => d.LevelOfTrainningId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_User_Level Of Trainning");
 
             entity.HasOne(d => d.ProfessionalStandards).WithMany(p => p.Users)
                 .HasForeignKey(d => d.ProfessionalStandardsId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_User_Professional Standards");
 
             entity.HasOne(d => d.SpecializedDepartment).WithMany(p => p.Users)
                 .HasForeignKey(d => d.SpecializedDepartmentId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_User_Specialized Department");
         });
 

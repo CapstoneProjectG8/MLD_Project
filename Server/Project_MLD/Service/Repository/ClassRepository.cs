@@ -40,12 +40,12 @@ namespace Project_MLD.Service.Repository
 
         public async Task<Class> GetClassById(int id)
         {
-            return await _context.Classes.Include(x => x.Grade).FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.Classes.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<IEnumerable<Class>> GetClassesByGradeId(int gradeId)
         {
-            return await _context.Classes.Include(x => x.Id).Where(x => x.GradeId == gradeId).ToListAsync();
+            return await _context.Classes.Where(x => x.GradeId == gradeId).ToListAsync();
         }
 
         public async Task<bool> UpdateClass(Class cl)

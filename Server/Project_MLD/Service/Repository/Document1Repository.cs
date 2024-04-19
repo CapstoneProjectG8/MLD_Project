@@ -42,25 +42,15 @@ namespace Project_MLD.Service.Repository
                 .Where(x => x.Status == true).ToListAsync();
         }
 
-        public async Task<IEnumerable<Document1>> GetDocument1ByApproval()
-        {
-            return await _context.Document1s
-                .Include(x => x.Grade)
-                .Include(x => x.Subject)
-                .Include(x => x.User)
-                .Where(x => x.Status == true && x.IsApprove == true).ToListAsync();
-        }
+        
 
-        public async Task<IEnumerable<Document1>> GetDocument1ByCondition(string condition)
+        public async Task<IEnumerable<Document1>> FilterDocument1(int gradeId, int subjectId)
         {
             return await _context.Document1s
                 .Include(x => x.User)
                 .Include(x => x.Grade)
                 .Include(x => x.Subject)
-                .Where(x => x.Name == condition ||
-                x.User.FullName.Contains(condition) ||
-                x.User.FirstName.Contains(condition) ||
-                x.User.LastName.Contains(condition))
+                .Where(x => x.GradeId == gradeId || x.SubjectId == subjectId)
                 .ToListAsync();
         }
 
@@ -96,6 +86,16 @@ namespace Project_MLD.Service.Repository
 
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<IEnumerable<Document1>> GetDocument1ByApprovalID(int id)
+        {
+            return await _context.Document1s
+                .Include(x => x.User)
+                .Include(x => x.Grade)
+                .Include(x => x.Subject)
+                .Where(x => x.IsApprove == id)
+                .ToListAsync();
         }
     }
 }

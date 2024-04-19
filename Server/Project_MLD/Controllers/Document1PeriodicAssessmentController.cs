@@ -39,17 +39,10 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateDocument1PeriodicAssessment(int documentId, List<PeriodicAssessmentDTO> requests)
+        public async Task<IActionResult> UpdateDocument1PeriodicAssessment(List<PeriodicAssessmentDTO> requests)
         {
             try
             {
-                foreach (var request in requests)
-                {
-                    if (request.Document1Id != documentId)
-                    {
-                        return BadRequest("Id Not Match");
-                    }
-                }
                 var mapRequests = _mapper.Map<List<PeriodicAssessment>>(requests);
 
                 await _repository.UpdateDocument1PeriodicAssessment(mapRequests);
@@ -64,17 +57,10 @@ namespace Project_MLD.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteDocument1PeriodicAssessment(int documentId, List<PeriodicAssessmentDTO> requests)
+        public async Task<IActionResult> DeleteDocument1PeriodicAssessment( List<PeriodicAssessmentDTO> requests)
         {
             try
             {
-                foreach (var request in requests)
-                {
-                    if (request.Document1Id != documentId)
-                    {
-                        return BadRequest("Id Not Match");
-                    }
-                }
                 var mapRequests = _mapper.Map<List<PeriodicAssessment>>(requests);
 
                 await _repository.DeleteDocument1PeriodicAssessment(mapRequests);

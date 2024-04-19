@@ -32,10 +32,10 @@ namespace Project_MLD.Controllers
             return Ok(mapDocument);
         }
 
-        [HttpGet("ByApprove")]
-        public async Task<ActionResult<IEnumerable<Document3>>> GetDocument3ByApproval()
+        [HttpGet("ByApproveID/{id}")]
+        public async Task<ActionResult<IEnumerable<Document3>>> GetDocument3ByApprovalID(int id)
         {
-            var Document3 = await _repository.GetDocument3ByApproval();
+            var Document3 = await _repository.GetDocument3ByApprovalID(id);
             if (Document3 == null)
             {
                 return NotFound("No Document 3 Found");
@@ -88,12 +88,25 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateDocument3(int id, Document3DTO pl3)
+        public async Task<IActionResult> UpdateDocument3( Document3DTO pl3)
         {
-            if (id != pl3.Id)
+            var mapDocument = _mapper.Map<Document3>(pl3);
+            var result = await _repository.UpdateDocument3(mapDocument);
+            if (!result)
             {
-                return NotFound("Id Not Match");
+                return BadRequest("Error Updating");
             }
+            var dataMap = _mapper.Map<Document3DTO>(mapDocument);
+            return Ok(new
+            {
+                message = "Update Success",
+                dataMap
+            });
+        }
+
+        [HttpPut("ApproveDocument3/{id}")]
+        public async Task<IActionResult> ApproveDocument3(Document3DTO pl3)
+        {
             var mapDocument = _mapper.Map<Document3>(pl3);
             var result = await _repository.UpdateDocument3(mapDocument);
             if (!result)

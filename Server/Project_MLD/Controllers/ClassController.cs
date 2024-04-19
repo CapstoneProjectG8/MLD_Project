@@ -37,8 +37,8 @@ namespace Project_MLD.Controllers
             {
                 return NotFound();
             }
-            var _mapperClass = _mapper.Map<Class>(exClass);
-            return Ok(_mapperClass);
+            //var _mapperClass = _mapper.Map<Class>(exClass);
+            return Ok(exClass);
         }
 
         [HttpGet("GetClassByGradeId/{Gradeid}")]

@@ -24,10 +24,6 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<IEnumerable<Document4>>> GetAllDocument4s()
         {
             var Document4 = await _repository.GetAllDocument4s();
-            if (Document4 == null || Document4.Count() == 0)
-            {
-                return NotFound("No Document 4 Available");
-            }
             var mapDocument = _mapper.Map<List<Document4DTO>>(Document4);
             return Ok(mapDocument);
         }
@@ -77,12 +73,9 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateDocument4(int id, Document4DTO pl4)
+        public async Task<IActionResult> UpdateDocument4( Document4DTO pl4)
         {
-            if (id != pl4.Id)
-            {
-                return BadRequest("Id Not Match");
-            }
+
             var mapDocument = _mapper.Map<Document4>(pl4);
             var result = await _repository.UpdateDocument4(mapDocument);
             if (!result)

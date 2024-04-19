@@ -49,10 +49,10 @@ namespace Project_MLD.Controllers
             return Ok(mappedDocuments);
         }
 
-        [HttpGet("ByCondition/{condition}")]
-        public async Task<ActionResult<IEnumerable<Document1>>> GetDocument1ByCondition(string condition)
+        [HttpGet("FilterDocument1")]
+        public async Task<ActionResult<IEnumerable<Document1>>> FilterDocument1(int gradeId, int subjectId)
         {
-            var Document1 = await _repository.GetDocument1ByCondition(condition);
+            var Document1 = await _repository.FilterDocument1(gradeId, subjectId);
             if (Document1 == null)
             {
                 return NotFound("No Document 1 Found");
@@ -61,10 +61,10 @@ namespace Project_MLD.Controllers
             return Ok(mapDocument);
         }
 
-        [HttpGet("ByApprove")]
-        public async Task<ActionResult<IEnumerable<Document1>>> GetDocument1ByApproval()
+        [HttpGet("ByApproveID/{id}")]
+        public async Task<ActionResult<IEnumerable<Document1>>> GetDocument1ByApprovalID(int id)
         {
-            var Document1 = await _repository.GetDocument1ByApproval();
+            var Document1 = await _repository.GetDocument1ByApprovalID(id);
             if (Document1 == null)
             {
                 return NotFound("No Document 1 Found");
@@ -78,7 +78,9 @@ namespace Project_MLD.Controllers
         {
             try
             {
+                doc1.Status = true;
                 var document = _mapper.Map<Document1>(doc1);
+
                 var addedDocument = await _repository.AddDocument1(document);
                 if (addedDocument == null)
                 {
@@ -105,12 +107,9 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateDocument1(int id, Document1DTO document1)
+        public async Task<IActionResult> UpdateDocument1(Document1DTO document1)
         {
-            if (id != document1.Id)
-            {
-                return NotFound("Id Not Match");
-            }
+
             var mapper = _mapper.Map<Document1>(document1);
             var result = await _repository.UpdateDocument1(mapper);
             if (!result)
@@ -163,6 +162,24 @@ namespace Project_MLD.Controllers
                 totalTeacher = totalTeacher,
                 totalTeacherProfessionalStandard = totalTeacherProfessionalStandard,
                 totalTeacherLevelOfTrainning = totalTeacherLevelOfTrainning
+            });
+        }
+
+        [HttpPut("ApproveDocument1/{id}")]
+        public async Task<IActionResult> ApproveDocument1(Document1DTO document1)
+        {
+
+            var mapper = _mapper.Map<Document1>(document1);
+            var result = await _repository.UpdateDocument1(mapper);
+            if (!result)
+            {
+                return BadRequest("Error Updating Document 1");
+            }
+            var dataMap = _mapper.Map<Document1DTO>(mapper);
+            return Ok(new
+            {
+                message = "Update Success",
+                dataMap
             });
         }
 

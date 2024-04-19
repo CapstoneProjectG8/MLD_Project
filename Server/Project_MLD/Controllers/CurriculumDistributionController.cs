@@ -44,31 +44,31 @@ namespace Project_MLD.Controllers
             return CreatedAtAction(nameof(GetCurriculumDistributionById), new { id = cd.Id }, cd);
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCurriculumDistribution(int id)
-        {
-            var result = await _repository.DeleteCurriculumDistribution(id);
-            if (!result)
-            {
-                return NotFound();
-            }
-            return NoContent();
-        }
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteCurriculumDistribution(int id)
+        //{
+        //    var result = await _repository.DeleteCurriculumDistribution(id);
+        //    if (!result)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return NoContent();
+        //}
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateCurriculumDistribution(int id, CurriculumDistribution cd)
-        {
-            if (id != cd.Id)
-            {
-                return BadRequest();
-            }
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> UpdateCurriculumDistribution(int id, CurriculumDistribution cd)
+        //{
+        //    if (id != cd.Id)
+        //    {
+        //        return BadRequest();
+        //    }
 
-            var result = await _repository.UpdateCurriculumDistribution(cd);
-            if (!result)
-            {
-                return NotFound();
-            }
-            return NoContent();
-        }
+        //    var result = await _repository.UpdateCurriculumDistribution(cd);
+        //    if (!result)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return NoContent();
+        //}
     }
 }

@@ -58,10 +58,10 @@ namespace Project_MLD.Controllers
             return Ok(mapDocumemt);
         }
 
-        [HttpGet("ByApprove")]
-        public async Task<ActionResult<IEnumerable<Document2>>> GetDocument2ByApproval()
+        [HttpGet("ByApproveID/{id}")]
+        public async Task<ActionResult<IEnumerable<Document2>>> GetDocument2ByApprovalID(int id)
         {
-            var document2 = await _repository.GetDocument2ByApproval();
+            var document2 = await _repository.GetDocument2ByApprovalID(id);
             if (document2 == null)
             {
                 return NotFound("No Document 2 Found");
@@ -102,12 +102,25 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateDocument2(int id, Document2DTO pl2)
+        public async Task<IActionResult> UpdateDocument2( Document2DTO pl2)
         {
-            if (id != pl2.Id)
+            var mapDocument = _mapper.Map<Document2>(pl2);
+            var result = await _repository.UpdateDocument2(mapDocument);
+            if (!result)
             {
-                return NotFound("Id Not Match");
+                return BadRequest("Error Updating Document 2");
             }
+            var data = _mapper.Map<Document2DTO>(mapDocument);
+            return Ok(new
+            {
+                message = "Update Success",
+                data
+            });
+        }
+
+        [HttpPut("ApproveDocument2/{id}")]
+        public async Task<IActionResult> ApproveDocument2(Document2DTO pl2)
+        {
             var mapDocument = _mapper.Map<Document2>(pl2);
             var result = await _repository.UpdateDocument2(mapDocument);
             if (!result)

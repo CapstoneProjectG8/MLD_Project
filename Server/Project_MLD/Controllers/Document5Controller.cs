@@ -40,14 +40,10 @@ namespace Project_MLD.Controllers
             return Ok(existDocument5);
         }
 
-        [HttpGet("ByDocument4/{id}")]
+        [HttpGet("GetDocument5ByDocument4/{id}")]
         public async Task<ActionResult<IEnumerable<Document5>>> GetDoucment5ByDoc4(int id)
         {
             var existDocument5 = await _repository.GetDoucment5ByDoc4(id);
-            if (existDocument5 == null)
-            {
-                return NotFound("No Document 1 Available");
-            }
             return Ok(existDocument5);
         }
 
@@ -71,12 +67,8 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateDocument5(int id, Document5DTO pl5)
+        public async Task<IActionResult> UpdateDocument5( Document5DTO pl5)
         {
-            if (id != pl5.Id)
-            {
-                return NotFound("Id Not Match");
-            }
             var mapDocument = _mapper.Map<Document5>(pl5);
             var result = await _repository.UpdateDocument5(mapDocument);
             if (!result)

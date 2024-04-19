@@ -79,12 +79,11 @@ namespace Project_MLD.Service.Repository
             return true;
         }
 
-        public async Task<IEnumerable<Document2>> GetDocument2ByApproval()
+        public async Task<IEnumerable<Document2>> GetDocument2ByApprovalID(int id)
         {
             return await _context.Document2s
-                .Where(x => x.Status == true && x.IsApprove == true).ToListAsync();
+                .Include(x => x.User)
+                .Where(x => x.IsApprove == id ).ToListAsync();
         }
-
-       
     }
 }

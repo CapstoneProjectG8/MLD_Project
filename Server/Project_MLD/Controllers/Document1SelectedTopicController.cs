@@ -34,17 +34,10 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateDocument1SelectedTopic(int documentId, List<Document1SelectedTopicsDTO> requests)
+        public async Task<IActionResult> UpdateDocument1SelectedTopic( List<Document1SelectedTopicsDTO> requests)
         {
             try
             {
-                foreach (var request in requests)
-                {
-                    if (request.Document1Id != documentId)
-                    {
-                        return BadRequest("Id Not Match");
-                    }
-                }
                 var mapRequests = _mapper.Map<List<Document1SelectedTopic>>(requests);
 
                 await _repository.UpdateDocument1SelectedTopic(mapRequests);
@@ -59,17 +52,10 @@ namespace Project_MLD.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteDocument1SelectedTopic(int documentId, List<Document1SelectedTopicsDTO> requests)
+        public async Task<IActionResult> DeleteDocument1SelectedTopic( List<Document1SelectedTopicsDTO> requests)
         {
             try
             {
-                foreach (var request in requests)
-                {
-                    if (request.Document1Id != documentId)
-                    {
-                        return BadRequest("Id Not Match");
-                    }
-                }
                 var mapRequests = _mapper.Map<List<Document1SelectedTopic>>(requests);
                 await _repository.DeleteDocument1SelectedTopic(mapRequests);
 

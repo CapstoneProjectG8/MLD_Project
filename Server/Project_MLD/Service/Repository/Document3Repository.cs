@@ -42,12 +42,13 @@ namespace Project_MLD.Service.Repository
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Document3>> GetDocument3ByApproval()
+        public async Task<IEnumerable<Document3>> GetDocument3ByApprovalID(int id)
         {
             return await _context.Document3s
                 .Include(x => x.User)
                 .Include(x => x.Document1)
-                .Where(x => x.Status == true && x.IsApprove == true).ToListAsync();
+                .Where(x => x.IsApprove == id)
+                .ToListAsync();
         }
 
         public async Task<Document3> GetDocument3ById(int id)

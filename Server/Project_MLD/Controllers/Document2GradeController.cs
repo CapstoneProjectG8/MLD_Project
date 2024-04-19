@@ -50,17 +50,10 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPut("{document2Id}")]
-        public async Task<IActionResult> UpdateDocument2Grade(int document2Id, List<Document2GradeDTO> requests)
+        public async Task<IActionResult> UpdateDocument2Grade( List<Document2GradeDTO> requests)
         {
             try
             {
-                foreach (var request in requests)
-                {
-                    if (request.Document2Id != document2Id)
-                    {
-                        return BadRequest("Id Not Match");
-                    }
-                }
                 var mapRequests = _mapper.Map<List<Document2Grade>>(requests);
 
 
@@ -77,17 +70,10 @@ namespace Project_MLD.Controllers
 
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteDocument2Grade(int documentId, List<Document2GradeDTO> requests)
+        public async Task<IActionResult> DeleteDocument2Grade( List<Document2GradeDTO> requests)
         {
             try
             {
-                foreach (var request in requests)
-                {
-                    if (request.Document2Id != documentId)
-                    {
-                        return BadRequest("Id Not Match");
-                    }
-                }
                 var mapRequests = _mapper.Map<List<Document2Grade>>(requests);
                 await _repository.DeleteDocument2Grade(mapRequests);
 
