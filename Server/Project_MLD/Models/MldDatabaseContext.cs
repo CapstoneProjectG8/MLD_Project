@@ -112,7 +112,7 @@ public partial class MldDatabaseContext : DbContext
 
             entity.HasOne(d => d.Role).WithMany(p => p.Accounts)
                 .HasForeignKey(d => d.RoleId)
-                .HasConstraintName("FK_Account_Role1");
+                .HasConstraintName("FK_Account_Role");
         });
 
         modelBuilder.Entity<Category>(entity =>

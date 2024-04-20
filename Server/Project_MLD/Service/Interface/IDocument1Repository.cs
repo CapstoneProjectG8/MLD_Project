@@ -11,6 +11,7 @@ namespace Project_MLD.Service.Interface
         Task<bool> DeleteDocument1(int id);
         Task<IEnumerable<Document1>> FilterDocument1(int gradeId, int subjectId);
         Task<IEnumerable<Document1>> GetDocument1ByApprovalID(int id);
+        Task<IEnumerable<Document1>> GetDocument1ByUserSpecialiedDepartment(int id);
 
     }
 }

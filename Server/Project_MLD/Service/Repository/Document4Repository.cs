@@ -35,12 +35,24 @@ namespace Project_MLD.Service.Repository
 
         public async Task<IEnumerable<Document4>> GetAllDocument4s()
         {
-            return await _context.Document4s.ToListAsync();
+            return await _context.Document4s
+                .Include(x => x.TeachingPlanner)
+                .Where(x => x.Status == true)
+                .ToListAsync();
         }
 
         public async Task<Document4> GetDocument4ById(int id)
         {
             return await _context.Document4s.FindAsync(id);
+        }
+
+        public async Task<IEnumerable<Document4>> GetDocument4ByUserSpecialiedDepartment(int id)
+        {
+            return await _context.Document4s
+                .Include(x => x.TeachingPlanner)
+                .ThenInclude(x => x.User)
+                .Where(x => x.Status == true && x.TeachingPlanner.User.SpecializedDepartmentId == id)
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<Document4>> GetDocument4sByCondition(string condition)

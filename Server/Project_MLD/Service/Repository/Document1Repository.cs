@@ -42,8 +42,6 @@ namespace Project_MLD.Service.Repository
                 .Where(x => x.Status == true).ToListAsync();
         }
 
-        
-
         public async Task<IEnumerable<Document1>> FilterDocument1(int gradeId, int subjectId)
         {
             return await _context.Document1s
@@ -95,6 +93,16 @@ namespace Project_MLD.Service.Repository
                 .Include(x => x.Grade)
                 .Include(x => x.Subject)
                 .Where(x => x.IsApprove == id)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Document1>> GetDocument1ByUserSpecialiedDepartment(int id)
+        {
+            return await _context.Document1s
+                .Include(x => x.User)
+                .Include(x => x.Grade)
+                .Include(x => x.Subject)
+                .Where(x => x.User.SpecializedDepartmentId == id && x.Status == true)
                 .ToListAsync();
         }
     }

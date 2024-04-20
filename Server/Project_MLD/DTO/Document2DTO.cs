@@ -15,7 +15,7 @@ public partial class Document2DTO
 
     public int? ApproveBy { get; set; }
 
-    public bool? IsApprove { get; set; }
+    public int? IsApprove { get; set; }
 
     public DateOnly? CreatedDate { get; set; }
 
