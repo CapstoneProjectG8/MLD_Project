@@ -184,12 +184,40 @@ namespace Project_MLD.Controllers
         }
 
         [HttpGet("GetDocument1ByUserSpecialiedDepartment")]
-        public async Task<ActionResult<IEnumerable<Document1>>> GetDocument1ByUserSpecialiedDepartment(int specialDepartmentId)
+        public async Task<ActionResult<IEnumerable<object>>> GetDocument1ByUserSpecialiedDepartment([FromQuery] List<int> listId)
         {
 
-            var list = await _repository.GetDocument1ByUserSpecialiedDepartment(specialDepartmentId);
-            var mappedDocuments = _mapper.Map<List<Document1DTO>>(list);
-            return Ok(mappedDocuments);
+            //var documents = await _repository.GetDocument1ByUserSpecialiedDepartment(listId);
+            //var mappedDocuments = _mapper.Map<List<Document1DTO>>(documents);
+            //return Ok(mappedDocuments);
+
+            var documents = await _repository.GetDocument1ByUserSpecialiedDepartment(listId);
+
+            var modifiedDocuments = new List<object>();
+
+            foreach (var document in documents)
+            {
+                // Kiểm tra xem document có thuộc tính "id" và "document" không
+                if (document.GetType().GetProperty("id") != null && document.GetType().GetProperty("document") != null)
+                {
+                    // Truy cập thuộc tính "id" và "document"
+                    var id = document.GetType().GetProperty("id").GetValue(document, null);
+                    var doc = document.GetType().GetProperty("document").GetValue(document, null);
+
+                    var dataMap = _mapper.Map<List<Document1DTO>>(doc);
+
+                    var modifiedDocument = new
+                    {
+                        SpecializedDepartmentId = id,
+                        documents = dataMap
+                    };
+
+                    modifiedDocuments.Add(modifiedDocument);
+                }
+            }
+
+            return Ok(modifiedDocuments);
+
         }
     }
 }

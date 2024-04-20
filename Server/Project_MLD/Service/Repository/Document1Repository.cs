@@ -96,14 +96,29 @@ namespace Project_MLD.Service.Repository
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Document1>> GetDocument1ByUserSpecialiedDepartment(int id)
+        public async Task<IEnumerable<object>> GetDocument1ByUserSpecialiedDepartment(List<int> listID)
         {
-            return await _context.Document1s
+            var listObject = new List<object>();
+
+            foreach (var id in listID)
+            {
+                var documents = await _context.Document1s
                 .Include(x => x.User)
                 .Include(x => x.Grade)
                 .Include(x => x.Subject)
                 .Where(x => x.User.SpecializedDepartmentId == id && x.Status == true)
                 .ToListAsync();
+
+                var anObject = new
+                {
+                    id = id,
+                    document = documents
+                };
+
+                listObject.Add(anObject);
+
+            }
+            return listObject;
         }
     }
 }

@@ -35,15 +35,43 @@ namespace Project_MLD.Controllers
         }
 
         [HttpGet("GetDocument2ByUserSpecialiedDepartment")]
-        public async Task<ActionResult<IEnumerable<Document2>>> GetDocument2ByUserSpecialiedDepartment(int specializedDepartmentId)
+        public async Task<ActionResult<IEnumerable<object>>> GetDocument2ByUserSpecialiedDepartment([FromQuery] List<int> listId)
         {
-            var pl2 = await _repository.GetDocument2ByUserSpecialiedDepartment(specializedDepartmentId);
-            if (pl2 == null)
+            //var pl2 = await _repository.GetDocument2ByUserSpecialiedDepartment(specializedDepartmentId);
+            //if (pl2 == null)
+            //{
+            //    return NotFound("No Document 2 Found");
+            //}
+            //var mapDocumemt = _mapper.Map<List<Document2DTO>>(pl2);
+            //return Ok(mapDocumemt);
+
+
+            var documents = await _repository.GetDocument2ByUserSpecialiedDepartment(listId);
+            var modifiedDocuments = new List<object>();
+
+            foreach (var document in documents)
             {
-                return NotFound("No Document 2 Found");
+                // Kiểm tra xem document có thuộc tính "id" và "document" không
+                if (document.GetType().GetProperty("id") != null && document.GetType().GetProperty("document") != null)
+                {
+                    // Truy cập thuộc tính "id" và "document"
+                    var id = document.GetType().GetProperty("id").GetValue(document, null);
+                    var doc = document.GetType().GetProperty("document").GetValue(document, null);
+
+                    var dataMap = _mapper.Map<List<Document2DTO>>(doc);
+
+                    var modifiedDocument = new
+                    {
+                        SpecializedDepartmentId = id,
+                        documents = dataMap
+                    };
+
+                    modifiedDocuments.Add(modifiedDocument);
+                }
             }
-            var mapDocumemt = _mapper.Map<List<Document2DTO>>(pl2);
-            return Ok(mapDocumemt);
+
+            return Ok(modifiedDocuments);
+
         }
 
         [HttpGet("ById/{id}")]
@@ -114,7 +142,7 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateDocument2( Document2DTO pl2)
+        public async Task<IActionResult> UpdateDocument2(Document2DTO pl2)
         {
             var mapDocument = _mapper.Map<Document2>(pl2);
             var result = await _repository.UpdateDocument2(mapDocument);

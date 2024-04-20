@@ -46,13 +46,40 @@ namespace Project_MLD.Service.Repository
             return await _context.Document4s.FindAsync(id);
         }
 
-        public async Task<IEnumerable<Document4>> GetDocument4ByUserSpecialiedDepartment(int id)
+        public async Task<IEnumerable<object>> GetDocument4ByUserSpecialiedDepartment(List<int> listId)
         {
-            return await _context.Document4s
+            //var document4 = new List<Document4>();
+            //foreach (int id in listId)
+            //{
+            //    var list = await _context.Document4s
+            //    .Include(x => x.TeachingPlanner)
+            //    .ThenInclude(x => x.User)
+            //    .Where(x => x.Status == true && x.TeachingPlanner.User.SpecializedDepartmentId == id)
+            //    .ToListAsync();
+            //    document4.AddRange(list);
+            //}
+            //return document4;
+
+            var listObject = new List<object>();
+
+            foreach (var id in listId)
+            {
+                var list = await _context.Document4s
                 .Include(x => x.TeachingPlanner)
                 .ThenInclude(x => x.User)
                 .Where(x => x.Status == true && x.TeachingPlanner.User.SpecializedDepartmentId == id)
                 .ToListAsync();
+
+                var anObject = new
+                {
+                    id = id,
+                    document = list
+                };
+
+                listObject.Add(anObject);
+
+            }
+            return listObject;
         }
 
         public async Task<IEnumerable<Document4>> GetDocument4sByCondition(string condition)

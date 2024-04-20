@@ -59,13 +59,40 @@ namespace Project_MLD.Service.Repository
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<IEnumerable<Document3>> GetDocument3ByUserSpecialiedDepartment(int id)
+        public async Task<IEnumerable<object>> GetDocument3ByUserSpecialiedDepartment(List<int> listId)
         {
-            return await _context.Document3s
+            //var document3 = new List<Document3>();
+            //foreach(var id in listId)
+            //{
+            //    var documents = await _context.Document3s
+            //    .Include(x => x.User)
+            //    .Include(x => x.Document1)
+            //    .Where(x => x.User.SpecializedDepartmentId == id && x.Status == true)
+            //    .ToListAsync();
+            //    document3.AddRange(list);
+            //}
+            //return document3;
+
+            var listObject = new List<object>();
+
+            foreach (var id in listId)
+            {
+                var documents = await _context.Document3s
                 .Include(x => x.User)
                 .Include(x => x.Document1)
-                .Where(x => x.IsApprove == id && x.Status == true)
+                .Where(x => x.User.SpecializedDepartmentId == id && x.Status == true)
                 .ToListAsync();
+
+                var anObject = new
+                {
+                    id = id,
+                    document = documents
+                };
+
+                listObject.Add(anObject);
+
+            }
+            return listObject;
         }
 
         public async Task<IEnumerable<Document3>> GetDocument3sByCondition(string condition)

@@ -29,11 +29,39 @@ namespace Project_MLD.Controllers
         }
 
         [HttpGet("GetDocument4ByUserSpecialiedDepartment")]
-        public async Task<ActionResult<IEnumerable<Document4>>> GetDocument4ByUserSpecialiedDepartment(int specializeDepartmentId)
+        public async Task<ActionResult<IEnumerable<Document4>>> GetDocument4ByUserSpecialiedDepartment([FromQuery] List<int> listId)
         {
-            var Document4 = await _repository.GetDocument4ByUserSpecialiedDepartment(specializeDepartmentId);
-            var mapDocument = _mapper.Map<List<Document4DTO>>(Document4);
-            return Ok(mapDocument);
+            //var Document4 = await _repository.GetDocument4ByUserSpecialiedDepartment(listId);
+            //var mapDocument = _mapper.Map<List<Document4DTO>>(Document4);
+            //return Ok(mapDocument);
+
+            var documents = await _repository.GetDocument4ByUserSpecialiedDepartment(listId);
+
+            var modifiedDocuments = new List<object>();
+
+            foreach (var document in documents)
+            {
+                // Kiểm tra xem document có thuộc tính "id" và "document" không
+                if (document.GetType().GetProperty("id") != null && document.GetType().GetProperty("document") != null)
+                {
+                    // Truy cập thuộc tính "id" và "document"
+                    var id = document.GetType().GetProperty("id").GetValue(document, null);
+                    var doc = document.GetType().GetProperty("document").GetValue(document, null);
+
+                    var dataMap = _mapper.Map<List<Document4DTO>>(doc);
+
+                    var modifiedDocument = new
+                    {
+                        SpecializedDepartmentId = id,
+                        documents = dataMap
+                    };
+
+                    modifiedDocuments.Add(modifiedDocument);
+                }
+            }
+
+            return Ok(modifiedDocuments);
+
         }
 
         [HttpGet("ById/{id}")]
@@ -64,9 +92,25 @@ namespace Project_MLD.Controllers
         [HttpPost]
         public async Task<ActionResult<Document4>> AddDocument4(Document4 pl4)
         {
-            var doc = await _repository.AddDocument4(pl4);
-            var mapDocument = _mapper.Map<Document4DTO>(doc);
-            return Ok(mapDocument);
+            try
+            {
+                pl4.Status = true;
+                var document = _mapper.Map<Document4>(pl4);
+
+                var doc = await _repository.AddDocument4(document);
+                if (doc == null)
+                {
+                    return BadRequest("Error Adding Document 4");
+                }
+
+                var mapper = _mapper.Map<Document4DTO>(doc);
+                return Ok(mapper);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Can not add Error, " + ex.Message);
+            }
         }
 
         [HttpDelete("{id}")]
@@ -81,7 +125,7 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateDocument4( Document4DTO pl4)
+        public async Task<IActionResult> UpdateDocument4(Document4DTO pl4)
         {
 
             var mapDocument = _mapper.Map<Document4>(pl4);

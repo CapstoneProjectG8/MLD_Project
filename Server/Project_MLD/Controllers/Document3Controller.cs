@@ -33,15 +33,44 @@ namespace Project_MLD.Controllers
         }
 
         [HttpGet("GetDocument3ByUserSpecialiedDepartment")]
-        public async Task<ActionResult<IEnumerable<Document3>>> GetDocument3ByUserSpecialiedDepartment(int specializedDepartmentId)
+        public async Task<ActionResult<IEnumerable<object>>> GetDocument3ByUserSpecialiedDepartment([FromQuery] List<int> listId)
         {
-            var document3s = await _repository.GetDocument3ByUserSpecialiedDepartment(specializedDepartmentId);
-            if (document3s == null || document3s.Count() == 0)
+            //var document3s = await _repository.GetDocument3ByUserSpecialiedDepartment(specializedDepartmentId);
+            //if (document3s == null || document3s.Count() == 0)
+            //{
+            //    return NotFound("No Document 3 Available");
+            //}
+            //var mapDocument = _mapper.Map<List<Document3DTO>>(document3s);
+            //return Ok(mapDocument);
+
+
+            var documents = await _repository.GetDocument3ByUserSpecialiedDepartment(listId);
+
+            var modifiedDocuments = new List<object>();
+
+            foreach (var document in documents)
             {
-                return NotFound("No Document 3 Available");
+                // Kiểm tra xem document có thuộc tính "id" và "document" không
+                if (document.GetType().GetProperty("id") != null && document.GetType().GetProperty("document") != null)
+                {
+                    // Truy cập thuộc tính "id" và "document"
+                    var id = document.GetType().GetProperty("id").GetValue(document, null);
+                    var doc = document.GetType().GetProperty("document").GetValue(document, null);
+
+                    var dataMap = _mapper.Map<List<Document3DTO>>(doc);
+
+                    var modifiedDocument = new
+                    {
+                        SpecializedDepartmentId = id,
+                        documents = dataMap
+                    };
+
+                    modifiedDocuments.Add(modifiedDocument);
+                }
             }
-            var mapDocument = _mapper.Map<List<Document3DTO>>(document3s);
-            return Ok(mapDocument);
+
+            return Ok(modifiedDocuments);
+
         }
 
         [HttpGet("ByApproveID/{id}")]
@@ -81,11 +110,28 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Document3>> AddDocument3(Document3 pl3)
+        public async Task<ActionResult<Document3>> AddDocument3(Document3DTO pl3)
         {
-            var doc = await _repository.AddDocument3(pl3);
-            var mapper = _mapper.Map<Document3DTO>(doc);
-            return Ok(mapper);
+            try
+            {
+                pl3.Status = true;
+                var document = _mapper.Map<Document3>(pl3);
+
+                var doc = await _repository.AddDocument3(document);
+                if (doc == null)
+                {
+                    return BadRequest("Error Adding Document 3");
+                }
+
+                var mapper = _mapper.Map<Document3DTO>(doc);
+                return Ok(mapper);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Can not add Error, " + ex.Message);
+            }
+            
         }
 
         [HttpDelete("{id}")]
@@ -100,7 +146,7 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateDocument3( Document3DTO pl3)
+        public async Task<IActionResult> UpdateDocument3(Document3DTO pl3)
         {
             var mapDocument = _mapper.Map<Document3>(pl3);
             var result = await _repository.UpdateDocument3(mapDocument);

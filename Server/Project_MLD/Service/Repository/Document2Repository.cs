@@ -86,12 +86,38 @@ namespace Project_MLD.Service.Repository
                 .Where(x => x.IsApprove == id ).ToListAsync();
         }
 
-        public async Task<IEnumerable<Document2>> GetDocument2ByUserSpecialiedDepartment(int id)
+        public async Task<IEnumerable<object>> GetDocument2ByUserSpecialiedDepartment(List<int> listId)
         {
-            return await _context.Document2s
+            //var document2 = new List<Document2>();
+            //foreach(int id in listId)
+            //{
+            //    var documents = await _context.Document2s
+            //    .Include(x => x.User)
+            //    .Where(x => x.Status == true && x.User.SpecializedDepartmentId == id)
+            //    .ToListAsync();
+            //    document2.AddRange(list);
+            //}
+            //return document2;
+
+            var listObject = new List<object>();
+
+            foreach (var id in listId)
+            {
+                var documents = await _context.Document2s
                 .Include(x => x.User)
                 .Where(x => x.Status == true && x.User.SpecializedDepartmentId == id)
                 .ToListAsync();
+
+                var anObject = new
+                {
+                    id = id,
+                    document = documents
+                };
+
+                listObject.Add(anObject);
+
+            }
+            return listObject;
         }
     }
 }
