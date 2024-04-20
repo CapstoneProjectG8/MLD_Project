@@ -85,5 +85,13 @@ namespace Project_MLD.Service.Repository
                 .Include(x => x.User)
                 .Where(x => x.IsApprove == id ).ToListAsync();
         }
+
+        public async Task<IEnumerable<Document2>> GetDocument2ByUserSpecialiedDepartment(int id)
+        {
+            return await _context.Document2s
+                .Include(x => x.User)
+                .Where(x => x.Status == true && x.User.SpecializedDepartmentId == id)
+                .ToListAsync();
+        }
     }
 }

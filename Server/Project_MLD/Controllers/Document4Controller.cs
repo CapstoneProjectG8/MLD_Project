@@ -28,6 +28,14 @@ namespace Project_MLD.Controllers
             return Ok(mapDocument);
         }
 
+        [HttpGet("GetDocument4ByUserSpecialiedDepartment")]
+        public async Task<ActionResult<IEnumerable<Document4>>> GetDocument4ByUserSpecialiedDepartment(int specializeDepartmentId)
+        {
+            var Document4 = await _repository.GetDocument4ByUserSpecialiedDepartment(specializeDepartmentId);
+            var mapDocument = _mapper.Map<List<Document4DTO>>(Document4);
+            return Ok(mapDocument);
+        }
+
         [HttpGet("ById/{id}")]
         public async Task<ActionResult<Document4>> GetDocument4ById(int id)
         {

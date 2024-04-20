@@ -59,6 +59,15 @@ namespace Project_MLD.Service.Repository
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
+        public async Task<IEnumerable<Document3>> GetDocument3ByUserSpecialiedDepartment(int id)
+        {
+            return await _context.Document3s
+                .Include(x => x.User)
+                .Include(x => x.Document1)
+                .Where(x => x.IsApprove == id && x.Status == true)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<Document3>> GetDocument3sByCondition(string condition)
         {
             return await _context.Document3s

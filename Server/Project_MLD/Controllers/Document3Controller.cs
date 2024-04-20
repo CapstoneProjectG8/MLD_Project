@@ -32,6 +32,18 @@ namespace Project_MLD.Controllers
             return Ok(mapDocument);
         }
 
+        [HttpGet("GetDocument3ByUserSpecialiedDepartment")]
+        public async Task<ActionResult<IEnumerable<Document3>>> GetDocument3ByUserSpecialiedDepartment(int specializedDepartmentId)
+        {
+            var document3s = await _repository.GetDocument3ByUserSpecialiedDepartment(specializedDepartmentId);
+            if (document3s == null || document3s.Count() == 0)
+            {
+                return NotFound("No Document 3 Available");
+            }
+            var mapDocument = _mapper.Map<List<Document3DTO>>(document3s);
+            return Ok(mapDocument);
+        }
+
         [HttpGet("ByApproveID/{id}")]
         public async Task<ActionResult<IEnumerable<Document3>>> GetDocument3ByApprovalID(int id)
         {

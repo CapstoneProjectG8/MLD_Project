@@ -34,6 +34,18 @@ namespace Project_MLD.Controllers
             return Ok(mapDocumemt);
         }
 
+        [HttpGet("GetDocument2ByUserSpecialiedDepartment")]
+        public async Task<ActionResult<IEnumerable<Document2>>> GetDocument2ByUserSpecialiedDepartment(int specializedDepartmentId)
+        {
+            var pl2 = await _repository.GetDocument2ByUserSpecialiedDepartment(specializedDepartmentId);
+            if (pl2 == null)
+            {
+                return NotFound("No Document 2 Found");
+            }
+            var mapDocumemt = _mapper.Map<List<Document2DTO>>(pl2);
+            return Ok(mapDocumemt);
+        }
+
         [HttpGet("ById/{id}")]
         public async Task<ActionResult<IEnumerable<Document2>>> GetDocument2ById(int id)
         {

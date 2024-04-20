@@ -94,8 +94,8 @@ namespace Project_MLD.Controllers
             return NoContent();
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTeachingPlannerByUserId(List<TeachingPlannerDTO> requests)
+        [HttpPut]
+        public async Task<IActionResult> UpdateTeachingPlanner(List<TeachingPlannerDTO> requests)
         {
             try
             {

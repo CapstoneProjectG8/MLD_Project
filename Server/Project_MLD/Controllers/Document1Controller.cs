@@ -106,7 +106,7 @@ namespace Project_MLD.Controllers
             return NoContent();
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<IActionResult> UpdateDocument1(Document1DTO document1)
         {
 
@@ -165,7 +165,7 @@ namespace Project_MLD.Controllers
             });
         }
 
-        [HttpPut("ApproveDocument1/{id}")]
+        [HttpPut("ApproveDocument1")]
         public async Task<IActionResult> ApproveDocument1(Document1DTO document1)
         {
 
@@ -183,6 +183,13 @@ namespace Project_MLD.Controllers
             });
         }
 
-        //GetDepartByUserID
+        [HttpGet("GetDocument1ByUserSpecialiedDepartment")]
+        public async Task<ActionResult<IEnumerable<Document1>>> GetDocument1ByUserSpecialiedDepartment(int specialDepartmentId)
+        {
+
+            var list = await _repository.GetDocument1ByUserSpecialiedDepartment(specialDepartmentId);
+            var mappedDocuments = _mapper.Map<List<Document1DTO>>(list);
+            return Ok(mappedDocuments);
+        }
     }
 }
