@@ -9,5 +9,9 @@
         public string? CreatedBy { get; set; }
         public DateOnly? CreatedDate { get; set; }
         public int? RoleId { get; set; }
+        public int? LoginAttempt { get; set; }
+
+        public DateOnly? LoginLast { get; set; }
+
     }
 }

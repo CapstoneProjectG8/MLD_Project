@@ -13,6 +13,8 @@ namespace Project_MLD.Mapper
                 .ForMember(x => x.RoleId, y => y.MapFrom(src => src.RoleId))
                 .ForMember(x => x.CreatedDate, y => y.MapFrom(x => DateOnly.FromDateTime(DateTime.Now)))
                 .ForMember(x => x.CreatedBy, y => y.MapFrom(x => "ADMIN"))
+                .ForMember(x => x.LoginAttempt, y => y.MapFrom(src => src.LoginAttempt))
+                .ForMember(x => x.LoginLast, y => y.MapFrom(src => src.LoginLast))
                 .ReverseMap();
 
             CreateMap<User, UserDTO>()
