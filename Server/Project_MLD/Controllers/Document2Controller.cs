@@ -47,15 +47,15 @@ namespace Project_MLD.Controllers
         }
 
         [HttpGet("ById/{id}")]
-        public async Task<ActionResult<IEnumerable<Document2>>> GetDocument2ById(int id)
+        public async Task<ActionResult<Document2>> GetDocument2ById(int id)
         {
             var existDocument2 = await _repository.GetDocument2ById(id);
             if (existDocument2 == null)
             {
                 return NotFound();
             }
-
-            return Ok(existDocument2);
+            var mapDocumemt = _mapper.Map<Document2DTO>(existDocument2);
+            return Ok(mapDocumemt);
         }
 
         [HttpGet("ByCondition/{condition}")]
