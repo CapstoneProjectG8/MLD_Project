@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Button, Col, Form, Input, Modal, Row, Table, Typography } from 'antd';
+import { Button, Col, Form, Input, message, Modal, Row, Table, Typography } from 'antd';
+import axios from 'axios';
 
 const { Title, Paragraph } = Typography;
 
@@ -8,6 +9,9 @@ interface Document {
   name: string;
   note: string;
   status: boolean;
+  gradeId: string;
+  subjectId: string;
+  userId: string;
   isApprove: boolean;
   createdDate: string;
   linkFile: string;
@@ -24,7 +28,15 @@ const DocumentationPage1: FC = () => {
   const [selectedDocument, setSelectedDocument] = useState<Document | null>(null);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
   const [form] = Form.useForm();
+  const [actionToPerform, setActionToPerform] = useState('');
+  const [selectedDoc, setSelectedDoc] = useState<Document | null>(null);
+  const [confirmModalVisible, setConfirmModalVisible] = useState(false);
 
+  const handleConfirmBanUnban = (doc: Document, action: string) => {
+    setSelectedDoc(doc);
+    setActionToPerform(action);
+    setConfirmModalVisible(true);
+  };
   useEffect(() => {
     fetch('https://localhost:7241/api/Document1')
       .then(response => response.json())
@@ -37,18 +49,20 @@ const DocumentationPage1: FC = () => {
     setModalVisible(true);
   };
 
-  const handleConfirmBanUnban = (record: Document, action: 'ban' | 'unban') => {
-    // Thay đổi trạng thái của boolean status true/false
-    const updatedDocuments = documents.map(doc => {
-      if (doc.id === record.id) {
-        return {
-          ...doc,
-          status: action === 'ban' ? false : true,
-        };
-      }
-      return doc;
-    });
-    setDocuments(updatedDocuments);
+  const confirmBanUnban = async () => {
+    try {
+      const updatedDoc = { ...selectedDoc, status: !selectedDoc.status };
+      const requestBody = { id: selectedDoc.id, gradeId:selectedDoc?.gradeId, subjectId: selectedDoc?.subjectId, userId: selectedDoc?.userId, status: updatedDoc.status };
+      await axios.put(`https://localhost:7241/api/Document1`, requestBody);
+      const updatedDocs = documents.map(u => (u.id === selectedDoc.id ? updatedDoc : u));
+      setDocuments(updatedDocs);
+      message.success(`User ${updatedDoc.status ? 'unbanned' : 'banned'} successfully.`);
+    } catch (error) {
+      console.error(error);
+      message.error('Failed to update Doc.');
+    } finally {
+      setConfirmModalVisible(false);
+    }
   };
 
   const handleCloseModal = () => {
@@ -84,13 +98,13 @@ const DocumentationPage1: FC = () => {
       title: 'Is Approve',
       dataIndex: 'isApprove',
       key: 'isApprove',
-      render: isApprove => (isApprove ? 'Yes' : 'No'),
+      render: (isApprove: boolean) => (isApprove ? 'Yes' : 'No'),
     },
     {
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
-      render: status => (status ? 'Active' : 'Inactive'),
+      render: (status: boolean) => (status ? 'Active' : 'Inactive'),
     },
     {
       title: 'Created Date',
@@ -174,6 +188,22 @@ const DocumentationPage1: FC = () => {
             </Col>
           </Row>
         </Form>
+      </Modal>
+      {/* Confirm Ban/Unban Modal */}
+      <Modal
+        title={`Are you sure you want to ${actionToPerform} ${selectedDoc?.name}?`}
+        visible={confirmModalVisible}
+        onCancel={() => setConfirmModalVisible(false)}
+        footer={[
+          <Button key="cancel" onClick={() => setConfirmModalVisible(false)}>
+            Cancel
+          </Button>,
+          <Button key="confirm" type="primary" onClick={confirmBanUnban}>
+            Confirm
+          </Button>,
+        ]}
+      >
+        {`This action will ${actionToPerform} ${selectedDoc?.name}.`}
       </Modal>
     </>
   );

@@ -130,6 +130,8 @@ namespace Project_MLD.Controllers
             acc.Active = true;
             acc.CreatedBy = "ADMIN";
             acc.CreatedDate = DateOnly.FromDateTime(DateTime.Now);
+            acc.LoginLast = DateOnly.FromDateTime(DateTime.Now);
+            acc.LoginAttempt = 0;
             acc.Password = _passwordHasher.Hash(acc.Password);
 
             var account = _mapper.Map<Account>(acc);
@@ -243,7 +245,7 @@ namespace Project_MLD.Controllers
 
                 var hashedNewPassword = _passwordHasher.Hash(newPassword);
 
-
+                account.LoginAttempt++;
                 account.Password = hashedNewPassword;
                 _context.Accounts.Update(account);
                 _context.SaveChanges();
