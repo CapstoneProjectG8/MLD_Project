@@ -49,25 +49,41 @@ namespace Project_MLD.Controllers
         [HttpPost("Login")]
         public IActionResult Login([FromBody] AccountDTO accountLogin)
         {
-            if (accountLogin.Username == null || accountLogin.Password == null)
+            try
             {
-                return BadRequest("Please fill information");
-            }
-
-
-            var acc = Authenticate(accountLogin.Username, accountLogin.Password);
-            if (acc != null)
-            {
-                var token = GenerateToken(acc);
-                if (token != null)
+                if (accountLogin.Username == null || accountLogin.Password == null)
                 {
-                    return Ok(token);
+                    return BadRequest("Please fill in all required fields.");
                 }
-                return BadRequest("Token cannot create");
-            }
-            return NotFound("Account Not Found");
 
+                //var account = _mapper.Map<Account>(accountLogin);
+
+
+
+                var authenticatedAccount = Authenticate(accountLogin.Username, accountLogin.Password);
+
+                if (authenticatedAccount != null)
+                {
+                    var token = GenerateToken(authenticatedAccount);
+
+                    if (token != null)
+                    {
+                        return Ok(token);
+                    }
+
+                    return BadRequest("Unable to generate token.");
+                }
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(400, ex.Message);
+            }
+
+            
         }
+
 
         [HttpGet("CheckAuthenciation")]
         public IActionResult Check()
@@ -104,10 +120,7 @@ namespace Project_MLD.Controllers
         [HttpPost]
         public async Task<ActionResult<Account>> AddAccount(AccountDTO acc)
         {
-            if (!CheckPasswordValidation(acc.Password))
-            {
-                return BadRequest("Password Ko Dat yeu cau");
-            }
+
             //Check exist
             var existAccount = _repository.GetAccountByUsername(acc.Username);
             if (existAccount != null)
@@ -261,22 +274,53 @@ namespace Project_MLD.Controllers
         //    }
         //    return BadRequest("Password is invalid");
         //}
+        private void UpdateAccountLoginInfo(Account account)
+        {
+            account.LoginAttempt++;
+            account.LoginLast = DateOnly.FromDateTime(DateTime.Now);
+
+            _context.Accounts.Update(account);
+            _context.SaveChanges();
+        }
         private User Authenticate(string username, string password)
         {
-            var currentAccount = _context.Users
+            try
+            {
+                var currentAccount = _context.Users
                 .Include(x => x.Account)
                 .ThenInclude(account => account.Role)
                 .FirstOrDefault(x => x.Account.Username == username.ToLower());
-            if (currentAccount != null)
-            {
-                bool result = _passwordHasher.VerifyPassword(currentAccount.Account.Password, password);
-                if (result)
+                if (currentAccount != null)
                 {
-                    return currentAccount;
+                    bool result = _passwordHasher.VerifyPassword(currentAccount.Account.Password, password);
+                    if (result)
+                    {
+                        if (currentAccount.Account.LoginAttempt == 0 || currentAccount.Account.LoginAttempt == null)
+                        {
+                            throw new Exception("Please change your password on first login.");
+                        }
+                        else
+                        {
+                            UpdateAccountLoginInfo(currentAccount.Account);
+                            return currentAccount;
+                        }
+                    }
+                    else
+                    {
+                        throw new Exception("Incorrect password.");
+                    }
                 }
-                return null;
+                else
+                {
+                    throw new Exception("Account not found.");
+                }
             }
-            return null;
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+
         }
         private string GetCurrentAccount()
         {

@@ -1,65 +1,60 @@
-import { FC, useEffect, useState } from 'react';
-import React from 'react';
-import { InboxOutlined } from '@ant-design/icons';
-import type { UploadProps } from 'antd';
-import { message, Upload } from 'antd';
-import { Typography } from 'antd';
-
-import { LocaleFormatter } from '@/locales';
+import React, { useState } from 'react';
+import { Upload, Button, message } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
 import axios from 'axios';
 
-const { Title, Paragraph } = Typography;
+const UploadComponent: React.FC = () => {
+  const [fileList, setFileList] = useState<any[]>([]);
 
-const div = <div style={{ height: 200 }}>2333</div>;
-const { Dragger } = Upload;
+  const handleUpload = async () => {
+    const formData = new FormData();
+    fileList.forEach((file) => {
+      formData.append('files', file);
+    });
 
-const props: UploadProps = {
-  name: 'file',
-  multiple: true,
-  action: 'https://localhost:7241/api/S3FileUpload/upload?prefix=doc2%2F',
-  onChange(info) {
-    const { status } = info.file;
-    if (status !== 'uploading') {
-      console.log(info.file, info.fileList);
+    try {
+      await axios.post('https://localhost:7241/api/S3FileUpload/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      console.log('FormData:', formData);
+      message.success('Upload successful');
+      setFileList([]);
+    } catch (error) {
+      message.error('Upload failed');
     }
-    if (status === 'done') {
-      message.success(`${info.file.name} file uploaded successfully.`);
-    } else if (status === 'error') {
-      message.error(`${info.file.name} file upload failed.`);
-    }
-  },
-  onDrop(e) {
-    console.log('Dropped files', e.dataTransfer.files);
-  },
-};
-const DocumentationPage2: FC = () => {
-  const [documentList, setDocumentList] = useState<string[]>([]);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('https://localhost:7241/api/S3FileUpload', {
-          params: { prefix: 'doc2/' }
-        });
-        setDocumentList(response.data.fileUrls); // Assuming the API response contains an array of file URLs
-      } catch (error) {
-        console.error('Error fetching document list:', error);
-      }
-    };
+  };
 
-    fetchData();
-  }, []);
+  const handleChange = (info: any) => {
+    let fileList = [...info.fileList];
+
+    // Limit the number of uploaded files
+    fileList = fileList.slice(-3);
+
+    setFileList(fileList);
+  };
+
   return (
-    <Dragger {...props}>
-      <p className="ant-upload-drag-icon">
-        <InboxOutlined />
-      </p>
-      <p className="ant-upload-text">Click or drag file to this area to upload</p>
-      <p className="ant-upload-hint">
-        Support for a single or bulk upload. Strictly prohibited from uploading company data or other
-        banned files.
-      </p>
-    </Dragger>
+    <div>
+      <Upload
+        fileList={fileList}
+        onChange={handleChange}
+        multiple
+        beforeUpload={() => false}
+      >
+        <Button icon={<UploadOutlined />}>Select Files</Button>
+      </Upload>
+      <Button
+        type="primary"
+        onClick={handleUpload}
+        disabled={fileList.length === 0}
+        style={{ marginTop: 16 }}
+      >
+        Upload
+      </Button>
+    </div>
   );
 };
 
-export default DocumentationPage2;
+export default UploadComponent;
