@@ -61,17 +61,17 @@ namespace Project_MLD.Controllers
             return Ok(mapDocument);
         }
 
-        [HttpGet("ByApproveID/{id}")]
-        public async Task<ActionResult<IEnumerable<Document1>>> GetDocument1ByApprovalID(int id)
-        {
-            var Document1 = await _repository.GetDocument1ByApprovalID(id);
-            if (Document1 == null)
-            {
-                return NotFound("No Document 1 Found");
-            }
-            var mapDocument = _mapper.Map<List<Document1DTO>>(Document1);
-            return Ok(mapDocument);
-        }
+        //[HttpGet("ByApproveID/{id}")]
+        //public async Task<ActionResult<IEnumerable<Document1>>> GetDocument1ByApprovalID(int id)
+        //{
+        //    var Document1 = await _repository.GetDocument1ByApprovalID(id);
+        //    if (Document1 == null)
+        //    {
+        //        return NotFound("No Document 1 Found");
+        //    }
+        //    var mapDocument = _mapper.Map<List<Document1DTO>>(Document1);
+        //    return Ok(mapDocument);
+        //}
 
         [HttpPost]
         public async Task<ActionResult<Document1DTO>> AddDocument1(Document1DTO doc1)
@@ -124,25 +124,25 @@ namespace Project_MLD.Controllers
             });
         }
 
-        [HttpGet("GetTotalClassByGradeId")]
-        public async Task<IActionResult> GetTotalClassAndStudentByGradeId(int gradeId)
-        {
-            if (gradeId == 0)
-            {
-                return BadRequest("Grade Id is Null");
-            }
-            var totalClass = await _gradeRepository.GetTotalClassByGradeId(gradeId);
+        //[HttpGet("GetTotalClassByGradeId")]
+        //public async Task<IActionResult> GetTotalClassAndStudentByGradeId(int gradeId)
+        //{
+        //    if (gradeId == 0)
+        //    {
+        //        return BadRequest("Grade Id is Null");
+        //    }
+        //    var totalClass = await _gradeRepository.GetTotalClassByGradeId(gradeId);
 
-            var totalStudent = await _gradeRepository.GetTotalStudentByGradeId(gradeId);
+        //    var totalStudent = await _gradeRepository.GetTotalStudentByGradeId(gradeId);
 
-            var totalStudentSelected = await _gradeRepository.GetTotalStudentSelectedTopicsByGradeId(gradeId);
-            return Ok(new
-            {
-                totalClass = totalClass,
-                totalStudent = totalStudent,
-                totalStudentSelected = totalStudentSelected
-            });
-        }
+        //    var totalStudentSelected = await _gradeRepository.GetTotalStudentSelectedTopicsByGradeId(gradeId);
+        //    return Ok(new
+        //    {
+        //        totalClass = totalClass,
+        //        totalStudent = totalStudent,
+        //        totalStudentSelected = totalStudentSelected
+        //    });
+        //}
 
 
         [HttpGet("GetTeacherInformation")]
