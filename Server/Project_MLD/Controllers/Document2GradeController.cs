@@ -34,22 +34,23 @@ namespace Project_MLD.Controllers
             {
                 return NotFound("No Document 2 Grade Found");
             }
-            var mapDocumemt = _mapper.Map<List<Document2DTO>>(pl2);
+            var mapDocumemt = _mapper.Map<List<Document2GradeDTO>>(pl2);
             return Ok(mapDocumemt);
         }
 
-        [HttpGet("ById/{id}")]
-        public async Task<ActionResult<IEnumerable<Document2>>> GetDocument2GradeById(int id)
+        [HttpGet("GetDocument2GradeById/{id}")]
+        public async Task<ActionResult<IEnumerable<Document2Grade>>> GetDocument2GradeById(int id)
         {
             var existDocument2 = await _repository.GetDocument2GradeByDocument2Id(id);
             if (existDocument2 == null)
             {
                 return NotFound("No Document 2 Grade Found");
             }
-            return Ok(existDocument2);
+            var mapDocumemt = _mapper.Map<List<Document2GradeDTO>>(existDocument2);
+            return Ok(mapDocumemt);
         }
 
-        [HttpPut("{document2Id}")]
+        [HttpPut]
         public async Task<IActionResult> UpdateDocument2Grade( List<Document2GradeDTO> requests)
         {
             try
@@ -59,7 +60,7 @@ namespace Project_MLD.Controllers
 
                 await _repository.UpdateDocument2Grade(mapRequests);
 
-                return Ok("Update Successfully");
+                return Ok("Update success");
             }
             catch (Exception ex)
             {
@@ -86,7 +87,7 @@ namespace Project_MLD.Controllers
             }
         }
 
-        [HttpGet("{gradeId}")]
+        [HttpGet("GetTotalStudentByGradeId/{gradeId}")]
         public async Task<IActionResult> GetTotalStudentByGradeId(int gradeId)
         {
             if(gradeId == 0)

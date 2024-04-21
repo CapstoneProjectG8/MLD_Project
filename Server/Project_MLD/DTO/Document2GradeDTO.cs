@@ -25,4 +25,7 @@ public partial class Document2GradeDTO
 
     public string? Condition { get; set; }
 
+    public string? HostByName { get; set; }
+    public string? GradeName { get; set; }
+
 }

@@ -85,12 +85,14 @@ namespace Project_MLD.Service.Repository
 
             foreach (var item in list)
             {
-                var existingItem = await _context.Document1CurriculumDistributions
-                  .FindAsync(item.Document1Id, item.FormCategoryId, item.TestingCategoryId);
+                var existingItem = await _context.PeriodicAssessments
+                    .FirstOrDefaultAsync(x => x.Document1Id == item.Document1Id
+                    && x.TestingCategoryId == item.TestingCategoryId
+                    && x.FormCategoryId == item.FormCategoryId);
 
                 if (existingItem != null)
                 {
-                    _context.Document1CurriculumDistributions.Remove(existingItem);
+                    _context.PeriodicAssessments.RemoveRange(existingItem);
                 }
             }
 

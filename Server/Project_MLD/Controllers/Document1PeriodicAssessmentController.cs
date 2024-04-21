@@ -19,7 +19,6 @@ namespace Project_MLD.Controllers
         {
             _repository = repository;
             _mapper = mapper;
-
         }
 
         [HttpGet]
@@ -30,15 +29,15 @@ namespace Project_MLD.Controllers
             return Ok(mapper);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetDocument1PeriodicAssessmentByDocument1ID/{id}")]
         public async Task<ActionResult<IEnumerable<PeriodicAssessment>>> GetDocument1PeriodicAssessmentByDocument1ID(int id)
         {
             var PeriodicAssessment = await _repository.GetPeriodicAssessmentByDocument1Id(id);
-            var mapper = _mapper.Map<List<List<PeriodicAssessmentDTO>>>(PeriodicAssessment);
+            var mapper = _mapper.Map<List<PeriodicAssessmentDTO>>(PeriodicAssessment);
             return Ok(mapper);
         }
 
-        [HttpPut]
+        [HttpPut("UpdateDocument1PeriodicAssessment")]
         public async Task<IActionResult> UpdateDocument1PeriodicAssessment(List<PeriodicAssessmentDTO> requests)
         {
             try
@@ -56,8 +55,8 @@ namespace Project_MLD.Controllers
             }
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> DeleteDocument1PeriodicAssessment( List<PeriodicAssessmentDTO> requests)
+        [HttpDelete("DeleteDocument1PeriodicAssessment")]
+        public async Task<IActionResult> DeleteDocument1PeriodicAssessment(List<PeriodicAssessmentDTO> requests)
         {
             try
             {
@@ -65,7 +64,7 @@ namespace Project_MLD.Controllers
 
                 await _repository.DeleteDocument1PeriodicAssessment(mapRequests);
 
-                return Ok("Update Successfully");
+                return Ok("Delete Successfully");
             }
             catch (Exception ex)
             {

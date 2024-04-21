@@ -351,7 +351,6 @@ public partial class MldDatabaseContext : DbContext
 
             entity.HasOne(d => d.Document1).WithMany(p => p.Document3s)
                 .HasForeignKey(d => d.Document1Id)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Document 3_Document 1");
 
             entity.HasOne(d => d.User).WithMany(p => p.Document3s)

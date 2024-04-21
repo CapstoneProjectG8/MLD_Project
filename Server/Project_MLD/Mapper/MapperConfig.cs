@@ -69,6 +69,10 @@ namespace Project_MLD.Mapper
                 .ForMember(x => x.TestingCategoryId, y => y.MapFrom(src => src.TestingCategory.Id))
                 .ForMember(x => x.TestingCategoryName, y => y.MapFrom(src => src.TestingCategory.Name))
                 .ReverseMap();
+            CreateMap<PeriodicAssessmentDTO, PeriodicAssessment>()
+                .ForMember(x => x.FormCategory, y => y.Ignore())
+                .ForMember(x => x.TestingCategory, y => y.Ignore())
+                .ReverseMap();
 
             CreateMap<Document2, Document2DTO>()
                 .ForMember(x => x.Id, y => y.MapFrom(src => src.Id))
@@ -81,6 +85,13 @@ namespace Project_MLD.Mapper
                 .ReverseMap();
 
             CreateMap<Document2Grade, Document2GradeDTO>()
+                .ForMember(x => x.Document2Id, y => y.MapFrom(src => src.Document2Id))
+                .ForMember(x => x.GradeName, y => y.MapFrom(src => src.Grade.Name))
+                .ForMember(x => x.HostByName, y => y.MapFrom(src => src.HostByNavigation.FullName))
+                .ReverseMap();
+            CreateMap<Document2GradeDTO, Document2Grade>()
+                .ForMember(x => x.Grade, y => y.Ignore())
+                .ForMember(x => x.HostByNavigation, y => y.Ignore())
                 .ReverseMap();
 
             CreateMap<Document3, Document3DTO>()
