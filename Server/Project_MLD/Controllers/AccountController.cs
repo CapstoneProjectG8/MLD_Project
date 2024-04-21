@@ -244,7 +244,7 @@ namespace Project_MLD.Controllers
                 }
 
                 var hashedNewPassword = _passwordHasher.Hash(newPassword);
-                if (account.LoginAttempt == 0 || account.LoginAttempt == 0 || account.LoginAttempt < 0)
+                if (account.LoginAttempt == 0 || account.LoginAttempt == null || account.LoginAttempt < 0)
                 {
                     account.LoginAttempt = 1;
                 }
