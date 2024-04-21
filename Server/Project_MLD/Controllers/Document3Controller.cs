@@ -93,8 +93,8 @@ namespace Project_MLD.Controllers
             {
                 return NotFound("No Document 3 Available");
             }
-
-            return Ok(existDocument3);
+            var mapDocument = _mapper.Map<Document3DTO>(existDocument3);
+            return Ok(mapDocument);
         }
 
         [HttpGet("ByCondition/{condition}")]
