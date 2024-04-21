@@ -115,9 +115,17 @@ const rows3 = [
     createData(7, 'Alice', 'Emma', new Date(2024, 3, 5), false),
     createData(8, 'John', 'Sarah', new Date(2024, 3, 6), false),
     createData(9, 'Bob', 'John', new Date(2024, 3, 7), false),
-    // Thêm các dữ liệu khác nếu cần
 ].sort((a, b) => a.date.getTime() - b.date.getTime());
 
+const SwitchButtons = ({ selectedList, setSelectedList }: { selectedList: 'completed' | 'rejected' | 'pending', setSelectedList: React.Dispatch<React.SetStateAction<'completed' | 'rejected' | 'pending'>> }) => {
+    return (
+        <div className="request-approve-switch">
+            <span onClick={() => setSelectedList('completed')} className={`incompleted-approve ${selectedList === 'completed' ? "isClicked" : ""}`}>Đã duyệt</span>
+            <span onClick={() => setSelectedList('rejected')} className={`rejected-approve ${selectedList === 'rejected' ? "isClicked" : ""}`}>Từ chối</span>
+            <span onClick={() => setSelectedList('pending')} className={`pending-approve ${selectedList === 'pending' ? "isClicked" : ""}`}>Chờ duyệt</span>
+        </div>
+    );
+}
 const ApproveList = () => {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
@@ -139,11 +147,6 @@ const ApproveList = () => {
 
     return (
         <div>
-            <div className="request-approve-switch">
-                <span onClick={() => setSelectedList('completed')} className={`incompleted-approve ${selectedList === 'completed' ? "isClicked" : ""}`}>Đã duyệt</span>
-                <span onClick={() => setSelectedList('rejected')} className={`rejected-approve ${selectedList === 'rejected' ? "isClicked" : ""}`}>Từ chối</span>
-                <span onClick={() => setSelectedList('pending')} className={`pending-approve ${selectedList === 'pending' ? "isClicked" : ""}`}>Chờ duyệt</span>
-            </div>
             {selectedList === 'completed' && (
                 <RenderTable
                     rows={rows1}
