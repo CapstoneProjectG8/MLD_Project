@@ -111,17 +111,17 @@ const rows2 = [
     createData2(6, 'Alice', 'John', new Date(2024, 3, 3)),
 ].sort((a, b) => a.date.getTime() - b.date.getTime());
 
+const rows3 = [
+    createData(7, 'Alice', 'Emma', new Date(2024, 3, 5), false),
+    createData(8, 'John', 'Sarah', new Date(2024, 3, 6), false),
+    createData(9, 'Bob', 'John', new Date(2024, 3, 7), false),
+    // Thêm các dữ liệu khác nếu cần
+].sort((a, b) => a.date.getTime() - b.date.getTime());
+
 const ApproveList = () => {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
-    const [isComplete, setIsCompleted] = React.useState(true)
-
-    const emptyRows1 =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows1.length) : 0;
-
-
-    const emptyRows2 =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows2.length) : 0;
+    const [selectedList, setSelectedList] = React.useState<'completed' | 'rejected' | 'pending'>('completed');
 
     const handleChangePage = (
         event: React.MouseEvent<HTMLButtonElement> | null,
@@ -140,155 +140,118 @@ const ApproveList = () => {
     return (
         <div>
             <div className="request-approve-switch">
-                <span onClick={() => setIsCompleted(true)} className={`incompleted-approve ${!isComplete ? "isClicked" : ""}`}>Đã duyệt</span>
-                <span onClick={() => setIsCompleted(false)} className={`completed-approve ${isComplete ? "isClicked" : ""}`}>Chưa duyệt</span>
+                <span onClick={() => setSelectedList('completed')} className={`incompleted-approve ${selectedList === 'completed' ? "isClicked" : ""}`}>Đã duyệt</span>
+                <span onClick={() => setSelectedList('rejected')} className={`rejected-approve ${selectedList === 'rejected' ? "isClicked" : ""}`}>Từ chối</span>
+                <span onClick={() => setSelectedList('pending')} className={`pending-approve ${selectedList === 'pending' ? "isClicked" : ""}`}>Chờ duyệt</span>
             </div>
-            {
-                isComplete ? (
-                    <TableContainer component={Paper}>
-                        <Table aria-label="custom pagination table">
-                            <TableHead>
-                                <TableRow sx={{ 'th': { border: 1 } }}>
-                                    <TableCell component="th" >
-                                        Người tạo
-                                    </TableCell>
-                                    <TableCell component="th" >
-                                        Người duyệt
-                                    </TableCell>
-                                    <TableCell align="center">
-                                        Ngày
-                                    </TableCell>
-                                    <TableCell align="center">
-                                        Trạng thái
-                                    </TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {(rowsPerPage > 0
-                                    ? rows1.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                    : rows1
-                                ).map((row) => (
-                                    <TableRow key={row.id} sx={{ 'td': { border: 1 } }}>
-                                        <TableCell >
-                                            {row.creator}
-                                        </TableCell>
-                                        <TableCell>
-                                            {row.approver}
-                                        </TableCell>
-                                        <TableCell align="center">
-                                            {moment(row.date).format('DD-MM-YYYY')}
-                                        </TableCell>
-                                        <TableCell align="center">
-                                            {
-                                                row.status ?
-                                                    <div style={{ display: 'flex', alignItems: "center", justifyContent: "center", backgroundColor: "#99FFFF", padding: "6px 12px", width: "130px", margin: "auto", cursor: 'pointer' }}> <CheckCircleOutline /> Chấp nhận</div>
-                                                    : <div style={{ display: 'flex', alignItems: "center", justifyContent: "center", backgroundColor: "#FF9999", padding: "6px 12px", width: "130px", margin: "auto", cursor: 'pointer' }}> <DoDisturb /> Từ chối</div>
-                                            }
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                                {emptyRows1 > 0 && (
-                                    <TableRow style={{ height: 53 * emptyRows1 }}>
-                                        <TableCell colSpan={6} />
-                                    </TableRow>
-                                )}
-                            </TableBody>
-                            <TableFooter>
-                                <TableRow>
-                                    <TablePagination
-                                        rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                                        colSpan={3}
-                                        count={rows1.length}
-                                        rowsPerPage={rowsPerPage}
-                                        page={page}
-                                        slotProps={{
-                                            select: {
-                                                inputProps: {
-                                                    'aria-label': 'rows per page',
-                                                },
-                                                native: true,
-                                            },
-                                        }}
-                                        onPageChange={handleChangePage}
-                                        onRowsPerPageChange={handleChangeRowsPerPage}
-                                        ActionsComponent={TablePaginationActions}
-                                    />
-                                </TableRow>
-                            </TableFooter>
-                        </Table>
-                    </TableContainer>
-                ) : (
-                    <TableContainer component={Paper}>
-                        <Table aria-label="custom pagination table">
-                            <TableHead>
-                                <TableRow sx={{ 'th': { border: 1 } }}>
-                                    <TableCell component="th" >
-                                        Người tạo
-                                    </TableCell>
-                                    <TableCell component="th" >
-                                        Người duyệt
-                                    </TableCell>
-                                    <TableCell align="center">
-                                        Ngày
-                                    </TableCell>
-                                    <TableCell align="center">
-                                        Hành động
-                                    </TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {(rowsPerPage > 0
-                                    ? rows2.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                    : rows2
-                                ).map((row) => (
-                                    <TableRow key={row.id} sx={{ 'td': { border: 1 } }}>
-                                        <TableCell >
-                                            {row.creator}
-                                        </TableCell>
-                                        <TableCell>
-                                            {row.approver}
-                                        </TableCell>
-                                        <TableCell align="center">
-                                            {moment(row.date).format('DD-MM-YYYY')}
-                                        </TableCell>
-                                        <TableCell align="center">
-                                            <div style={{ display: 'flex', alignItems: "center", justifyContent: "center", backgroundColor: "#E2BFB3", padding: "6px 12px", width: "130px", margin: "auto", cursor: 'pointer' }}> <TaskAltSharp /> Phê duyệt</div>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                                {emptyRows2 > 0 && (
-                                    <TableRow style={{ height: 53 * emptyRows2 }}>
-                                        <TableCell colSpan={6} />
-                                    </TableRow>
-                                )}
-                            </TableBody>
-                            <TableFooter>
-                                <TableRow>
-                                    <TablePagination
-                                        rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-                                        colSpan={3}
-                                        count={rows2.length}
-                                        rowsPerPage={rowsPerPage}
-                                        page={page}
-                                        slotProps={{
-                                            select: {
-                                                inputProps: {
-                                                    'aria-label': 'rows per page',
-                                                },
-                                                native: true,
-                                            },
-                                        }}
-                                        onPageChange={handleChangePage}
-                                        onRowsPerPageChange={handleChangeRowsPerPage}
-                                        ActionsComponent={TablePaginationActions}
-                                    />
-                                </TableRow>
-                            </TableFooter>
-                        </Table>
-                    </TableContainer>
-                )
-            }
+            {selectedList === 'completed' && (
+                <RenderTable
+                    rows={rows1}
+                    page={page}
+                    rowsPerPage={rowsPerPage}
+                    emptyRows={rowsPerPage > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows1.length) : 0}
+                    handleChangePage={handleChangePage}
+                    handleChangeRowsPerPage={handleChangeRowsPerPage}
+                />
+            )}
+            {selectedList === 'rejected' && (
+                <RenderTable
+                    rows={rows2}
+                    page={page}
+                    rowsPerPage={rowsPerPage}
+                    emptyRows={rowsPerPage > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows2.length) : 0}
+                    handleChangePage={handleChangePage}
+                    handleChangeRowsPerPage={handleChangeRowsPerPage}
+                />
+            )}
+            {selectedList === 'pending' && (
+                <RenderTable
+                    rows={rows3}
+                    page={page}
+                    rowsPerPage={rowsPerPage}
+                    emptyRows={rowsPerPage > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows3.length) : 0}
+                    handleChangePage={handleChangePage}
+                    handleChangeRowsPerPage={handleChangeRowsPerPage}
+                />
+            )}
         </div>
+    );
+}
+
+const RenderTable = ({ rows, page, rowsPerPage, emptyRows, handleChangePage, handleChangeRowsPerPage }: any) => {
+    return (
+        <TableContainer component={Paper}>
+            <Table aria-label="custom pagination table">
+                <TableHead>
+                    <TableRow sx={{ 'th': { border: 1 } }}>
+                        <TableCell component="th" >
+                            Người tạo
+                        </TableCell>
+                        <TableCell component="th" >
+                            Người duyệt
+                        </TableCell>
+                        <TableCell align="center">
+                            Ngày
+                        </TableCell>
+                        <TableCell align="center">
+                            Trạng thái
+                        </TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {(rowsPerPage > 0
+                        ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        : rows
+                    ).map((row: any) => (
+                        <TableRow key={row.id} sx={{ 'td': { border: 1 } }}>
+                            <TableCell >
+                                {row.creator}
+                            </TableCell>
+                            <TableCell>
+                                {row.approver}
+                            </TableCell>
+                            <TableCell align="center">
+                                {moment(row.date).format('DD-MM-YYYY')}
+                            </TableCell>
+                            <TableCell align="center">
+                                {
+                                    row.status ?
+                                        <div style={{ display: 'flex', alignItems: "center", justifyContent: "center", backgroundColor: "#99FFFF", padding: "6px 12px", width: "130px", margin: "auto", cursor: 'pointer' }}> <CheckCircleOutline /> Chấp nhận</div>
+                                        : <div style={{ display: 'flex', alignItems: "center", justifyContent: "center", backgroundColor: "#FF9999", padding: "6px 12px", width: "130px", margin: "auto", cursor: 'pointer' }}> <DoDisturb /> Từ chối</div>
+                                }
+                            </TableCell>
+                        </TableRow>
+                    ))}
+                    {emptyRows > 0 && (
+                        <TableRow style={{ height: 53 * emptyRows }}>
+                            <TableCell colSpan={6} />
+                        </TableRow>
+                    )}
+                </TableBody>
+                <TableFooter>
+                    <TableRow>
+                        <TablePagination
+                            rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                            colSpan={3}
+                            count={rows.length}
+                            rowsPerPage={rowsPerPage}
+                            page={page}
+                            slotProps={{
+                                select: {
+                                    inputProps: {
+                                        'aria-label': 'rows per page',
+                                    },
+                                    native: true,
+                                },
+                            }}
+                            onPageChange={handleChangePage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                            ActionsComponent={TablePaginationActions}
+                        />
+                    </TableRow>
+                </TableFooter>
+            </Table>
+        </TableContainer>
     );
 }
 
