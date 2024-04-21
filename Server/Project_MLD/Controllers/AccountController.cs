@@ -81,7 +81,7 @@ namespace Project_MLD.Controllers
                 return StatusCode(400, ex.Message);
             }
 
-            
+
         }
 
 
@@ -244,8 +244,14 @@ namespace Project_MLD.Controllers
                 }
 
                 var hashedNewPassword = _passwordHasher.Hash(newPassword);
-
-                account.LoginAttempt++;
+                if (account.LoginAttempt == 0 || account.LoginAttempt == 0 || account.LoginAttempt < 0)
+                {
+                    account.LoginAttempt = 1;
+                }
+                else
+                {
+                    account.LoginAttempt ++;
+                }
                 account.Password = hashedNewPassword;
                 _context.Accounts.Update(account);
                 _context.SaveChanges();
