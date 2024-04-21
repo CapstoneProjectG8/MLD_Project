@@ -12,6 +12,6 @@ namespace Project_MLD.Service.Interface
         Task<IEnumerable<TeachingPlanner>> GetTeachingPlannerBySubjectId(int subjectId);
         Task<TeachingPlanner> GetTeachingPlannerById(int id);
         Task<bool> DeleteTeachingPlanner(int id);
-        Task UpdateTeachingPlannerByUserId(List<TeachingPlanner> mapRequests);
+        Task<TeachingPlanner> AddTeachingPlanner(int userId, int subjectId, int classId);
     }
 }

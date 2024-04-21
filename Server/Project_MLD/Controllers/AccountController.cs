@@ -80,8 +80,6 @@ namespace Project_MLD.Controllers
 
                 return StatusCode(400, ex.Message);
             }
-
-
         }
 
 
@@ -285,7 +283,7 @@ namespace Project_MLD.Controllers
         private void UpdateAccountLoginInfo(Account account)
         {
             account.LoginAttempt++;
-            account.LoginLast = DateOnly.FromDateTime(DateTime.Now);
+            account.LoginLast = DateTime.Now;
 
             _context.Accounts.Update(account);
             _context.SaveChanges();

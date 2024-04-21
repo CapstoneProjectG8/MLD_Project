@@ -21,7 +21,7 @@ public partial class Account
 
     public int? LoginAttempt { get; set; }
 
-    public DateOnly? LoginLast { get; set; }
+    public DateTime? LoginLast { get; set; }
 
     public virtual Role? Role { get; set; }
 

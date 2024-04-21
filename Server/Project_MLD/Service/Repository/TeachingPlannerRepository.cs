@@ -13,6 +13,9 @@ namespace Project_MLD.Service.Repository
         {
             _context = context;
         }
+
+       
+
         public async Task<bool> DeleteTeachingPlanner(int id)
         {
             var existTeachingPlanner = await _context.TeachingPlanners.FirstOrDefaultAsync(x => x.Id == id);
@@ -58,7 +61,11 @@ namespace Project_MLD.Service.Repository
                 foreach (var item in list)
                 {
                     var checkExistTeachingPlanner = await _context.TeachingPlanners
-                        .FindAsync(item.SubjectId, item.UserId, item.ClassId);
+                        .Where(x => 
+                        x.SubjectId == item.SubjectId 
+                        && x.UserId == item.UserId
+                        && x.ClassId == item.ClassId).ToListAsync();
+
                     if (checkExistTeachingPlanner == null)
                     {
                         var newItem = new TeachingPlanner()
@@ -77,6 +84,28 @@ namespace Project_MLD.Service.Repository
             {
                 throw new Exception("An error occurred while updating Teaching Planner.", ex);
             }
+        }
+
+        public async Task<TeachingPlanner> AddTeachingPlanner(int userId, int subjectId, int classId)
+        {
+            try
+            {
+                var newItem = new TeachingPlanner()
+                {
+                    UserId = userId,
+                    SubjectId = subjectId,
+                    ClassId = classId
+                };
+
+                _context.TeachingPlanners.Add(newItem);
+                await _context.SaveChangesAsync();
+
+                return newItem;
+            }catch (Exception ex)
+            {
+                throw new Exception("An error occurred while add Teaching Planner.", ex);
+            }
+           
         }
     }
 }

@@ -88,8 +88,8 @@ public partial class MldDatabaseContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         var builder = new ConfigurationBuilder()
-                                  .SetBasePath(Directory.GetCurrentDirectory())
-                                  .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                              .SetBasePath(Directory.GetCurrentDirectory())
+                              .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
         IConfigurationRoot configuration = builder.Build();
         optionsBuilder.UseSqlServer(configuration.GetConnectionString("MyCnn"));
     }
@@ -105,7 +105,9 @@ public partial class MldDatabaseContext : DbContext
             entity.Property(e => e.CreatedBy).HasColumnName("created_by");
             entity.Property(e => e.CreatedDate).HasColumnName("created_date");
             entity.Property(e => e.LoginAttempt).HasColumnName("login_attempt");
-            entity.Property(e => e.LoginLast).HasColumnName("login_last");
+            entity.Property(e => e.LoginLast)
+                .HasColumnType("datetime")
+                .HasColumnName("login_last");
             entity.Property(e => e.Password).HasColumnName("password");
             entity.Property(e => e.RoleId).HasColumnName("role_id");
             entity.Property(e => e.Username).HasColumnName("username");
@@ -693,7 +695,6 @@ public partial class MldDatabaseContext : DbContext
 
             entity.ToTable("Teaching Planner");
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.ClassId).HasColumnName("class_id");
             entity.Property(e => e.SubjectId).HasColumnName("subject_id");
             entity.Property(e => e.UserId).HasColumnName("user_id");

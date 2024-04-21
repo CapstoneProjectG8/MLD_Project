@@ -28,7 +28,7 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<IEnumerable<TeachingPlanner>>> GetAllTeachingPlanner()
         {
             var TeachingPlanner = await _repository.GetAllTeachingPlanner();
-            if(TeachingPlanner == null)
+            if (TeachingPlanner == null)
             {
                 return NotFound("Null");
             }
@@ -83,7 +83,7 @@ namespace Project_MLD.Controllers
             return Ok(TeachingPlanner);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
         public async Task<IActionResult> DeleteTeachingPlannerById(int id)
         {
             var result = await _repository.DeleteTeachingPlanner(id);
@@ -91,25 +91,23 @@ namespace Project_MLD.Controllers
             {
                 return NotFound("Teaching Planner not Found");
             }
-            return NoContent();
+            return Ok("Deleted");
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateTeachingPlanner(List<TeachingPlannerDTO> requests)
+        [HttpPost]
+        public async Task<ActionResult<TeachingPlanner>> AddTeachingPlanner(int userId, int subjectId, int classId)
         {
             try
             {
-                var mapRequests = _mapper.Map<List<TeachingPlanner>>(requests);
-                foreach (var item in requests)
-                {
-                    await _repository.UpdateTeachingPlannerByUserId(mapRequests);
-                }
-                return Ok("Update Successfully");
+
+                var addItem = await _repository.AddTeachingPlanner(userId,subjectId,classId);
+
+                return Ok(addItem);
             }
             catch (Exception ex)
             {
                 // Log the exception or handle it accordingly
-                return StatusCode(500, $"An error occurred while updating TeachingPlanner: {ex.Message}");
+                return StatusCode(500, $"An error occurred while add TeachingPlanner: {ex.Message}");
             }
         }
     }
