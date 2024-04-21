@@ -58,7 +58,10 @@ namespace Project_MLD.Service.Repository
                 foreach (var item in list)
                 {
                     var checkExistTeachingPlanner = await _context.TeachingPlanners
-                        .FindAsync(item.SubjectId, item.UserId, item.ClassId);
+    .FirstOrDefaultAsync(x =>
+    x.SubjectId == item.SubjectId
+    && x.UserId == item.UserId
+    && x.ClassId == item.ClassId);
                     if (checkExistTeachingPlanner == null)
                     {
                         var newItem = new TeachingPlanner()
