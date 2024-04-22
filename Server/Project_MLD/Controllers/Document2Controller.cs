@@ -13,12 +13,14 @@ namespace Project_MLD.Controllers
     public class Document2Controller : ControllerBase
     {
         private readonly IDocument2Repository _repository;
+        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public Document2Controller(IDocument2Repository repository, IMapper mapper)
+        public Document2Controller(IDocument2Repository repository, IMapper mapper, IUserRepository userRepository)
         {
             _repository = repository;
             _mapper = mapper;
+            _userRepository = userRepository;
         }
 
 
@@ -31,6 +33,17 @@ namespace Project_MLD.Controllers
                 return NotFound("No Document 2 Found");
             }
             var mapDocumemt = _mapper.Map<List<Document2DTO>>(pl2);
+            foreach (var pl in mapDocumemt)
+            {
+                if(pl.ApproveBy.HasValue)
+                {
+                    var getUser = await _userRepository.GetUserById(pl.ApproveBy.Value);
+                    if (getUser != null)
+                    {
+                        pl.ApproveByName = getUser.FullName;
+                    }
+                }
+            }
             return Ok(mapDocumemt);
         }
 
@@ -83,6 +96,14 @@ namespace Project_MLD.Controllers
                 return NotFound();
             }
             var mapDocumemt = _mapper.Map<Document2DTO>(existDocument2);
+            if(mapDocumemt.IsApprove.HasValue)
+            {
+                var getUser = await _userRepository.GetUserById(mapDocumemt.ApproveBy.Value);
+                if(getUser != null)
+                {
+                    mapDocumemt.ApproveByName = getUser.FullName;
+                }
+            }
             return Ok(mapDocumemt);
         }
 

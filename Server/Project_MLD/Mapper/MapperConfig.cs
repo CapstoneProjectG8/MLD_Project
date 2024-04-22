@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Project_MLD.DTO;
 using Project_MLD.Models;
 
@@ -6,6 +7,7 @@ namespace Project_MLD.Mapper
 {
     public class MapperConfig : Profile
     {
+        
         public MapperConfig()
         {
             CreateMap<Account, AccountDTO>()
@@ -42,7 +44,7 @@ namespace Project_MLD.Mapper
                 .ForMember(x => x.UserId, y => y.MapFrom(src => src.UserId))
                 .ForMember(x => x.SubjectName, y => y.MapFrom(src => src.Subject.Name))
                 .ForMember(x => x.GradeName, y => y.MapFrom(src => src.Grade.Name))
-                .ForMember(x => x.UserName, y => y.MapFrom(src => src.User.FullName))
+                .ForMember(x => x.UserFullName, y => y.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
                 .ReverseMap();
             CreateMap<Document1DTO, Document1>()
                 .ForMember(dest => dest.Subject, opt => opt.Ignore())
@@ -83,10 +85,7 @@ namespace Project_MLD.Mapper
                 .ReverseMap();
 
             CreateMap<Document2, Document2DTO>()
-                .ForMember(x => x.Id, y => y.MapFrom(src => src.Id))
-                .ForMember(x => x.UserId, y => y.MapFrom(src => src.User.Id))
-                .ForMember(x => x.UserName, y => y.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
-                .ForMember(x => x.ApproveByName, y => y.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
+                .ForMember(x => x.UserFullName, y => y.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
                 .ReverseMap();
             CreateMap<Document2DTO, Document2>()
                 .ForMember(dest => dest.User, opt => opt.Ignore()) // Ignore complex User property
@@ -103,12 +102,11 @@ namespace Project_MLD.Mapper
                 .ReverseMap();
 
             CreateMap<Document3, Document3DTO>()
-                .ForMember(x => x.Id, y => y.MapFrom(src => src.Id))
-                .ForMember(x => x.UserId, y => y.MapFrom(src => src.UserId))
-                .ForMember(x => x.Document1Id, y => y.MapFrom(src => src.Document1Id))
+                //.ForMember(x => x.Id, y => y.MapFrom(src => src.Id))
+                //.ForMember(x => x.UserId, y => y.MapFrom(src => src.UserId))
+                //.ForMember(x => x.Document1Id, y => y.MapFrom(src => src.Document1Id))
                 .ForMember(x => x.Document1Name, y => y.MapFrom(src => src.Document1.Name))
-                .ForMember(x => x.UserName, y => y.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
-                .ForMember(x => x.ApproveByName, y => y.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
+                .ForMember(x => x.UserFullName, y => y.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
                 .ReverseMap();
             CreateMap<Document3DTO, Document3>()
                 .ForMember(dest => dest.User, opt => opt.Ignore()) // Ignore complex User property

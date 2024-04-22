@@ -15,15 +15,18 @@ namespace Project_MLD.Controllers
         private readonly IDocument3Repository _repository;
         private readonly IMapper _mapper;
         private readonly IDocument3CurriculumDistributionRepository _curriculumDistributionRepository;
-        public readonly IDocument3SelectedTopicsRepository _selectedTopicsRepository; 
+        private readonly IDocument3SelectedTopicsRepository _selectedTopicsRepository;
+        private readonly IUserRepository _userRepository;
+
         public Document3Controller(IDocument3Repository repository, IMapper mapper,
             IDocument3CurriculumDistributionRepository curriculumDistributionRepository,
-            IDocument3SelectedTopicsRepository selectedTopicsRepository)
+            IDocument3SelectedTopicsRepository selectedTopicsRepository, IUserRepository userRepository)
         {
             _repository = repository;
             _mapper = mapper;
             _curriculumDistributionRepository = curriculumDistributionRepository;
             _selectedTopicsRepository = selectedTopicsRepository;
+            _userRepository = userRepository;
         }
 
         [HttpGet]
@@ -35,6 +38,17 @@ namespace Project_MLD.Controllers
                 return NotFound("No Document 3 Available");
             }
             var mapDocument = _mapper.Map<List<Document3DTO>>(document3s);
+            foreach (var document3 in mapDocument)
+            {
+                if (document3.ApproveBy.HasValue)
+                {
+                    var getUser = await _userRepository.GetUserById(document3.ApproveBy.Value);
+                    if (getUser != null)
+                    {
+                        document3.ApproveByName = getUser.FullName;
+                    }
+                }
+            }
             return Ok(mapDocument);
         }
 
@@ -74,7 +88,6 @@ namespace Project_MLD.Controllers
                     modifiedDocuments.Add(modifiedDocument);
                 }
             }
-
             return Ok(modifiedDocuments);
 
         }
@@ -100,6 +113,14 @@ namespace Project_MLD.Controllers
                 return NotFound("No Document 3 Available");
             }
             var mapDocument = _mapper.Map<Document3DTO>(existDocument3);
+            if (mapDocument.IsApprove.HasValue)
+            {
+                var getUser = await _userRepository.GetUserById(mapDocument.IsApprove.Value);
+                if (getUser != null)
+                {
+                    mapDocument.ApproveByName = getUser.FullName;
+                }
+            }
             return Ok(mapDocument);
         }
 
@@ -137,7 +158,7 @@ namespace Project_MLD.Controllers
             {
                 return BadRequest("Can not add Error, " + ex.Message);
             }
-            
+
         }
 
         [HttpDelete("{id}")]

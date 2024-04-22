@@ -24,7 +24,7 @@ namespace Project_MLD.Controllers
         private readonly IDocument1SubjectRoomsRepository _subjectRoomsDoc1Repository;
         private readonly IDocument1TeachingEquipmentRepository _teachingEquipmentDoc1Repository;
 
-        
+
         public Document1Controller(IDocument1Repository repository, IMapper mapper, IGradeRepository gradeRepository,
             IUserRepository userRepository,
             IDocument1CuriculumDistributionRepository curiculumDistributionDoc1Repository,
@@ -53,6 +53,17 @@ namespace Project_MLD.Controllers
                 return NotFound("No Document 1 Available");
             }
             var mappedDocuments = _mapper.Map<List<Document1DTO>>(Document1);
+            foreach (var document in mappedDocuments)
+            {
+                if (document.ApproveBy.HasValue)
+                {
+                    var getUser = await _userRepository.GetUserById(document.ApproveBy.Value);
+                    if (getUser != null)
+                    {
+                        document.ApproveByName = getUser.FullName;
+                    }
+                }
+            }
             return Ok(mappedDocuments);
         }
 
@@ -65,6 +76,14 @@ namespace Project_MLD.Controllers
                 return NotFound("No Document 1 Available");
             }
             var mappedDocuments = _mapper.Map<Document1DTO>(Document1);
+            if (mappedDocuments.IsApprove.HasValue)
+            {
+                var getUser = await _userRepository.GetUserById(mappedDocuments.ApproveBy.Value);
+                if (getUser != null)
+                {
+                    mappedDocuments.ApproveByName = getUser.FullName;
+                }
+            }
             return Ok(mappedDocuments);
         }
 
