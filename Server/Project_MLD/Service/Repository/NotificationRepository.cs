@@ -7,6 +7,10 @@ namespace Project_MLD.Service.Repository
     public class NotificationRepository : INotificationRepository
     {
         private readonly MldDatabaseContext _context;
+        public NotificationRepository(MldDatabaseContext context)
+        {
+            _context = context;
+        }
         public async Task<Notification> AddNotification(Notification noti)
         {
             _context.Notifications.Add(noti);

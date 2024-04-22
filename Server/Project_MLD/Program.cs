@@ -73,7 +73,7 @@ builder.Services.AddAWSService<IAmazonS3>();
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
 
-//User-Account-Role
+//User-Account-Role-Notification
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ISpecializedDepartmentRepository, SpecializedDepartmentRepository>();
@@ -81,6 +81,8 @@ builder.Services.AddScoped<ISubjectRepository, SubjectRepository>();
 builder.Services.AddScoped<IProfessionalStandardRepository, ProfessionalStandardRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
 builder.Services.AddScoped<ILevelOfTrainningRepository, LevelOfTrainningRepository>();
+builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+
 
 builder.Services.AddScoped<IClassRepository, ClassRepository>();
 //Document1
