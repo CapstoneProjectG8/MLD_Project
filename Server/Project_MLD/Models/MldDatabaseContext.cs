@@ -93,6 +93,7 @@ public partial class MldDatabaseContext : DbContext
         IConfigurationRoot configuration = builder.Build();
         optionsBuilder.UseSqlServer(configuration.GetConnectionString("MyCnn"));
     }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Account>(entity =>
@@ -325,7 +326,6 @@ public partial class MldDatabaseContext : DbContext
 
             entity.HasOne(d => d.HostByNavigation).WithMany(p => p.Document2Grades)
                 .HasForeignKey(d => d.HostBy)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Document2_Grade_User");
         });
 

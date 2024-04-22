@@ -9,5 +9,6 @@ namespace Project_MLD.Service.Interface
         Task UpdateDocument2Grade(List<Document2Grade> list);
         Task DeleteDocument2Grade(List<Document2Grade> list);
         Task DeleteDocument2GradeByDoc2Id(int id);
+        Task<Document2Grade> AddDocument2Grade(Document2Grade document2Grade);
     }
 }

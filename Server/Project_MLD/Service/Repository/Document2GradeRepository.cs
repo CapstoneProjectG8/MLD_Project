@@ -14,6 +14,13 @@ namespace Project_MLD.Service.Repository
             _context = context;
         }
 
+        public async Task<Document2Grade> AddDocument2Grade(Document2Grade document2Grade)
+        {
+            _context.Document2Grades.Add(document2Grade);
+            await _context.SaveChangesAsync();
+            return document2Grade;
+        }
+
         public async Task DeleteDocument2Grade(List<Document2Grade> list)
         {
             if (list == null || !list.Any())

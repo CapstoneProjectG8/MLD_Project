@@ -24,7 +24,6 @@ public partial class Document2GradeDTO
     public string? CollaborateWith { get; set; }
 
     public string? Condition { get; set; }
-
     public string? HostByName { get; set; }
     public string? GradeName { get; set; }
 

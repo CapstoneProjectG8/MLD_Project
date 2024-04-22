@@ -92,7 +92,6 @@ namespace Project_MLD.Mapper
                 .ReverseMap();
 
             CreateMap<Document2Grade, Document2GradeDTO>()
-                .ForMember(x => x.Document2Id, y => y.MapFrom(src => src.Document2Id))
                 .ForMember(x => x.GradeName, y => y.MapFrom(src => src.Grade.Name))
                 .ForMember(x => x.HostByName, y => y.MapFrom(src => src.HostByNavigation.FullName))
                 .ReverseMap();

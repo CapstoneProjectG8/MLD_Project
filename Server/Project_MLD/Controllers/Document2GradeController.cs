@@ -19,7 +19,7 @@ namespace Project_MLD.Controllers
         private readonly IGradeRepository _gradeRepository;
         private readonly IMapper _mapper;
 
-        public Document2GradeController(IDocument2GradeRepository repository, IMapper mapper, IGradeRepository gradeRepository )
+        public Document2GradeController(IDocument2GradeRepository repository, IMapper mapper, IGradeRepository gradeRepository)
         {
             _repository = repository;
             _mapper = mapper;
@@ -51,7 +51,7 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateDocument2Grade( List<Document2GradeDTO> requests)
+        public async Task<IActionResult> UpdateDocument2Grade(List<Document2GradeDTO> requests)
         {
             try
             {
@@ -69,9 +69,26 @@ namespace Project_MLD.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> AddDocument2Grade(Document2GradeDTO dto)
+        {
+            try
+            {
+                var document2 = _mapper.Map<Document2Grade>(dto);
+                var doc = await _repository.AddDocument2Grade(document2);
+                var mapDoc2 = _mapper.Map<Document2GradeDTO>(document2);
+                return Ok(mapDoc2);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it accordingly
+                return StatusCode(500, $"An error occurred while add Document2 Grade: {ex.Message}");
+            }
+        }
+
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteDocument2Grade( List<Document2GradeDTO> requests)
+        public async Task<IActionResult> DeleteDocument2Grade(List<Document2GradeDTO> requests)
         {
             try
             {
@@ -90,7 +107,7 @@ namespace Project_MLD.Controllers
         [HttpGet("GetTotalStudentByGradeId/{gradeId}")]
         public async Task<IActionResult> GetTotalStudentByGradeId(int gradeId)
         {
-            if(gradeId == 0)
+            if (gradeId == 0)
             {
                 return BadRequest("Grade Id is null");
             }

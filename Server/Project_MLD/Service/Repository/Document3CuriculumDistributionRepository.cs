@@ -38,7 +38,7 @@ namespace Project_MLD.Service.Repository
 
         public async Task DeleteDocument3CurriculumDistributionByDoc3Id(int id)
         {
-            var items = _context.Document3CurriculumDistributions
+            var items = await _context.Document3CurriculumDistributions
                 .Where(x => x.Document3Id == id).ToListAsync();
             if(items != null)
             {
