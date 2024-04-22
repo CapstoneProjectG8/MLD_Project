@@ -128,8 +128,7 @@ namespace Project_MLD.Mapper
                 .ReverseMap();
 
             CreateMap<Document4, Document4DTO>()
-                .ForMember(x => x.Id, y => y.MapFrom(src => src.Id))
-                .ForMember(x => x.TeachingPlannerId, y => y.MapFrom(src => src.TeachingPlanner.Id))
+                .ForMember(x => x.TeachingPlannerId, y => y.MapFrom(src => src.TeachingPlannerId))
                 .ReverseMap();
             CreateMap<Document4DTO, Document4>()
                 .ForMember(dest => dest.TeachingPlanner, opt => opt.Ignore())
