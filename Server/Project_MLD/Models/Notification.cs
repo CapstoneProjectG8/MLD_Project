@@ -9,11 +9,11 @@ public partial class Notification
 
     public string? TitleName { get; set; }
 
-    public string? Type { get; set; }
+    public int SentBy { get; set; }
 
-    public int UserId { get; set; }
+    public int? ReceiveBy { get; set; }
 
     public string? Message { get; set; }
 
-    public virtual User User { get; set; } = null!;
+    public virtual User SentByNavigation { get; set; } = null!;
 }
