@@ -63,20 +63,6 @@ namespace Project_MLD.Controllers
             }
         }
 
-        [HttpDelete("DeleteDocument3CurriculumDistributionByDocument3Id")]
-        public async Task<IActionResult> DeleteDocument3CurriculumDistributionByDocument3Id(int id)
-        {
-            try
-            {
-                await _repository.DeleteDocument3CurriculumDistributionByDoc3Id(id);
-
-                return Ok("Delete Successfully");
-            }
-            catch (Exception ex)
-            {
-                // Log the exception or handle it accordingly
-                return StatusCode(500, $"An error occurred while delete Document3 CurriculumDistribution: {ex.Message}");
-            }
-        }
+        
     }
 }

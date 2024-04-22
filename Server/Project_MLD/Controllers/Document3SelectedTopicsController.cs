@@ -65,21 +65,5 @@ namespace Project_MLD.Controllers
             }
         }
 
-        [HttpDelete("DeleteDocument3SelectedTopicsByDocument3Id")]
-        public async Task<IActionResult> DeleteDocument3SelectedTopicsByDocument3Id(int id)
-        {
-            try
-            {
-                await _repository.DeleteDocument3SelectedTopicsbyDoc3Id(id);
-
-                return Ok("Delete Successfully");
-            }
-            catch (Exception ex)
-            {
-                // Log the exception or handle it accordingly
-                return StatusCode(500, $"An error occurred while delete Document3 Selected Topics: {ex.Message}");
-            }
-        }
-
     }
 }

@@ -14,10 +14,16 @@ namespace Project_MLD.Controllers
     {
         private readonly IDocument3Repository _repository;
         private readonly IMapper _mapper;
-        public Document3Controller(IDocument3Repository repository, IMapper mapper)
+        private readonly IDocument3CurriculumDistributionRepository _curriculumDistributionRepository;
+        public readonly IDocument3SelectedTopicsRepository _selectedTopicsRepository; 
+        public Document3Controller(IDocument3Repository repository, IMapper mapper,
+            IDocument3CurriculumDistributionRepository curriculumDistributionRepository,
+            IDocument3SelectedTopicsRepository selectedTopicsRepository)
         {
             _repository = repository;
             _mapper = mapper;
+            _curriculumDistributionRepository = curriculumDistributionRepository;
+            _selectedTopicsRepository = selectedTopicsRepository;
         }
 
         [HttpGet]
@@ -177,6 +183,23 @@ namespace Project_MLD.Controllers
                 message = "Update Success",
                 dataMap
             });
+        }
+
+        [HttpDelete("DeleteDocument3ForeignTableByDocument3Id")]
+        public async Task<IActionResult> DeleteDocument3ForeignTableByDocument3Id(int id)
+        {
+            try
+            {
+                await _curriculumDistributionRepository.DeleteDocument3CurriculumDistributionByDoc3Id(id);
+                await _selectedTopicsRepository.DeleteDocument3SelectedTopicsbyDoc3Id(id);
+
+                return Ok("Delete Successfully");
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it accordingly
+                return StatusCode(500, $"An error occurred while delete Document3 Foreign Table: {ex.Message}");
+            }
         }
     }
 }
