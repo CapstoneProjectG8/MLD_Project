@@ -73,6 +73,22 @@ namespace Project_MLD.Controllers
             }
         }
 
+        [HttpDelete("DeleteDocument1PeriodicAssessmentByDocument1Id")]
+        public async Task<IActionResult> DeleteDocument1PeriodicAssessmentByDocument1Id(int id)
+        {
+            try
+            {
+                await _repository.DeleteDocument1PeriodicAssessmentByDoc1ID(id);
+
+                return Ok("Delete Successfully");
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it accordingly
+                return StatusCode(500, $"An error occurred while delete Document1 Periodic Assessment: {ex.Message}");
+            }
+        }
+
         [HttpGet("GetAllTestingCategory")]
         public async Task<ActionResult<IEnumerable<TestingCategory>>> GetAllTestingCategory()
         {

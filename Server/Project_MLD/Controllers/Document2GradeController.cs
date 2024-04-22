@@ -101,5 +101,21 @@ namespace Project_MLD.Controllers
                 totalStudent = totalStudent
             });
         }
+
+        [HttpDelete("DeleteDocument2GradeByDocument2Id")]
+        public async Task<IActionResult> DeleteDocument2GradeByDocument2Id(int id)
+        {
+            try
+            {
+                await _repository.DeleteDocument2GradeByDoc2Id(id);
+
+                return Ok("Delete Successfully");
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it accordingly
+                return StatusCode(500, $"An error occurred while delete Document2 Grade: {ex.Message}");
+            }
+        }
     }
 }

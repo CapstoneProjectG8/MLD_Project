@@ -1,4 +1,5 @@
-﻿using Azure.Core;
+﻿using Amazon.Runtime;
+using Azure.Core;
 using Microsoft.EntityFrameworkCore;
 using Project_MLD.Models;
 using Project_MLD.Service.Interface;
@@ -33,6 +34,16 @@ namespace Project_MLD.Service.Repository
                 }
             }
 
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteDocument1TeachingEquipmentByDoc1ID(int id)
+        {
+            var items = await _context.Document1TeachingEquipments.Where(x => x.Document1Id == id).ToListAsync();
+            if(items != null)
+            {
+                _context.RemoveRange(items);
+            }
             await _context.SaveChangesAsync();
         }
 

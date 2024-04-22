@@ -62,5 +62,21 @@ namespace Project_MLD.Controllers
                 return StatusCode(500, $"An error occurred while delete Document1 Teaaching Equipment: {ex.Message}");
             }
         }
+
+        [HttpDelete("DeleteDocument1TeachingEquipmentByDocument1Id")]
+        public async Task<IActionResult> DeleteDocument1TeachingEquipmentByDocument1Id(int id)
+        {
+            try
+            {
+                await _repository.DeleteDocument1TeachingEquipmentByDoc1ID(id);
+
+                return Ok("Delete Successfully");
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it accordingly
+                return StatusCode(500, $"An error occurred while delete Document1 Teaching Equipment Room: {ex.Message}");
+            }
+        }
     }
 }

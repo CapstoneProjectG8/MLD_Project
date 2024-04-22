@@ -29,7 +29,7 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateDocument3CurriculumDistribution( List<Document3CurriculumDistributionDTO> requests)
+        public async Task<IActionResult> UpdateDocument3CurriculumDistribution(List<Document3CurriculumDistributionDTO> requests)
         {
             try
             {
@@ -47,7 +47,7 @@ namespace Project_MLD.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteDocument3CurriculumDistribution( List<Document3CurriculumDistributionDTO> requests)
+        public async Task<IActionResult> DeleteDocument3CurriculumDistribution(List<Document3CurriculumDistributionDTO> requests)
         {
             try
             {
@@ -63,6 +63,20 @@ namespace Project_MLD.Controllers
             }
         }
 
+        [HttpDelete("DeleteDocument3CurriculumDistributionByDocument3Id")]
+        public async Task<IActionResult> DeleteDocument3CurriculumDistributionByDocument3Id(int id)
+        {
+            try
+            {
+                await _repository.DeleteDocument3CurriculumDistributionByDoc3Id(id);
 
+                return Ok("Delete Successfully");
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it accordingly
+                return StatusCode(500, $"An error occurred while delete Document3 CurriculumDistribution: {ex.Message}");
+            }
+        }
     }
 }

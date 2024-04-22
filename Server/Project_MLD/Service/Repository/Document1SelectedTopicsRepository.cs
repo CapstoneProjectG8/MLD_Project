@@ -36,6 +36,17 @@ namespace Project_MLD.Service.Repository
             await _context.SaveChangesAsync();
         }
 
+        public async Task DeleteDocument1SelectedTopicByDoc1Id(int docId)
+        {
+            var items = await _context.Document1SelectedTopics
+                .Where(x => x.Document1Id == docId).ToListAsync();
+            if (items != null)
+            {
+                _context.RemoveRange(items);
+            }
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<IEnumerable<Document1SelectedTopic>> GetSelectedTopicByDocument1Id(int id)
         {
             var st = await _context.Document1SelectedTopics

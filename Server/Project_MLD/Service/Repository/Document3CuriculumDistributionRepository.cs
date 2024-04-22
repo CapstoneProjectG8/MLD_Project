@@ -36,6 +36,17 @@ namespace Project_MLD.Service.Repository
             await _context.SaveChangesAsync();
         }
 
+        public async Task DeleteDocument3CurriculumDistributionByDoc3Id(int id)
+        {
+            var items = _context.Document3CurriculumDistributions
+                .Where(x => x.Document3Id == id).ToListAsync();
+            if(items != null)
+            {
+                _context.RemoveRange(items);
+            }
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<IEnumerable<Document3CurriculumDistribution>> GetCurriculumDistributionByDocument3Id(int id)
         {
             var cd = await _context.Document3CurriculumDistributions

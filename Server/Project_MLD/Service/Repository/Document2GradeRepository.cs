@@ -35,6 +35,17 @@ namespace Project_MLD.Service.Repository
             await _context.SaveChangesAsync();
         }
 
+        public async Task DeleteDocument2GradeByDoc2Id(int id)
+        {
+            var items = await _context.Document2Grades
+                .Where(x => x.Document2Id == id).ToListAsync();
+            if(items != null)
+            {
+                _context.RemoveRange(items);
+            }
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<IEnumerable<Document2Grade>> GetAllDocuemnt2Grades()
         {
             return await _context.Document2Grades
