@@ -5,6 +5,7 @@ import { Article, Folder, Note, Square } from '@mui/icons-material'
 import { apiGetSpecializedDepartment, apiGetSpecializedDepartmentById } from '../../../../api/specializedDepartment'
 import axios from 'axios'
 import { base_url } from '../../../../utils/baseUrl'
+import { Link } from 'react-router-dom'
 
 const LeftSubNavBar = () => {
     const [depts, setDepts] = useState<any>([])
@@ -76,10 +77,12 @@ const Document = ({ dep }: any) => {
         </div>
         <div className={show ? 'nav-is-show' : 'nav-is-hidden'}>
             {documents.map((doc: any) => (
-                <div key={doc.name} className='sub-nav-bar-item-content-folder-course'>
-                    <Article style={{ width: "30", height: "30", color: "#EFB38E" }} />
+                <Link key={doc.id} to={`/sub-menu-${dep.id}/detail-view/${doc.id}`}>
+                <div className='sub-nav-bar-item-content-folder-course'>
+                    <Article style={{ width: "30px", height: "30px", color: "#EFB38E" }} />
                     {doc.name}
                 </div>
+            </Link>
             ))
             }
         </div>
