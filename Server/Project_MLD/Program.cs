@@ -112,6 +112,7 @@ builder.Services.AddScoped<ITeachingPlannerRepository, TeachingPlannerRepository
 
 //Document5
 builder.Services.AddScoped<IDocument5Repository, Document5Repository>();
+builder.Services.AddScoped<IEvaluateRepository, EvaluateRepository>();
 //Document
 
 //Utils

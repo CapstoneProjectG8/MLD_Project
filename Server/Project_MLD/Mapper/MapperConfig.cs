@@ -148,6 +148,12 @@ namespace Project_MLD.Mapper
                 .ForMember(x => x.GradeId, y => y.MapFrom(src => src.Grade.Id))
                 .ForMember(x => x.GradeName, y => y.MapFrom(src => src.Grade.Name))
                 .ReverseMap();
+
+            CreateMap<Evaluate, EvaluateDTO>()
+                .ReverseMap();
+            CreateMap<EvaluateDTO, Evaluate>()
+                .ForMember(dest => dest.Document5, opt => opt.Ignore())
+                .ReverseMap();
         }
     }
 }
