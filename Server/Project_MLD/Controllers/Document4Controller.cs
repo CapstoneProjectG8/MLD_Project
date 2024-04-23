@@ -90,7 +90,7 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Document4>> AddDocument4(Document4 pl4)
+        public async Task<ActionResult<Document4>> AddDocument4(Document4DTO pl4)
         {
             try
             {
