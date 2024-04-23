@@ -1,7 +1,9 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import axios from 'axios';
-import { Button, Form, Input, message, Modal, Select, Table } from 'antd';
-
+import { Button, DatePicker, Form, Input, message, Modal, Radio, Select, Space, Table } from 'antd';
+import { CheckCircleOutlined } from '@ant-design/icons/lib/icons';
+import { CloseCircleOutlined, SearchOutlined } from '@ant-design/icons';
+import Highlighter from 'react-highlight-words';
 interface User {
   id: string;
   fullName: string;
@@ -11,6 +13,11 @@ interface User {
   active: boolean;
   createdDate: string;
   accountId: string;
+  address: string;
+  photo: string;
+  levelOfTrainningId: string;
+  specializedDepartmentId: string;
+  professionalStandardsId: string;
 }
 
 interface AccountDetail {
@@ -39,7 +46,9 @@ const Account: FC = () => {
   const [newAccountFormData, setNewAccountFormData] = useState<any>({});
   const [newUserData, setNewUserData] = useState<any>({});
   const [addUserModalVisible, setAddUserModalVisible] = useState(false);
-
+  const [searchText, setSearchText] = useState('');
+  const [searchedColumn, setSearchedColumn] = useState('');
+  const searchInput = useRef(null);
   useEffect(() => {
     axios.get('https://localhost:7241/api/User')
       .then(response => {
@@ -53,6 +62,11 @@ const Account: FC = () => {
           createdDate: user.createdDate,
           placeOfBirth: user.placeOfBirth,
           accountId: user.accountId,
+          address: user.address,
+          photo: user.photo,
+          levelOfTrainningId: user.levelOfTrainningId,
+          specializedDepartmentId: user.specializedDepartmentId,
+          professionalStandardsId: user.professionalStandardsId,
         }));
         setUsers(formattedUsers);
       })
@@ -60,7 +74,14 @@ const Account: FC = () => {
         console.error(error);
       });
   }, []);
-
+  useEffect(() => {
+    if (accountDetail) {
+      // Cập nhật giá trị cho updatedRole khi accountDetail thay đổi
+      setUpdatedRole(accountDetail.roleId);
+      // Cập nhật giá trị cho updatedActive khi accountDetail thay đổi
+      setUpdatedActive(accountDetail.active);
+    }
+  }, [accountDetail]);
   const handleDetail = (user: User) => {
     setSelectedUser(user);
     setDetailModalVisible(true);
@@ -98,7 +119,7 @@ const Account: FC = () => {
   const confirmBanUnban = async () => {
     try {
       const updatedUser = { ...selectedUser, active: !selectedUser.active };
-      const requestBody = { id: selectedUser.id, active: updatedUser.active };
+      const requestBody = { id: selectedUser.id, accountId: selectedUser.accountId, active: updatedUser.active };
       await axios.put(`https://localhost:7241/api/User/${selectedUser.id}`, requestBody);
       const updatedUsers = users.map(u => (u.id === selectedUser.id ? updatedUser : u));
       setUsers(updatedUsers);
@@ -161,6 +182,7 @@ const Account: FC = () => {
       });
   };
 
+
   const handleNewAccountFormChange = (changedValues: any, allValues: any) => {
     setNewAccountFormData(allValues);
   };
@@ -168,7 +190,74 @@ const Account: FC = () => {
   const handleNewUserFormChange = (changedValues: any, allValues: any) => {
     setNewUserData(allValues);
   };
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
 
+  const handleReset = (clearFilters) => {
+    clearFilters();
+    setSearchText('');
+  };
+
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters}) => (
+      <div style={{padding: 8}}>
+        <Input
+          ref={searchInput}
+          placeholder={`Search ${dataIndex}`}
+          value={selectedKeys[0]}
+          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{width: 188, marginBottom: 8, display: 'block'}}
+        />
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined/>}
+            size="small"
+            style={{width: 90}}
+          >
+            Search
+          </Button>
+          <Button onClick={() => handleReset(clearFilters)} size="small" style={{width: 90}}>
+            Reset
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => <SearchOutlined style={{color: filtered ? '#1890ff' : undefined}}/>,
+    onFilter: (value, record) =>
+      record[dataIndex] ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()) : '',
+    onFilterDropdownVisibleChange: (visible) => {
+      if (visible) {
+        setTimeout(() => searchInput.current.select(), 100);
+      }
+    },
+    render: (text) =>
+      searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{backgroundColor: '#ffc069', padding: 0}}
+          searchWords={[searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ''}
+        />
+      ) : (
+        text
+      ),
+  });
+
+  const getColumnFilterGender = (dataIndex, filters) => ({
+    filters: filters,
+    onFilter: (value, record) => record[dataIndex] === value,
+  });
+
+  const getColumnFilterStatus = (dataIndex, filters) => ({
+    filters: filters,
+    onFilter: (value, record) => record[dataIndex] === value,
+  });
   const columns = [
     {
       title: '#',
@@ -180,6 +269,7 @@ const Account: FC = () => {
       title: 'Full Name',
       dataIndex: 'fullName',
       key: 'fullName',
+      ...getColumnSearchProps('fullName'),
     },
     {
       title: 'Email',
@@ -187,25 +277,34 @@ const Account: FC = () => {
       key: 'email',
     },
     {
-      title: 'Place of Birth',
-      dataIndex: 'placeOfBirth',
-      key: 'placeOfBirth',
-    },
-    {
       title: 'Gender',
       dataIndex: 'gender',
       key: 'gender',
+      ...getColumnFilterGender('gender', [
+        {text: 'Male', value: true},
+        {text: 'Female', value: false},
+      ]),
     },
     {
       title: 'Active',
       dataIndex: 'active',
       key: 'active',
-      render: (active: boolean) => (active ? 'Active' : 'Inactive'),
+      align: "center",
+      ...getColumnFilterStatus('active', [
+        {text: 'Active', value: true},
+        {text: 'Inactive', value: false},
+      ]),
+      render: (active: boolean) => (active ? <CheckCircleOutlined style={{color: "green"}}/> : <CloseCircleOutlined style={{color: "red"}}/>),
     },
     {
       title: 'Created Date',
       dataIndex: 'createdDate',
       key: 'createdDate',
+      sorter: (a, b) => {
+        const dateA = new Date(a.createdDate);
+        const dateB = new Date(b.createdDate);
+        return dateA - dateB;
+      },
     },
     {
       title: 'Action',
@@ -241,20 +340,58 @@ const Account: FC = () => {
           </Button>,
           <Button key="createUser" type="primary" onClick={handleCreateAccount}>
             Create Account and User
-          </Button>
+          </Button>,
         ]}
       >
-        <Form {...layout} onValuesChange={handleNewAccountFormChange}>
-          <Form.Item label="Username" name="username">
+        <Form onValuesChange={handleNewAccountFormChange}>
+          <Form.Item
+            label="Username"
+            name="username"
+            rules={[
+              { required: true, message: 'Please input your username!' },
+            ]}
+          >
             <Input />
           </Form.Item>
-          <Form.Item label="Password" name="password">
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: 'Please input your password!',
+              },
+              {
+                min: 8,
+                message: 'Password must be at least 8 characters long!',
+              },
+              {
+                pattern: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+                message: 'Password must contain at least one letter, one number, and one special character!',
+              },
+            ]}
+          >
             <Input.Password />
           </Form.Item>
-          <Form.Item label="Confirm Password" name="confirmPassword">
+          <Form.Item
+            label="Confirm Password"
+            name="confirmPassword"
+            dependencies={['password']}
+            rules={[
+              { required: true, message: 'Please confirm your password!' },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue('password') === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(new Error('The two passwords that you entered do not match!'));
+                },
+              }),
+            ]}
+          >
             <Input.Password />
           </Form.Item>
-          <Form.Item label="Role" name="roleId">
+          <Form.Item label="Role" name="roleId" rules={[{ required: true, message: 'Please select a role!' }]}>
             <Select>
               <Option value="1">Admin</Option>
               <Option value="2">Teacher</Option>
@@ -276,24 +413,77 @@ const Account: FC = () => {
           </Button>,
           <Button key="createUser" type="primary" onClick={() => handleCreateUser(newUserData.accountId)}>
             Create User
-          </Button>
+          </Button>,
         ]}
       >
-        <Form {...layout} onValuesChange={handleNewUserFormChange}>
-          <Form.Item label="First Name" name="firstName">
+        <Form onValuesChange={handleNewUserFormChange}>
+          <Form.Item label="First Name" name="firstName"
+                     rules={[{ required: true, message: 'Please input your first name!' }]}>
             <Input />
           </Form.Item>
-          <Form.Item label="Last Name" name="lastName">
+          <Form.Item label="Last Name" name="lastName"
+                     rules={[{ required: true, message: 'Please input your last name!' }]}>
             <Input />
           </Form.Item>
-          <Form.Item label="Email" name="email">
+          <Form.Item label="Email" name="email"
+                     rules={[{ required: true, type: 'email', message: 'Please input a valid email address!' }]}>
             <Input />
           </Form.Item>
-          <Form.Item label="Address" name="address">
+          <Form.Item label="Address" name="address" rules={[{ required: true, message: 'Please input your address!' }]}>
             <Input />
+          </Form.Item>
+          <Form.Item label="Gender" name="gender" rules={[{ required: true, message: 'Please select your gender!' }]}>
+            <Radio.Group>
+              <Radio value={true}> Male </Radio>
+              <Radio value={false}> Female </Radio>
+            </Radio.Group>
+          </Form.Item>
+          <Form.Item
+            label="Birth"
+            name="placeOfBirth"
+            rules={[{ required: true, message: 'Please input your date of birth!' }]}
+          >
+            <DatePicker />
+          </Form.Item>
+          <Form.Item label="Level Of Training" name="levelOfTrainningId"
+                     rules={[{ required: true, message: 'Please input!' }]}>
+            <Select>
+              <Select.Option value="1">Junior College</Select.Option>
+              <Select.Option value="2">Bachelor</Select.Option>
+              <Select.Option value="3">Above Bachelor</Select.Option>
+            </Select>
+          </Form.Item>
+          <Form.Item label="Specialized Department" name="specializedDepartmentId"
+                     rules={[{ required: true, message: 'Please input!' }]}>
+            <Select>
+              <Select.Option value="1">Math</Select.Option>
+              <Select.Option value="2">Engineering</Select.Option>
+              <Select.Option value="3">Computer Science</Select.Option>
+              <Select.Option value="4">Mathematics</Select.Option>
+              <Select.Option value="5">Science </Select.Option>
+              <Select.Option value="6">Visual Arts</Select.Option>
+              <Select.Option value="7">Media Arts</Select.Option>
+              <Select.Option value="8">Performing Arts </Select.Option>
+              <Select.Option value="9">World Languages</Select.Option>
+              <Select.Option value="10">Business</Select.Option>
+              <Select.Option value="11">Vocational </Select.Option>
+              <Select.Option value="12">Special Education </Select.Option>
+            </Select>
+          </Form.Item>
+          <Form.Item label="Professional Standards" name="professionalStandardsId"
+                     rules={[{ required: true, message: 'Please input!' }]}>
+            <Select>
+              <Select.Option value="1">Excellent</Select.Option>
+              <Select.Option value="2">Good</Select.Option>
+              <Select.Option value="3">Pass</Select.Option>
+              <Select.Option value="4">Not Pass</Select.Option>
+            </Select>
           </Form.Item>
           <Form.Item label="Account ID" name="accountId" hidden>
             <Input value={newUserData.accountId} disabled />
+          </Form.Item>
+          <Form.Item label="Active" name="active" hidden initialValue={true}>
+            <Input value={newUserData.active} disabled />
           </Form.Item>
         </Form>
       </Modal>
@@ -335,13 +525,26 @@ const Account: FC = () => {
             <Form.Item label="Created Date">
               <Input value={accountDetail.createdDate} disabled />
             </Form.Item>
+            {/*<Form.Item label="Role">*/}
+            {/*  <Select value={updatedRole} onChange={(value: string) => setUpdatedRole(value)}>*/}
+            {/*    <Select.Option value="1">Admin</Select.Option>*/}
+            {/*    <Select.Option value="2">Teacher</Select.Option>*/}
+            {/*    <Select.Option value="3">Leader</Select.Option>*/}
+            {/*    <Select.Option value="5">Principal</Select.Option>*/}
+            {/*  </Select>*/}
+            {/*</Form.Item>*/}
             <Form.Item label="Role">
-              <Select value={updatedRole} onChange={(value: string) => setUpdatedRole(value)}>
-                <Option value="1">Admin</Option>
-                <Option value="2">Teacher</Option>
-                <Option value="3">Leader</Option>
-                <Option value="5">Principle</Option>
-              </Select>
+              <Input value={
+                accountDetail ? (
+                  // Tìm tên tương ứng với roleId
+                  {
+                    '1': 'Admin',
+                    '2': 'Teacher',
+                    '3': 'Leader',
+                    '5': 'Principal',
+                  }[accountDetail.roleId]
+                ) : ''
+              } disabled />
             </Form.Item>
             <Form.Item label="Login Attempt">
               <Input value={accountDetail.loginAttempt} disabled />
