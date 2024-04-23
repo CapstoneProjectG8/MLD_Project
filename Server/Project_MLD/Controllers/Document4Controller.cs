@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Amazon.S3.Model.Internal.MarshallTransformations;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -145,7 +146,10 @@ namespace Project_MLD.Controllers
         public async Task<IActionResult> GetDoc4InformationByDoc4Id(int id)
         {
             var doc4 = await _repository.GetDoc4InformationByDoc4Id(id);
-
+            if(doc4 == null)
+            {
+                return NotFound("No Document 4 Found");
+            }
             return Ok(doc4);
         }
     }
