@@ -113,9 +113,9 @@ namespace Project_MLD.Controllers
                 return NotFound("No Document 3 Available");
             }
             var mapDocument = _mapper.Map<Document3DTO>(existDocument3);
-            if (mapDocument.IsApprove.HasValue)
+            if (mapDocument.ApproveBy.HasValue)
             {
-                var getUser = await _userRepository.GetUserById(mapDocument.IsApprove.Value);
+                var getUser = await _userRepository.GetUserById(mapDocument.ApproveBy.Value);
                 if (getUser != null)
                 {
                     mapDocument.ApproveByName = getUser.FullName;

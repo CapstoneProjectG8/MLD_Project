@@ -96,9 +96,9 @@ namespace Project_MLD.Controllers
                 return NotFound();
             }
             var mapDocumemt = _mapper.Map<Document2DTO>(existDocument2);
-            if(mapDocumemt.IsApprove.HasValue)
+            if(mapDocumemt.ApproveBy != null)
             {
-                var getUser = await _userRepository.GetUserById(mapDocumemt.ApproveBy.Value);
+                var getUser = await _userRepository.GetUserById((int)mapDocumemt.ApproveBy);
                 if(getUser != null)
                 {
                     mapDocumemt.ApproveByName = getUser.FullName;

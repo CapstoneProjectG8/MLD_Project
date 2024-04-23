@@ -75,16 +75,16 @@ namespace Project_MLD.Controllers
             {
                 return NotFound("No Document 1 Available");
             }
-            var mappedDocuments = _mapper.Map<Document1DTO>(Document1);
-            if (mappedDocuments.IsApprove.HasValue)
+            var mapDoc = _mapper.Map<Document1DTO>(Document1);
+            if (mapDoc.ApproveBy != null)
             {
-                var getUser = await _userRepository.GetUserById(mappedDocuments.ApproveBy.Value);
+                var getUser = await _userRepository.GetUserById((int)Document1.ApproveBy);
                 if (getUser != null)
                 {
-                    mappedDocuments.ApproveByName = getUser.FullName;
+                    mapDoc.ApproveByName = getUser.FullName;
                 }
             }
-            return Ok(mappedDocuments);
+            return Ok(mapDoc);
         }
 
         [HttpGet("FilterDocument1")]

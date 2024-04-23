@@ -35,7 +35,7 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Notification>> AddNotification(NotificationDTO dto)
+        public async Task<ActionResult<Notification>> AddNotification(NotificationDTO dto, int documentId)
         {
             try
             {
