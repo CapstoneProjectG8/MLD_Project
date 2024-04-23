@@ -76,22 +76,6 @@ const mockMenuList: MenuList = [
     path: '/permission',
     children: [
       {
-        code: 'routePermission',
-        label: {
-          zh_CN: 'Quyền truy cập',
-          en_US: 'Route Permission',
-        },
-        path: '/permission/route',
-      },
-      {
-        code: 'notFound',
-        label: {
-          zh_CN: '404',
-          en_US: '404',
-        },
-        path: '/permission/404',
-      },
-      {
         code: 'mangementAccount',
         label: {
           zh_CN: 'Tài khoản',
