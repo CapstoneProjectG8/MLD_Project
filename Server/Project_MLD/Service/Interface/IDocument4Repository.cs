@@ -12,5 +12,7 @@ namespace Project_MLD.Service.Interface
         Task<IEnumerable<Document4>> GetDocument4sByCondition(string condition);
         Task<IEnumerable<object>> GetDocument4ByUserSpecialiedDepartment(List<int> listId);
 
+        Task<object> GetDoc4InformationByDoc4Id(int id);
+
     }
 }

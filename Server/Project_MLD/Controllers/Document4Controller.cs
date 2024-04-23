@@ -141,5 +141,12 @@ namespace Project_MLD.Controllers
                 dataMap
             });
         }
+        [HttpGet("GetDoc4InformationByDoc4Id")]
+        public async Task<IActionResult> GetDoc4InformationByDoc4Id(int id)
+        {
+            var doc4 = await _repository.GetDoc4InformationByDoc4Id(id);
+
+            return Ok(doc4);
+        }
     }
 }

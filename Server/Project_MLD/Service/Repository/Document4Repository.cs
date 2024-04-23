@@ -41,6 +41,27 @@ namespace Project_MLD.Service.Repository
                 .ToListAsync();
         }
 
+        public async Task<object> GetDoc4InformationByDoc4Id(int id)
+        {
+            var doc = await _context.Document4s
+                .Include(x => x.TeachingPlanner)
+                    .ThenInclude(tp => tp.Class)
+                .Include(x => x.TeachingPlanner)
+                    .ThenInclude(tp => tp.Subject)
+
+                .Where(d => d.Id == id)
+                .Select(x => new
+                {
+                    document4Id = id,
+                    document4Name = x.Name,
+                    className = x.TeachingPlanner.Class.Name,
+                    subjectName = x.TeachingPlanner.Subject.Name
+                }).FirstOrDefaultAsync();
+
+            return doc;
+
+        }
+
         public async Task<Document4> GetDocument4ById(int id)
         {
             return await _context.Document4s.FindAsync(id);
