@@ -53,6 +53,11 @@ namespace Project_MLD.Service.Repository
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Document5>> GetDocument5sbyUserId(int userId)
+        {
+            return await _context.Document5s.Where(x => x.UserId == userId).ToListAsync();
+        }
+
         public async Task<IEnumerable<Document5>> GetDoucment5ByDoc4(int id)
         {
             return await _context.Document5s

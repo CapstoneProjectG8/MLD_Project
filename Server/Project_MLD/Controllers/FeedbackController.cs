@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Project_MLD.DTO;
 using Project_MLD.Models;
 using Project_MLD.Service.Interface;
 using Project_MLD.Service.Repository;
@@ -12,10 +14,12 @@ namespace Project_MLD.Controllers
     public class FeedbackController : ControllerBase
     {
         private readonly IFeedbackRepository _repository;
+        private readonly IMapper _mappper;
 
-        public FeedbackController(IFeedbackRepository repository)
+        public FeedbackController(IFeedbackRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mappper = mapper;
         }
 
         [HttpGet]
@@ -31,10 +35,12 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Feedback>> AddFeedback(Feedback st)
+        public async Task<ActionResult<Feedback>> AddFeedback(FeedbackDTO st)
         {
-            await _repository.AddFeedback(st);
-            return CreatedAtAction(nameof(GetFeedbackById), new { id = st.Id }, st);
+            var fb = _mappper.Map<Feedback>(st);
+            var addFB = await _repository.AddFeedback(fb);
+            var mapFB = _mappper.Map<FeedbackDTO>(addFB);
+            return Ok(mapFB);
         }
 
     }

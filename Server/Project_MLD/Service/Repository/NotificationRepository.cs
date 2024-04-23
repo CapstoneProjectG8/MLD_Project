@@ -27,5 +27,12 @@ namespace Project_MLD.Service.Repository
         {
             return await _context.Notifications.FirstOrDefaultAsync(x => x.Id == id);
         }
+
+        public async Task<IEnumerable<Notification>> GetNotificationByReceiveIdDESC(int receiverId)
+        {
+            return await _context.Notifications
+                .Where(x => x.ReceiveBy == receiverId)
+                .OrderByDescending(x => x.Id).ToListAsync();
+        }
     }
 }
