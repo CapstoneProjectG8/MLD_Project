@@ -67,5 +67,7 @@ namespace Project_MLD.Controllers
                 return StatusCode(500, $"An error occurred while delete Document1 CurriculumDistribution: {ex.Message}");
             }
         }
+
+        
     }
 }

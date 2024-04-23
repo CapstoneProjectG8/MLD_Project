@@ -39,10 +39,11 @@ namespace Project_MLD.Service.Repository
                             Name = item.SubjectRoom.Name
                         };
                         _context.SubjectRooms.Add(subjectRoom);
+                        _context.SaveChanges();
                         //throw new Exception("Subject Room Is Not Exist");
                     }
                     var existingItem = await _context.Document1SubjectRooms
-                        .FindAsync(item.Document1Id, subjectRoom.Id);
+                        .FindAsync(subjectRoom.Id, item.Document1Id);
                     if (existingItem == null)
                     {
                         var newItem = new Document1SubjectRoom
@@ -88,6 +89,16 @@ namespace Project_MLD.Service.Repository
                 }
             }
 
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteDocument1SubjectRoomByDoc1Id(int id)
+        {
+            var items = await _context.Document1SubjectRooms.Where(x => x.Document1Id == id).ToListAsync();
+            if(items != null)
+            {
+                _context.RemoveRange(items);
+            }
             await _context.SaveChangesAsync();
         }
     }

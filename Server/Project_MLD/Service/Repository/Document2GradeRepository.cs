@@ -14,6 +14,13 @@ namespace Project_MLD.Service.Repository
             _context = context;
         }
 
+        public async Task<Document2Grade> AddDocument2Grade(Document2Grade document2Grade)
+        {
+            _context.Document2Grades.Add(document2Grade);
+            await _context.SaveChangesAsync();
+            return document2Grade;
+        }
+
         public async Task DeleteDocument2Grade(List<Document2Grade> list)
         {
             if (list == null || !list.Any())
@@ -32,6 +39,17 @@ namespace Project_MLD.Service.Repository
                 }
             }
 
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteDocument2GradeByDoc2Id(int id)
+        {
+            var items = await _context.Document2Grades
+                .Where(x => x.Document2Id == id).ToListAsync();
+            if(items != null)
+            {
+                _context.RemoveRange(items);
+            }
             await _context.SaveChangesAsync();
         }
 

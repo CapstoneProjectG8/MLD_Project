@@ -104,7 +104,9 @@ public partial class MldDatabaseContext : DbContext
             entity.Property(e => e.CreatedBy).HasColumnName("created_by");
             entity.Property(e => e.CreatedDate).HasColumnName("created_date");
             entity.Property(e => e.LoginAttempt).HasColumnName("login_attempt");
-            entity.Property(e => e.LoginLast).HasColumnName("login_last");
+            entity.Property(e => e.LoginLast)
+                .HasColumnType("datetime")
+                .HasColumnName("login_last");
             entity.Property(e => e.Password).HasColumnName("password");
             entity.Property(e => e.RoleId).HasColumnName("role_id");
             entity.Property(e => e.Username).HasColumnName("username");
@@ -231,7 +233,7 @@ public partial class MldDatabaseContext : DbContext
 
         modelBuilder.Entity<Document1SubjectRoom>(entity =>
         {
-            entity.HasKey(e => new { e.SubjectRoomId, e.Document1Id });
+            entity.HasKey(e => new { e.SubjectRoomId, e.Document1Id }).HasName("PK_Document1_Subject Room_1");
 
             entity.ToTable("Document1_Subject Room");
 
@@ -323,7 +325,6 @@ public partial class MldDatabaseContext : DbContext
 
             entity.HasOne(d => d.HostByNavigation).WithMany(p => p.Document2Grades)
                 .HasForeignKey(d => d.HostBy)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Document2_Grade_User");
         });
 
@@ -348,7 +349,6 @@ public partial class MldDatabaseContext : DbContext
 
             entity.HasOne(d => d.Document1).WithMany(p => p.Document3s)
                 .HasForeignKey(d => d.Document1Id)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Document 3_Document 1");
 
             entity.HasOne(d => d.User).WithMany(p => p.Document3s)
@@ -536,16 +536,14 @@ public partial class MldDatabaseContext : DbContext
         {
             entity.ToTable("Notification");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Message).HasColumnName("message");
+            entity.Property(e => e.ReceiveBy).HasColumnName("receive_by");
+            entity.Property(e => e.SentBy).HasColumnName("sent_by");
             entity.Property(e => e.TitleName).HasColumnName("title_name");
-            entity.Property(e => e.Type).HasColumnName("type");
-            entity.Property(e => e.UserId).HasColumnName("user_id");
 
-            entity.HasOne(d => d.User).WithMany(p => p.Notifications)
-                .HasForeignKey(d => d.UserId)
+            entity.HasOne(d => d.SentByNavigation).WithMany(p => p.Notifications)
+                .HasForeignKey(d => d.SentBy)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Notification_User");
         });
@@ -692,7 +690,6 @@ public partial class MldDatabaseContext : DbContext
 
             entity.ToTable("Teaching Planner");
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.ClassId).HasColumnName("class_id");
             entity.Property(e => e.SubjectId).HasColumnName("subject_id");
             entity.Property(e => e.UserId).HasColumnName("user_id");
@@ -736,6 +733,7 @@ public partial class MldDatabaseContext : DbContext
             entity.Property(e => e.Age).HasColumnName("age");
             entity.Property(e => e.CreatedBy).HasColumnName("created_by");
             entity.Property(e => e.CreatedDate).HasColumnName("created_date");
+            entity.Property(e => e.DateOfBirth).HasColumnName("date_of_birth");
             entity.Property(e => e.Email).HasColumnName("email");
             entity.Property(e => e.FirstName).HasColumnName("first_name");
             entity.Property(e => e.FullName).HasColumnName("full_name");
@@ -745,7 +743,6 @@ public partial class MldDatabaseContext : DbContext
             entity.Property(e => e.ModifiedBy).HasColumnName("modified_by");
             entity.Property(e => e.ModifiedDate).HasColumnName("modified_date");
             entity.Property(e => e.Photo).HasColumnName("photo");
-            entity.Property(e => e.PlaceOfBirth).HasColumnName("place_of_birth");
             entity.Property(e => e.ProfessionalStandardsId).HasColumnName("professional_standards_id");
             entity.Property(e => e.SpecializedDepartmentId).HasColumnName("specialized_department_id");
 

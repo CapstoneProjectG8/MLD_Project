@@ -13,6 +13,7 @@ namespace Project_MLD.Service.Repository
         {
             _context = context;
         }
+
         public async Task<bool> DeleteTeachingPlanner(int id)
         {
             var existTeachingPlanner = await _context.TeachingPlanners.FirstOrDefaultAsync(x => x.Id == id);
@@ -51,32 +52,26 @@ namespace Project_MLD.Service.Repository
             return await _context.TeachingPlanners.Where(x => x.UserId == userId).ToListAsync();
         }
 
-        public async Task UpdateTeachingPlannerByUserId(List<TeachingPlanner> list)
+        public async Task<TeachingPlanner> AddTeachingPlanner(int userId, int subjectId, int classId)
         {
             try
             {
-                foreach (var item in list)
+                var newItem = new TeachingPlanner()
                 {
-                    var checkExistTeachingPlanner = await _context.TeachingPlanners
-                        .FindAsync(item.SubjectId, item.UserId, item.ClassId);
-                    if (checkExistTeachingPlanner == null)
-                    {
-                        var newItem = new TeachingPlanner()
-                        {
-                            UserId = item.UserId,
-                            ClassId = item.ClassId,
-                            SubjectId = item.SubjectId,
-                        };
-                        _context.TeachingPlanners.Add(newItem);
-                    }
-                }
+                    UserId = userId,
+                    SubjectId = subjectId,
+                    ClassId = classId
+                };
+
+                _context.TeachingPlanners.Add(newItem);
                 await _context.SaveChangesAsync();
 
-            }
-            catch (Exception ex)
+                return newItem;
+            }catch (Exception ex)
             {
-                throw new Exception("An error occurred while updating Teaching Planner.", ex);
+                throw new Exception("An error occurred while add Teaching Planner.", ex);
             }
+           
         }
     }
 }

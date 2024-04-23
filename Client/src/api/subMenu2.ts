@@ -10,6 +10,14 @@ export const apiGetSubMenu2 = async () => {
         return null;
 }
 
+export const apiGetDocument2ByUserSpecialiedDepartment = async (query: any) => {
+    const result = await axios.get(`${base_url}Document2/GetDocument2ByUserSpecialiedDepartment?${query}`);
+    if (result)
+        return result;
+    else
+        return null;
+}
+
 export const apiGetSubMenu2ById = async (id: string) => {
     const result = await axios.get(`${base_url}Document2/ById/${id}`);
     if (result)
@@ -26,8 +34,16 @@ export const apiPostSubMenu2 = async (data: any) => {
         return null;
 }
 
-export const apiPostSubMenu2Grade = async (data: any, docId: any) => {
-    const result = await axios.put(`${base_url}Document2Grade/${docId}`, data);
+export const apiPostSubMenu2Grade = async (data: any) => {
+    const result = await axios.put(`${base_url}Document2Grade`, data);
+    if (result)
+        return result;
+    else
+        return null;
+}
+
+export const apiGetDocument2GradeById = async (data: any) => {
+    const result = await axios.get(`${base_url}Document2Grade/GetDocument2GradeById/${data}`);
     if (result)
         return result;
     else
@@ -41,3 +57,21 @@ export const apiDeleteSubMenu2 = async (docId: any) => {
     else
         return null;
 }
+
+export const apiUpdateSubMenu2 = async (data: any, docId: any) => {
+    const result = await axios.put(`${base_url}Document2/${docId}`, data);
+    if (result)
+        return result;
+    else
+        return null;
+}
+
+export const apiDeleteDocument2GradeByDocument2Id = async (docId: any) => {
+    const result = await axios.delete(`${base_url}Document2Grade/DeleteDocument2GradeByDocument2Id?id=${docId}`);
+    if (result)
+        return result;
+    else
+        return null;
+}
+
+

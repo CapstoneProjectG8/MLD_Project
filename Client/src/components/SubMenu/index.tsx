@@ -2,19 +2,21 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Add } from '@mui/icons-material';
 import './style.scss'
-import { apiGetSubMenu1 } from '../../api/subMenu1';
+import { apiGetDocument1ByUserSpecialiedDepartment, apiGetSubMenu1 } from '../../api/subMenu1';
 import { SubMenuData } from '../../models/subMenu';
-import { apiGetSubMenu4 } from '../../api/subMenu4';
-import { apiGetSubMenu2 } from '../../api/subMenu2';
-import { apiGetSubMenu3 } from '../../api/subMenu3';
-import { apiGetSubMenu5 } from '../../api/subMenu5';
+import { apiGetDocument4ByUserSpecialiedDepartment, apiGetSubMenu4 } from '../../api/subMenu4';
+import { apiGetDocument2ByUserSpecialiedDepartment, apiGetSubMenu2 } from '../../api/subMenu2';
+import { apiGetDocument3ByUserSpecialiedDepartment, apiGetSubMenu3 } from '../../api/subMenu3';
+import { apiGetDocument5ByUserSpecialiedDepartment, apiGetSubMenu5 } from '../../api/subMenu5';
+import { apiGetSpecializedDepartment } from '../../api/specializedDepartment';
 
 const SubMenu = () => {
     const location = useLocation();
     const navigate = useNavigate()
     const [subMenu1Data, setSubMenu1Data] = useState<SubMenuData[]>([]);
+    const [specializedDepartmentId, setSpecializedDepartmentID] = useState<any>([]);
+    const [specializedDepartment, setSpecializedDepartment] = useState<any>([]);
     const [subMenuName, setSubMenuName] = useState('');
-    const [gradeData, setGradeData] = useState<{ gradeName: any; items: SubMenuData[] }[]>([]);
     const indexSubMenu = location.pathname.split('/')[2];
     const grades = useMemo(() => ["6", "7", "8", "9"], []);
     const handleAddSubMenu = () => {
@@ -37,28 +39,28 @@ const SubMenu = () => {
     useEffect(() => {
         const fetchList = async () => {
             if (indexSubMenu === '1') {
-                const res = await apiGetSubMenu1();
+                const res = await apiGetDocument1ByUserSpecialiedDepartment(specializedDepartmentId);
                 if (res)
                     setSubMenu1Data(res.data)
                 else
                     setSubMenu1Data([])
             }
             else if (indexSubMenu === '2') {
-                const res = await apiGetSubMenu2();
+                const res = await apiGetDocument2ByUserSpecialiedDepartment(specializedDepartmentId);
                 if (res)
                     setSubMenu1Data(res.data)
                 else
                     setSubMenu1Data([])
             }
             else if (indexSubMenu === '3') {
-                const res = await apiGetSubMenu3();
+                const res = await apiGetDocument3ByUserSpecialiedDepartment(specializedDepartmentId);
                 if (res)
                     setSubMenu1Data(res.data)
                 else
                     setSubMenu1Data([])
             }
             else if (indexSubMenu === '4') {
-                const res = await apiGetSubMenu4();
+                const res = await apiGetDocument4ByUserSpecialiedDepartment(specializedDepartmentId);
                 if (res)
                     setSubMenu1Data(res.data)
                 else
@@ -73,18 +75,20 @@ const SubMenu = () => {
             }
         }
         fetchList();
-    }, [indexSubMenu])
+    }, [indexSubMenu, specializedDepartmentId])
 
     useEffect(() => {
-        if (subMenu1Data) {
-            const result = grades.map((grade: any) => {
-                const filteredItems = subMenu1Data.filter((item) => item.gradeName === grade);
-                return { gradeName: grade, items: filteredItems };
-            });
-            setGradeData(result);
+        const fetchSpecializedDepartment = async () => {
+            const res = await apiGetSpecializedDepartment();
+            if (res && res.data) {
+                setSpecializedDepartment(res.data)
+                const idArray = res.data.map((item: any) => item.id);
+                const queryString = idArray.map((id: any) => `listId=${id}`).join('&');
+                setSpecializedDepartmentID(queryString)
+            }
         }
-    }, [grades, subMenu1Data]);
-
+        fetchSpecializedDepartment()
+    }, [])
 
     const displayStyle = indexSubMenu === '3' ? 'none' : 'initial';
 
@@ -107,14 +111,14 @@ const SubMenu = () => {
                             </div>
                         </div>
                         {
-                            gradeData?.map((grade, index) => (
+                            subMenu1Data?.map((doc, index) => (
                                 <div key={index}>
-                                    <div className="grade-name" style={{ fontSize: "24px" }}>Lớp {grade?.gradeName}</div>
+                                    <div className="grade-name" style={{ fontSize: "24px" }}>Tổ {specializedDepartment[index]?.name}</div>
                                     <div className="home-panel1-content-sub-menu-item-content-grid"
                                         style={{ borderBottom: index === grades.length - 1 ? 'none' : '1px solid black' }}
                                     >
                                         {
-                                            grade?.items?.map((item, index) => (
+                                            doc?.documents?.map((item: any, index: number) => (
                                                 <div key={index} className='sub-menu-content-detail' onClick={() => navigate(`/sub-menu-${indexSubMenu}/detail-view/${item?.id}`)}>
                                                 </div>
                                             ))

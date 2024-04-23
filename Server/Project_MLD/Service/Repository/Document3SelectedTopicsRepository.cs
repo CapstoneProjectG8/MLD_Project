@@ -35,7 +35,15 @@ namespace Project_MLD.Service.Repository
             await _context.SaveChangesAsync();
         }
 
-        
+        public async Task DeleteDocument3SelectedTopicsbyDoc3Id(int id)
+        {
+            var items = await _context.Document3SelectedTopics.Where(x => x.Document3Id == id).ToListAsync();
+            if(items != null)
+            {
+                _context.RemoveRange(items);
+            }
+            await _context.SaveChangesAsync();
+        }
 
         public async Task<IEnumerable<Document3SelectedTopic>> GetDocument3SelectedTopicsByDocument3Id(int id)
         {
@@ -57,26 +65,26 @@ namespace Project_MLD.Service.Repository
                         .FindAsync(item.SelectedTopicsId);
                     if (topics == null)
                     {
-                        topics = new SelectedTopic
-                        {
-                            Name = item.SelectedTopics.Name
-                        };
-                        _context.SelectedTopics.Add(topics);
-                        _context.SaveChanges();
-                        //throw new Exception("Selected Topics Id not Exist");
+                        //topics = new SelectedTopic
+                        //{
+                        //    Name = item.SelectedTopics.Name
+                        //};
+                        //_context.SelectedTopics.Add(topics);
+                        //_context.SaveChanges();
+                        throw new Exception("Selected Topics Id not Exist");
                     }
 
                     var equipment = await _context.TeachingEquipments
                          .FindAsync(item.EquipmentId);
                     if (equipment == null)
                     {
-                        equipment = new TeachingEquipment
-                        {
-                            Name = item.Equipment.Name
-                        };
-                        _context.TeachingEquipments.Add(equipment);
-                        _context.SaveChanges();
-                        //throw new Exception("Teaching Equipments Id not Exist");
+                        //equipment = new TeachingEquipment
+                        //{
+                        //    Name = item.Equipment.Name
+                        //};
+                        //_context.TeachingEquipments.Add(equipment);
+                        //_context.SaveChanges();
+                        throw new Exception("Teaching Equipments Id not Exist");
                     }
 
                     var existingItem = await _context.Document3SelectedTopics

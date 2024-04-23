@@ -7,12 +7,21 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { apiGetSelectedTopic } from '../../api/selectedTopic';
 import { SelectedTopic } from '../../models/SelectedTopic';
 import { User } from '../../models/User';
-import { apiGetAllGetUser } from '../../api/user';
+import { apiGetAllGetUser, apiGetUser } from '../../api/user';
 import { Grade } from '../../models/grade';
 import { apiGetGrade } from '../../api/grade';
 import { useAppSelector } from '../../hook/useTypedSelector';
-import { apiDeleteSubMenu2, apiPostSubMenu2, apiPostSubMenu2Grade } from '../../api/subMenu2';
+import { apiDeleteDocument2GradeByDocument2Id, apiDeleteSubMenu2, apiGetDocument2GradeById, apiGetSubMenu2ById, apiPostSubMenu2, apiPostSubMenu2Grade, apiUpdateSubMenu2 } from '../../api/subMenu2';
 import { formatDate } from '../../utils/date';
+import { Department } from '../../models/department';
+import { apiGetSpecializedDepartmentById } from '../../api/specializedDepartment';
+import { FormCategory } from '../../models/formCategory';
+import { Document1 } from '../../models/document1';
+import { options } from '../UploadPhuLuc4';
+import generatePDF from 'react-to-pdf';
+import axios from 'axios';
+import { TotalClass } from '../../models/totalClass';
+import { apiGetTotalClassByGradeId } from '../../api/subMenu1';
 
 interface Row {
     gradeId: number | null;
@@ -43,8 +52,16 @@ const SubMenu2Detail = () => {
     const [openReport, setOpenReport] = useState(false);
     const [openRemove, setOpenRemove] = useState(false);
     const [users, setUsers] = useState<User[]>([]);
+    const [specializedDepartment, setSpecializedDepartment] = useState<Department>();
+    const [formCategory, setFormCategory] = useState<FormCategory[]>([]);
     const [grades, setGrades] = useState<Grade[]>([]);
     const [documentId, setDocumentId] = useState(null);
+    const [userInfoLogin, setUserInfoLogin] = useState<User>();
+    const [userInfoDocument, setUserInfoDocument] = useState<User[]>([]);
+    const [document2Info, setDocument2Info] = useState<Document1>();
+    const [totalClass, setTotalClass] = useState<TotalClass>();
+    const [multiTotalClass, setMultiTotalClass] = useState<TotalClass[]>([]);
+    const [displayAddRow, setDisplayAddRow] = useState(false);
 
     const [truong, setTruong] = useState('');
     const [to, setTo] = useState('');
@@ -62,6 +79,112 @@ const SubMenu2Detail = () => {
     const [dayOfMonth, setDayOfMonth] = useState('');
     const [month, setMonth] = useState('');
     const [year, setYear] = useState('');
+
+    const getTargetElement = () => document.getElementById("main-content");
+
+    const downloadPdf = async () => {
+        try {
+            const pdf = await generatePDF(getTargetElement, options);
+            const formData = new FormData();
+            formData.append('files', pdf.output("blob"), 'document.pdf');
+
+            const response = await axios.post('https://localhost:7241/api/S3FileUpload/upload?prefix=doc2%2F', formData);
+            if (response?.status === 200) {
+                const res = await apiUpdateSubMenu2({ id: documentId, linkFile: response?.data, userId: user?.userId }, documentId)
+                if (res && documentId) {
+                    setDisplayAddRow(!displayAddRow)
+                    alert('Thành công! Hãy chờ đợi trong giây lát để chuyển trang')
+                    navigate(`/sub-menu-2/detail-view/${documentId}`)
+                }
+            }
+
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    useEffect(() => {
+        const fetchUserInfoLogin = async () => {
+            if (user) {
+                const res = await apiGetUser(user?.userId)
+                if (res && res.data) {
+                    const userData: any = res.data;
+                    setUserInfoLogin(userData);
+                }
+            }
+        }
+        fetchUserInfoLogin()
+    }, [user])
+
+    useEffect(() => {
+        if (location.pathname.includes('edit')) {
+            const fetchDoc2GradeInfo = async () => {
+                const res = await apiGetDocument2GradeById(location.pathname.split('/')[3]);
+                if (res && res.data) {
+                    const gradeMap = new Map();
+
+                    res.data.forEach((item: any, index: any) => {
+                        if (gradeMap.has(item.gradeId)) {
+                            const existingArray = gradeMap.get(item.gradeId);
+                            existingArray.push(item);
+                            gradeMap.set(item.gradeId, existingArray);
+                        } else {
+                            gradeMap.set(item.gradeId, [item]);
+                        }
+                        fecthTotalClass(item.gradeId, index)
+                    });
+
+                    const formatRes = Array.from(gradeMap.values());
+                    setMultiRows(formatRes)
+                }
+            };
+            fetchDoc2GradeInfo();
+        }
+    }, [location.pathname]);
+
+
+    const fecthTotalClass = async (gradeId: any, index: any) => {
+        const res = await apiGetTotalClassByGradeId(gradeId)
+        if (res && res.data) {
+            const totalClassData: TotalClass = res.data;
+            setTotalClass(totalClassData);
+            const updatedMultiTotalClass = [...multiTotalClass];
+            updatedMultiTotalClass[index] = res.data
+            setMultiTotalClass(updatedMultiTotalClass)
+        }
+    }
+
+    useEffect(() => {
+        const fetchSpecializedDepartmentById = async () => {
+            if (!location.pathname.split('/')[3]) {
+                if (userInfoLogin) {
+                    const res = await apiGetSpecializedDepartmentById(userInfoLogin?.specializedDepartmentId);
+                    if (res && res.data) {
+                        const departmentData: any = res.data;
+                        setSpecializedDepartment(departmentData);
+                    }
+                }
+            }
+            else if (location.pathname.split('/')[3]) {
+                const fecthDoc2 = await apiGetSubMenu2ById(location.pathname.split('/')[3]);
+                if (fecthDoc2 && fecthDoc2.data) {
+                    const doc2Data: any = fecthDoc2.data;
+                    setDocument2Info(doc2Data);
+                    const fecthUserResult = await apiGetUser(doc2Data?.userId)
+                    if (fecthUserResult && fecthUserResult.data) {
+                        const userData: any = fecthUserResult.data;
+                        setUserInfoDocument(userData);
+                        const res = await apiGetSpecializedDepartmentById(userData?.specializedDepartmentId);
+                        if (res && res.data) {
+                            const departmentData: any = res.data;
+                            setSpecializedDepartment(departmentData);
+                        }
+                    }
+                }
+            }
+        }
+        fetchSpecializedDepartmentById()
+    }, [location.pathname, userInfoLogin])
 
     useEffect(() => {
         const fetchAllUser = async () => {
@@ -85,32 +208,41 @@ const SubMenu2Detail = () => {
     }, [])
 
     const handleClickOpen = async () => {
-        const today = new Date();
-        const createdDate = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
-        if (user) {
-            setOpen(true);
-            try {
-                const post = await apiPostSubMenu2({
-                    name: "KẾ HOẠCH TỔ CHỨC CÁC HOẠT ĐỘNG GIÁO DỤC CỦA TỔ CHUYÊN MÔN",
-                    userId: user.userId,
-                    userName: user.username,
-                    createdDate: createdDate,
-                    status: true,
-                    approveByName: "",
-                    isApprove: 1
-                })
-                if (post) {
-                    setDocumentId(post?.data?.id)
+        setDisplayAddRow(!displayAddRow)
+        if (location.pathname.includes('create')) {
+            const today = new Date();
+            const createdDate = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
+            if (user) {
+                setOpen(true);
+                try {
+                    const post = await apiPostSubMenu2({
+                        name: "KẾ HOẠCH TỔ CHỨC CÁC HOẠT ĐỘNG GIÁO DỤC CỦA TỔ CHUYÊN MÔN",
+                        userId: user.userId,
+                        userName: user.username,
+                        createdDate: createdDate,
+                        status: true,
+                        approveByName: "",
+                        isApprove: 1
+                    })
+                    if (post) {
+                        setDocumentId(post?.data?.id)
+                    }
+                } catch (error) {
+                    alert("Something went wrong")
                 }
-            } catch (error) {
-                alert("Something went wrong")
+            }
+            else
+                alert("Something went wrong!")
+        }
+        else {
+            if (user) {
+                setOpen(true);
             }
         }
-        else
-            alert("Something went wrong!")
     };
 
     const handleClickOpen1 = async () => {
+        setDisplayAddRow(!displayAddRow)
         const today = new Date();
         const createdDate = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getDate().toString().padStart(2, '0')}`;
         if (user) {
@@ -137,11 +269,14 @@ const SubMenu2Detail = () => {
     };
 
     const handleClose = async () => {
-        setOpen(false);
-        try {
-            await apiDeleteSubMenu2(documentId);
-        } catch (error) {
-            console.error(error);
+        if (location.pathname.includes('create')) {
+            setDisplayAddRow(!displayAddRow)
+            setOpen(false);
+            try {
+                await apiDeleteSubMenu2(documentId);
+            } catch (error) {
+                console.error(error);
+            }
         }
     };
 
@@ -182,14 +317,12 @@ const SubMenu2Detail = () => {
     };
 
     const handleClickSave = () => {
-        navigate(`/sub-menu-2/detail-edit/${location.pathname.split('/')[1].split('-')[2]}`)
+        navigate(`/sub-menu-2/detail-edit/${location.pathname.split('/')[3]}`)
     };
 
     const handleClickAdd = () => {
         navigate(`/sub-menu-2/detail-create`)
     };
-
-    const docs = [{ uri: require("./phuluc2.pdf") }]
 
     const handleAddRow = (index: number) => {
         const newRow = {
@@ -228,6 +361,8 @@ const SubMenu2Detail = () => {
     }
 
     const handleAddDoc2 = async () => {
+        if (location.pathname.includes('edit'))
+            await apiDeleteDocument2GradeByDocument2Id(location.pathname.split('/')[3])
         const formatMultiRow = multiRows?.map((rows, index) => {
             rows?.forEach(row => {
                 row.gradeId = gradeIds[index]?.gradeId ?? null;
@@ -244,9 +379,10 @@ const SubMenu2Detail = () => {
 
         if (rowsWithDocumentId) {
             try {
-                const res = await apiPostSubMenu2Grade(rowsWithDocumentId, documentId);
+                const res = await apiPostSubMenu2Grade(rowsWithDocumentId);
                 if (res) {
-                    alert("Tạo thành công");
+                    alert("Thành công! Xin hãy đợi trong giây lát");
+                    downloadPdf();
                 }
             } catch (error) {
                 alert("Đã xảy ra lỗi");
@@ -255,12 +391,14 @@ const SubMenu2Detail = () => {
         setOpen(false);
     };
 
+    console.log("multiRows: ", multiRows)
+
     return (
         <div className='sub-menu-container'>
             {
                 location.pathname?.includes("edit") || location.pathname?.includes("create") ?
                     <div>
-                        <div className='sub-menu-content'>
+                        <div className='sub-menu-content' id='main-content'>
                             <div className="sub-menu-content-header">
                                 <strong className='phu-luc'>Phụ lục II</strong>
                                 <div className="sub-menu-content-header-title">
@@ -274,7 +412,7 @@ const SubMenu2Detail = () => {
                                 <div className="sub-menu-content-header-infomation">
                                     <div className='sub-menu-content-header-infomation-detail' >
                                         <div style={{ display: "flex" }}> <div><strong>TRƯỜNG: </strong><input type="text" placeholder='...........' onChange={e => setTruong(e.target.value)} /></div></div>
-                                        <div style={{ display: "flex" }}> <div><strong>TỔ: </strong><input type="text" placeholder='...........' onChange={e => setTo(e.target.value)} /></div></div>
+                                        <div style={{ display: "flex" }}> <div><strong>TỔ: </strong>{specializedDepartment?.name}</div></div>
                                     </div>
                                     <div className='sub-menu-content-header-infomation-slogan'>
                                         <div> <strong>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</strong></div>
@@ -296,7 +434,9 @@ const SubMenu2Detail = () => {
                                         <div className="sub-menu-content-main-feature">
                                             <div className="sub-menu-content-main-feature-item" style={{ display: "flex", alignItems: "center", columnGap: "6px" }}>
                                                 <div><strong>{indexGrade + 1}. Khối lớp: </strong>
-                                                    <select id="grade" style={{ width: "40px", height: "20px", marginLeft: "4px" }} defaultValue={''}
+                                                    <select id="grade" style={{ width: "40px", height: "20px", marginLeft: "4px" }}
+                                                        value={gradeIds[indexGrade]?.gradeId ?? ''}
+                                                        defaultValue={subRows[0]?.gradeId ?? ''}
                                                         onChange={(e) => {
                                                             const newValue = parseInt(e.target.value);
                                                             const updatedGradeIds = [...gradeIds];
@@ -304,7 +444,7 @@ const SubMenu2Detail = () => {
                                                                 updatedGradeIds[indexGrade].gradeId = newValue;
                                                                 setGradeIds(updatedGradeIds);
                                                             }
-                                                            console.log("gradeIds: ", gradeIds)
+                                                            fecthTotalClass(parseInt(e.target.value), indexGrade)
                                                         }}>
                                                         <option value="" disabled>Chọn khối lớp</option>
                                                         {
@@ -314,7 +454,9 @@ const SubMenu2Detail = () => {
                                                         }
                                                     </select>
                                                 </div>
-                                                <div><strong>Số học sinh: </strong><input type="number" placeholder='..............' style={{ width: "50px" }} onChange={e => setSoHocSinh1(e.target.value)} /></div>
+                                                <div><strong>Số học sinh: </strong>
+                                                    {multiTotalClass[indexGrade]?.totalStudent}
+                                                </div>
                                             </div>
                                             <div className="sub-menu-content-main-feature-table">
                                                 <TableContainer component={Paper} className="table-list-sub-menu">
@@ -393,7 +535,8 @@ const SubMenu2Detail = () => {
                                                                         />
                                                                     </TableCell>
                                                                     <TableCell align="center">
-                                                                        <select id="selectedTopic" style={{ width: "150px", height: "40px", marginLeft: "4px" }} defaultValue={''}
+                                                                        <select id="selectedTopic" style={{ width: "150px", height: "40px", marginLeft: "4px" }}
+                                                                            value={row.hostBy ?? ''}
                                                                             onChange={(e) => {
                                                                                 const newValue = parseInt(e.target.value);
                                                                                 const updatedRows = [...multiRows];
@@ -488,21 +631,17 @@ const SubMenu2Detail = () => {
                             <Button onClick={handleClickOpen} >Xác nhận xét duyệt</Button>
                         </div>
                     </div> : <>
-                        <DocViewer documents={docs} pluginRenderers={DocViewerRenderers}
-                            config={{
-                                header: {
-                                    disableHeader: true,
-                                    disableFileName: true,
-                                    retainURLParams: true,
-                                },
-                                pdfVerticalScrollByDefault: true,
-                            }}
+                        <embed
+                            src={document2Info?.linkFile}
+                            width="100%"
+                            height="1000px"
+                            type="application/pdf"
                         />
                         <div>
                             <div className="sub-menu-action">
                                 <div className="verify" style={{ justifyContent: "center" }}>
                                     <div style={{ display: "flex", columnGap: "10px" }}>
-                                        <div className='action-button' onClick={location.pathname.includes('add') ? handleClickAdd : handleClickSave}>
+                                        <div className='action-button' onClick={location.pathname.includes('create') ? handleClickAdd : handleClickSave}>
                                             {
                                                 location.pathname.includes('create') ? "Tạo mới" : "Sửa"
                                             }

@@ -90,5 +90,16 @@ namespace Project_MLD.Service.Repository
             await _context.SaveChangesAsync();
         }
 
+        public async Task DeleteDocument1CurriculumDistributionByDoc1ID(int id)
+        {
+            var existingDoc1CD = await _context.Document1CurriculumDistributions
+                .Where(x => x.Document1Id == id).ToListAsync();
+
+            if(existingDoc1CD != null)
+            {
+                _context.RemoveRange(existingDoc1CD);
+            }
+            await _context.SaveChangesAsync();
+        }
     }
 }

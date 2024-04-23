@@ -23,7 +23,6 @@ public partial class Document2DTO
 
     public string? LinkImage { get; set; }
 
+    public string? UserFullName { get; set; }
     public string? ApproveByName { get; set; }
-
-    public string? UserName { get; set; }
 }

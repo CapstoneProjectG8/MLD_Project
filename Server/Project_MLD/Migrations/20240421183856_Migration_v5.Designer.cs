@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Project_MLD.Models;
 
@@ -11,9 +12,11 @@ using Project_MLD.Models;
 namespace Project_MLD.Migrations
 {
     [DbContext(typeof(MldDatabaseContext))]
-    partial class MldDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20240421183856_Migration_v5")]
+    partial class Migration_v5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -277,8 +280,7 @@ namespace Project_MLD.Migrations
                         .HasColumnType("int")
                         .HasColumnName("quantity");
 
-                    b.HasKey("SubjectRoomId", "Document1Id")
-                        .HasName("PK_Document1_Subject Room_1");
+                    b.HasKey("SubjectRoomId", "Document1Id");
 
                     b.HasIndex("Document1Id");
 
@@ -786,31 +788,28 @@ namespace Project_MLD.Migrations
             modelBuilder.Entity("Project_MLD.Models.Notification", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Message")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("message");
 
-                    b.Property<int?>("ReceiveBy")
-                        .HasColumnType("int")
-                        .HasColumnName("receive_by");
-
-                    b.Property<int>("SentBy")
-                        .HasColumnType("int")
-                        .HasColumnName("sent_by");
-
                     b.Property<string>("TitleName")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("title_name");
 
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("type");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int")
+                        .HasColumnName("user_id");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("SentBy");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Notification", (string)null);
                 });
@@ -1140,10 +1139,6 @@ namespace Project_MLD.Migrations
                         .HasColumnType("date")
                         .HasColumnName("created_date");
 
-                    b.Property<DateOnly?>("DateOfBirth")
-                        .HasColumnType("date")
-                        .HasColumnName("date_of_birth");
-
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("email");
@@ -1179,6 +1174,10 @@ namespace Project_MLD.Migrations
                     b.Property<byte[]>("Photo")
                         .HasColumnType("varbinary(max)")
                         .HasColumnName("photo");
+
+                    b.Property<string>("PlaceOfBirth")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("place_of_birth");
 
                     b.Property<int?>("ProfessionalStandardsId")
                         .HasColumnType("int")
@@ -1498,13 +1497,13 @@ namespace Project_MLD.Migrations
 
             modelBuilder.Entity("Project_MLD.Models.Notification", b =>
                 {
-                    b.HasOne("Project_MLD.Models.User", "SentByNavigation")
+                    b.HasOne("Project_MLD.Models.User", "User")
                         .WithMany("Notifications")
-                        .HasForeignKey("SentBy")
+                        .HasForeignKey("UserId")
                         .IsRequired()
                         .HasConstraintName("FK_Notification_User");
 
-                    b.Navigation("SentByNavigation");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Project_MLD.Models.PeriodicAssessment", b =>

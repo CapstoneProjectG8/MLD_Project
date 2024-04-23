@@ -10,6 +10,14 @@ export const apiGetSubMenu3 = async () => {
         return null;
 }
 
+export const apiGetDocument3ByUserSpecialiedDepartment = async (query: any) => {
+    const result = await axios.get(`${base_url}Document3/GetDocument3ByUserSpecialiedDepartment?${query}`);
+    if (result)
+        return result;
+    else
+        return null;
+}
+
 export const apiGetSubMenu3ById = async (id: string) => {
     const result = await axios.get(`${base_url}Document3/ById/${id}`);
     if (result)
@@ -26,19 +34,61 @@ export const apiPostSubMenu3 = async (data: any) => {
         return null;
 }
 
-export const apiPostSubMenu3CuriculumDistribution = async (data: any, docId: any) => {
-    const result = await axios.put(`${base_url}Document3CuriculumDistribution?documentId=${docId}`, data);
+export const apiDeleteSubMenu3 = async (docId: any) => {
+    const result = await axios.delete(`${base_url}Document3/${docId}`);
     if (result)
         return result;
     else
         return null;
 }
 
-export const apiPostSubMenu3SelectedTopics = async (data: any, docId: any) => {
-    const result = await axios.put(`${base_url}Document3SelectedTopics?documentId=${docId}`, data);
+export const apiUpdateSubMenu3 = async (data: any, id: any) => {
+    const result = await axios.put(`${base_url}Document3/${id}`, data);
     if (result)
         return result;
     else
         return null;
 }
+
+export const apiPostSubMenu3CuriculumDistribution = async (data: any) => {
+    const result = await axios.put(`${base_url}Document3CuriculumDistribution`, data);
+    if (result)
+        return result;
+    else
+        return null;
+}
+
+export const apiPostSubMenu3SelectedTopics = async (data: any) => {
+    const result = await axios.put(`${base_url}Document3SelectedTopics`, data);
+    if (result)
+        return result;
+    else
+        return null;
+}
+
+
+export const apiGetSubMenu3CuriculumDistribution = async (docId: any) => {
+    const result = await axios.get(`${base_url}Document3CuriculumDistribution?id=${docId}`);
+    if (result)
+        return result;
+    else
+        return null;
+}
+
+export const apiGetSubMenu3SelectedTopics = async (docId: any) => {
+    const result = await axios.get(`${base_url}Document3SelectedTopics?id=${docId}`);
+    if (result)
+        return result;
+    else
+        return null;
+}
+
+export const apiDeleteDocument3ForeignTableByDocument3ID = async (docId: any) => {
+    const result = await axios.delete(`${base_url}Document3/DeleteDocument3ForeignTableByDocument3Id?id=${docId}`);
+    if (result)
+        return result;
+    else
+        return null;
+}
+
 

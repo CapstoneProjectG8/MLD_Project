@@ -17,12 +17,31 @@ namespace Project_MLD.Controllers
         private readonly IMapper _mapper;
         private readonly IGradeRepository _gradeRepository;
         private readonly IUserRepository _userRepository;
-        public Document1Controller(IDocument1Repository repository, IMapper mapper, IGradeRepository gradeRepository, IUserRepository userRepository)
+
+        private readonly IDocument1CuriculumDistributionRepository _curiculumDistributionDoc1Repository;
+        private readonly IDocument1PeriodicAssessmentRepository _periodicAssessmentDoc1Repository;
+        private readonly IDocument1SelectedTopicsRepository _selectedTopicsDoc1Repository;
+        private readonly IDocument1SubjectRoomsRepository _subjectRoomsDoc1Repository;
+        private readonly IDocument1TeachingEquipmentRepository _teachingEquipmentDoc1Repository;
+
+
+        public Document1Controller(IDocument1Repository repository, IMapper mapper, IGradeRepository gradeRepository,
+            IUserRepository userRepository,
+            IDocument1CuriculumDistributionRepository curiculumDistributionDoc1Repository,
+            IDocument1PeriodicAssessmentRepository periodicAssessmentDoc1Repository,
+            IDocument1SelectedTopicsRepository selectedTopicsDoc1Repository,
+            IDocument1SubjectRoomsRepository subjectRoomsDoc1Repository,
+            IDocument1TeachingEquipmentRepository teachingEquipmentDoc1Repository)
         {
             _repository = repository;
             _mapper = mapper;
             _gradeRepository = gradeRepository;
             _userRepository = userRepository;
+            _curiculumDistributionDoc1Repository = curiculumDistributionDoc1Repository;
+            _periodicAssessmentDoc1Repository = periodicAssessmentDoc1Repository;
+            _selectedTopicsDoc1Repository = selectedTopicsDoc1Repository;
+            _subjectRoomsDoc1Repository = subjectRoomsDoc1Repository;
+            _teachingEquipmentDoc1Repository = teachingEquipmentDoc1Repository;
         }
 
         [HttpGet]
@@ -34,6 +53,17 @@ namespace Project_MLD.Controllers
                 return NotFound("No Document 1 Available");
             }
             var mappedDocuments = _mapper.Map<List<Document1DTO>>(Document1);
+            foreach (var document in mappedDocuments)
+            {
+                if (document.ApproveBy.HasValue)
+                {
+                    var getUser = await _userRepository.GetUserById(document.ApproveBy.Value);
+                    if (getUser != null)
+                    {
+                        document.ApproveByName = getUser.FullName;
+                    }
+                }
+            }
             return Ok(mappedDocuments);
         }
 
@@ -46,6 +76,14 @@ namespace Project_MLD.Controllers
                 return NotFound("No Document 1 Available");
             }
             var mappedDocuments = _mapper.Map<Document1DTO>(Document1);
+            if (mappedDocuments.IsApprove.HasValue)
+            {
+                var getUser = await _userRepository.GetUserById(mappedDocuments.ApproveBy.Value);
+                if (getUser != null)
+                {
+                    mappedDocuments.ApproveByName = getUser.FullName;
+                }
+            }
             return Ok(mappedDocuments);
         }
 
@@ -218,6 +256,26 @@ namespace Project_MLD.Controllers
 
             return Ok(modifiedDocuments);
 
+        }
+
+        [HttpDelete("DeleteDocument1ForeignTableByDocument1ID")]
+        public async Task<IActionResult> DeleteDocument1ForeignTableByDocument1ID(int id)
+        {
+            try
+            {
+                await _curiculumDistributionDoc1Repository.DeleteDocument1CurriculumDistributionByDoc1ID(id);
+                await _periodicAssessmentDoc1Repository.DeleteDocument1PeriodicAssessmentByDoc1ID(id);
+                await _selectedTopicsDoc1Repository.DeleteDocument1SelectedTopicByDoc1Id(id);
+                await _teachingEquipmentDoc1Repository.DeleteDocument1TeachingEquipmentByDoc1ID(id);
+                await _subjectRoomsDoc1Repository.DeleteDocument1SubjectRoomByDoc1Id(id);
+
+                return Ok("Delete Successfully");
+            }
+            catch (Exception ex)
+            {
+                // Log the exception or handle it accordingly
+                return StatusCode(500, $"An error occurred while delete Document1 Curriculum Distribution: {ex.Message}");
+            }
         }
     }
 }

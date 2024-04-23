@@ -12,13 +12,13 @@ namespace Project_MLD.DTO
         public string? FullName { get; set; }
         public string? Email { get; set; }
 
-        public byte[]? Photo { get; set; }
+        public string? Photo { get; set; }
 
         public string? Address { get; set; }
 
         public bool? Gender { get; set; }
 
-        public string? PlaceOfBirth { get; set; }
+        public DateOnly? DateOfBirth { get; set; }
 
         public int? Age { get; set; }
 

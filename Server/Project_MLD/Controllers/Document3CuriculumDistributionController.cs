@@ -29,7 +29,7 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateDocument3CurriculumDistribution( List<Document3CurriculumDistributionDTO> requests)
+        public async Task<IActionResult> UpdateDocument3CurriculumDistribution(List<Document3CurriculumDistributionDTO> requests)
         {
             try
             {
@@ -47,7 +47,7 @@ namespace Project_MLD.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteDocument3CurriculumDistribution( List<Document3CurriculumDistributionDTO> requests)
+        public async Task<IActionResult> DeleteDocument3CurriculumDistribution(List<Document3CurriculumDistributionDTO> requests)
         {
             try
             {
@@ -63,6 +63,6 @@ namespace Project_MLD.Controllers
             }
         }
 
-
+        
     }
 }

@@ -67,5 +67,21 @@ namespace Project_MLD.Controllers
                 return StatusCode(500, $"An error occurred while delete Document1 Selected Topics: {ex.Message}");
             }
         }
+
+        //[HttpDelete("DeleteDocument1SelectedTopicByDocument1Id")]
+        //public async Task<IActionResult> DeleteDocument1SelectedTopicByDocument1Id(int id)
+        //{
+        //    try
+        //    {
+        //        await _repository.DeleteDocument1SelectedTopicByDoc1Id(id);
+
+        //        return Ok("Delete Successfully");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the exception or handle it accordingly
+        //        return StatusCode(500, $"An error occurred while delete Document1 Selected Topics: {ex.Message}");
+        //    }
+        //}
     }
 }
