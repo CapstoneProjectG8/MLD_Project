@@ -25,7 +25,8 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<IEnumerable<Document5>>> GetAllDocument5s()
         {
             var pl5 = await _repository.GetAllDocument5s();
-            return Ok(pl5);
+            var mappper = _mapper.Map<List<Document5DTO>>(pl5);
+            return Ok(mappper);
         }
 
         [HttpGet("ById/{id}")]
@@ -36,8 +37,8 @@ namespace Project_MLD.Controllers
             {
                 return NotFound();
             }
-
-            return Ok(existDocument5);
+            var mappper = _mapper.Map<Document5DTO>(existDocument5);
+            return Ok(mappper);
         }
 
         [HttpGet("GetDocument5ByDocument4/{id}")]
@@ -48,11 +49,13 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Document5>> AddDocument5(Document5 pl5)
+        public async Task<ActionResult<Document5>> AddDocument5(Document5DTO pl5)
         {
-            var doc = await _repository.AddDocument5(pl5);
-            var mapDocument = _mapper.Map<Document5DTO>(doc);
-            return Ok(mapDocument);
+            pl5.CreatedDate = DateOnly.FromDateTime(DateTime.Now);
+            var doc = _mapper.Map<Document5>(pl5);
+            var mapDoc = await _repository.AddDocument5(doc);
+            var docDTO = _mapper.Map<Document5DTO>(mapDoc);
+            return Ok(docDTO);
         }
 
         [HttpDelete("{id}")]

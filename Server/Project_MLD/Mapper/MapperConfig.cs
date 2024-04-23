@@ -137,12 +137,11 @@ namespace Project_MLD.Mapper
                 .ReverseMap();
 
             CreateMap<Document5, Document5DTO>()
-                .ForMember(x => x.Id, y => y.MapFrom(src => src.Id))
-                .ForMember(x => x.UserId, y => y.MapFrom(src => src.UserId))
-                .ForMember(x => x.UserName, y => y.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
+                .ForMember(x => x.UserFullName, y => y.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
                 .ReverseMap();
             CreateMap<Document5DTO, Document5>()
                 .ForMember(dest => dest.Document4, opt => opt.Ignore())
+                .ForMember(dest => dest.User, opt => opt.Ignore())
                 .ReverseMap();
             CreateMap<Class, ClassDTO>()
                 .ForMember(x => x.GradeId, y => y.MapFrom(src => src.Grade.Id))
