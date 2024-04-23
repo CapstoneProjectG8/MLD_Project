@@ -52,17 +52,10 @@ namespace Project_MLD.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteDocument1SubjectRoom(int documentId, List<Document1SubjectRoomDTO> requests)
+        public async Task<IActionResult> DeleteDocument1SubjectRoom(List<Document1SubjectRoomDTO> requests)
         {
             try
             {
-                foreach (var request in requests)
-                {
-                    if (request.Document1Id != documentId)
-                    {
-                        return BadRequest("Id Not Match");
-                    }
-                }
                 var mapRequests = _mapper.Map<List<Document1SubjectRoom>>(requests);
                 await _repository.DeleteDocument1SubjectRoom(mapRequests);
 
