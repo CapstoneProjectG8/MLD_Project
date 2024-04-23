@@ -136,8 +136,6 @@ namespace Project_MLD.Controllers
         {
             try
             {
-                doc2.Status = true;
-                doc2.CreatedDate = DateOnly.FromDateTime(DateTime.Now);
                 var document = _mapper.Map<Document2>(doc2);
                 var addedDocument = await _repository.AddDocument2(document);
                 if (addedDocument == null)

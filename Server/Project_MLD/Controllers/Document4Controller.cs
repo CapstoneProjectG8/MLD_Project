@@ -96,7 +96,6 @@ namespace Project_MLD.Controllers
             try
             {
                 pl4.Status = true;
-                pl4.CreatedDate = DateOnly.FromDateTime(DateTime.Now);
                 var document = _mapper.Map<Document4>(pl4);
 
                 var doc = await _repository.AddDocument4(document);
