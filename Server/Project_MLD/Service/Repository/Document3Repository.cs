@@ -38,7 +38,16 @@ namespace Project_MLD.Service.Repository
             return await _context.Document3s
                 .Include(x => x.User)
                 .Include(x => x.Document1)
-                .Where(x => x.Status == true)
+                .Where(x => x.Status == true && x.IsApprove != 0)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Document3>> GetAllDocument3sByUserIdAndApproveId(int id, int approveId)
+        {
+            return await _context.Document3s
+                .Include(x => x.User)
+                .Include(x => x.Document1)
+                .Where(x => x.UserId == id && x.IsApprove == approveId)
                 .ToListAsync();
         }
 

@@ -107,5 +107,23 @@ namespace Project_MLD.Service.Repository
             return specializedDepartment;
         }
 
+        public async Task<IEnumerable<User>> GetAllUsersByDepartmentId(int id)
+        {
+            return await _context.Users
+                .Include(x => x.SpecializedDepartment)
+                .Include(x => x.Account)
+                    .ThenInclude(x => x.Role)
+                .Where(y => y.SpecializedDepartmentId == id)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<User>> GetPrinciples()
+        {
+            return await _context.Users
+               .Include(x => x.Account)
+                   .ThenInclude(x => x.Role)
+               .Where(x => x.Account.Role.RoleId == 5)
+               .ToListAsync();
+        }
     }
 }

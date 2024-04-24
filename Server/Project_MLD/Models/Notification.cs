@@ -15,5 +15,9 @@ public partial class Notification
 
     public string? Message { get; set; }
 
+    public int? DocType { get; set; }
+
+    public int? DocId { get; set; }
+
     public virtual User SentByNavigation { get; set; } = null!;
 }

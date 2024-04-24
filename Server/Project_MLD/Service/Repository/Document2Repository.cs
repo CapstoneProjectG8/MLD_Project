@@ -37,7 +37,7 @@ namespace Project_MLD.Service.Repository
         {
             return await _context.Document2s
                 .Include(x => x.User)
-                .Where(x => x.Status == true).ToListAsync();
+                .Where(x => x.Status == true && x.IsApprove != 0).ToListAsync();
         }
 
         public async Task<Document2> GetDocument2ById(int id)
@@ -83,7 +83,7 @@ namespace Project_MLD.Service.Repository
         {
             return await _context.Document2s
                 .Include(x => x.User)
-                .Where(x => x.IsApprove == id ).ToListAsync();
+                .Where(x => x.IsApprove == id).ToListAsync();
         }
 
         public async Task<IEnumerable<object>> GetDocument2ByUserSpecialiedDepartment(List<int> listId)
@@ -118,6 +118,24 @@ namespace Project_MLD.Service.Repository
 
             }
             return listObject;
+        }
+
+        public async Task<IEnumerable<Document2>> GetAllDocument2sByUserIdAndApproveId(int id, int approveId)
+        {
+            return await _context.Document2s
+                .Include(x => x.User)
+                .Where(x => x.UserId == id && x.IsApprove == approveId)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<int?>> GetListHostbyByIdOfUserByDoc2Id(int doc2Id)
+        {
+            var hostIds = await _context.Document2s
+                .Where(x => x.Id == doc2Id)
+                .SelectMany(x => x.Document2Grades.Select(g => g.HostBy)) // Cast to nullable int
+                .ToListAsync();
+
+            return hostIds;
         }
     }
 }
