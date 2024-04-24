@@ -1,4 +1,4 @@
-export interface Document2 {
+export interface Document3 {
     id: number;
     name: string;
     subjectId: number,
