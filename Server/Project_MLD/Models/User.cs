@@ -47,6 +47,8 @@ public partial class User
 
     public virtual ICollection<Document1> Document1s { get; set; } = new List<Document1>();
 
+    public virtual ICollection<Document2Grade> Document2Grades { get; set; } = new List<Document2Grade>();
+
     public virtual ICollection<Document2> Document2s { get; set; } = new List<Document2>();
 
     public virtual ICollection<Document3> Document3s { get; set; } = new List<Document3>();
