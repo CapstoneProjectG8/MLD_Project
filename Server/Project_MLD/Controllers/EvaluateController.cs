@@ -23,7 +23,7 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<IEnumerable<Evaluate>>> GetAllEvaluate()
         {
             var Evaluates = await _repository.GetAllEvaluates();
-            var mapEvaluate = _mapper.Map<EvaluateDTO>(Evaluates);
+            var mapEvaluate = _mapper.Map<List<EvaluateDTO>>(Evaluates);
             return Ok(mapEvaluate);
         }
 
@@ -40,10 +40,17 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Evaluate>> AddEvaluate(EvaluateDTO Evaluate)
+        public async Task<ActionResult<Evaluate>> AddEvaluate(List<EvaluateDTO> evaluate)
         {
-            var u = await _repository.AddEvaluate(_mapper.Map<Evaluate>(Evaluate));
-            return Ok(u);
+            var listEvaluateDTO = new List<EvaluateDTO>();
+            foreach (var item in evaluate)
+            {
+                var doc = _mapper.Map<Evaluate>(item);
+                var addDoc = await _repository.AddEvaluate(doc);
+                var mapAddDoc = _mapper.Map<EvaluateDTO>(addDoc);
+                listEvaluateDTO.Add(mapAddDoc);
+            }
+            return Ok(listEvaluateDTO);
         }
 
         [HttpPut]

@@ -11,8 +11,8 @@ namespace Project_MLD.Service.Interface
         Task<bool> DeleteDocument2(int id);
         Task<IEnumerable<Document2>> GetDocument2ByCondition(string condition);
         Task<IEnumerable<Document2>> GetDocument2ByApprovalID(int id);
+        Task<IEnumerable<Document2>> GetAllDocument2sByUserIdAndApproveId(int id, int approveId);
         Task<IEnumerable<object>> GetDocument2ByUserSpecialiedDepartment(List<int> specialiedDepartmentListId);
-        
-
+        Task<IEnumerable<int?>> GetListHostbyByIdOfUserByDoc2Id(int doc2Id);
     }
 }

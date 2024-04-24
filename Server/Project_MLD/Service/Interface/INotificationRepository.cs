@@ -7,5 +7,7 @@ namespace Project_MLD.Service.Interface
         Task<IEnumerable<Notification>> GetAllNotification();
         Task<Notification> GetNotificationById(int id);
         Task<Notification> AddNotification(Notification acc);
+
+        Task<IEnumerable<Notification>> GetNotificationByReceiveIdDESC(int receiverId);
     }
 }

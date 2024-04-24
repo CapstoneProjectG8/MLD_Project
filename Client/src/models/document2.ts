@@ -1,9 +1,9 @@
-export interface Document1 {
+export interface Document2 {
     id: number;
     name: string;
     subjectId: number,
     gradeId: number,
-    document1Id: number,
+    document2Id: number,
     userId: number,
     note: string,
     status: boolean,

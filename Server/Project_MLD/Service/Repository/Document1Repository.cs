@@ -39,7 +39,17 @@ namespace Project_MLD.Service.Repository
                 .Include(x => x.Grade)
                 .Include(x => x.Subject)
                 .Include(x => x.User)
-                .Where(x => x.Status == true).ToListAsync();
+                .Where(x => x.Status == true && x.IsApprove != 0).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Document1>> GetAllDocument1sByUserIdAndApproveId(int userId, int approveId)
+        {
+            return await _context.Document1s
+                .Include(x => x.Grade)
+                .Include(x => x.Subject)
+                .Include(x => x.User)
+                .Where(x => x.UserId == userId && x.IsApprove == approveId)
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<Document1>> FilterDocument1(int gradeId, int subjectId)

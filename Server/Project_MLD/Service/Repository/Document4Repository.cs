@@ -116,6 +116,14 @@ namespace Project_MLD.Service.Repository
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Document4>> GetDocument4sByUserId(int userId)
+        {
+            return await _context.Document4s
+               .Include(x => x.TeachingPlanner)
+               .Where(x => x.TeachingPlanner.UserId == userId)
+               .ToListAsync();
+        }
+
         public async Task<bool> UpdateDocument4(Document4 pl4)
         {
             var existDocument4s = await GetDocument4ById(pl4.Id);

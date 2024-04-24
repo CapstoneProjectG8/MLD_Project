@@ -20,22 +20,34 @@ namespace Project_MLD.Mapper
                 .ReverseMap();
 
             CreateMap<Notification, NotificationDTO>()
-                .ForMember(x => x.SentByName, y => y.MapFrom(src => src.SentByNavigation.Id))
-                .ForMember(x => x.ReceiveByName, y => y.MapFrom(src => src.SentByNavigation.Id))
+                .ForMember(x => x.SentByName, y => y.MapFrom(src => src.SentByNavigation.FullName))
                 .ReverseMap();
             CreateMap<NotificationDTO, Notification>()
                 .ForMember(x => x.SentByNavigation, y => y.Ignore())
                 .ReverseMap();
+            CreateMap<Feedback, FeedbackDTO>()
+                .ForMember(x => x.UserName, y => y.MapFrom(src => src.User.FullName))
+                .ReverseMap();
+            CreateMap<FeedbackDTO, Feedback>()
+                .ForMember(x => x.User, y => y.Ignore())
+                .ReverseMap();
 
             CreateMap<User, UserDTO>()
-                .ForMember(x => x.Id, y => y.MapFrom(src => src.Id))
-                .ForMember(x => x.AccountId, y => y.MapFrom(src => src.AccountId))
-                .ForMember(x => x.FullName, y => y.MapFrom(src => src.LastName + " " + src.FirstName))
-                .ForMember(x => x.LevelOfTrainningId, y => y.MapFrom(src => src.LevelOfTrainningId))
-                .ForMember(x => x.SpecializedDepartmentId, y => y.MapFrom(src => src.SpecializedDepartmentId))
-                .ForMember(x => x.ProfessionalStandardsId, y => y.MapFrom(src => src.ProfessionalStandardsId))
-                .ForMember(x => x.CreatedDate, y => y.MapFrom(x => DateOnly.FromDateTime(DateTime.Now)))
-                .ForMember(x => x.CreatedBy, y => y.MapFrom(x => "ADMIN"))
+                //.ForMember(x => x.Id, y => y.MapFrom(src => src.Id))
+                //.ForMember(x => x.AccountId, y => y.MapFrom(src => src.AccountId))
+                //.ForMember(x => x.FullName, y => y.MapFrom(src => src.LastName + " " + src.FirstName))
+                //.ForMember(x => x.LevelOfTrainningId, y => y.MapFrom(src => src.LevelOfTrainningId))
+                //.ForMember(x => x.SpecializedDepartmentId, y => y.MapFrom(src => src.SpecializedDepartmentId))
+                //.ForMember(x => x.ProfessionalStandardsId, y => y.MapFrom(src => src.ProfessionalStandardsId))
+                //.ForMember(x => x.CreatedDate, y => y.MapFrom(x => DateOnly.FromDateTime(DateTime.Now)))
+                //.ForMember(x => x.CreatedBy, y => y.MapFrom(x => "ADMIN"))
+                .ReverseMap();
+            CreateMap<UserDTO, User>()
+                .ForMember(x => x.Feedbacks, y => y.Ignore())
+                .ForMember(x => x.Account, y => y.Ignore())
+                .ForMember(x => x.ProfessionalStandards, y => y.Ignore())
+                .ForMember(x => x.LevelOfTrainning, y => y.Ignore())
+                .ForMember(x => x.SpecializedDepartment, y => y.Ignore())
                 .ReverseMap();
 
             CreateMap<Document1, Document1DTO>()
