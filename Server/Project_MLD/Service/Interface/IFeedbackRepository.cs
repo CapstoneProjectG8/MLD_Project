@@ -7,6 +7,7 @@ namespace Project_MLD.Service.Interface
         Task<IEnumerable<Feedback>> GetAllFeedbacks();
         Task<Feedback> GetFeedbackById(int id);
         Task<Feedback> AddFeedback(Feedback cl);
+        Task<bool> UpdateFeedback(Feedback cl);
 
     }
 }
