@@ -170,7 +170,7 @@ namespace Project_MLD.Controllers
             return NoContent();
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<IActionResult> UpdateDocument2(Document2DTO pl2)
         {
             var mapDocument = _mapper.Map<Document2>(pl2);
@@ -187,7 +187,7 @@ namespace Project_MLD.Controllers
             });
         }
 
-        [HttpPut("ApproveDocument2/{id}")]
+        [HttpPut("ApproveDocument2")]
         public async Task<IActionResult> ApproveDocument2(Document2DTO pl2)
         {
             var mapDocument = _mapper.Map<Document2>(pl2);
