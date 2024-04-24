@@ -54,7 +54,9 @@ const Home = () => {
                             <span>
                                 KẾ HOẠCH DẠY HỌC CỦA TỔ CHUYÊN MÔN MÔN HỌC/HOẠT ĐỘNG GIÁO DỤC
                             </span>
-                            
+                            <div className='add-row-button'>
+                                <Add style={{ color: "black" }} className='add-row-icon' onClick={handleAddSubMenu1} />
+                            </div>
                         </div>
                         <div className="home-panel-content-sub-menu-item-content">
                             <Swiper
@@ -73,9 +75,9 @@ const Home = () => {
                                         <SwiperSlide>
                                             <Tooltip title={subMenu1?.name} arrow placement="top" key={index}>
                                                 <div className='sub-menu-content-detail image-container' onClick={() => navigate(`/sub-menu-1/detail-view/${subMenu1?.id}`)}
-                                                    style={{ backgroundImage: subMenu1?.linkImage ? `url('${subMenu1?.linkImage}')` : `url('${imageurl}')` }}>
+                                                    style={{ backgroundImage: subMenu1?.linkImage ? `url('${subMenu1?.linkImage}')` : `url('${imageurl}')` }}                                                >
                                                     <div className='sub-menu-subject-name'>
-                                                        {subMenu1.name}
+                                                        {subMenu1.subjectName} {subMenu1.gradeName}
                                                     </div>
                                                 </div>
                                             </Tooltip>
@@ -92,7 +94,9 @@ const Home = () => {
                             <span>
                                 KẾ HOẠCH TỔ CHỨC CÁC HOẠT ĐỘNG GIÁO DỤC CỦA TỔ CHUYÊN MÔN
                             </span>
-                            
+                            <div className='add-row-button'>
+                                <Add style={{ color: "black" }} className='add-row-icon' onClick={handleAddSubMenu2} />
+                            </div>
                         </div>
                         <div className="home-panel-content-sub-menu-item-content">
                             <Swiper
@@ -113,7 +117,7 @@ const Home = () => {
                                                 <div className='sub-menu-content-detail image-container' onClick={() => navigate(`/sub-menu-2/detail-view/${subMenu2?.id}`)}
                                                     style={{ backgroundImage: subMenu2?.linkImage ? `url('${subMenu2?.linkImage}')` : `url('${imageurl}')` }}                                                >
                                                     <div className='sub-menu-subject-name'>
-                                                        TỔ {subMenu2.name.split('\n')[1].trim()}
+                                                        TỔ {subMenu2.name.split('\n')[1]?.trim()}
                                                     </div>
                                                 </div>
                                             </Tooltip>
@@ -130,7 +134,9 @@ const Home = () => {
                             <span>
                                 KẾ HOẠCH GIÁO DỤC CỦA GIÁO VIÊN
                             </span>
-                            
+                            <div className='add-row-button'>
+                                <Add style={{ color: "black" }} className='add-row-icon' onClick={handleAddSubMenu3} />
+                            </div>
                         </div>
                         <div className="home-panel-content-sub-menu-item-content">
                             <Swiper
@@ -152,7 +158,7 @@ const Home = () => {
                                                     style={{ backgroundImage: subMenu3?.linkImage ? `url('${subMenu3?.linkImage}')` : `url('${imageurl}')` }}
                                                 >
                                                     <div className='sub-menu-subject-name'>
-                                                        {subMenu3.name.split('GIÁO DỤC')[2].trim()}
+                                                        {subMenu3.name.split('GIÁO DỤC')[2]?.trim()}
                                                     </div>
                                                 </div>
                                             </Tooltip>
