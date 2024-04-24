@@ -8,4 +8,18 @@ export const apiGetDoc = async (): Promise<any> => {
     else
         return null;
 }
+export const apiGetDoc2 = async (): Promise<any> => {
+    const result = await axios.get(`${base_url}Document2`);
+    if (result)
+        return result;
+    else
+        return null;
+}
+export const apiGetDoc3 = async (): Promise<any> => {
+    const result = await axios.get(`${base_url}Document3`);
+    if (result)
+        return result;
+    else
+        return null;
+}
 
