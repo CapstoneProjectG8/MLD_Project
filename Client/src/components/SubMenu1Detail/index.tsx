@@ -31,6 +31,7 @@ import { TotalClass } from '../../models/totalClass';
 import { TeacherInfo } from '../../models/teacherInfo';
 import { options } from '../UploadPhuLuc4';
 import axios from 'axios';
+import { apiPostReport } from '../../api/report';
 
 interface Row1 {
     teachingEquipmentId: number | null;
@@ -122,8 +123,9 @@ const SubMenu1Detail = () => {
     const [chuaDat, setChuaDat] = useState('');
     const [documentId, setDocumentId] = useState<number | null>(null);
     const [document1Info, setDocument1Info] = useState<Document1>();
-
+    const [descriptionRp, setDescriptionRp] = useState('');
     const getTargetElement = () => document.getElementById("main-content");
+
 
     const downloadPdf = async () => {
         try {
@@ -158,6 +160,7 @@ const SubMenu1Detail = () => {
         }
         fetchUserInfoLogin()
     }, [user])
+
 
     useEffect(() => {
         const fetchSpecializedDepartmentById = async () => {
@@ -263,6 +266,8 @@ const SubMenu1Detail = () => {
         fetchFormCategory();
         fetchSpecializedDepartmentById()
     }, [location.pathname, userInfoLogin]);
+   
+    
 
     useEffect(() => {
         if (location.pathname.split('/')[3]) {
@@ -445,7 +450,20 @@ const SubMenu1Detail = () => {
         setOpenReport(true);
     };
 
-    const handleCloseReport = () => {
+    const handleCloseReport1 = () => {
+        setOpenReport(false);
+    };const handleCloseReport3 = () => {
+        setOpenReport(false);
+    };
+    const handleCloseReport2 = async () => {
+        const rp = {
+            userId: user?.userId,
+            doctype : 1,
+            docId : document1Info?.id,
+            message : "",
+            description : descriptionRp,
+        }
+        await apiPostReport(rp);
         setOpenReport(false);
     };
 
@@ -1099,6 +1117,10 @@ const SubMenu1Detail = () => {
                                 <div><strong>Người gửi: </strong> <u className='underline-blue'>{document1Info?.userFullName}</u></div>
                             </div>
                             <div className="sub-menu-row">
+                    <div><strong>Nguồn: </strong> https://baigiang.violet.vn</div>
+                    <div className='right-action' onClick={handleClickOpenReport}><strong><u className='underline-blue'>Báo tài liệu có sai sót</u></strong></div>
+                </div>
+                            <div className="sub-menu-row">
                                 <div><strong>Ngày gửi: </strong> {document1Info?.createdDate}</div>
                                 <div className='right-action'>
                                     <div className='share-facebook'>
@@ -1156,7 +1178,7 @@ const SubMenu1Detail = () => {
                 open={openReport}
                 onClose={(event, reason) => {
                     if (reason !== 'backdropClick' && reason !== 'escapeKeyDown') {
-                        handleCloseReport();
+                        handleCloseReport1();
                     }
                 }}
                 maxWidth={"md"}
@@ -1176,7 +1198,7 @@ const SubMenu1Detail = () => {
                                     <div className="report-row">
                                         <div className='report-title'>Tài liệu</div>
                                         <div className='report-detail'>
-                                            Giáo án tài liệu A
+                                        value={document1Info?.name}
                                         </div>
                                     </div>
                                     <div className="report-row">
@@ -1195,14 +1217,14 @@ const SubMenu1Detail = () => {
                                         <div className='report-detail'>
                                             <span style={{ whiteSpace: "nowrap" }}>Đề nghị cung cấp lý do và chỉ ra các điểm không chính xác</span>
                                             <br />
-                                            <textarea name="" id="" rows={10} />
+                                            <textarea name="" id="" rows={10} onChange={e => setDescriptionRp(e.target.value)} />
                                         </div>
                                     </div>
                                 </DialogContentText>
                             </DialogContent>
                             <DialogActions >
-                                <Button onClick={handleCloseReport} style={{ color: "#000", fontWeight: 600 }} > Quay lại trang</Button>
-                                <Button onClick={handleCloseReport} className='button-mui' autoFocus>
+                                <Button onClick={handleCloseReport1} style={{ color: "#000", fontWeight: 600 }} > Quay lại trang</Button>
+                                <Button onClick={handleCloseReport2} className='button-mui' autoFocus>
                                     Gửi báo cáo
                                 </Button>
                             </DialogActions></>
@@ -1214,7 +1236,7 @@ const SubMenu1Detail = () => {
                                 </DialogContentText>
                             </DialogContent>
                             <DialogActions >
-                                <Button onClick={handleCloseReport} style={{ color: "#000", fontWeight: 600 }} >Hủy bỏ</Button>
+                                <Button onClick={handleCloseReport3} style={{ color: "#000", fontWeight: 600 }} >Hủy bỏ</Button>
                                 <Button onClick={() => setLogin(true)} className='button-mui' autoFocus>
                                     Đăng nhập
                                 </Button>
