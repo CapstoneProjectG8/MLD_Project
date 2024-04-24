@@ -22,6 +22,7 @@ const LeftSubNavBar = () => {
         getDepartmentHandler();
     }, []);
 
+    
     return (
         <Grid item xs={2} style={{ padding: 0 }}>
             <div className='sub-nav-bar sub-nav-bar-left'>
@@ -61,14 +62,27 @@ const Document = ({ dep }: any) => {
             var doc2 = await axios.get(base_url + "Document2/GetDocument2ByUserSpecialiedDepartment?listId=" + dep.id)
             var doc3 = await axios.get(base_url + "Document3/GetDocument3ByUserSpecialiedDepartment?listId=" + dep.id)
             var doc4 = await axios.get(base_url + "Document4/GetDocument4ByUserSpecialiedDepartment?listId=" + dep.id)
-            setDocuments([...doc1.data[0].documents, ...doc2.data[0].documents, ...doc3.data[0].documents, ...doc4.data[0].documents]);
+            var rs1 = doc1.data[0].documents.map((item : any) => {
+                return {...item , submenu : 1};
+            });
+            var rs2 = doc2.data[0].documents.map((item : any) => {
+                return {...item , submenu : 2};
+            });
+            var rs3 = doc3.data[0].documents.map((item : any) => {
+                return {...item , submenu : 3};
+            });
+            var rs4 = doc4.data[0].documents.map((item : any) => {
+                return {...item , submenu : 4};
+            });
+            //setDocuments([...doc1.data[1].documents, ...doc2.data[2].documents, ...doc3.data[3].documents, ...doc4.data[4].documents]);
+            setDocuments([...rs1, ...rs2, ...rs3, ...rs4]);
         }
+        
+       
         getDocument();
     }, [dep.id])
 
-    //    if(documents.length === 0){
-    //     return <>Loading ...</>
-    //    }
+  
 
     return <>
         <div className='sub-nav-bar-item-content-folder-name' onClick={() => setShow(!show)}>
@@ -77,7 +91,7 @@ const Document = ({ dep }: any) => {
         </div>
         <div className={show ? 'nav-is-show' : 'nav-is-hidden'}>
             {documents.map((doc: any) => (
-                <Link key={doc.id} to={`/sub-menu-${dep.id}/detail-view/${doc.id}`}>
+                <Link key={doc.id} to={`/sub-menu-${doc.submenu}/detail-view/${doc.id}`}>
                 <div className='sub-nav-bar-item-content-folder-course'>
                     <Article style={{ width: "30px", height: "30px", color: "#EFB38E" }} />
                     {doc.name}
