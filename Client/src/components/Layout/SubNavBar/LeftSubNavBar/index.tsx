@@ -50,10 +50,6 @@ const LeftSubNavBar = () => {
     )
 }
 
-// may th kia , co th nao ranh ko , bao no sua me cai api cho nhanh
-// dang lay submenu o trong document chu dep lam gi 
-
-
 
 const Document = ({ dep }: any) => {
     const [documents, setDocuments] = useState<any>([]);
@@ -94,10 +90,7 @@ const Document = ({ dep }: any) => {
         getDocument();
     }, [dep.id])
 
-  // la hien o dau
-  // vc du lieu o dau ra , voi api the kia
-  // chuan chua
-  // tao component khac roi tuong tu
+
   
 
     return <>
