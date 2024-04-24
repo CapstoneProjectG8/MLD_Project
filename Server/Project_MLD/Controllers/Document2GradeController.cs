@@ -70,14 +70,20 @@ namespace Project_MLD.Controllers
         //}
 
         [HttpPost]
-        public async Task<IActionResult> AddDocument2Grade(Document2GradeDTO dto)
+        public async Task<IActionResult> AddDocument2Grade(List<Document2GradeDTO> listDto)
         {
             try
             {
-                var document2 = _mapper.Map<Document2Grade>(dto);
-                var doc = await _repository.AddDocument2Grade(document2);
-                var mapDoc2 = _mapper.Map<Document2GradeDTO>(document2);
-                return Ok(mapDoc2);
+                var listDoc2 = new List<Document2GradeDTO>();
+                foreach(var item in listDto)
+                {
+                    var document2 = _mapper.Map<Document2Grade>(item);
+                    var doc = await _repository.AddDocument2Grade(document2);
+                    var mapDoc2 = _mapper.Map<Document2GradeDTO>(document2);
+                    listDoc2.Add(mapDoc2);
+                }
+                
+                return Ok(listDoc2);
             }
             catch (Exception ex)
             {
