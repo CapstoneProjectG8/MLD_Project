@@ -50,24 +50,24 @@ namespace Project_MLD.Controllers
             return Ok(mapDocumemt);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateDocument2Grade(List<Document2GradeDTO> requests)
-        {
-            try
-            {
-                var mapRequests = _mapper.Map<List<Document2Grade>>(requests);
+        //[HttpPut]
+        //public async Task<IActionResult> UpdateDocument2Grade(List<Document2GradeDTO> requests)
+        //{
+        //    try
+        //    {
+        //        var mapRequests = _mapper.Map<List<Document2Grade>>(requests);
 
 
-                await _repository.UpdateDocument2Grade(mapRequests);
+        //        await _repository.UpdateDocument2Grade(mapRequests);
 
-                return Ok("Update success");
-            }
-            catch (Exception ex)
-            {
-                // Log the exception or handle it accordingly
-                return StatusCode(500, $"An error occurred while updating Document2 Grade: {ex.Message}");
-            }
-        }
+        //        return Ok("Update success");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the exception or handle it accordingly
+        //        return StatusCode(500, $"An error occurred while updating Document2 Grade: {ex.Message}");
+        //    }
+        //}
 
         [HttpPost]
         public async Task<IActionResult> AddDocument2Grade(Document2GradeDTO dto)

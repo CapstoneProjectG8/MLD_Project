@@ -88,8 +88,8 @@ public partial class MldDatabaseContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         var builder = new ConfigurationBuilder()
-              .SetBasePath(Directory.GetCurrentDirectory())
-              .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
         IConfigurationRoot configuration = builder.Build();
         optionsBuilder.UseSqlServer(configuration.GetConnectionString("MyCnn"));
     }
@@ -300,31 +300,32 @@ public partial class MldDatabaseContext : DbContext
 
         modelBuilder.Entity<Document2Grade>(entity =>
         {
-            entity.HasKey(e => new { e.Document2Id, e.GradeId });
+            entity
+                .HasNoKey()
+                .ToTable("Document2_Grade");
 
-            entity.ToTable("Document2_Grade");
-
-            entity.Property(e => e.Document2Id).HasColumnName("document2_id");
-            entity.Property(e => e.GradeId).HasColumnName("grade_id");
             entity.Property(e => e.CollaborateWith).HasColumnName("collaborate_with");
             entity.Property(e => e.Condition).HasColumnName("condition");
             entity.Property(e => e.Description).HasColumnName("description");
+            entity.Property(e => e.Document2Id).HasColumnName("document2_id");
+            entity.Property(e => e.GradeId).HasColumnName("grade_id");
             entity.Property(e => e.HostBy).HasColumnName("host_by");
             entity.Property(e => e.Place).HasColumnName("place");
             entity.Property(e => e.Slot).HasColumnName("slot");
             entity.Property(e => e.Time).HasColumnName("time");
             entity.Property(e => e.TitleName).HasColumnName("title_name");
 
-            entity.HasOne(d => d.Document2).WithMany(p => p.Document2Grades)
+            entity.HasOne(d => d.Document2).WithMany()
                 .HasForeignKey(d => d.Document2Id)
-                .HasConstraintName("FK_Document2_Grade_Document 21");
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Document2_Grade_Document 2");
 
-            entity.HasOne(d => d.Grade).WithMany(p => p.Document2Grades)
+            entity.HasOne(d => d.Grade).WithMany()
                 .HasForeignKey(d => d.GradeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Document2_Grade_Grade");
+                .HasConstraintName("FK_Document2_Grade_Grade1");
 
-            entity.HasOne(d => d.HostByNavigation).WithMany(p => p.Document2Grades)
+            entity.HasOne(d => d.HostByNavigation).WithMany()
                 .HasForeignKey(d => d.HostBy)
                 .HasConstraintName("FK_Document2_Grade_User");
         });

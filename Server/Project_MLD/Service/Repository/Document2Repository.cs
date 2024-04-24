@@ -130,10 +130,9 @@ namespace Project_MLD.Service.Repository
 
         public async Task<IEnumerable<int?>> GetListHostbyByIdOfUserByDoc2Id(int doc2Id)
         {
-            var hostIds = await _context.Document2s
-                .Where(x => x.Id == doc2Id)
-                .SelectMany(x => x.Document2Grades.Select(g => g.HostBy))
-                    .Where(hostId => hostId != null)
+            var hostIds = await _context.Document2Grades
+                .Where(x => x.Document2Id == doc2Id)
+                .Select(x => x.HostBy)
                 .Distinct()
                 .ToListAsync();
 
