@@ -464,9 +464,7 @@ public partial class MldDatabaseContext : DbContext
         {
             entity.ToTable("Evaluate");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Document5Id).HasColumnName("document5_id");
             entity.Property(e => e.Evaluate11).HasColumnName("evaluate_1_1");
             entity.Property(e => e.Evaluate12).HasColumnName("evaluate_1_2");
