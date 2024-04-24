@@ -132,7 +132,9 @@ namespace Project_MLD.Service.Repository
         {
             var hostIds = await _context.Document2s
                 .Where(x => x.Id == doc2Id)
-                .SelectMany(x => x.Document2Grades.Select(g => g.HostBy)) // Cast to nullable int
+                .SelectMany(x => x.Document2Grades.Select(g => g.HostBy))
+                    .Where(hostId => hostId != null)
+                .Distinct()
                 .ToListAsync();
 
             return hostIds;

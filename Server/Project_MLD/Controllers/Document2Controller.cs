@@ -132,20 +132,26 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Document2>> AddDocument2(Document2DTO doc2)
+        public async Task<ActionResult<Document2>> AddDocument2(List<Document2DTO> doc2)
         {
             try
             {
-                doc2.Status = true;
-                doc2.CreatedDate = DateOnly.FromDateTime(DateTime.Now);
-                var document = _mapper.Map<Document2>(doc2);
-                var addedDocument = await _repository.AddDocument2(document);
-                if (addedDocument == null)
+                var listDocumentDTO = new List<Document2DTO>();
+                foreach (var item in doc2)
                 {
-                    return BadRequest("Error Adding Document1");
+                    item.Status = true;
+                    item.CreatedDate = DateOnly.FromDateTime(DateTime.Now);
+                    var document = _mapper.Map<Document2>(item);
+                    var addedDocument = await _repository.AddDocument2(document);
+                    if (addedDocument == null)
+                    {
+                        return BadRequest("Error Adding Document1");
+                    }
+                    var doc = _mapper.Map<Document2DTO>(addedDocument);
+                    listDocumentDTO.Add(doc);
                 }
-                var addedDocumentDTO = _mapper.Map<Document2DTO>(addedDocument);
-                return Ok(addedDocumentDTO);
+
+                return Ok(listDocumentDTO);
             }
             catch (Exception ex)
             {

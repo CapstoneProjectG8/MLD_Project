@@ -42,15 +42,15 @@ namespace Project_MLD.Controllers
             _userRepository = userRepository;
         }
 
-        [HttpGet("GetUserByReceiverId/{receiverId}")]
-        public async Task<ActionResult<User>> GetUserByReceiverId(int receiverId)
+        [HttpGet("GetNotificationByReceiverId/{receiverId}")]
+        public async Task<ActionResult<User>> GetNotificationByReceiverId(int receiverId)
         {
-            var user = await _userRepository.GetUserById(receiverId);
-            if (user == null)
+            var notification = await _repository.GetNotificationByReceiveIdDESC(receiverId);
+            if (notification == null)
             {
                 return NotFound();
             }
-            return Ok(user);
+            return Ok(notification);
         }
 
         [HttpPost("AddNotification")]
@@ -178,7 +178,7 @@ namespace Project_MLD.Controllers
 
             var getUserPrinciple = await _userRepository.GetPrinciples();
             var mapperPrinciple = _mapper.Map<List<UserDTO>>(getUserPrinciple);
-            if(mapperPrinciple != null)
+            if (mapperPrinciple != null)
             {
                 foreach (var user in mapperPrinciple)
                 {
@@ -187,8 +187,8 @@ namespace Project_MLD.Controllers
             }
             return Ok(new
             {
-                principle = principle,
-                teacher = teacher
+                principle,
+                teacher
             });
         }
 
