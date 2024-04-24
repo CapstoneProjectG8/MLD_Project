@@ -17,12 +17,21 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 import moment from 'moment';
 import { TableHead } from '@mui/material';
 import "./style.scss"
+import { CheckCircleOutline, DoDisturb, TaskAltSharp } from '@mui/icons-material';
 import { Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { checkAuthenticationUser } from '../../features/user/userSlice';
+import { useAppDispatch } from '../../hook/useTypedSelector';
+import { User } from '../../models/User';
+import { apiGetUser } from '../../api/user';
 import { useAppSelector } from '../../hook/useTypedSelector';
 import { authService } from '../../features/user/userService';
-import { apiGetDoc, apiGetDoc2, apiGetDoc3 } from '../../api/doc1';
+import { apiGetDoc } from '../../api/doc1';
 import { Document1 } from '../../models/document1';
+import { apiGetDoc2 } from '../../api/doc2';
+import { Document2 } from '../../models/document2';
+import { apiGetDoc3 } from '../../api/doc3';
+import { Document3 } from '../../models/document3';
 
 
 
@@ -35,12 +44,6 @@ interface TablePaginationActionsProps {
         newPage: number,
     ) => void;
 }
-
-interface Option {
-    label: string;
-    value: number;
-}
-
 
 function TablePaginationActions(props: TablePaginationActionsProps) {
     const theme = useTheme();
@@ -98,6 +101,55 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
     );
 }
 
+const MyComponent = () => {
+    const [selectedOption, setSelectedOption] = useState<string | null>(null);
+
+    const handleSelectOption = (option: string) => {
+        setSelectedOption(option);
+    };
+
+    useEffect(() => {
+        // Kiểm tra nếu selectedOption không phải là null và có giá trị là "1", "2", hoặc "3"
+        if (selectedOption && ["1", "2", "3"].includes(selectedOption)) {
+            fetchData(selectedOption); // Gọi hàm fetchData với selectedOption
+        }
+    }, [selectedOption]); // Chạy useEffect mỗi khi selectedOption thay đổi
+
+    const fetchData = async (option: string) => {
+        try {
+            let result;
+            if (option === "1") {
+                result = await apiGetDoc(); // Gọi API để lấy dữ liệu từ Document1
+            } else if (option === "2") {
+                result = await apiGetDoc2(); // Gọi API để lấy dữ liệu từ Document2
+            } else if (option === "3") {
+                result = await apiGetDoc3(); // Gọi API để lấy dữ liệu từ Document3
+            }
+
+            if (result && result.data) {
+                const documents: Document1[] = result.data; // Lấy dữ liệu từ kết quả trả về
+                // Xử lý dữ liệu ở đây...
+            } else {
+                console.log("Không có dữ liệu trả về từ API");
+            }
+        } catch (error) {
+            console.error("Lỗi khi gọi API: ", error);
+        }
+    };
+
+    return (
+        <div className="dropdown">
+            {/* Button để mở dropdown */}
+            <select className="dropbtn" onChange={(e) => handleSelectOption(e.target.value)}>
+                <option value="" disabled selected hidden>Phụ Lục</option>
+                <option value="1">Phụ Lục 1</option>
+                <option value="2">Phụ Lục 2</option>
+                <option value="3">Phụ Lục 3</option>
+            </select>
+        </div>
+    );
+}
+
 function createData(id: number, creator: string, approver: string, date: Date, status: boolean) {
     return { id, creator, approver, date, status };
 }
@@ -128,6 +180,7 @@ const ApproveList = () => {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [isComplete, setIsCompleted] = React.useState(true)
+
 
     const emptyRows1 =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows1.length) : 0;
@@ -160,48 +213,14 @@ const ApproveList = () => {
     };
 
     const user = useAppSelector(state => state.auth.user)
-
-
-
-    const [selectedOption, setSelectedOption] = useState<Option | null>(null);
-    const [isOpen, setIsOpen] = useState(false);
-    const [userInfo, setUserInfo] = useState<Document1[]>([]);
-    console.log("userInfo: ", userInfo)
-    const options: Option[] = [
-        { label: 'Phụ lục 1', value: 1 },
-        { label: 'Phụ lục 2', value: 2 },
-        { label: 'Phụ lục 3', value: 3 },
-    ];
-
-
-
-
-    const filteredUserInfo12 = userInfo.filter(row => row.isApprove === 1 || row.isApprove === 2);
-    const filteredUserInfo34 = userInfo.filter(row => row.isApprove === 3 || row.isApprove === 4);
-    const filteredUserInfo3 = userInfo.filter(row => row.isApprove === 3);
-    const filteredUserInfo2 = userInfo.filter(row => row.isApprove === 2);
-    const filteredUserInfo4 = userInfo.filter(row => row.isApprove === 4);
-
-
-
-
-    const handleToggle = () => {
-        setIsOpen(!isOpen);
-    };
-
-    const handleOptionClick = (option: Option) => {
-        setSelectedOption(option);
-        setIsOpen(false);
-        // Thực hiện các xử lý tương ứng với việc chọn option
-    };
     const [userRole, setuserRole] = React.useState();
-
-    useEffect(() => {
-        const fetchUserData = async () => {
+    console.log("userRole: ", userRole)
+    React.useEffect(() => {
+        const fetchuserRole = async () => {
             if (user) {
                 const res = await authService.checkAuthentication()
 
-                if (res.trim() !== "") {
+                if (res?.trim() !== "") {
                     const words = res.split(' ');
                     const email = words.find((word: string) => word.includes('@'));
                     const userId = words.pop();
@@ -209,42 +228,30 @@ const ApproveList = () => {
                     setuserRole(role);
                 }
             }
-        };
+        }
+        fetchuserRole()
+    }, [user])
 
-        fetchUserData();
-    }, [user]);
-
+    const [userInfo, setUserInfo] = useState<Document1[]>([]);
+    console.log("userInfo: ", userInfo)
     useEffect(() => {
         const fetchAllUser = async () => {
-            let res;
-            if (!selectedOption) {
-                if (userRole === "Teacher") {
-                    res = await apiGetDoc3();
-                } else if (userRole === "Principle") {
-                    setActiveIndex(3);
-                    res = await apiGetDoc();
-                } else {
-                    res = await apiGetDoc();
-                }
-            } else if (selectedOption.value === 1) {
-                res = await apiGetDoc();
-            } else if (selectedOption.value === 2) {
-                res = await apiGetDoc2();
-            } else if (selectedOption.value === 3) {
-                res = await apiGetDoc3();
-            }
-
-            console.log("res: ", res);
+            const res = await apiGetDoc();
             if (res && res.data) {
                 const usersData: Document1[] = res.data;
                 setUserInfo(usersData);
             }
-        };
-
-        if (userRole) {
-            fetchAllUser();
         }
-    }, [selectedOption, userRole]);
+        fetchAllUser();
+
+    }, [])
+
+    const filteredUserInfo12 = userInfo.filter(row => row.isApprove === 1 || row.isApprove === 2);
+    const filteredUserInfo34 = userInfo.filter(row => row.isApprove === 3 || row.isApprove === 4);
+    const filteredUserInfo3 = userInfo.filter(row => row.isApprove === 3);
+    const filteredUserInfo2 = userInfo.filter(row => row.isApprove === 2);
+    const filteredUserInfo4 = userInfo.filter(row => row.isApprove === 4);
+
 
     return (
         <div>
@@ -279,29 +286,15 @@ const ApproveList = () => {
                         }
                         <br />
                     </div>
-                    {(userRole === "Leader" || userRole === "Principle") &&
-
-
-                        <div className="dropdown">
-                            <button className="dropbtn" onClick={handleToggle}>
-                                {selectedOption ? selectedOption.label : 'Select'}
-                            </button>
-                            {isOpen && (
-                                <div className="dropdown-content">
-                                    {(userRole === "Leader" || userRole === "Principle") &&
-                                        <a onClick={() => handleOptionClick({ label: 'Phụ lục 1', value: 1 })}>Phụ Lục 1</a>
-                                    }
-                                    {(userRole === "Leader" || userRole === "Principle") &&
-                                        <a onClick={() => handleOptionClick({ label: 'Phụ lục 2', value: 2 })}>Phụ Lục 2</a>
-                                    }
-                                    {(userRole === "Leader") &&
-                                        <a onClick={() => handleOptionClick({ label: 'Phụ lục 3', value: 3 })}>Phụ Lục 3</a>
-                                    }
+                    <div>
+                        {userRole && (
+                            <div>
+                                <div className="request-approve-switch">
                                 </div>
-
-                            )}
-                        </div>
-                    }
+                                <MyComponent />
+                            </div>
+                        )}
+                    </div>
                 </div>
             }
             {(userRole === "Leader" || userRole === "Teacher") && activeIndex === 0 && (<Fragment>

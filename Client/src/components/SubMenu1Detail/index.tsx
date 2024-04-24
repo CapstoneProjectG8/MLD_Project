@@ -1198,7 +1198,7 @@ const SubMenu1Detail = () => {
                                     <div className="report-row">
                                         <div className='report-title'>Tài liệu</div>
                                         <div className='report-detail'>
-                                        value={document1Info?.name}
+                                        {document1Info?.name}
                                         </div>
                                     </div>
                                     <div className="report-row">
@@ -1268,6 +1268,7 @@ const SubMenu1Detail = () => {
                     <Button onClick={handleCloseAccept} style={{ color: "#000", fontWeight: 600 }} >Hủy bỏ</Button>
                     <Button onClick={async () => {
                         try {
+                            await apiUpdateSubMenu1({ id: document1Info?.id, subjectId: document1Info?.subjectId, gradeId: document1Info?.gradeId, userId: document1Info?.userId, isApprove: 3, approveBy: user?.userId })
                             await apiUpdateSubMenu1({ id: document1Info?.id, subjectId: document1Info?.subjectId, gradeId: document1Info?.gradeId, userId: document1Info?.userId, isApprove: 3, approveBy: user?.userId })
                         } catch (error) {
                             alert("Không thể xét duyệt")

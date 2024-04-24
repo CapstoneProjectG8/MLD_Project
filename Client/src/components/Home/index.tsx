@@ -54,9 +54,7 @@ const Home = () => {
                             <span>
                                 KẾ HOẠCH DẠY HỌC CỦA TỔ CHUYÊN MÔN MÔN HỌC/HOẠT ĐỘNG GIÁO DỤC
                             </span>
-                            <div className='add-row-button'>
-                                <Add style={{ color: "black" }} className='add-row-icon' onClick={handleAddSubMenu1} />
-                            </div>
+                            
                         </div>
                         <div className="home-panel-content-sub-menu-item-content">
                             <Swiper
@@ -75,9 +73,9 @@ const Home = () => {
                                         <SwiperSlide>
                                             <Tooltip title={subMenu1?.name} arrow placement="top" key={index}>
                                                 <div className='sub-menu-content-detail image-container' onClick={() => navigate(`/sub-menu-1/detail-view/${subMenu1?.id}`)}
-                                                    style={{ backgroundImage: subMenu1?.linkImage ? `url('${subMenu1?.linkImage}')` : `url('${imageurl}')` }}                                                >
+                                                    style={{ backgroundImage: subMenu1?.linkImage ? `url('${subMenu1?.linkImage}')` : `url('${imageurl}')` }}>
                                                     <div className='sub-menu-subject-name'>
-                                                        {subMenu1.subjectName} {subMenu1.gradeName}
+                                                        {subMenu1.name}
                                                     </div>
                                                 </div>
                                             </Tooltip>
@@ -94,9 +92,7 @@ const Home = () => {
                             <span>
                                 KẾ HOẠCH TỔ CHỨC CÁC HOẠT ĐỘNG GIÁO DỤC CỦA TỔ CHUYÊN MÔN
                             </span>
-                            <div className='add-row-button'>
-                                <Add style={{ color: "black" }} className='add-row-icon' onClick={handleAddSubMenu2} />
-                            </div>
+                            
                         </div>
                         <div className="home-panel-content-sub-menu-item-content">
                             <Swiper
@@ -134,9 +130,7 @@ const Home = () => {
                             <span>
                                 KẾ HOẠCH GIÁO DỤC CỦA GIÁO VIÊN
                             </span>
-                            <div className='add-row-button'>
-                                <Add style={{ color: "black" }} className='add-row-icon' onClick={handleAddSubMenu3} />
-                            </div>
+                            
                         </div>
                         <div className="home-panel-content-sub-menu-item-content">
                             <Swiper
