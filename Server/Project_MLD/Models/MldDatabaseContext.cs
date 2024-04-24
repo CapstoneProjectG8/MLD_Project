@@ -88,8 +88,8 @@ public partial class MldDatabaseContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         var builder = new ConfigurationBuilder()
-                            .SetBasePath(Directory.GetCurrentDirectory())
-                            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                     .SetBasePath(Directory.GetCurrentDirectory())
+                     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
         IConfigurationRoot configuration = builder.Build();
         optionsBuilder.UseSqlServer(configuration.GetConnectionString("MyCnn"));
     }
@@ -567,7 +567,6 @@ public partial class MldDatabaseContext : DbContext
 
             entity.HasOne(d => d.Document1).WithMany(p => p.PeriodicAssessments)
                 .HasForeignKey(d => d.Document1Id)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Periodic Assessment_Document 1");
 
             entity.HasOne(d => d.FormCategory).WithMany(p => p.PeriodicAssessments)
