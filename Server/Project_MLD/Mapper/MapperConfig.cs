@@ -18,7 +18,10 @@ namespace Project_MLD.Mapper
                 .ForMember(x => x.LoginAttempt, y => y.MapFrom(src => src.LoginAttempt))
                 .ForMember(x => x.LoginLast, y => y.MapFrom(src => src.LoginLast))
                 .ReverseMap();
-
+            CreateMap<AccountDTO, Account>()
+                .ForMember(x => x.Users, y => y.Ignore())
+                .ForMember(x => x.Role, y => y.Ignore())
+                .ReverseMap();
             CreateMap<Notification, NotificationDTO>()
                 .ForMember(x => x.SentByName, y => y.MapFrom(src => src.SentByNavigation.FullName))
                 .ReverseMap();

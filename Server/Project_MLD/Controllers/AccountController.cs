@@ -128,7 +128,7 @@ namespace Project_MLD.Controllers
             acc.Active = true;
             acc.CreatedBy = "ADMIN";
             acc.CreatedDate = DateOnly.FromDateTime(DateTime.Now);
-            acc.LoginLast = DateOnly.FromDateTime(DateTime.Now);
+            acc.LoginLast = DateTime.Now;
             acc.LoginAttempt = 0;
             acc.Password = _passwordHasher.Hash(acc.Password);
 

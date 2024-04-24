@@ -88,8 +88,8 @@ public partial class MldDatabaseContext : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         var builder = new ConfigurationBuilder()
-                             .SetBasePath(Directory.GetCurrentDirectory())
-                             .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+                            .SetBasePath(Directory.GetCurrentDirectory())
+                            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
         IConfigurationRoot configuration = builder.Build();
         optionsBuilder.UseSqlServer(configuration.GetConnectionString("MyCnn"));
     }
@@ -494,6 +494,7 @@ public partial class MldDatabaseContext : DbContext
             entity.Property(e => e.DocId).HasColumnName("doc_id");
             entity.Property(e => e.DocType).HasColumnName("doc_type");
             entity.Property(e => e.Message).HasColumnName("message");
+            entity.Property(e => e.Read).HasColumnName("read");
             entity.Property(e => e.UserId).HasColumnName("user_id");
 
             entity.HasOne(d => d.User).WithMany(p => p.Feedbacks)
