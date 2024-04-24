@@ -28,6 +28,10 @@ import { useAppSelector } from '../../hook/useTypedSelector';
 import { authService } from '../../features/user/userService';
 import { apiGetDoc } from '../../api/doc1';
 import { Document1 } from '../../models/document1';
+import { apiGetDoc2 } from '../../api/doc2';
+import { Document2 } from '../../models/document2';
+import { apiGetDoc3 } from '../../api/doc3';
+import { Document3 } from '../../models/document3';
 
 
 
@@ -94,6 +98,55 @@ function TablePaginationActions(props: TablePaginationActionsProps) {
                 {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
             </IconButton>
         </Box>
+    );
+}
+
+const MyComponent = () => {
+    const [selectedOption, setSelectedOption] = useState<string | null>(null);
+
+    const handleSelectOption = (option: string) => {
+        setSelectedOption(option);
+    };
+
+    useEffect(() => {
+        // Kiểm tra nếu selectedOption không phải là null và có giá trị là "1", "2", hoặc "3"
+        if (selectedOption && ["1", "2", "3"].includes(selectedOption)) {
+            fetchData(selectedOption); // Gọi hàm fetchData với selectedOption
+        }
+    }, [selectedOption]); // Chạy useEffect mỗi khi selectedOption thay đổi
+
+    const fetchData = async (option: string) => {
+        try {
+            let result;
+            if (option === "1") {
+                result = await apiGetDoc(); // Gọi API để lấy dữ liệu từ Document1
+            } else if (option === "2") {
+                result = await apiGetDoc2(); // Gọi API để lấy dữ liệu từ Document2
+            } else if (option === "3") {
+                result = await apiGetDoc3(); // Gọi API để lấy dữ liệu từ Document3
+            }
+
+            if (result && result.data) {
+                const documents: Document1[] = result.data; // Lấy dữ liệu từ kết quả trả về
+                // Xử lý dữ liệu ở đây...
+            } else {
+                console.log("Không có dữ liệu trả về từ API");
+            }
+        } catch (error) {
+            console.error("Lỗi khi gọi API: ", error);
+        }
+    };
+
+    return (
+        <div className="dropdown">
+            {/* Button để mở dropdown */}
+            <select className="dropbtn" onChange={(e) => handleSelectOption(e.target.value)}>
+                <option value="" disabled selected hidden>Phụ Lục</option>
+                <option value="1">Phụ Lục 1</option>
+                <option value="2">Phụ Lục 2</option>
+                <option value="3">Phụ Lục 3</option>
+            </select>
+        </div>
     );
 }
 
@@ -233,11 +286,15 @@ const ApproveList = () => {
                         }
                         <br />
                     </div>
-                    {/* {userRole === "Teacher" && */}
-                    <button className="button">
-                        Filter Phụ Lục
-                    </button>
-                    {/* } */}
+                    <div>
+                        {userRole && (
+                            <div>
+                                <div className="request-approve-switch">
+                                </div>
+                                <MyComponent />
+                            </div>
+                        )}
+                    </div>
                 </div>
             }
             {(userRole === "Leader" || userRole === "Teacher") && activeIndex === 0 && (<Fragment>
