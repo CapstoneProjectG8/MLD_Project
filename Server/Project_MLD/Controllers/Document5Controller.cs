@@ -69,7 +69,7 @@ namespace Project_MLD.Controllers
             return NoContent();
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<IActionResult> UpdateDocument5( Document5DTO pl5)
         {
             var mapDocument = _mapper.Map<Document5>(pl5);

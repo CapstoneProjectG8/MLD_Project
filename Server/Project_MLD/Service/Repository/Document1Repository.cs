@@ -39,7 +39,7 @@ namespace Project_MLD.Service.Repository
                 .Include(x => x.Grade)
                 .Include(x => x.Subject)
                 .Include(x => x.User)
-                .Where(x => x.Status == true && x.IsApprove != 0).ToListAsync();
+                .Where(x => x.Status == true && x.IsApprove != 1).ToListAsync();
         }
 
         public async Task<IEnumerable<Document1>> GetAllDocument1sByUserIdAndApproveId(int userId, int approveId)

@@ -38,7 +38,7 @@ namespace Project_MLD.Service.Repository
             return await _context.Document3s
                 .Include(x => x.User)
                 .Include(x => x.Document1)
-                .Where(x => x.Status == true && x.IsApprove != 0)
+                .Where(x => x.Status == true && x.IsApprove != 1)
                 .ToListAsync();
         }
 

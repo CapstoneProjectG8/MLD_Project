@@ -174,7 +174,7 @@ namespace Project_MLD.Controllers
             return NoContent();
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<IActionResult> UpdateDocument3(Document3DTO pl3)
         {
             var mapDocument = _mapper.Map<Document3>(pl3);
@@ -191,7 +191,7 @@ namespace Project_MLD.Controllers
             });
         }
 
-        [HttpPut("ApproveDocument3/{id}")]
+        [HttpPut("ApproveDocument3")]
         public async Task<IActionResult> ApproveDocument3(Document3DTO pl3)
         {
             var mapDocument = _mapper.Map<Document3>(pl3);
