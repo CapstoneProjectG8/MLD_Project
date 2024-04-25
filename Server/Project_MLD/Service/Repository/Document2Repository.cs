@@ -138,5 +138,12 @@ namespace Project_MLD.Service.Repository
 
             return hostIds;
         }
+
+        public async Task<IEnumerable<Document2>> GetAllDoc2s()
+        {
+            return await _context.Document2s
+                .Include(x => x.User)
+                .ToListAsync();
+        }
     }
 }

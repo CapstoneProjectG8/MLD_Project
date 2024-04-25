@@ -130,5 +130,14 @@ namespace Project_MLD.Service.Repository
             }
             return listObject;
         }
+
+        public async Task<IEnumerable<Document1>> GetAllDoc1s()
+        {
+            return await _context.Document1s
+               .Include(x => x.User)
+               .Include(x => x.Grade)
+               .Include(x => x.Subject)
+               .ToListAsync();
+        }
     }
 }

@@ -47,6 +47,26 @@ namespace Project_MLD.Controllers
             return Ok(mapDocumemt);
         }
 
+        [HttpGet("GetAllDoc2s")]
+        public async Task<ActionResult<IEnumerable<Document2>>> GetAllDoc2s()
+        {
+            var pl2 = await _repository.GetAllDoc2s();
+
+            var mapDocumemt = _mapper.Map<List<Document2DTO>>(pl2);
+            foreach (var pl in mapDocumemt)
+            {
+                if (pl.ApproveBy.HasValue)
+                {
+                    var getUser = await _userRepository.GetUserById(pl.ApproveBy.Value);
+                    if (getUser != null)
+                    {
+                        pl.ApproveByName = getUser.FullName;
+                    }
+                }
+            }
+            return Ok(mapDocumemt);
+        }
+
         [HttpGet("GetDocument2ByUserSpecialiedDepartment")]
         public async Task<ActionResult<IEnumerable<object>>> GetDocument2ByUserSpecialiedDepartment([FromQuery] List<int> listId)
         {
@@ -117,7 +137,7 @@ namespace Project_MLD.Controllers
             //}
             var mapDocumemt = _mapper.Map<List<Document2DTO>>(existDocument2);
             return Ok(mapDocumemt);
-        }s
+        }
 
         [HttpGet("ByApproveID/{id}")]
         public async Task<ActionResult<IEnumerable<Document2>>> GetDocument2ByApprovalID(int id)

@@ -52,6 +52,26 @@ namespace Project_MLD.Controllers
             return Ok(mapDocument);
         }
 
+        [HttpGet("GetAllDoc3s")]
+        public async Task<ActionResult<IEnumerable<Document3>>> GetAllDoc3s()
+        {
+            var document3s = await _repository.GetAllDoc3s();
+
+            var mapDocument = _mapper.Map<List<Document3DTO>>(document3s);
+            foreach (var document3 in mapDocument)
+            {
+                if (document3.ApproveBy.HasValue)
+                {
+                    var getUser = await _userRepository.GetUserById(document3.ApproveBy.Value);
+                    if (getUser != null)
+                    {
+                        document3.ApproveByName = getUser.FullName;
+                    }
+                }
+            }
+            return Ok(mapDocument);
+        }
+
         [HttpGet("GetDocument3ByUserSpecialiedDepartment")]
         public async Task<ActionResult<IEnumerable<object>>> GetDocument3ByUserSpecialiedDepartment([FromQuery] List<int> listId)
         {

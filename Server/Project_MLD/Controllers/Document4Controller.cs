@@ -29,6 +29,14 @@ namespace Project_MLD.Controllers
             return Ok(mapDocument);
         }
 
+        [HttpGet("GetAllDoc4s")]
+        public async Task<ActionResult<IEnumerable<Document4>>> GetAllDoc4s()
+        {
+            var Document4 = await _repository.GetAllDoc4s();
+            var mapDocument = _mapper.Map<List<Document4DTO>>(Document4);
+            return Ok(mapDocument);
+        }
+
         [HttpGet("GetDocument4ByUserSpecialiedDepartment")]
         public async Task<ActionResult<IEnumerable<Document4>>> GetDocument4ByUserSpecialiedDepartment([FromQuery] List<int> listId)
         {
