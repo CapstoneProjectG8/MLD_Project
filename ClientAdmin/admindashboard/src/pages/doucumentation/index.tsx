@@ -43,7 +43,7 @@ const DocumentationPage1: FC = () => {
     setConfirmModalVisible(true);
   };
   useEffect(() => {
-    fetch('https://localhost:7241/api/Document1')
+    fetch('https://localhost:7241/api/Document1/GetAllDoc1s')
       .then(response => response.json())
       .then(data => setDocuments(data))
       .catch(error => console.error('Error fetching data:', error));

@@ -37,7 +37,7 @@ const DocumentationPage3: FC = () => {
     setConfirmModalVisible(true);
   };
   useEffect(() => {
-    fetch('https://localhost:7241/api/Document3')
+    fetch('https://localhost:7241/api/Document3/GetAllDoc3s')
       .then(response => response.json())
       .then(data => setDocuments(data))
       .catch(error => console.error('Error fetching data:', error));
@@ -52,7 +52,7 @@ const DocumentationPage3: FC = () => {
     try {
       const updatedDoc = { ...selectedDoc, status: !selectedDoc.status };
       const requestBody = { id: selectedDoc.id, document1Id:selectedDoc?.document1Id, userId: selectedDoc?.userId, status: updatedDoc.status };
-      await axios.put(`https://localhost:7241/api/Document3/10000`, requestBody);
+      await axios.put(`https://localhost:7241/api/Document3`, requestBody);
       const updatedDocs = documents.map(u => (u.id === selectedDoc.id ? updatedDoc : u));
       setDocuments(updatedDocs);
       message.success(`${selectedDoc?.name} ${updatedDoc.status ? 'unbanned' : 'banned'} successfully.`);

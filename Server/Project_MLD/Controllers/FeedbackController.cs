@@ -38,6 +38,7 @@ namespace Project_MLD.Controllers
         [HttpPost]
         public async Task<ActionResult<Feedback>> AddFeedback(FeedbackDTO st)
         {
+            st.Read = false;
             var fb = _mappper.Map<Feedback>(st);
             var addFB = await _repository.AddFeedback(fb);
             var mapFB = _mappper.Map<FeedbackDTO>(addFB);

@@ -13,6 +13,7 @@ axios.get<Message[]>('https://localhost:7241/api/Feedback')
       index: index.toString(),
       id: data.id,
       title: data.message || '',
+      description: data.description || '',
       avatar: 'https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png',
       datetime: '2024-04-23',
       type: 'message',
