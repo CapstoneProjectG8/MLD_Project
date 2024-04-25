@@ -58,10 +58,10 @@ const DocumentationPage1: FC = () => {
     try {
       const updatedDoc = { ...selectedDoc, status: !selectedDoc.status };
       const requestBody = { id: selectedDoc.id, gradeId:selectedDoc?.gradeId, subjectId: selectedDoc?.subjectId, userId: selectedDoc?.userId, status: updatedDoc.status };
-      await axios.put(`https://localhost:7241/api/Document1`, requestBody);
+      await axios.put(`https://localhost:7241/api/Document1/`, requestBody);
       const updatedDocs = documents.map(u => (u.id === selectedDoc.id ? updatedDoc : u));
       setDocuments(updatedDocs);
-      message.success(`User ${updatedDoc.status ? 'unbanned' : 'banned'} successfully.`);
+      message.success(`${selectedDoc?.name} ${updatedDoc.status ? 'unbanned' : 'banned'} successfully.`);
     } catch (error) {
       console.error(error);
       message.error('Failed to update Doc.');
@@ -69,7 +69,21 @@ const DocumentationPage1: FC = () => {
       setConfirmModalVisible(false);
     }
   };
-
+  const handleUpdateStatus = async () => {
+    try {
+      const updatedDoc1 = { ...selectedDoc, status: !selectedDoc.status };
+      const requestBody = { id: selectedDoc.id, gradeId:selectedDoc?.gradeId, subjectId: selectedDoc?.subjectId, userId: selectedDoc?.userId, status: updatedDoc1.status };
+      await axios.put(`https://localhost:7241/api/Document1/`, requestBody);
+      const updatedDocs1 = documents.map(u => (u.id === selectedDoc.id ? updatedDoc1 : u));
+      setDocuments(updatedDocs1);
+      message.success(`${selectedDoc?.name} ${updatedDoc1.status ? 'unbanned' : 'banned'} successfully.`);
+    } catch (error) {
+      console.error(error);
+      message.error('Failed to update Doc.');
+    } finally {
+      setConfirmModalVisible(false);
+    }
+  };
   const handleCloseModal = () => {
     setModalVisible(false);
     form.resetFields();
@@ -167,11 +181,7 @@ const DocumentationPage1: FC = () => {
       title: 'Is Approve',
       dataIndex: 'isApprove',
       key: 'isApprove',
-      render: (isApprove: boolean) => (isApprove ? 'Yes' : 'No'),
-      ...getColumnFilterStatus('isApprove', [
-        {text: 'Approve', value: true},
-        {text: 'Un Approve', value: false},
-      ]),
+      render: (isApprove: boolean) => (isApprove ? 'Approve' : 'Un Approve'),
     },
     {
       title: 'Status',
@@ -217,6 +227,7 @@ const DocumentationPage1: FC = () => {
         onCancel={handleCloseModal}
         width={1000}
         footer={[
+          // <Button key="submit" onClick={handleUpdateStatus} type="primary">Update Status</Button>
           <Button key="submit" onClick={handViewFileModal}>View file</Button>,
           <Button key="cancel" onClick={handleCloseModal}>
             Close
@@ -236,7 +247,7 @@ const DocumentationPage1: FC = () => {
                 <Input value={selectedDocument?.note} disabled />
               </Form.Item>
               <Form.Item label="Status">
-                <Input value={selectedDocument?.status ? 'Active' : 'Inactive'} disabled />
+                <Input value={selectedDocument?.status ? 'Active' : 'Inactive'} />
               </Form.Item>
               <Form.Item label="Is Approve">
                 <Input value={selectedDocument?.isApprove ? 'Yes' : 'No'} disabled />

@@ -24,7 +24,7 @@ namespace Project_MLD.Service.Repository
 
         public async Task<IEnumerable<Feedback>> GetAllFeedbacks()
         {
-            return await _context.Feedbacks.ToListAsync();
+            return await _context.Feedbacks.OrderByDescending(x => x.Id).ToListAsync();
         }
 
         public async Task<Feedback> GetFeedbackById(int id)

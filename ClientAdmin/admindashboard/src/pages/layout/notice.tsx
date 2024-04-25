@@ -2,7 +2,23 @@ import type { Notice } from '@/interface/layout/notice.interface';
 import React, { FC } from 'react';
 
 import { LoadingOutlined } from '@ant-design/icons';
-import { Avatar, Badge, Button, Col, Form, Input, List, Modal, Popover, Row, Spin, Tabs, Tag, Tooltip } from 'antd';
+import {
+  Avatar,
+  Badge,
+  Button,
+  Col,
+  Form,
+  Input,
+  List,
+  Modal,
+  Popover,
+  Row,
+  Select,
+  Spin,
+  Tabs,
+  Tag,
+  Tooltip,
+} from 'antd';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -23,7 +39,7 @@ const HeaderNoticeComponent: FC = () => {
   const [loading, setLoading] = useState(false);
   const { noticeCount } = useSelector(state => state.user);
   const { formatMessage } = useLocale();
-
+  const [updatedStatus, setUpdatedStatus] = useState<boolean>(false);
   const noticeListFilter = <T extends Notice['type']>(type: T) => {
     return noticeList.filter(notice => notice.type === type) as Notice<T>[];
   };
@@ -43,7 +59,11 @@ const HeaderNoticeComponent: FC = () => {
   }, []);
   const [selectedDocument, setSelectedDocument] = useState<Document | null>(null);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-
+  const handViewFileModal = () => {
+    if (selectedDocument?.linkFile) {
+      window.open(selectedDocument.linkFile, '_blank');
+    }
+  };
   const handleDetail = (docId: string, index: string) => {
     axios.get<Document>('https://localhost:7241/api/Document1/ById/' + docId).then(res => {
       const doc = res.data;
@@ -145,8 +165,8 @@ const HeaderNoticeComponent: FC = () => {
         onCancel={handleCloseModal}
         width={1000}
         footer={[
-          // <Button key="submit" onClick={handViewFileModal}>View file</Button>,
-          <Button key="cancel" onClick={handleCloseModal}>
+          <Button key="view" type={'primary'} onClick={handViewFileModal}>View file</Button>,
+          <Button key="update" onClick={handleCloseModal}>
             Close
           </Button>,
         ]}
@@ -163,7 +183,10 @@ const HeaderNoticeComponent: FC = () => {
               <Input value={selectedDocument?.note} disabled />
             </Form.Item>
             <Form.Item label="Status">
-              <Input value={selectedDocument?.status ? 'Active' : 'Inactive'} disabled />
+              <Select value={updatedStatus} onChange={(value: boolean) => setUpdatedStatus(value)}>
+                <Option value={true}>Active</Option>
+                <Option value={false}>Inactive</Option>
+              </Select>
             </Form.Item>
             <Form.Item label="Is Approve">
               <Input value={selectedDocument?.isApprove ? 'Yes' : 'No'} disabled />
