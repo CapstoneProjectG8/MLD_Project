@@ -860,7 +860,7 @@ const SubMenu3Detail = () => {
                         <div>
                             <div className="sub-menu-action">
                                 <div className="verify" style={{ justifyContent: "center" }}>
-                                    <div style={{ display: 9 === document3Info?.userId ? "flex" : "none", columnGap: "10px" }}>
+                                    <div style={{ display: parseInt(user?.userId) === document3Info?.userId ? "flex" : "none", columnGap: "10px" }}>
                                         <div className='action-button' onClick={() => navigate(`/sub-menu-3/detail-edit/${location.pathname.split('/')[3]}`)}>Sửa</div>
                                         <div className='action-button' onClick={handleClickOpenRemove}>Xóa</div>
                                     </div>
@@ -890,7 +890,7 @@ const SubMenu3Detail = () => {
                             <div className="sub-menu-action">
                                 <div className="verify">
                                     <span>Tình trạng thẩm định:</span>
-                                    <div style={{ display: user?.userId === document1Info?.userId ? "flex" : "none", columnGap: "10px" }}>
+                                    <div style={{ display: parseInt(user?.userId) === document1Info?.userId ? "flex" : "none", columnGap: "10px" }}>
                                         <div className='action-button' onClick={handleClickOpenAccept}>Chấp thuận</div>
                                         <div className='action-button' onClick={handleClickOpenDeny}>Từ chối</div>
                                     </div>

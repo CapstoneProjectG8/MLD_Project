@@ -1091,7 +1091,7 @@ const SubMenu1Detail = () => {
                                                         ))}
                                                     </TableBody>
                                                 </Table>
-                                            </TableContainer>chấp 
+                                            </TableContainer>chấp
                                         </div>
                                     </div>
                                 </div>
@@ -1119,13 +1119,13 @@ const SubMenu1Detail = () => {
                                                 className='action-button' onClick={handleClickCreate}>Tạo khung kế hoạch</div>
                                         }
                                         <div
-                                            style={{ display: user?.userId === userInfoDocument?.id ? "initial" : "none" }}
+                                            style={{ display: parseInt(user?.userId) === userInfoDocument?.id ? "initial" : "none" }}
                                             className='action-button' onClick={location.pathname.includes('add') ? handleClickAdd : handleClickSave}>
                                             {
                                                 location.pathname.includes('create') ? "Tạo mới" : "Sửa"
                                             }
                                         </div>
-                                        <div style={{ display: user?.userId === userInfoDocument?.id ? "initial" : "none" }} className='action-button' onClick={handleClickOpenRemove}>Xóa</div>
+                                        <div style={{ display: parseInt(user?.userId) === userInfoDocument?.id ? "initial" : "none" }} className='action-button' onClick={handleClickOpenRemove}>Xóa</div>
                                     </div>
                                 </div>
                             </div>
@@ -1151,7 +1151,7 @@ const SubMenu1Detail = () => {
                         </div>
                         <div>
                             <div className="sub-menu-action">
-                                <div className="verify" style={{ display: (user?.role === "Principle" && document1Info?.isApprove===2) ? "flex" : "none" }}>
+                                <div className="verify" style={{ display: (user?.role === "Principle" && document1Info?.isApprove === 2) ? "flex" : "none" }}>
                                     <span>Tình trạng thẩm định:</span>
                                     <div style={{ display: "flex", columnGap: "10px" }}>
                                         <div className='action-button' onClick={handleClickOpenAccept}>Chấp thuận</div>
