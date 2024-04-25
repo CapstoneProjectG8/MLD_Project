@@ -28,10 +28,10 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<IEnumerable<Document2>>> GetAllDocument2s()
         {
             var pl2 = await _repository.GetAllDocument2s();
-            if (pl2 == null)
-            {
-                return NotFound("No Document 2 Found");
-            }
+            //if (pl2 == null)
+            //{
+            //    return NotFound("No Document 2 Found");
+            //}
             var mapDocumemt = _mapper.Map<List<Document2DTO>>(pl2);
             foreach (var pl in mapDocumemt)
             {
@@ -91,10 +91,10 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<Document2>> GetDocument2ById(int id)
         {
             var existDocument2 = await _repository.GetDocument2ById(id);
-            if (existDocument2 == null)
-            {
-                return NotFound();
-            }
+            //if (existDocument2 == null)
+            //{
+            //    return NotFound();
+            //}
             var mapDocumemt = _mapper.Map<Document2DTO>(existDocument2);
             if(mapDocumemt.ApproveBy != null)
             {
@@ -111,22 +111,22 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<IEnumerable<Document2>>> GetDoucment2ByCondition(string condition)
         {
             var existDocument2 = await _repository.GetDocument2ByCondition(condition);
-            if (existDocument2 == null)
-            {
-                return NotFound("No Document 2 Found");
-            }
+            //if (existDocument2 == null)
+            //{
+            //    return NotFound("No Document 2 Found");
+            //}
             var mapDocumemt = _mapper.Map<List<Document2DTO>>(existDocument2);
             return Ok(mapDocumemt);
-        }
+        }s
 
         [HttpGet("ByApproveID/{id}")]
         public async Task<ActionResult<IEnumerable<Document2>>> GetDocument2ByApprovalID(int id)
         {
             var document2 = await _repository.GetDocument2ByApprovalID(id);
-            if (document2 == null)
-            {
-                return NotFound("No Document 2 Found");
-            }
+            //if (document2 == null)
+            //{
+            //    return NotFound("No Document 2 Found");
+            //}
             var mapDocument = _mapper.Map<List<Document2DTO>>(document2);
             return Ok(mapDocument);
         }

@@ -33,10 +33,10 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<IEnumerable<Document3>>> GetAllDocument3s()
         {
             var document3s = await _repository.GetAllDocument3s();
-            if (document3s == null || document3s.Count() == 0)
-            {
-                return NotFound("No Document 3 Available");
-            }
+            //if (document3s == null || document3s.Count() == 0)
+            //{
+            //    return NotFound("No Document 3 Available");
+            //}
             var mapDocument = _mapper.Map<List<Document3DTO>>(document3s);
             foreach (var document3 in mapDocument)
             {
@@ -96,10 +96,10 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<IEnumerable<Document3>>> GetDocument3ByApprovalID(int id)
         {
             var Document3 = await _repository.GetDocument3ByApprovalID(id);
-            if (Document3 == null)
-            {
-                return NotFound("No Document 3 Found");
-            }
+            //if (Document3 == null)
+            //{
+            //    return NotFound("No Document 3 Found");
+            //}
             var mapDocument = _mapper.Map<List<Document3DTO>>(Document3);
             return Ok(mapDocument);
         }
@@ -108,10 +108,10 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<Document3>> GetDocument3ById(int id)
         {
             var existDocument3 = await _repository.GetDocument3ById(id);
-            if (existDocument3 == null)
-            {
-                return NotFound("No Document 3 Available");
-            }
+            //if (existDocument3 == null)
+            //{
+            //    return NotFound("No Document 3 Available");
+            //}
             var mapDocument = _mapper.Map<Document3DTO>(existDocument3);
             if (mapDocument.ApproveBy.HasValue)
             {
@@ -128,10 +128,10 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<IEnumerable<Document3>>> GetDoucment3ByCondition(string condition)
         {
             var existDocument3 = await _repository.GetDocument3sByCondition(condition);
-            if (existDocument3 == null)
-            {
-                return NotFound("No Document 3 Available");
-            }
+            //if (existDocument3 == null)
+            //{
+            //    return NotFound("No Document 3 Available");
+            //}
             var mapDocument = _mapper.Map<List<Document3DTO>>(existDocument3);
             return Ok(mapDocument);
         }

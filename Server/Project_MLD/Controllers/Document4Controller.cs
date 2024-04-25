@@ -69,10 +69,10 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<Document4>> GetDocument4ById(int id)
         {
             var existDocument4 = await _repository.GetDocument4ById(id);
-            if (existDocument4 == null)
-            {
-                return NotFound("No Document 4 Available");
-            }
+            //if (existDocument4 == null)
+            //{
+            //    return NotFound("No Document 4 Available");
+            //}
 
             return Ok(existDocument4);
         }
@@ -81,10 +81,10 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<IEnumerable<Document4>>> GetDoucment4sByCondition(string condition)
         {
             var existDocument4 = await _repository.GetDocument4sByCondition(condition);
-            if (existDocument4 == null)
-            {
-                return NotFound("No Document 4 Available");
-            }
+            //if (existDocument4 == null)
+            //{
+            //    return NotFound("No Document 4 Available");
+            //}
             var mapDocumemt = _mapper.Map<List<Document4DTO>>(existDocument4);
 
             return Ok(mapDocumemt);
