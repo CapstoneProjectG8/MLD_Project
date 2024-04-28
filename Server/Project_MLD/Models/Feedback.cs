@@ -17,5 +17,7 @@ public partial class Feedback
 
     public string? Description { get; set; }
 
+    public bool? Read { get; set; }
+
     public virtual User? User { get; set; }
 }

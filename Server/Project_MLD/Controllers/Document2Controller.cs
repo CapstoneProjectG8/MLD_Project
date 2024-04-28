@@ -28,14 +28,34 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<IEnumerable<Document2>>> GetAllDocument2s()
         {
             var pl2 = await _repository.GetAllDocument2s();
-            if (pl2 == null)
-            {
-                return NotFound("No Document 2 Found");
-            }
+            //if (pl2 == null)
+            //{
+            //    return NotFound("No Document 2 Found");
+            //}
             var mapDocumemt = _mapper.Map<List<Document2DTO>>(pl2);
             foreach (var pl in mapDocumemt)
             {
                 if(pl.ApproveBy.HasValue)
+                {
+                    var getUser = await _userRepository.GetUserById(pl.ApproveBy.Value);
+                    if (getUser != null)
+                    {
+                        pl.ApproveByName = getUser.FullName;
+                    }
+                }
+            }
+            return Ok(mapDocumemt);
+        }
+
+        [HttpGet("GetAllDoc2s")]
+        public async Task<ActionResult<IEnumerable<Document2>>> GetAllDoc2s()
+        {
+            var pl2 = await _repository.GetAllDoc2s();
+
+            var mapDocumemt = _mapper.Map<List<Document2DTO>>(pl2);
+            foreach (var pl in mapDocumemt)
+            {
+                if (pl.ApproveBy.HasValue)
                 {
                     var getUser = await _userRepository.GetUserById(pl.ApproveBy.Value);
                     if (getUser != null)
@@ -91,10 +111,10 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<Document2>> GetDocument2ById(int id)
         {
             var existDocument2 = await _repository.GetDocument2ById(id);
-            if (existDocument2 == null)
-            {
-                return NotFound();
-            }
+            //if (existDocument2 == null)
+            //{
+            //    return NotFound();
+            //}
             var mapDocumemt = _mapper.Map<Document2DTO>(existDocument2);
             if(mapDocumemt.ApproveBy != null)
             {
@@ -111,10 +131,10 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<IEnumerable<Document2>>> GetDoucment2ByCondition(string condition)
         {
             var existDocument2 = await _repository.GetDocument2ByCondition(condition);
-            if (existDocument2 == null)
-            {
-                return NotFound("No Document 2 Found");
-            }
+            //if (existDocument2 == null)
+            //{
+            //    return NotFound("No Document 2 Found");
+            //}
             var mapDocumemt = _mapper.Map<List<Document2DTO>>(existDocument2);
             return Ok(mapDocumemt);
         }
@@ -123,29 +143,35 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<IEnumerable<Document2>>> GetDocument2ByApprovalID(int id)
         {
             var document2 = await _repository.GetDocument2ByApprovalID(id);
-            if (document2 == null)
-            {
-                return NotFound("No Document 2 Found");
-            }
+            //if (document2 == null)
+            //{
+            //    return NotFound("No Document 2 Found");
+            //}
             var mapDocument = _mapper.Map<List<Document2DTO>>(document2);
             return Ok(mapDocument);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Document2>> AddDocument2(Document2DTO doc2)
+        public async Task<ActionResult<Document2>> AddDocument2(List<Document2DTO> doc2)
         {
             try
             {
-                doc2.Status = true;
-                doc2.CreatedDate = DateOnly.FromDateTime(DateTime.Now);
-                var document = _mapper.Map<Document2>(doc2);
-                var addedDocument = await _repository.AddDocument2(document);
-                if (addedDocument == null)
+                var listDocumentDTO = new List<Document2DTO>();
+                foreach (var item in doc2)
                 {
-                    return BadRequest("Error Adding Document1");
+                    item.Status = true;
+                    item.CreatedDate = DateOnly.FromDateTime(DateTime.Now);
+                    var document = _mapper.Map<Document2>(item);
+                    var addedDocument = await _repository.AddDocument2(document);
+                    if (addedDocument == null)
+                    {
+                        return BadRequest("Error Adding Document1");
+                    }
+                    var doc = _mapper.Map<Document2DTO>(addedDocument);
+                    listDocumentDTO.Add(doc);
                 }
-                var addedDocumentDTO = _mapper.Map<Document2DTO>(addedDocument);
-                return Ok(addedDocumentDTO);
+
+                return Ok(listDocumentDTO);
             }
             catch (Exception ex)
             {
@@ -164,7 +190,7 @@ namespace Project_MLD.Controllers
             return NoContent();
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<IActionResult> UpdateDocument2(Document2DTO pl2)
         {
             var mapDocument = _mapper.Map<Document2>(pl2);
@@ -181,7 +207,7 @@ namespace Project_MLD.Controllers
             });
         }
 
-        [HttpPut("ApproveDocument2/{id}")]
+        [HttpPut("ApproveDocument2")]
         public async Task<IActionResult> ApproveDocument2(Document2DTO pl2)
         {
             var mapDocument = _mapper.Map<Document2>(pl2);

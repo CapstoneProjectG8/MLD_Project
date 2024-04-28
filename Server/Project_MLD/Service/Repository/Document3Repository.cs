@@ -33,12 +33,20 @@ namespace Project_MLD.Service.Repository
             return true;
         }
 
+        public async Task<IEnumerable<Document3>> GetAllDoc3s()
+        {
+            return await _context.Document3s
+                .Include(x => x.User)
+                .Include(x => x.Document1)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<Document3>> GetAllDocument3s()
         {
             return await _context.Document3s
                 .Include(x => x.User)
                 .Include(x => x.Document1)
-                .Where(x => x.Status == true && x.IsApprove != 0)
+                .Where(x => x.Status == true && x.IsApprove != 1)
                 .ToListAsync();
         }
 

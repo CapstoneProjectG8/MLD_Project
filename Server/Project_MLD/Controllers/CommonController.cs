@@ -103,5 +103,50 @@ namespace Project_MLD.Controllers
             }
         }
 
+        [HttpDelete("DeleteDocumentByDocumentId")]
+        public async Task<IActionResult> DeleteDocumentByDocumentId(int docType, int docId)
+        {
+            try
+            {
+                switch (docType)
+                {
+                    case 1:
+                        var result = await _document1Repository.DeleteDocument1(docId);
+                        if (!result)
+                        {
+                            return NotFound("No Document 1 Available");
+                        }
+                        return NoContent();
+                    case 2:
+                        var result2 = await _document2Repository.DeleteDocument2(docId);
+                        if (!result2)
+                        {
+                            return NotFound("No Document 2 Available");
+                        }
+                        return NoContent();
+                    case 3:
+                        var result3 = await _document3Repository.DeleteDocument3(docId);
+                        if (!result3)
+                        {
+                            return NotFound("No Document 3 Available");
+                        }
+                        return NoContent();
+                    case 4:
+                        var result4 = await _document4Repository.DeleteDocument4(docId);
+                        if (!result4)
+                        {
+                            return NotFound("No Document 4 Available");
+                        }
+                        return NoContent();
+                    default:
+                        return BadRequest("Cant not find document");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
     }
 }

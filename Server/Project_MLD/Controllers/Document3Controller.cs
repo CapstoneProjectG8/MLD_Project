@@ -33,10 +33,30 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<IEnumerable<Document3>>> GetAllDocument3s()
         {
             var document3s = await _repository.GetAllDocument3s();
-            if (document3s == null || document3s.Count() == 0)
+            //if (document3s == null || document3s.Count() == 0)
+            //{
+            //    return NotFound("No Document 3 Available");
+            //}
+            var mapDocument = _mapper.Map<List<Document3DTO>>(document3s);
+            foreach (var document3 in mapDocument)
             {
-                return NotFound("No Document 3 Available");
+                if (document3.ApproveBy.HasValue)
+                {
+                    var getUser = await _userRepository.GetUserById(document3.ApproveBy.Value);
+                    if (getUser != null)
+                    {
+                        document3.ApproveByName = getUser.FullName;
+                    }
+                }
             }
+            return Ok(mapDocument);
+        }
+
+        [HttpGet("GetAllDoc3s")]
+        public async Task<ActionResult<IEnumerable<Document3>>> GetAllDoc3s()
+        {
+            var document3s = await _repository.GetAllDoc3s();
+
             var mapDocument = _mapper.Map<List<Document3DTO>>(document3s);
             foreach (var document3 in mapDocument)
             {
@@ -96,10 +116,10 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<IEnumerable<Document3>>> GetDocument3ByApprovalID(int id)
         {
             var Document3 = await _repository.GetDocument3ByApprovalID(id);
-            if (Document3 == null)
-            {
-                return NotFound("No Document 3 Found");
-            }
+            //if (Document3 == null)
+            //{
+            //    return NotFound("No Document 3 Found");
+            //}
             var mapDocument = _mapper.Map<List<Document3DTO>>(Document3);
             return Ok(mapDocument);
         }
@@ -108,10 +128,10 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<Document3>> GetDocument3ById(int id)
         {
             var existDocument3 = await _repository.GetDocument3ById(id);
-            if (existDocument3 == null)
-            {
-                return NotFound("No Document 3 Available");
-            }
+            //if (existDocument3 == null)
+            //{
+            //    return NotFound("No Document 3 Available");
+            //}
             var mapDocument = _mapper.Map<Document3DTO>(existDocument3);
             if (mapDocument.ApproveBy.HasValue)
             {
@@ -128,10 +148,10 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<IEnumerable<Document3>>> GetDoucment3ByCondition(string condition)
         {
             var existDocument3 = await _repository.GetDocument3sByCondition(condition);
-            if (existDocument3 == null)
-            {
-                return NotFound("No Document 3 Available");
-            }
+            //if (existDocument3 == null)
+            //{
+            //    return NotFound("No Document 3 Available");
+            //}
             var mapDocument = _mapper.Map<List<Document3DTO>>(existDocument3);
             return Ok(mapDocument);
         }
@@ -174,7 +194,7 @@ namespace Project_MLD.Controllers
             return NoContent();
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<IActionResult> UpdateDocument3(Document3DTO pl3)
         {
             var mapDocument = _mapper.Map<Document3>(pl3);
@@ -191,7 +211,7 @@ namespace Project_MLD.Controllers
             });
         }
 
-        [HttpPut("ApproveDocument3/{id}")]
+        [HttpPut("ApproveDocument3")]
         public async Task<IActionResult> ApproveDocument3(Document3DTO pl3)
         {
             var mapDocument = _mapper.Map<Document3>(pl3);

@@ -9,7 +9,7 @@ interface User {
   fullName: string;
   email: string;
   placeOfBirth: string;
-  gender: string;
+  gender: boolean;
   active: boolean;
   createdDate: string;
   accountId: string;
@@ -58,7 +58,7 @@ const Account: FC = () => {
           fullName: user.fullName,
           email: user.email,
           active: user.active,
-          gender: user.gender ? 'Male' : 'Female',
+          gender: user.gender,
           createdDate: user.createdDate,
           placeOfBirth: user.placeOfBirth,
           accountId: user.accountId,
@@ -106,8 +106,11 @@ const Account: FC = () => {
 
   const handleUpdate = async () => {
     try {
-      const updatedDetail = { ...accountDetail, roleId: updatedRole, active: updatedActive };
-      await axios.put(`https://localhost:7241/api/Account/${selectedUser?.accountId}`, updatedDetail);
+      const updatedUser1 = { ...selectedUser, active: !selectedUser.active };
+      const requestBody = { id: selectedUser.id, accountId: selectedUser.accountId, active: updatedUser1.active };
+      await axios.put(`https://localhost:7241/api/User/${selectedUser.id}`, requestBody);
+      const updatedUsers1 = users.map(u => (u.id === selectedUser.id ? updatedUser1 : u));
+      setUsers(updatedUsers1);
       message.success(`User details updated successfully.`);
       setDetailModalVisible(false);
     } catch (error) {
@@ -280,6 +283,7 @@ const Account: FC = () => {
       title: 'Gender',
       dataIndex: 'gender',
       key: 'gender',
+      render: (gender: boolean) => (gender ? 'Male' : 'Female'),
       ...getColumnFilterGender('gender', [
         {text: 'Male', value: true},
         {text: 'Female', value: false},
@@ -349,6 +353,7 @@ const Account: FC = () => {
             name="username"
             rules={[
               { required: true, message: 'Please input your username!' },
+              { pattern: /^\S+$/, message: 'Username cannot contain whitespace!' },
             ]}
           >
             <Input />

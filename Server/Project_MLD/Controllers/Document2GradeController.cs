@@ -50,34 +50,40 @@ namespace Project_MLD.Controllers
             return Ok(mapDocumemt);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateDocument2Grade(List<Document2GradeDTO> requests)
-        {
-            try
-            {
-                var mapRequests = _mapper.Map<List<Document2Grade>>(requests);
+        //[HttpPut]
+        //public async Task<IActionResult> UpdateDocument2Grade(List<Document2GradeDTO> requests)
+        //{
+        //    try
+        //    {
+        //        var mapRequests = _mapper.Map<List<Document2Grade>>(requests);
 
 
-                await _repository.UpdateDocument2Grade(mapRequests);
+        //        await _repository.UpdateDocument2Grade(mapRequests);
 
-                return Ok("Update success");
-            }
-            catch (Exception ex)
-            {
-                // Log the exception or handle it accordingly
-                return StatusCode(500, $"An error occurred while updating Document2 Grade: {ex.Message}");
-            }
-        }
+        //        return Ok("Update success");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Log the exception or handle it accordingly
+        //        return StatusCode(500, $"An error occurred while updating Document2 Grade: {ex.Message}");
+        //    }
+        //}
 
         [HttpPost]
-        public async Task<IActionResult> AddDocument2Grade(Document2GradeDTO dto)
+        public async Task<IActionResult> AddDocument2Grade(List<Document2GradeDTO> listDto)
         {
             try
             {
-                var document2 = _mapper.Map<Document2Grade>(dto);
-                var doc = await _repository.AddDocument2Grade(document2);
-                var mapDoc2 = _mapper.Map<Document2GradeDTO>(document2);
-                return Ok(mapDoc2);
+                var listDoc2 = new List<Document2GradeDTO>();
+                foreach(var item in listDto)
+                {
+                    var document2 = _mapper.Map<Document2Grade>(item);
+                    var doc = await _repository.AddDocument2Grade(document2);
+                    var mapDoc2 = _mapper.Map<Document2GradeDTO>(document2);
+                    listDoc2.Add(mapDoc2);
+                }
+                
+                return Ok(listDoc2);
             }
             catch (Exception ex)
             {

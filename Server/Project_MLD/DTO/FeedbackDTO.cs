@@ -16,6 +16,8 @@ namespace Project_MLD.DTO
 
         public string? Description { get; set; }
 
+        public bool? Read { get; set; }
+
         public string? UserName { get; set; }
 
     }

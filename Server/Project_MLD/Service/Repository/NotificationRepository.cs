@@ -32,7 +32,7 @@ namespace Project_MLD.Service.Repository
         {
             return await _context.Notifications
                 .Where(x => x.ReceiveBy == receiverId)
-                .OrderByDescending(x => x.Id).ToListAsync();
+                .OrderByDescending(x => x.Id).Take(10).ToListAsync();
         }
     }
 }

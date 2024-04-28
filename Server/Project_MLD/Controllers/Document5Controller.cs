@@ -33,10 +33,10 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<Document5>> GetDocument5ById(int id)
         {
             var existDocument5 = await _repository.GetDocument5ById(id);
-            if (existDocument5 == null)
-            {
-                return NotFound();
-            }
+            //if (existDocument5 == null)
+            //{
+            //    return NotFound();
+            //}
             var mappper = _mapper.Map<Document5DTO>(existDocument5);
             return Ok(mappper);
         }
@@ -69,7 +69,7 @@ namespace Project_MLD.Controllers
             return NoContent();
         }
 
-        [HttpPut("{id}")]
+        [HttpPut]
         public async Task<IActionResult> UpdateDocument5( Document5DTO pl5)
         {
             var mapDocument = _mapper.Map<Document5>(pl5);

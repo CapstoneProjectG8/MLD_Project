@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import './style.scss'
 import { useEffect, useState } from 'react';
 import { Button, Container, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Tooltip } from '@mui/material';
@@ -8,6 +8,8 @@ import { checkAuthenticationUser, loginUser } from '../../../features/user/userS
 import { apiCheckVerifyPassword, apiPostSendEmail } from '../../../api/auth';
 
 const Header = () => {
+    const location = useLocation()
+    const navigate = useNavigate()
     const dispatch = useAppDispatch();
     const [isScrolling, setIsScrolling] = useState(false);
     const [openLogin, setOpenlogin] = useState(false);
@@ -15,6 +17,7 @@ const Header = () => {
     const [openCode, setOpenCode] = useState(false);
     const [isLogin, setIsLogin] = useState(false)
     const loginStatus = useAppSelector(state => state.auth.loginStatus)
+    const authStatus = useAppSelector(state => state.auth.authStatus)
     // const [user, setUser] = useState<string | null>('');
 
     const user = useAppSelector(state => state.auth.user)
@@ -25,6 +28,19 @@ const Header = () => {
         }
         verifyToken()
     }, [dispatch, isLogin])
+
+    console.log(location.pathname.split('/'))
+
+    useEffect(() => {
+        if (authStatus === 1) {
+            setOpenlogin(false)
+        }
+        if (authStatus === 0) {
+            if (location.pathname !== '/')
+                navigate('/')
+            setOpenlogin(true)
+        }
+    }, [authStatus, location.pathname, navigate])
 
     useEffect(() => {
         if (loginStatus === 4) {
@@ -71,12 +87,6 @@ const Header = () => {
 
     return (
         <div className={`header  ${isScrolling ? "scroll" : ""}`}>
-            {/* <NavLink to="/profile" className='user-profile'>
-                <span>Chào mừng User1</span> <ArrowDropDownOutlined style={{ color: "#B6B1B1", textDecoration: "none" }} />
-            </NavLink>
-            <div className='header-image'>
-                <img src="/banner.jpg" alt="banner" />
-            </div> */}
             <div className="container">
                 <div className="left-header">
                     <div className="logo-header">
@@ -193,37 +203,16 @@ const Header = () => {
                         </div>
                     </div>
                 </div>
-                {/* <div className="hide-header">
-                    <div className="hide-header-button">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="32"
-                            height="32"
-                            fillRule="red"
-                            className="bi bi-list"
-                            viewBox="0 0 16 16"
-                        >
-                            <path
-                                fillRule="evenodd"
-                                d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"
-                            />
-                        </svg>
-                    </div>
-                    <div className="hide-header-action">
-                        <button className="login-button hide-button-action">
-                            <Link to="/">Đăng nhập</Link>
-                        </button>
-                        <button className="hide-button-action">
-                            <Link to="/">Đăng ký</Link>
-                        </button>
-                    </div>
-                </div> */}
             </div>
             <Dialog
                 fullWidth={true}
                 maxWidth="md"
                 open={openLogin}
-                onClose={handleLoginClose}
+                onClose={async (event, reason) => {
+                    if (reason !== 'backdropClick' && reason !== 'escapeKeyDown') {
+                        handleLoginClose();
+                    }
+                }}
                 PaperProps={{
                     component: 'form',
                     onSubmit: async (event: React.FormEvent<HTMLFormElement>) => {
@@ -281,7 +270,6 @@ const Header = () => {
                     </div>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleLoginClose}>Cancel</Button>
                     <Button type="submit">Login</Button>
                 </DialogActions>
             </Dialog>

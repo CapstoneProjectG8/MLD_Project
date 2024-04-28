@@ -5,9 +5,11 @@ namespace Project_MLD.Models;
 
 public partial class Document2Grade
 {
-    public int Document2Id { get; set; }
+    public int Id { get; set; }
 
-    public int GradeId { get; set; }
+    public int? Document2Id { get; set; }
+
+    public int? GradeId { get; set; }
 
     public string? TitleName { get; set; }
 
@@ -25,9 +27,9 @@ public partial class Document2Grade
 
     public string? Condition { get; set; }
 
-    public virtual Document2 Document2 { get; set; } = null!;
+    public virtual Document2? Document2 { get; set; }
 
-    public virtual Grade Grade { get; set; } = null!;
+    public virtual Grade? Grade { get; set; }
 
     public virtual User? HostByNavigation { get; set; }
 }

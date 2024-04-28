@@ -48,10 +48,29 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<IEnumerable<Document1>>> GetAllDocument1()
         {
             var Document1 = await _repository.GetAllDocument1s();
-            if (Document1 == null || Document1.Count() == 0)
+            //if (Document1 == null || Document1.Count() == 0)
+            //{
+            //    return NotFound("No Document 1 Available");
+            //}
+            var mappedDocuments = _mapper.Map<List<Document1DTO>>(Document1);
+            foreach (var document in mappedDocuments)
             {
-                return NotFound("No Document 1 Available");
+                if (document.ApproveBy.HasValue)
+                {
+                    var getUser = await _userRepository.GetUserById(document.ApproveBy.Value);
+                    if (getUser != null)
+                    {
+                        document.ApproveByName = getUser.FullName;
+                    }
+                }
             }
+            return Ok(mappedDocuments);
+        }
+
+        [HttpGet("GetAllDoc1s")]
+        public async Task<ActionResult<IEnumerable<Document1>>> GetAllDoc1s()
+        {
+            var Document1 = await _repository.GetAllDoc1s();
             var mappedDocuments = _mapper.Map<List<Document1DTO>>(Document1);
             foreach (var document in mappedDocuments)
             {
@@ -71,10 +90,10 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<Document1>> GetDocument1ById(int id)
         {
             var Document1 = await _repository.GetDocument1ById(id);
-            if (Document1 == null)
-            {
-                return NotFound("No Document 1 Available");
-            }
+            //if (Document1 == null)
+            //{
+            //    return NotFound("No Document 1 Available");
+            //}
             var mapDoc = _mapper.Map<Document1DTO>(Document1);
             if (mapDoc.ApproveBy != null)
             {
@@ -91,10 +110,10 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<IEnumerable<Document1>>> FilterDocument1(int gradeId, int subjectId)
         {
             var Document1 = await _repository.FilterDocument1(gradeId, subjectId);
-            if (Document1 == null)
-            {
-                return NotFound("No Document 1 Found");
-            }
+            //if (Document1 == null)
+            //{
+            //    return NotFound("No Document 1 Found");
+            //}
             var mapDocument = _mapper.Map<List<Document1DTO>>(Document1);
             return Ok(mapDocument);
         }
@@ -103,10 +122,10 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<IEnumerable<Document1>>> GetDocument1ByApprovalID(int id)
         {
             var Document1 = await _repository.GetDocument1ByApprovalID(id);
-            if (Document1 == null)
-            {
-                return NotFound("No Document 1 Found");
-            }
+            //if (Document1 == null)
+            //{
+            //    return NotFound("No Document 1 Found");
+            //}
             var mapDocument = _mapper.Map<List<Document1DTO>>(Document1);
             return Ok(mapDocument);
         }

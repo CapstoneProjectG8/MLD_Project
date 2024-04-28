@@ -6,17 +6,12 @@ export enum EventStatus {
 }
 
 interface Base {
-  type: 'message' | 'notification' | 'event';
+  type: 'message';
   id: string;
   title: string;
 }
 
-export interface Notification extends Base {
-  type: 'notification';
-  read?: boolean;
-  avatar: string;
-  datetime: string;
-}
+
 
 export interface Message extends Base {
   type: 'message';
@@ -25,16 +20,13 @@ export interface Message extends Base {
   datetime: string;
   description: string;
   clickClose: boolean;
+  docId: string;
+  index: string;
 }
 
-export interface Event extends Base {
-  type: 'event';
-  description: string;
-  extra: string;
-  status: keyof typeof EventStatus;
-}
 
-type Notices = Notification | Message | Event;
+
+type Notices =  Message ;
 
 export type Notice<T extends Notices['type'] | 'all' = 'all'> = T extends 'all'
   ? Notices

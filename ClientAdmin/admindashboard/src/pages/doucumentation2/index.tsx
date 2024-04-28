@@ -11,7 +11,7 @@ interface Document {
   name: string;
   status: boolean;
   userId: string;
-  approve_by: string;
+  approveBy: string;
   isApprove: boolean;
   createdDate: string;
   linkFile: string;
@@ -35,7 +35,7 @@ const DocumentationPage2: FC = () => {
     setConfirmModalVisible(true);
   };
   useEffect(() => {
-    fetch('https://localhost:7241/api/Document2')
+    fetch('https://localhost:7241/api/Document2/GetAllDoc2s')
       .then(response => response.json())
       .then(data => setDocuments(data))
       .catch(error => console.error('Error fetching data:', error));
@@ -53,7 +53,7 @@ const DocumentationPage2: FC = () => {
       await axios.put(`https://localhost:7241/api/Document2`, requestBody);
       const updatedDocs = documents.map(u => (u.id === selectedDoc.id ? updatedDoc : u));
       setDocuments(updatedDocs);
-      message.success(`User ${updatedDoc.status ? 'unbanned' : 'banned'} successfully.`);
+      message.success(`${selectedDoc?.name} ${updatedDoc.status ? 'unbanned' : 'banned'} successfully.`);
     } catch (error) {
       console.error(error);
       message.error('Failed to update Doc.');
@@ -160,10 +160,6 @@ const DocumentationPage2: FC = () => {
       dataIndex: 'isApprove',
       key: 'isApprove',
       render: (isApprove: boolean) => (isApprove ? 'Yes' : 'No'),
-      ...getColumnFilterStatus('isApprove', [
-        {text: 'Approve', value: true},
-        {text: 'Un Approve', value: false},
-      ]),
     },
     {
       title: 'Status',

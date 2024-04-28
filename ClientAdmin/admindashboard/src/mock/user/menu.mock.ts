@@ -4,15 +4,6 @@ import { intercepter, mock } from '../config';
 
 const mockMenuList: MenuList = [
   {
-    code: 'dashboard',
-    label: {
-      zh_CN: 'Bảng điều khiển',
-      en_US: 'Dashboard',
-    },
-    icon: 'dashboard',
-    path: '/dashboard',
-  },
-  {
     code: 'documentation',
     label: {
       zh_CN: 'Tài liệu 1',

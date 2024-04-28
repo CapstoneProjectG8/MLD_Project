@@ -5,6 +5,7 @@ namespace Project_MLD.Service.Interface
     public interface IDocument3Repository
     {
         Task<IEnumerable<Document3>> GetAllDocument3s();
+        Task<IEnumerable<Document3>> GetAllDoc3s();
         Task<Document3> GetDocument3ById(int id);
         Task<Document3> AddDocument3(Document3 pl3);
         Task<bool> UpdateDocument3(Document3 pl3);

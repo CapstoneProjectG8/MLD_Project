@@ -6,6 +6,7 @@ using Project_MLD.DTO;
 using Project_MLD.Models;
 using Project_MLD.Service.Interface;
 using Project_MLD.Service.Repository;
+using System.Data;
 
 namespace Project_MLD.Controllers
 {
@@ -37,11 +38,22 @@ namespace Project_MLD.Controllers
         [HttpPost]
         public async Task<ActionResult<Feedback>> AddFeedback(FeedbackDTO st)
         {
+            st.Read = false;
             var fb = _mappper.Map<Feedback>(st);
             var addFB = await _repository.AddFeedback(fb);
             var mapFB = _mappper.Map<FeedbackDTO>(addFB);
             return Ok(mapFB);
         }
-
+        [HttpPut]
+        public async Task<ActionResult<Feedback>> PutFeedback(FeedbackDTO st)
+        {
+            var mapperFB = _mappper.Map<Feedback>(st);
+            var result = await _repository.UpdateFeedback(mapperFB);
+            if (!result)
+            {
+                return NotFound("Chua dien du thong tin id");
+            }
+            return Ok();
+        }
     }
 }

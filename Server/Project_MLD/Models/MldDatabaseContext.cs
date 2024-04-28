@@ -93,6 +93,7 @@ public partial class MldDatabaseContext : DbContext
         IConfigurationRoot configuration = builder.Build();
         optionsBuilder.UseSqlServer(configuration.GetConnectionString("MyCnn"));
     }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Account>(entity =>
@@ -299,15 +300,14 @@ public partial class MldDatabaseContext : DbContext
 
         modelBuilder.Entity<Document2Grade>(entity =>
         {
-            entity.HasKey(e => new { e.Document2Id, e.GradeId });
-
             entity.ToTable("Document2_Grade");
 
-            entity.Property(e => e.Document2Id).HasColumnName("document2_id");
-            entity.Property(e => e.GradeId).HasColumnName("grade_id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.CollaborateWith).HasColumnName("collaborate_with");
             entity.Property(e => e.Condition).HasColumnName("condition");
             entity.Property(e => e.Description).HasColumnName("description");
+            entity.Property(e => e.Document2Id).HasColumnName("document2_id");
+            entity.Property(e => e.GradeId).HasColumnName("grade_id");
             entity.Property(e => e.HostBy).HasColumnName("host_by");
             entity.Property(e => e.Place).HasColumnName("place");
             entity.Property(e => e.Slot).HasColumnName("slot");
@@ -316,12 +316,11 @@ public partial class MldDatabaseContext : DbContext
 
             entity.HasOne(d => d.Document2).WithMany(p => p.Document2Grades)
                 .HasForeignKey(d => d.Document2Id)
-                .HasConstraintName("FK_Document2_Grade_Document 21");
+                .HasConstraintName("FK_Document2_Grade_Document 2");
 
             entity.HasOne(d => d.Grade).WithMany(p => p.Document2Grades)
                 .HasForeignKey(d => d.GradeId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_Document2_Grade_Grade");
+                .HasConstraintName("FK_Document2_Grade_Grade1");
 
             entity.HasOne(d => d.HostByNavigation).WithMany(p => p.Document2Grades)
                 .HasForeignKey(d => d.HostBy)
@@ -463,9 +462,7 @@ public partial class MldDatabaseContext : DbContext
         {
             entity.ToTable("Evaluate");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Document5Id).HasColumnName("document5_id");
             entity.Property(e => e.Evaluate11).HasColumnName("evaluate_1_1");
             entity.Property(e => e.Evaluate12).HasColumnName("evaluate_1_2");
@@ -489,13 +486,12 @@ public partial class MldDatabaseContext : DbContext
         {
             entity.ToTable("Feedback");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.DocId).HasColumnName("doc_id");
             entity.Property(e => e.DocType).HasColumnName("doc_type");
             entity.Property(e => e.Message).HasColumnName("message");
+            entity.Property(e => e.Read).HasColumnName("read");
             entity.Property(e => e.UserId).HasColumnName("user_id");
 
             entity.HasOne(d => d.User).WithMany(p => p.Feedbacks)
@@ -568,7 +564,6 @@ public partial class MldDatabaseContext : DbContext
 
             entity.HasOne(d => d.Document1).WithMany(p => p.PeriodicAssessments)
                 .HasForeignKey(d => d.Document1Id)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Periodic Assessment_Document 1");
 
             entity.HasOne(d => d.FormCategory).WithMany(p => p.PeriodicAssessments)

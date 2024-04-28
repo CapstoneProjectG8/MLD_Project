@@ -9,7 +9,7 @@ const { Title, Paragraph } = Typography;
 interface Document {
   id: string;
   name: string;
-  document1_id: string;
+  document1Id: string;
   status: boolean;
   userId: string;
   claas_name: string;
@@ -37,7 +37,7 @@ const DocumentationPage3: FC = () => {
     setConfirmModalVisible(true);
   };
   useEffect(() => {
-    fetch('https://localhost:7241/api/Document3')
+    fetch('https://localhost:7241/api/Document3/GetAllDoc3s')
       .then(response => response.json())
       .then(data => setDocuments(data))
       .catch(error => console.error('Error fetching data:', error));
@@ -51,11 +51,11 @@ const DocumentationPage3: FC = () => {
   const confirmBanUnban = async () => {
     try {
       const updatedDoc = { ...selectedDoc, status: !selectedDoc.status };
-      const requestBody = { id: selectedDoc.id, document1_id:selectedDoc?.document1_id, userId: selectedDoc?.userId, status: updatedDoc.status };
+      const requestBody = { id: selectedDoc.id, document1Id:selectedDoc?.document1Id, userId: selectedDoc?.userId, status: updatedDoc.status };
       await axios.put(`https://localhost:7241/api/Document3`, requestBody);
       const updatedDocs = documents.map(u => (u.id === selectedDoc.id ? updatedDoc : u));
       setDocuments(updatedDocs);
-      message.success(`User ${updatedDoc.status ? 'unbanned' : 'banned'} successfully.`);
+      message.success(`${selectedDoc?.name} ${updatedDoc.status ? 'unbanned' : 'banned'} successfully.`);
     } catch (error) {
       console.error(error);
       message.error('Failed to update Doc.');
@@ -161,10 +161,7 @@ const DocumentationPage3: FC = () => {
       title: 'Is Approve',
       dataIndex: 'isApprove',
       key: 'isApprove',
-      render: (isApprove: boolean) => (isApprove ? 'Yes' : 'No'),...getColumnFilterStatus('isApprove', [
-        {text: 'Approve', value: true},
-        {text: 'Un Approve', value: false},
-      ]),
+      render: (isApprove: boolean) => (isApprove ? 'Yes' : 'No'),
 
     },
     {

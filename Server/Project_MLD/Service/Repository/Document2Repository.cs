@@ -37,7 +37,7 @@ namespace Project_MLD.Service.Repository
         {
             return await _context.Document2s
                 .Include(x => x.User)
-                .Where(x => x.Status == true && x.IsApprove != 0).ToListAsync();
+                .Where(x => x.Status == true && x.IsApprove != 1).ToListAsync();
         }
 
         public async Task<Document2> GetDocument2ById(int id)
@@ -130,12 +130,20 @@ namespace Project_MLD.Service.Repository
 
         public async Task<IEnumerable<int?>> GetListHostbyByIdOfUserByDoc2Id(int doc2Id)
         {
-            var hostIds = await _context.Document2s
-                .Where(x => x.Id == doc2Id)
-                .SelectMany(x => x.Document2Grades.Select(g => g.HostBy)) // Cast to nullable int
+            var hostIds = await _context.Document2Grades
+                .Where(x => x.Document2Id == doc2Id)
+                .Select(x => x.HostBy)
+                .Distinct()
                 .ToListAsync();
 
             return hostIds;
+        }
+
+        public async Task<IEnumerable<Document2>> GetAllDoc2s()
+        {
+            return await _context.Document2s
+                .Include(x => x.User)
+                .ToListAsync();
         }
     }
 }

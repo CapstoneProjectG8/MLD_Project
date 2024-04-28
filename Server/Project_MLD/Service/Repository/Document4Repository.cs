@@ -33,6 +33,13 @@ namespace Project_MLD.Service.Repository
             return true;
         }
 
+        public async Task<IEnumerable<Document4>> GetAllDoc4s()
+        {
+            return await _context.Document4s
+               .Include(x => x.TeachingPlanner)
+               .ToListAsync();
+        }
+
         public async Task<IEnumerable<Document4>> GetAllDocument4s()
         {
             return await _context.Document4s
