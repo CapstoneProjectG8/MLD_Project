@@ -8,33 +8,45 @@ using Project_MLD.Models;
 using Project_MLD.Utils.PasswordHash;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
+using Project_MLD.Utils.GenerateCode;
+using Project_MLD.Utils.GmailSender;
+using AutoMapper;
+using Microsoft.Extensions.Configuration;
 
 public class AccountControllerTests
 {
     private readonly Mock<IAccountRepository> _mockRepository;
     private readonly Mock<IPasswordHasher> _mockPasswordHasher;
     private readonly AccountController _controller;
-    private Mock<MldDatabaseContext> _context;
-
-
+    private readonly MldDatabaseContext _mockContext;
+    private readonly Mock<IEmailSender> _mockEmailSender;
+    private readonly Mock<IMailBody> _mockMailBody;
+    private readonly Mock<IGenerateCode> _mockCodeGenerate;
+    private readonly Mock<IConfiguration> _mockConfig;
+    private readonly Mock<IMapper> _mockMapper;
 
     public AccountControllerTests()
     {
         var options = new DbContextOptionsBuilder<MldDatabaseContext>()
                .UseSqlServer("ConnectionStrings")
-                /*seSqlServer("ConnectionStrings")*/
                 .Options;
 
-         _context = new Mock<MldDatabaseContext>(options);
+        _mockContext = new MldDatabaseContext(options);
         _mockRepository = new Mock<IAccountRepository>();
         _mockPasswordHasher = new Mock<IPasswordHasher>();
-        _controller = new AccountController(null, _mockRepository.Object, _context.Object , null, _mockPasswordHasher.Object, null, null, null);
+        _mockEmailSender = new Mock<IEmailSender> ();
+        _mockCodeGenerate = new Mock<IGenerateCode> ();
+        _mockMailBody = new Mock<IMailBody> (); 
+        _mockMapper = new Mock<IMapper> ();
+        _mockConfig = new Mock<IConfiguration> ();
+        _controller = new AccountController(_mockConfig.Object, _mockRepository.Object, _mockContext, _mockMapper.Object, _mockPasswordHasher.Object, _mockEmailSender.Object, _mockMailBody.Object, _mockCodeGenerate.Object);
     }
 
-    //public void Dispose()
-    //{
-    //    _context.Database.EnsureDeleted();
-    //}
+    public void Dispose()
+    {
+        _mockContext.Database.EnsureDeleted();
+    }
     [Fact]
     public void Login_WithNullUsername_ReturnsBadRequest()
     {
@@ -66,6 +78,7 @@ public class AccountControllerTests
         Assert.Equal(400, objectResult.StatusCode);
         Assert.Equal("Account not found.", objectResult.Value);
     }
+
 
     [Fact]
     public async Task GetAllAccount_ReturnsOkResult_WithAllAccounts()
@@ -190,7 +203,7 @@ public class AccountControllerTests
         var okResult = Assert.IsType<OkObjectResult>(result.Result);
         Assert.IsType<Account>(okResult.Value);
 
-  
+
     }
 
     [Fact]
@@ -214,58 +227,110 @@ public class AccountControllerTests
             acc.LoginAttempt == 0
         )), Times.Once);
     }
+    [Fact]
+    public async Task UpdateAccount_WithMismatchedId_ReturnsBadRequest()
+    {
+        // Arrange
+        var accountDto = new AccountDTO { AccountId = 1 };
+        var id = 2;
 
-    //[Fact]
-    //public async Task SendMailResetPassword_ReturnsBadRequest_WhenUserNotFound()
-    //{
-    //    // Arrange
-    //    _context.Setup(x => x.Users.FirstOrDefaultAsync(It.IsAny<Expression<Func<User, bool>>>()))
-    //        .ReturnsAsync((User)null);
+        // Act
+        var result = await _controller.UpdateAccount(id, accountDto);
 
-    //    // Act
-    //    var result = await _controller.SendMailResetPassword("test@mail.com");
+        // Assert
+        Assert.IsType<BadRequestObjectResult>(result);
+    }
 
-    //    // Assert
-    //    Assert.IsType<BadRequestObjectResult>(result);
-    //}
+    [Fact]
+    public async Task UpdateAccount_WithValidAccount_ReturnsOk()
+    {
+        // Arrange
+        var accountDto = new AccountDTO { AccountId = 1, Password = "testpassword" };
+        var id = 1;
+        _mockRepository.Setup(r => r.UpdateAccount(It.IsAny<Account>())).ReturnsAsync(true);
 
-    //[Fact]
-    //public async Task SendMailResetPassword_ReturnsBadRequest_WhenAccountNotFound()
-    //{
-    //    // Arrange
-    //    _context.Setup(x => x.Users.FirstOrDefaultAsync(It.IsAny<Expression<Func<User, bool>>>()))
-    //        .ReturnsAsync(new User());
-    //    _context.Setup(x => x.Accounts.Where(It.IsAny<Expression<Func<Account, bool>>>()).FirstOrDefaultAsync())
-    //        .ReturnsAsync((Account)null);
+        // Act
+        var result = await _controller.UpdateAccount(id, accountDto);
 
-    //    // Act
-    //    var result = await _controller.SendMailResetPassword("test@mail.com");
+        // Assert
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        var returnAccount = Assert.IsType<Account>(okResult.Value);
+        Assert.Equal(accountDto.AccountId, returnAccount.AccountId);
+    }
 
-    //    // Assert
-    //    Assert.IsType<BadRequestObjectResult>(result);
-    //}
+    [Fact]
+    public async Task UpdateAccount_WithNonExistingAccount_ReturnsNotFound()
+    {
+        // Arrange
+        var accountDto = new AccountDTO { AccountId = 1, Password = "testpassword" };
+        var id = 1;
+        _mockRepository.Setup(r => r.UpdateAccount(It.IsAny<Account>())).ReturnsAsync(false);
 
-    //[Fact]
-    //public async Task SendMailResetPassword_ReturnsOk_WhenMailSentSuccessfully()
-    //{
-    //    // Arrange
-    //    _context.Setup(x => x.Users.FirstOrDefaultAsync(It.IsAny<Expression<Func<User, bool>>>()))
-    //        .ReturnsAsync(new User());
-    //    _context.Setup(x => x.Accounts.Where(It.IsAny<Expression<Func<Account, bool>>>()).FirstOrDefaultAsync())
-    //        .ReturnsAsync(new Account());
-    //    _codeGenerate.Setup(x => x.GenerateRandomCode()).Returns("123456");
-    //    _mockPasswordHasher.Setup(x => x.Hash(It.IsAny<string>())).Returns("hashedpassword");
-    //    _emailSender.Setup(x => x.SendEmailAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-    //        .Returns(Task.CompletedTask);
+        // Act
+        var result = await _controller.UpdateAccount(id, accountDto);
 
-    //    // Act
-    //    var result = await _controller.SendMailResetPassword("test@mail.com");
+        // Assert
+        Assert.IsType<NotFoundResult>(result);
+    }
+    [Fact]
+    public async Task SendMailResetPassword_WithNonExistingUser_ReturnsBadRequest()
+    {
+        // Arrange
+        var email = "nonexistinguser@test.com";
 
-    //    // Assert
-    //    Assert.IsType<OkObjectResult>(result);
-    //}
+        // Act
+        var result = await _controller.SendMailResetPassword(email);
+
+        // Assert
+        Assert.IsType<BadRequestObjectResult>(result);
+    }
+
+    [Fact]
+    public async Task SendMailResetPassword_WithExistingUserButNoAccount_ReturnsBadRequest()
+    {
+        // Arrange
+        var email = "existinguser@test.com";
+        var fullname = "hung";
+        var account = new Account();
+        _mockContext.Accounts.Add(account);
+        await _mockContext.SaveChangesAsync();
+
+        var user = new User { Email = email, FullName = fullname, AccountId = account.AccountId };
+        _mockContext.Users.Add(user);
+        await _mockContext.SaveChangesAsync();
+
+        // Act
+        var result = await _controller.SendMailResetPassword(email);
+
+        // Assert
+        Assert.IsType<BadRequestObjectResult>(result);
+    }
+
+
+    [Fact]
+    public async Task SendMailResetPassword_WithValidUserAndAccount_ReturnsOk()
+    {
+        // Arrange
+        var email = "validuser@test.com";
+        var account = new Account();
+        _mockContext.Accounts.Add(account);
+        await _mockContext.SaveChangesAsync();
+
+        var user = new User { Email = email, AccountId = account.AccountId };
+        _mockContext.Users.Add(user);
+        await _mockContext.SaveChangesAsync();
+
+        // Act
+        var result = await _controller.SendMailResetPassword(email);
+
+        // Assert
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        Assert.NotNull(okResult.Value);
+    }
 
 
 }
+
+
 
 
