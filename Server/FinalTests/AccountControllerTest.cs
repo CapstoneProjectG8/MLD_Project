@@ -14,6 +14,8 @@ using Project_MLD.Utils.GmailSender;
 using AutoMapper;
 using Microsoft.Extensions.Configuration;
 
+namespace ControllerTest;
+
 public class AccountControllerTests
 {
     private readonly Mock<IAccountRepository> _mockRepository;

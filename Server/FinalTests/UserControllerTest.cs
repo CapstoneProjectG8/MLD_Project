@@ -6,6 +6,7 @@ using Project_MLD.DTO;
 using Project_MLD.Models;
 using Project_MLD.Service.Interface;
 
+namespace ControllerTest;
 public class UserControllerTests
 {
     private readonly Mock<IUserRepository> _mockRepository;
