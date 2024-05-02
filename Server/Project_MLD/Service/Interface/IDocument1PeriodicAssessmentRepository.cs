@@ -4,10 +4,10 @@ namespace Project_MLD.Service.Interface
 {
     public interface IDocument1PeriodicAssessmentRepository
     {
-        Task<IEnumerable<PeriodicAssessment>> GetAllPeriodicAssessment();
-        Task<IEnumerable<PeriodicAssessment>> GetPeriodicAssessmentByDocument1Id(int id);
-        Task UpdateDocument1PeriodicAssessment(List<PeriodicAssessment> dc);
-        Task DeleteDocument1PeriodicAssessment(List<PeriodicAssessment> dc);
+        Task<IEnumerable<Document1PeriodicAssessment>> GetAllDocument1PeriodicAssessment();
+        Task<IEnumerable<Document1PeriodicAssessment>> GetDocument1PeriodicAssessmentByDocument1Id(int id);
+        Task UpdateDocument1PeriodicAssessment(List<Document1PeriodicAssessment> dc);
+        Task DeleteDocument1PeriodicAssessment(List<Document1PeriodicAssessment> dc);
         Task DeleteDocument1PeriodicAssessmentByDoc1ID(int id);
 
         Task<IEnumerable<TestingCategory>> GetAllTestingCategory();

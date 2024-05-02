@@ -45,7 +45,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 });
 
 //DbContext
-builder.Services.AddDbContext<MldDatabaseContext>(option =>
+builder.Services.AddDbContext<MldDatabase2Context>(option =>
 {
     option.UseSqlServer("MyCnn");
 });
@@ -71,7 +71,7 @@ builder.Services.AddAWSService<IAmazonS3>();
 
 //Admin
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();
-builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
+builder.Services.AddScoped<IReportRepository, ReportRepository>();
 
 //User-Account-Role-Notification
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();

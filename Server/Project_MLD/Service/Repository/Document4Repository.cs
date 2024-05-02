@@ -7,9 +7,9 @@ namespace Project_MLD.Service.Repository
 {
     public class Document4Repository : IDocument4Repository
     {
-        private readonly MldDatabaseContext _context;
+        private readonly MldDatabase2Context _context;
 
-        public Document4Repository(MldDatabaseContext context)
+        public Document4Repository(MldDatabase2Context context)
         {
             _context = context;
         }
@@ -31,13 +31,6 @@ namespace Project_MLD.Service.Repository
             _context.Document4s.Remove(existDocument4);
             await _context.SaveChangesAsync();
             return true;
-        }
-
-        public async Task<IEnumerable<Document4>> GetAllDoc4s()
-        {
-            return await _context.Document4s
-               .Include(x => x.TeachingPlanner)
-               .ToListAsync();
         }
 
         public async Task<IEnumerable<Document4>> GetAllDocument4s()
@@ -71,55 +64,37 @@ namespace Project_MLD.Service.Repository
 
         public async Task<Document4> GetDocument4ById(int id)
         {
-            return await _context.Document4s.FindAsync(id);
+            return await _context.Document4s.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<IEnumerable<object>> GetDocument4ByUserSpecialiedDepartment(List<int> listId)
+        public async Task<IEnumerable<object>> GetDocument4ByUserSpecializedDepartment(List<int> listId)
         {
-            //var document4 = new List<Document4>();
-            //foreach (int id in listId)
-            //{
-            //    var list = await _context.Document4s
-            //    .Include(x => x.TeachingPlanner)
-            //    .ThenInclude(x => x.User)
-            //    .Where(x => x.Status == true && x.TeachingPlanner.User.SpecializedDepartmentId == id)
-            //    .ToListAsync();
-            //    document4.AddRange(list);
-            //}
-            //return document4;
-
             var listObject = new List<object>();
 
             foreach (var id in listId)
             {
                 var list = await _context.Document4s
-                .Include(x => x.TeachingPlanner)
-                .ThenInclude(x => x.User)
-                .Where(x => x.Status == true && x.TeachingPlanner.User.SpecializedDepartmentId == id)
-                .ToListAsync();
-
+                    .Include(x => x.TeachingPlanner)
+                    .ThenInclude(y => y.User)
+                    .ThenInclude(z => z.UserDepartments)
+                    .Where(doc => doc.TeachingPlanner.User.UserDepartments.Any(dep => dep.Id == id))
+                    .ToListAsync();
                 var anObject = new
                 {
                     id = id,
                     document = list
                 };
-
                 listObject.Add(anObject);
-
             }
             return listObject;
         }
 
-        public async Task<IEnumerable<Document4>> GetDocument4sByCondition(string condition)
+        public async Task<IEnumerable<Document4>> GetDocument4sWithCondition(bool status, int isApprove)
         {
             return await _context.Document4s
                 .Include(x => x.TeachingPlanner)
                 .ThenInclude(x => x.User)
-                .Where(x => x.Name == condition ||
-                x.Name.Contains(condition) ||
-                x.TeachingPlanner.User.FullName.Contains(condition) ||
-                x.TeachingPlanner.User.FirstName.Contains(condition) ||
-                x.TeachingPlanner.User.LastName.Contains(condition))
+                .Where(x => x.Status == status && x.IsApprove == isApprove)
                 .ToListAsync();
         }
 
@@ -143,5 +118,27 @@ namespace Project_MLD.Service.Repository
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<IEnumerable<object>> GetDocument4ByUserSpecialiedDepartment(List<int> listId)
+        {
+            var result = new List<object>();
+            foreach (var id in listId)
+            {
+                var documents = await _context.Document4s
+                    .Include(x => x.TeachingPlanner)
+                    .ThenInclude(x => x.User)
+                    .ThenInclude(x => x.UserDepartments)
+                    .Where(x => x.TeachingPlanner.User.UserDepartments.Any(d => d.DepartmentId == id))
+                    .ToListAsync();
+
+                result.Add(new
+                {
+                    id = id,
+                    documents = documents
+                });
+            }
+            return result;
+        }
+
     }
 }

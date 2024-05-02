@@ -21,8 +21,8 @@ namespace Project_MLD.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Class>>> GetAllClasss()
+        [HttpGet("GetAllClasses")]
+        public async Task<ActionResult<IEnumerable<Class>>> GetAllClasses()
         {
             var classes = await _repository.GetAllClasss();
             var mapClass = _mapper.Map<List<ClassDTO>>(classes);
@@ -37,8 +37,8 @@ namespace Project_MLD.Controllers
             {
                 return NotFound();
             }
-            //var _mapperClass = _mapper.Map<Class>(exClass);
-            return Ok(exClass);
+            var _mapperClass = _mapper.Map<Class>(exClass);
+            return Ok(_mapperClass);
         }
 
         [HttpGet("GetClassByGradeId/{Gradeid}")]

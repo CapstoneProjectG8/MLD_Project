@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Project_MLD.Models;
 
-public partial class PeriodicAssessmentDTO
+public partial class Document1PeriodicAssessmentDTO
 {
     public int TestingCategoryId { get; set; }
     public int FormCategoryId { get; set; }

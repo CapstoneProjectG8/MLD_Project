@@ -25,7 +25,7 @@ namespace Project_MLD.Controllers
 
         }
 
-        [HttpGet]
+        [HttpGet("GetDoc1SubjectRoomByDoc1ID")]
         public async Task<ActionResult<IEnumerable<Document1SubjectRoom>>> GetDocument1SubjectRoomByDocument1ID(int id)
         {
             var subjectRoom = await _repository.GetSubjectRoomsByDocument1Id(id);
@@ -33,7 +33,7 @@ namespace Project_MLD.Controllers
             return Ok(mapper);
         }
 
-        [HttpPut]
+        [HttpPut("UpdateDoc1SubjectRoom")]
         public async Task<IActionResult> UpdateDocument1SubjectRoom( List<Document1SubjectRoomDTO> requests)
         {
             try
@@ -51,7 +51,7 @@ namespace Project_MLD.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpDelete("DeleteDoc1SubjectRoom")]
         public async Task<IActionResult> DeleteDocument1SubjectRoom( List<Document1SubjectRoomDTO> requests)
         {
             try

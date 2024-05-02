@@ -2,14 +2,15 @@
 using Project_MLD.Models;
 using Project_MLD.Service.Interface;
 using System;
+using System.Collections.Immutable;
 
 namespace Project_MLD.Service.Repository
 {
     public class UserRepository : IUserRepository
     {
-        private readonly MldDatabaseContext _context;
+        private readonly MldDatabase2Context _context;
 
-        public UserRepository(MldDatabaseContext context)
+        public UserRepository(MldDatabase2Context context)
         {
             _context = context;
         }
@@ -67,7 +68,7 @@ namespace Project_MLD.Service.Repository
         public async Task<IEnumerable<object>> GetTotalUserLevelOfTrainning()
         {
             var levelCounts = await _context.LevelOfTrainnings
-                .Include(x => x.Users) 
+                .Include(x => x.Users)
                 .Select(x => new
                 {
                     LevelName = x.Name,
@@ -92,31 +93,6 @@ namespace Project_MLD.Service.Repository
             return professionalCount;
         }
 
-        public async Task<IEnumerable<object>> GetTotalUserBySpecializedDepartmentId(int id)
-        {
-            var specializedDepartment = await _context.SpecializedDepartments
-                .Include(x => x.Users)
-                .Where(x => x.Id == id)
-                .Select(x => new
-                {
-                    SpecializedDepartmentName = x.Name,
-                    UserCount = x.Users.Count()
-                })
-                .ToListAsync();
-
-            return specializedDepartment;
-        }
-
-        public async Task<IEnumerable<User>> GetAllUsersByDepartmentId(int id)
-        {
-            return await _context.Users
-                .Include(x => x.SpecializedDepartment)
-                .Include(x => x.Account)
-                    .ThenInclude(x => x.Role)
-                .Where(y => y.SpecializedDepartmentId == id)
-                .ToListAsync();
-        }
-
         public async Task<IEnumerable<User>> GetPrinciples()
         {
             return await _context.Users
@@ -124,6 +100,26 @@ namespace Project_MLD.Service.Repository
                    .ThenInclude(x => x.Role)
                .Where(x => x.Account.Role.RoleId == 5)
                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<User>> GetAllUsersByDepartmentId(int id)
+        {
+            return await _context.Users
+                .Include(x => x.UserDepartments)
+                .Where(x => x.UserDepartments.Any(ud => ud.Id == id))
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<object>> GetTotalUserBySpecializedDepartmentId(int id)
+        {
+            return await _context.UserDepartments
+                .Where(x => x.DepartmentId == id) // Lọc các bản ghi có DepartmentId trùng với id được cung cấp
+                .GroupBy(x => x.DepartmentId) // Nhóm các bản ghi theo DepartmentId
+                .Select(g => new // Dùng Select để chọn ra các thông tin bạn muốn
+                {
+                    DepartmentId = g.Key, // Lấy ra DepartmentId từ nhóm
+                    TotalUsers = g.Count() // Đếm số lượng người dùng trong mỗi nhóm
+                }).ToListAsync();
         }
     }
 }

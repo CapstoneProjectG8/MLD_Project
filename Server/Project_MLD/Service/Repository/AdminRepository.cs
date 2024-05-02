@@ -7,9 +7,9 @@ namespace Project_MLD.Service.Repository
 {
     public class AdminRepository : IAdminRepository
     {
-        private readonly MldDatabaseContext _context;
+        private readonly MldDatabase2Context _context;
 
-        public AdminRepository(MldDatabaseContext context)
+        public AdminRepository(MldDatabase2Context context)
         {
             _context = context;
         }
@@ -79,9 +79,9 @@ namespace Project_MLD.Service.Repository
            return await _context.Notifications.ToListAsync();
         }
 
-        public async Task<IEnumerable<Feedback>> GetAllFeedback()
+        public async Task<IEnumerable<Report>> GetAllReport()
         {
-            return await _context.Feedbacks.ToListAsync();
+            return await _context.Reports.ToListAsync();
         }
     }
 }

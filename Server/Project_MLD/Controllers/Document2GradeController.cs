@@ -19,14 +19,15 @@ namespace Project_MLD.Controllers
         private readonly IGradeRepository _gradeRepository;
         private readonly IMapper _mapper;
 
-        public Document2GradeController(IDocument2GradeRepository repository, IMapper mapper, IGradeRepository gradeRepository)
+        public Document2GradeController(IDocument2GradeRepository repository,
+            IMapper mapper, IGradeRepository gradeRepository)
         {
             _repository = repository;
             _mapper = mapper;
             _gradeRepository = gradeRepository;
         }
 
-        [HttpGet]
+        [HttpGet("GetAllDoc2sGrade")]
         public async Task<ActionResult<IEnumerable<Document2Grade>>> GetAllDocument2sGrade()
         {
             var pl2 = await _repository.GetAllDocuemnt2Grades();
@@ -38,7 +39,7 @@ namespace Project_MLD.Controllers
             return Ok(mapDocumemt);
         }
 
-        [HttpGet("GetDocument2GradeById/{id}")]
+        [HttpGet("GetDoc2GradeById/{id}")]
         public async Task<ActionResult<IEnumerable<Document2Grade>>> GetDocument2GradeById(int id)
         {
             var existDocument2 = await _repository.GetDocument2GradeByDocument2Id(id);
@@ -69,7 +70,7 @@ namespace Project_MLD.Controllers
         //    }
         //}
 
-        [HttpPost]
+        [HttpPost("AddDoc2Grade")]
         public async Task<IActionResult> AddDocument2Grade(List<Document2GradeDTO> listDto)
         {
             try
@@ -93,7 +94,7 @@ namespace Project_MLD.Controllers
         }
 
 
-        [HttpDelete]
+        [HttpDelete("DeleteDoc2Grade")]
         public async Task<IActionResult> DeleteDocument2Grade(List<Document2GradeDTO> requests)
         {
             try
@@ -125,7 +126,7 @@ namespace Project_MLD.Controllers
             });
         }
 
-        [HttpDelete("DeleteDocument2GradeByDocument2Id")]
+        [HttpDelete("DeleteDoc2GradeByDoc2Id")]
         public async Task<IActionResult> DeleteDocument2GradeByDocument2Id(int id)
         {
             try

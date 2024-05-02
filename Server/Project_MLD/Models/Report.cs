@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Project_MLD.Models;
 
-public partial class Feedback
+public partial class Report
 {
     public int Id { get; set; }
 
@@ -19,5 +19,5 @@ public partial class Feedback
 
     public bool? Read { get; set; }
 
-    public virtual User? User { get; set; }
+    public virtual User IdNavigation { get; set; } = null!;
 }

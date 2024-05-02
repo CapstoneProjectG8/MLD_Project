@@ -7,9 +7,9 @@ namespace Project_MLD.Service.Repository
 {
     public class Document2Repository : IDocument2Repository
     {
-        private readonly MldDatabaseContext _context;
+        private readonly MldDatabase2Context _context;
 
-        public Document2Repository(MldDatabaseContext context)
+        public Document2Repository(MldDatabase2Context context)
         {
             _context = context;
         }
@@ -36,8 +36,7 @@ namespace Project_MLD.Service.Repository
         public async Task<IEnumerable<Document2>> GetAllDocument2s()
         {
             return await _context.Document2s
-                .Include(x => x.User)
-                .Where(x => x.Status == true && x.IsApprove != 1).ToListAsync();
+                .Include(x => x.User).ToListAsync();
         }
 
         public async Task<Document2> GetDocument2ById(int id)
@@ -88,34 +87,19 @@ namespace Project_MLD.Service.Repository
 
         public async Task<IEnumerable<object>> GetDocument2ByUserSpecialiedDepartment(List<int> listId)
         {
-            //var document2 = new List<Document2>();
-            //foreach(int id in listId)
-            //{
-            //    var documents = await _context.Document2s
-            //    .Include(x => x.User)
-            //    .Where(x => x.Status == true && x.User.SpecializedDepartmentId == id)
-            //    .ToListAsync();
-            //    document2.AddRange(list);
-            //}
-            //return document2;
-
             var listObject = new List<object>();
-
             foreach (var id in listId)
             {
                 var documents = await _context.Document2s
                 .Include(x => x.User)
-                .Where(x => x.Status == true && x.User.SpecializedDepartmentId == id)
+                .Where(x => x.Status == true && x.User.UserDepartments.Any(ud => ud.DepartmentId == id))
                 .ToListAsync();
-
                 var anObject = new
                 {
                     id = id,
                     document = documents
                 };
-
                 listObject.Add(anObject);
-
             }
             return listObject;
         }
@@ -139,10 +123,11 @@ namespace Project_MLD.Service.Repository
             return hostIds;
         }
 
-        public async Task<IEnumerable<Document2>> GetAllDoc2s()
+        public async Task<IEnumerable<Document2>> GetAllDoc2sByCondition(bool status, int isApprove)
         {
             return await _context.Document2s
                 .Include(x => x.User)
+                .Where(x => x.Status == status && x.IsApprove == isApprove)
                 .ToListAsync();
         }
     }

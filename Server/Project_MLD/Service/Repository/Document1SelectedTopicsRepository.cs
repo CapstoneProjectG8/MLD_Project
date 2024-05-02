@@ -8,9 +8,9 @@ namespace Project_MLD.Service.Repository
 {
     public class Document1SelectedTopicsRepository : IDocument1SelectedTopicsRepository
     {
-        private readonly MldDatabaseContext _context;
+        private readonly MldDatabase2Context _context;
 
-        public Document1SelectedTopicsRepository(MldDatabaseContext context)
+        public Document1SelectedTopicsRepository(MldDatabase2Context context)
         {
             _context = context;
         }

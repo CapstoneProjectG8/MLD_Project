@@ -11,9 +11,9 @@ using Project_MLD.Models;
 
 namespace Project_MLD.Migrations
 {
-    [DbContext(typeof(MldDatabaseContext))]
-    [Migration("20240419160425_Migration_v4")]
-    partial class Migration_v4
+    [DbContext(typeof(MldDatabase2Context))]
+    [Migration("20240501140031_Migration_v7")]
+    partial class Migration_v7
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,8 +38,8 @@ namespace Project_MLD.Migrations
                         .HasColumnType("bit")
                         .HasColumnName("active");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)")
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("int")
                         .HasColumnName("created_by");
 
                     b.Property<DateOnly?>("CreatedDate")
@@ -50,8 +50,8 @@ namespace Project_MLD.Migrations
                         .HasColumnType("int")
                         .HasColumnName("login_attempt");
 
-                    b.Property<int?>("LoginLast")
-                        .HasColumnType("int")
+                    b.Property<DateTime?>("LoginLast")
+                        .HasColumnType("datetime")
                         .HasColumnName("login_last");
 
                     b.Property<string>("Password")
@@ -70,31 +70,22 @@ namespace Project_MLD.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Account", (string)null);
-                });
+                    b.ToTable("Account", null, t =>
+                        {
+                            t.HasTrigger("trgCreateUserForAccount");
+                        });
 
-            modelBuilder.Entity("Project_MLD.Models.Category", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("name");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Category", (string)null);
+                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
                 });
 
             modelBuilder.Entity("Project_MLD.Models.Class", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("GradeId")
                         .HasColumnType("int")
@@ -137,6 +128,25 @@ namespace Project_MLD.Migrations
                         .HasName("PK_Phân phối chương trình");
 
                     b.ToTable("Curriculum Distribution", (string)null);
+                });
+
+            modelBuilder.Entity("Project_MLD.Models.DepartmentSubject", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<int?>("DepartmentId")
+                        .HasColumnType("int")
+                        .HasColumnName("department_id");
+
+                    b.Property<int?>("SubjectId")
+                        .HasColumnType("int")
+                        .HasColumnName("subject_id");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Department_Subject", (string)null);
                 });
 
             modelBuilder.Entity("Project_MLD.Models.Document1", b =>
@@ -201,6 +211,8 @@ namespace Project_MLD.Migrations
 
                     b.HasIndex("GradeId");
 
+                    b.HasIndex("IsApprove");
+
                     b.HasIndex("SubjectId");
 
                     b.HasIndex("UserId");
@@ -231,6 +243,42 @@ namespace Project_MLD.Migrations
                     b.HasIndex("CurriculumId");
 
                     b.ToTable("Document1_CurriculumDistribution", (string)null);
+                });
+
+            modelBuilder.Entity("Project_MLD.Models.Document1PeriodicAssessment", b =>
+                {
+                    b.Property<int>("TestingCategoryId")
+                        .HasColumnType("int")
+                        .HasColumnName("testing_category_id");
+
+                    b.Property<int>("FormCategoryId")
+                        .HasColumnType("int")
+                        .HasColumnName("form_category_id");
+
+                    b.Property<int>("Document1Id")
+                        .HasColumnType("int")
+                        .HasColumnName("document1_id");
+
+                    b.Property<DateOnly?>("Date")
+                        .HasColumnType("date")
+                        .HasColumnName("date");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("description");
+
+                    b.Property<int?>("Time")
+                        .HasColumnType("int")
+                        .HasColumnName("time");
+
+                    b.HasKey("TestingCategoryId", "FormCategoryId", "Document1Id")
+                        .HasName("PK_Periodic Assessment");
+
+                    b.HasIndex("Document1Id");
+
+                    b.HasIndex("FormCategoryId");
+
+                    b.ToTable("Document1_Periodic Assessment", (string)null);
                 });
 
             modelBuilder.Entity("Project_MLD.Models.Document1SelectedTopic", b =>
@@ -280,7 +328,8 @@ namespace Project_MLD.Migrations
                         .HasColumnType("int")
                         .HasColumnName("quantity");
 
-                    b.HasKey("SubjectRoomId", "Document1Id");
+                    b.HasKey("SubjectRoomId", "Document1Id")
+                        .HasName("PK_Document1_Subject Room_1");
 
                     b.HasIndex("Document1Id");
 
@@ -360,6 +409,8 @@ namespace Project_MLD.Migrations
                     b.HasKey("Id")
                         .HasName("PK_Kế hoạch Tổ chức Hoạt Động Giáo Dục");
 
+                    b.HasIndex("IsApprove");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Document 2", (string)null);
@@ -367,13 +418,12 @@ namespace Project_MLD.Migrations
 
             modelBuilder.Entity("Project_MLD.Models.Document2Grade", b =>
                 {
-                    b.Property<int>("Document2Id")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("document2_id");
+                        .HasColumnName("id");
 
-                    b.Property<int>("GradeId")
-                        .HasColumnType("int")
-                        .HasColumnName("grade_id");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("CollaborateWith")
                         .HasColumnType("nvarchar(max)")
@@ -387,7 +437,15 @@ namespace Project_MLD.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("description");
 
-                    b.Property<int>("HostBy")
+                    b.Property<int?>("Document2Id")
+                        .HasColumnType("int")
+                        .HasColumnName("document2_id");
+
+                    b.Property<int?>("GradeId")
+                        .HasColumnType("int")
+                        .HasColumnName("grade_id");
+
+                    b.Property<int?>("HostBy")
                         .HasColumnType("int")
                         .HasColumnName("host_by");
 
@@ -407,7 +465,9 @@ namespace Project_MLD.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("title_name");
 
-                    b.HasKey("Document2Id", "GradeId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("Document2Id");
 
                     b.HasIndex("GradeId");
 
@@ -473,6 +533,8 @@ namespace Project_MLD.Migrations
                         .HasName("PK_Kế hoạch giáo dục của GV");
 
                     b.HasIndex("Document1Id");
+
+                    b.HasIndex("IsApprove");
 
                     b.HasIndex("UserId");
 
@@ -562,6 +624,10 @@ namespace Project_MLD.Migrations
                         .HasColumnType("date")
                         .HasColumnName("created_date");
 
+                    b.Property<int?>("IsApprove")
+                        .HasColumnType("int")
+                        .HasColumnName("isApprove");
+
                     b.Property<string>("LinkFile")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("link_file");
@@ -584,6 +650,8 @@ namespace Project_MLD.Migrations
 
                     b.HasKey("Id")
                         .HasName("PK_Phu Luc 4");
+
+                    b.HasIndex("IsApprove");
 
                     b.HasIndex("TeachingPlannerId");
 
@@ -648,8 +716,11 @@ namespace Project_MLD.Migrations
             modelBuilder.Entity("Project_MLD.Models.Evaluate", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Document5Id")
                         .HasColumnType("int")
@@ -710,27 +781,6 @@ namespace Project_MLD.Migrations
                     b.ToTable("Evaluate", (string)null);
                 });
 
-            modelBuilder.Entity("Project_MLD.Models.Feedback", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int")
-                        .HasColumnName("id");
-
-                    b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("content");
-
-                    b.Property<int?>("UserId")
-                        .HasColumnType("int")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Feedback", (string)null);
-                });
-
             modelBuilder.Entity("Project_MLD.Models.FormCategory", b =>
                 {
                     b.Property<int>("Id")
@@ -753,8 +803,11 @@ namespace Project_MLD.Migrations
             modelBuilder.Entity("Project_MLD.Models.Grade", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)")
@@ -764,6 +817,23 @@ namespace Project_MLD.Migrations
                         .HasName("PK_Khối Lớp");
 
                     b.ToTable("Grade", (string)null);
+                });
+
+            modelBuilder.Entity("Project_MLD.Models.IsApprove", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(10)
+                        .HasColumnType("nchar(10)")
+                        .HasColumnName("name")
+                        .IsFixedLength();
+
+                    b.HasKey("Id");
+
+                    b.ToTable("IsApprove", (string)null);
                 });
 
             modelBuilder.Entity("Project_MLD.Models.LevelOfTrainning", b =>
@@ -788,65 +858,41 @@ namespace Project_MLD.Migrations
             modelBuilder.Entity("Project_MLD.Models.Notification", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("DocId")
+                        .HasColumnType("int")
+                        .HasColumnName("docId");
+
+                    b.Property<int?>("DocType")
+                        .HasColumnType("int")
+                        .HasColumnName("doc_type");
 
                     b.Property<string>("Message")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("message");
 
+                    b.Property<int?>("ReceiveBy")
+                        .HasColumnType("int")
+                        .HasColumnName("receive_by");
+
+                    b.Property<int>("SentBy")
+                        .HasColumnType("int")
+                        .HasColumnName("sent_by");
+
                     b.Property<string>("TitleName")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("title_name");
 
-                    b.Property<string>("Type")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("type");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int")
-                        .HasColumnName("user_id");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("SentBy");
 
                     b.ToTable("Notification", (string)null);
-                });
-
-            modelBuilder.Entity("Project_MLD.Models.PeriodicAssessment", b =>
-                {
-                    b.Property<int>("TestingCategoryId")
-                        .HasColumnType("int")
-                        .HasColumnName("testing_category_id");
-
-                    b.Property<int>("FormCategoryId")
-                        .HasColumnType("int")
-                        .HasColumnName("form_category_id");
-
-                    b.Property<int>("Document1Id")
-                        .HasColumnType("int")
-                        .HasColumnName("document1_id");
-
-                    b.Property<DateOnly?>("Date")
-                        .HasColumnType("date")
-                        .HasColumnName("date");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("description");
-
-                    b.Property<int?>("Time")
-                        .HasColumnType("int")
-                        .HasColumnName("time");
-
-                    b.HasKey("TestingCategoryId", "FormCategoryId", "Document1Id");
-
-                    b.HasIndex("Document1Id");
-
-                    b.HasIndex("FormCategoryId");
-
-                    b.ToTable("Periodic Assessment", (string)null);
                 });
 
             modelBuilder.Entity("Project_MLD.Models.ProfessionalStandard", b =>
@@ -867,6 +913,43 @@ namespace Project_MLD.Migrations
                     b.ToTable("Professional Standards", (string)null);
                 });
 
+            modelBuilder.Entity("Project_MLD.Models.Report", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("description");
+
+                    b.Property<int?>("DocId")
+                        .HasColumnType("int")
+                        .HasColumnName("doc_id");
+
+                    b.Property<int?>("DocType")
+                        .HasColumnType("int")
+                        .HasColumnName("doc_type");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("message");
+
+                    b.Property<bool?>("Read")
+                        .HasColumnType("bit")
+                        .HasColumnName("read");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("PK_Feedback");
+
+                    b.ToTable("Report", (string)null);
+                });
+
             modelBuilder.Entity("Project_MLD.Models.Role", b =>
                 {
                     b.Property<int>("RoleId")
@@ -875,10 +958,6 @@ namespace Project_MLD.Migrations
                         .HasColumnName("role_id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoleId"));
-
-                    b.Property<bool?>("Active")
-                        .HasColumnType("bit")
-                        .HasColumnName("active");
 
                     b.Property<string>("RoleName")
                         .HasColumnType("nvarchar(max)")
@@ -924,10 +1003,6 @@ namespace Project_MLD.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("int")
-                        .HasColumnName("category_id");
-
                     b.Property<byte[]>("Content")
                         .HasColumnType("varbinary(max)")
                         .HasColumnName("content");
@@ -958,8 +1033,6 @@ namespace Project_MLD.Migrations
 
                     b.HasKey("Id")
                         .HasName("PK_Document");
-
-                    b.HasIndex("CategoryId");
 
                     b.HasIndex("TeachingPlannerId");
 
@@ -1007,8 +1080,11 @@ namespace Project_MLD.Migrations
             modelBuilder.Entity("Project_MLD.Models.Subject", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)")
@@ -1061,7 +1137,10 @@ namespace Project_MLD.Migrations
             modelBuilder.Entity("Project_MLD.Models.TeachingPlanner", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("ClassId")
                         .HasColumnType("int")
@@ -1090,8 +1169,11 @@ namespace Project_MLD.Migrations
             modelBuilder.Entity("Project_MLD.Models.TestingCategory", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)")
@@ -1106,19 +1188,12 @@ namespace Project_MLD.Migrations
             modelBuilder.Entity("Project_MLD.Models.User", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("id");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("AccountId")
                         .HasColumnType("int")
                         .HasColumnName("account_id");
-
-                    b.Property<bool?>("Active")
-                        .HasColumnType("bit")
-                        .HasColumnName("active");
 
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)")
@@ -1128,13 +1203,9 @@ namespace Project_MLD.Migrations
                         .HasColumnType("int")
                         .HasColumnName("age");
 
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("created_by");
-
-                    b.Property<DateOnly?>("CreatedDate")
+                    b.Property<DateOnly?>("DateOfBirth")
                         .HasColumnType("date")
-                        .HasColumnName("created_date");
+                        .HasColumnName("date_of_birth");
 
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)")
@@ -1160,29 +1231,13 @@ namespace Project_MLD.Migrations
                         .HasColumnType("int")
                         .HasColumnName("level_of_trainning_id");
 
-                    b.Property<int?>("ModifiedBy")
-                        .HasColumnType("int")
-                        .HasColumnName("modified_by");
-
-                    b.Property<DateOnly?>("ModifiedDate")
-                        .HasColumnType("date")
-                        .HasColumnName("modified_date");
-
-                    b.Property<byte[]>("Photo")
-                        .HasColumnType("varbinary(max)")
-                        .HasColumnName("photo");
-
-                    b.Property<string>("PlaceOfBirth")
+                    b.Property<string>("Photo")
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("place_of_birth");
+                        .HasColumnName("photo");
 
                     b.Property<int?>("ProfessionalStandardsId")
                         .HasColumnType("int")
                         .HasColumnName("professional_standards_id");
-
-                    b.Property<int?>("SpecializedDepartmentId")
-                        .HasColumnType("int")
-                        .HasColumnName("specialized_department_id");
 
                     b.HasKey("Id");
 
@@ -1192,9 +1247,33 @@ namespace Project_MLD.Migrations
 
                     b.HasIndex("ProfessionalStandardsId");
 
-                    b.HasIndex("SpecializedDepartmentId");
-
                     b.ToTable("User", (string)null);
+                });
+
+            modelBuilder.Entity("Project_MLD.Models.UserDepartment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("DepartmentId")
+                        .HasColumnType("int")
+                        .HasColumnName("department_id");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("User_Department", (string)null);
                 });
 
             modelBuilder.Entity("Project_MLD.Models.Account", b =>
@@ -1202,7 +1281,7 @@ namespace Project_MLD.Migrations
                     b.HasOne("Project_MLD.Models.Role", "Role")
                         .WithMany("Accounts")
                         .HasForeignKey("RoleId")
-                        .HasConstraintName("FK_Account_Role1");
+                        .HasConstraintName("FK_Account_Role");
 
                     b.Navigation("Role");
                 });
@@ -1226,6 +1305,11 @@ namespace Project_MLD.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_Document 1_Grade");
 
+                    b.HasOne("Project_MLD.Models.IsApprove", "IsApproveNavigation")
+                        .WithMany("Document1s")
+                        .HasForeignKey("IsApprove")
+                        .HasConstraintName("FK_Document 1_IsApprove");
+
                     b.HasOne("Project_MLD.Models.Subject", "Subject")
                         .WithMany("Document1s")
                         .HasForeignKey("SubjectId")
@@ -1239,6 +1323,8 @@ namespace Project_MLD.Migrations
                         .HasConstraintName("FK_Phu Luc 1_User");
 
                     b.Navigation("Grade");
+
+                    b.Navigation("IsApproveNavigation");
 
                     b.Navigation("Subject");
 
@@ -1263,6 +1349,34 @@ namespace Project_MLD.Migrations
                     b.Navigation("Curriculum");
 
                     b.Navigation("Document1");
+                });
+
+            modelBuilder.Entity("Project_MLD.Models.Document1PeriodicAssessment", b =>
+                {
+                    b.HasOne("Project_MLD.Models.Document1", "Document1")
+                        .WithMany("Document1PeriodicAssessments")
+                        .HasForeignKey("Document1Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_Periodic Assessment_Document 1");
+
+                    b.HasOne("Project_MLD.Models.FormCategory", "FormCategory")
+                        .WithMany("Document1PeriodicAssessments")
+                        .HasForeignKey("FormCategoryId")
+                        .IsRequired()
+                        .HasConstraintName("FK_Document1_Periodic Assessment_Form Category");
+
+                    b.HasOne("Project_MLD.Models.TestingCategory", "TestingCategory")
+                        .WithMany("Document1PeriodicAssessments")
+                        .HasForeignKey("TestingCategoryId")
+                        .IsRequired()
+                        .HasConstraintName("FK_Document1_Periodic Assessment_Testing Category");
+
+                    b.Navigation("Document1");
+
+                    b.Navigation("FormCategory");
+
+                    b.Navigation("TestingCategory");
                 });
 
             modelBuilder.Entity("Project_MLD.Models.Document1SelectedTopic", b =>
@@ -1327,11 +1441,18 @@ namespace Project_MLD.Migrations
 
             modelBuilder.Entity("Project_MLD.Models.Document2", b =>
                 {
+                    b.HasOne("Project_MLD.Models.IsApprove", "IsApproveNavigation")
+                        .WithMany("Document2s")
+                        .HasForeignKey("IsApprove")
+                        .HasConstraintName("FK_Document 2_IsApprove");
+
                     b.HasOne("Project_MLD.Models.User", "User")
                         .WithMany("Document2s")
                         .HasForeignKey("UserId")
                         .IsRequired()
                         .HasConstraintName("FK_Kế hoạch Tổ chức Hoạt Động Giáo Dục_User");
+
+                    b.Navigation("IsApproveNavigation");
 
                     b.Navigation("User");
                 });
@@ -1342,19 +1463,16 @@ namespace Project_MLD.Migrations
                         .WithMany("Document2Grades")
                         .HasForeignKey("Document2Id")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_Document2_Grade_Document 21");
+                        .HasConstraintName("FK_Document2_Grade_Document 2");
 
                     b.HasOne("Project_MLD.Models.Grade", "Grade")
                         .WithMany("Document2Grades")
                         .HasForeignKey("GradeId")
-                        .IsRequired()
                         .HasConstraintName("FK_Document2_Grade_Grade");
 
                     b.HasOne("Project_MLD.Models.User", "HostByNavigation")
                         .WithMany("Document2Grades")
                         .HasForeignKey("HostBy")
-                        .IsRequired()
                         .HasConstraintName("FK_Document2_Grade_User");
 
                     b.Navigation("Document2");
@@ -1369,8 +1487,14 @@ namespace Project_MLD.Migrations
                     b.HasOne("Project_MLD.Models.Document1", "Document1")
                         .WithMany("Document3s")
                         .HasForeignKey("Document1Id")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_Document 3_Document 1");
+
+                    b.HasOne("Project_MLD.Models.IsApprove", "IsApproveNavigation")
+                        .WithMany("Document3s")
+                        .HasForeignKey("IsApprove")
+                        .HasConstraintName("FK_Document 3_IsApprove");
 
                     b.HasOne("Project_MLD.Models.User", "User")
                         .WithMany("Document3s")
@@ -1379,6 +1503,8 @@ namespace Project_MLD.Migrations
                         .HasConstraintName("FK_Document 3_User");
 
                     b.Navigation("Document1");
+
+                    b.Navigation("IsApproveNavigation");
 
                     b.Navigation("User");
                 });
@@ -1394,9 +1520,8 @@ namespace Project_MLD.Migrations
                     b.HasOne("Project_MLD.Models.Document3", "Document3")
                         .WithMany("Document3CurriculumDistributions")
                         .HasForeignKey("Document3Id")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("FK_Document3_CurriculumDistribution_Document 31");
+                        .HasConstraintName("FK_Document3_CurriculumDistribution_Document 3");
 
                     b.HasOne("Project_MLD.Models.TeachingEquipment", "Equipment")
                         .WithMany("Document3CurriculumDistributions")
@@ -1416,9 +1541,8 @@ namespace Project_MLD.Migrations
                     b.HasOne("Project_MLD.Models.Document3", "Document3")
                         .WithMany("Document3SelectedTopics")
                         .HasForeignKey("Document3Id")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("FK_Document3_SelectedTopics_Document 31");
+                        .HasConstraintName("FK_Document3_SelectedTopics_Document 3");
 
                     b.HasOne("Project_MLD.Models.TeachingEquipment", "Equipment")
                         .WithMany("Document3SelectedTopics")
@@ -1441,11 +1565,18 @@ namespace Project_MLD.Migrations
 
             modelBuilder.Entity("Project_MLD.Models.Document4", b =>
                 {
+                    b.HasOne("Project_MLD.Models.IsApprove", "IsApproveNavigation")
+                        .WithMany("Document4s")
+                        .HasForeignKey("IsApprove")
+                        .HasConstraintName("FK_Document 4_IsApprove");
+
                     b.HasOne("Project_MLD.Models.TeachingPlanner", "TeachingPlanner")
                         .WithMany("Document4s")
                         .HasForeignKey("TeachingPlannerId")
                         .IsRequired()
                         .HasConstraintName("FK_Document 4_Teaching Planner");
+
+                    b.Navigation("IsApproveNavigation");
 
                     b.Navigation("TeachingPlanner");
                 });
@@ -1481,70 +1612,36 @@ namespace Project_MLD.Migrations
                     b.Navigation("Document5");
                 });
 
-            modelBuilder.Entity("Project_MLD.Models.Feedback", b =>
-                {
-                    b.HasOne("Project_MLD.Models.User", "User")
-                        .WithMany("Feedbacks")
-                        .HasForeignKey("UserId")
-                        .HasConstraintName("FK_Feedback_User");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Project_MLD.Models.Notification", b =>
                 {
-                    b.HasOne("Project_MLD.Models.User", "User")
+                    b.HasOne("Project_MLD.Models.User", "SentByNavigation")
                         .WithMany("Notifications")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("SentBy")
                         .IsRequired()
                         .HasConstraintName("FK_Notification_User");
 
-                    b.Navigation("User");
+                    b.Navigation("SentByNavigation");
                 });
 
-            modelBuilder.Entity("Project_MLD.Models.PeriodicAssessment", b =>
+            modelBuilder.Entity("Project_MLD.Models.Report", b =>
                 {
-                    b.HasOne("Project_MLD.Models.Document1", "Document1")
-                        .WithMany("PeriodicAssessments")
-                        .HasForeignKey("Document1Id")
+                    b.HasOne("Project_MLD.Models.User", "IdNavigation")
+                        .WithOne("Report")
+                        .HasForeignKey("Project_MLD.Models.Report", "Id")
                         .IsRequired()
-                        .HasConstraintName("FK_Periodic Assessment_Document 1");
+                        .HasConstraintName("FK_Report_User");
 
-                    b.HasOne("Project_MLD.Models.FormCategory", "FormCategory")
-                        .WithMany("PeriodicAssessments")
-                        .HasForeignKey("FormCategoryId")
-                        .IsRequired()
-                        .HasConstraintName("FK_Periodic Assessment_Form Category");
-
-                    b.HasOne("Project_MLD.Models.TestingCategory", "TestingCategory")
-                        .WithMany("PeriodicAssessments")
-                        .HasForeignKey("TestingCategoryId")
-                        .IsRequired()
-                        .HasConstraintName("FK_Periodic Assessment_Testing Category");
-
-                    b.Navigation("Document1");
-
-                    b.Navigation("FormCategory");
-
-                    b.Navigation("TestingCategory");
+                    b.Navigation("IdNavigation");
                 });
 
             modelBuilder.Entity("Project_MLD.Models.Scorm", b =>
                 {
-                    b.HasOne("Project_MLD.Models.Category", "Category")
-                        .WithMany("Scorms")
-                        .HasForeignKey("CategoryId")
-                        .IsRequired()
-                        .HasConstraintName("FK_Doc_Category");
-
                     b.HasOne("Project_MLD.Models.TeachingPlanner", "TeachingPlanner")
                         .WithMany("Scorms")
                         .HasForeignKey("TeachingPlannerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_Scorm_Teaching Planner");
-
-                    b.Navigation("Category");
 
                     b.Navigation("TeachingPlanner");
                 });
@@ -1594,28 +1691,33 @@ namespace Project_MLD.Migrations
                         .HasForeignKey("ProfessionalStandardsId")
                         .HasConstraintName("FK_User_Professional Standards");
 
-                    b.HasOne("Project_MLD.Models.SpecializedDepartment", "SpecializedDepartment")
-                        .WithMany("Users")
-                        .HasForeignKey("SpecializedDepartmentId")
-                        .HasConstraintName("FK_User_Specialized Department");
-
                     b.Navigation("Account");
 
                     b.Navigation("LevelOfTrainning");
 
                     b.Navigation("ProfessionalStandards");
+                });
 
-                    b.Navigation("SpecializedDepartment");
+            modelBuilder.Entity("Project_MLD.Models.UserDepartment", b =>
+                {
+                    b.HasOne("Project_MLD.Models.SpecializedDepartment", "Department")
+                        .WithMany("UserDepartments")
+                        .HasForeignKey("DepartmentId")
+                        .HasConstraintName("FK_User_Department_Specialized Department");
+
+                    b.HasOne("Project_MLD.Models.User", "User")
+                        .WithMany("UserDepartments")
+                        .HasForeignKey("UserId")
+                        .HasConstraintName("FK_User_Department_User");
+
+                    b.Navigation("Department");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Project_MLD.Models.Account", b =>
                 {
                     b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("Project_MLD.Models.Category", b =>
-                {
-                    b.Navigation("Scorms");
                 });
 
             modelBuilder.Entity("Project_MLD.Models.Class", b =>
@@ -1634,6 +1736,8 @@ namespace Project_MLD.Migrations
                 {
                     b.Navigation("Document1CurriculumDistributions");
 
+                    b.Navigation("Document1PeriodicAssessments");
+
                     b.Navigation("Document1SelectedTopics");
 
                     b.Navigation("Document1SubjectRooms");
@@ -1641,8 +1745,6 @@ namespace Project_MLD.Migrations
                     b.Navigation("Document1TeachingEquipments");
 
                     b.Navigation("Document3s");
-
-                    b.Navigation("PeriodicAssessments");
                 });
 
             modelBuilder.Entity("Project_MLD.Models.Document2", b =>
@@ -1669,7 +1771,7 @@ namespace Project_MLD.Migrations
 
             modelBuilder.Entity("Project_MLD.Models.FormCategory", b =>
                 {
-                    b.Navigation("PeriodicAssessments");
+                    b.Navigation("Document1PeriodicAssessments");
                 });
 
             modelBuilder.Entity("Project_MLD.Models.Grade", b =>
@@ -1679,6 +1781,17 @@ namespace Project_MLD.Migrations
                     b.Navigation("Document1s");
 
                     b.Navigation("Document2Grades");
+                });
+
+            modelBuilder.Entity("Project_MLD.Models.IsApprove", b =>
+                {
+                    b.Navigation("Document1s");
+
+                    b.Navigation("Document2s");
+
+                    b.Navigation("Document3s");
+
+                    b.Navigation("Document4s");
                 });
 
             modelBuilder.Entity("Project_MLD.Models.LevelOfTrainning", b =>
@@ -1705,7 +1818,7 @@ namespace Project_MLD.Migrations
 
             modelBuilder.Entity("Project_MLD.Models.SpecializedDepartment", b =>
                 {
-                    b.Navigation("Users");
+                    b.Navigation("UserDepartments");
                 });
 
             modelBuilder.Entity("Project_MLD.Models.Subject", b =>
@@ -1738,7 +1851,7 @@ namespace Project_MLD.Migrations
 
             modelBuilder.Entity("Project_MLD.Models.TestingCategory", b =>
                 {
-                    b.Navigation("PeriodicAssessments");
+                    b.Navigation("Document1PeriodicAssessments");
                 });
 
             modelBuilder.Entity("Project_MLD.Models.User", b =>
@@ -1753,11 +1866,13 @@ namespace Project_MLD.Migrations
 
                     b.Navigation("Document5s");
 
-                    b.Navigation("Feedbacks");
-
                     b.Navigation("Notifications");
 
+                    b.Navigation("Report");
+
                     b.Navigation("TeachingPlanners");
+
+                    b.Navigation("UserDepartments");
                 });
 #pragma warning restore 612, 618
         }

@@ -11,8 +11,6 @@ public partial class Scorm
 
     public byte[]? Content { get; set; }
 
-    public int CategoryId { get; set; }
-
     public int TeachingPlannerId { get; set; }
 
     public bool? IsAprrove { get; set; }
@@ -22,8 +20,6 @@ public partial class Scorm
     public string? LinkFile { get; set; }
 
     public string? LinkImage { get; set; }
-
-    public virtual Category Category { get; set; } = null!;
 
     public virtual TeachingPlanner TeachingPlanner { get; set; } = null!;
 }

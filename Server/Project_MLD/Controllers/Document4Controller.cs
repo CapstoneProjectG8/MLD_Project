@@ -21,7 +21,7 @@ namespace Project_MLD.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet("GetAllDocument4s")]
         public async Task<ActionResult<IEnumerable<Document4>>> GetAllDocument4s()
         {
             var Document4 = await _repository.GetAllDocument4s();
@@ -29,28 +29,13 @@ namespace Project_MLD.Controllers
             return Ok(mapDocument);
         }
 
-        [HttpGet("GetAllDoc4s")]
-        public async Task<ActionResult<IEnumerable<Document4>>> GetAllDoc4s()
-        {
-            var Document4 = await _repository.GetAllDoc4s();
-            var mapDocument = _mapper.Map<List<Document4DTO>>(Document4);
-            return Ok(mapDocument);
-        }
-
         [HttpGet("GetDocument4ByUserSpecialiedDepartment")]
         public async Task<ActionResult<IEnumerable<Document4>>> GetDocument4ByUserSpecialiedDepartment([FromQuery] List<int> listId)
         {
-            //var Document4 = await _repository.GetDocument4ByUserSpecialiedDepartment(listId);
-            //var mapDocument = _mapper.Map<List<Document4DTO>>(Document4);
-            //return Ok(mapDocument);
-
             var documents = await _repository.GetDocument4ByUserSpecialiedDepartment(listId);
-
             var modifiedDocuments = new List<object>();
-
             foreach (var document in documents)
             {
-                // Kiểm tra xem document có thuộc tính "id" và "document" không
                 if (document.GetType().GetProperty("id") != null && document.GetType().GetProperty("document") != null)
                 {
                     // Truy cập thuộc tính "id" và "document"
@@ -73,7 +58,7 @@ namespace Project_MLD.Controllers
 
         }
 
-        [HttpGet("ById/{id}")]
+        [HttpGet("GetDoc4ById/{id}")]
         public async Task<ActionResult<Document4>> GetDocument4ById(int id)
         {
             var existDocument4 = await _repository.GetDocument4ById(id);
@@ -85,10 +70,10 @@ namespace Project_MLD.Controllers
             return Ok(existDocument4);
         }
 
-        [HttpGet("ByCondition/{condition}")]
-        public async Task<ActionResult<IEnumerable<Document4>>> GetDoucment4sByCondition(string condition)
+        [HttpGet("GetDocument4sWithCondition")]
+        public async Task<ActionResult<IEnumerable<Document4>>> GetDocument4sWithCondition(bool status, int isApprove)
         {
-            var existDocument4 = await _repository.GetDocument4sByCondition(condition);
+            var existDocument4 = await _repository.GetDocument4sWithCondition(status, isApprove);
             //if (existDocument4 == null)
             //{
             //    return NotFound("No Document 4 Available");
@@ -98,7 +83,7 @@ namespace Project_MLD.Controllers
             return Ok(mapDocumemt);
         }
 
-        [HttpPost]
+        [HttpPost("AddDocument4")]
         public async Task<ActionResult<Document4>> AddDocument4(Document4DTO pl4)
         {
             try
@@ -124,7 +109,7 @@ namespace Project_MLD.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteDocument4/{id}")]
         public async Task<IActionResult> DeleteDocument4(int id)
         {
             var result = await _repository.DeleteDocument4(id);
@@ -156,7 +141,7 @@ namespace Project_MLD.Controllers
         public async Task<IActionResult> GetDoc4InformationByDoc4Id(int id)
         {
             var doc4 = await _repository.GetDoc4InformationByDoc4Id(id);
-            if(doc4 == null)
+            if (doc4 == null)
             {
                 return NotFound("No Document 4 Found");
             }
