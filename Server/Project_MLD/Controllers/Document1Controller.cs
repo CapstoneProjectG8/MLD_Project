@@ -19,14 +19,14 @@ namespace Project_MLD.Controllers
         private readonly IUserRepository _userRepository;
 
         private readonly IDocument1CuriculumDistributionRepository _curiculumDistributionDoc1Repository;
-        private readonly IDocument1PeriodicAssessmentRepository _Document1PeriodicAssessmentDoc1Repository;
+        private readonly IDocument1PeriodicAssessmentsRepository _Document1PeriodicAssessmentDoc1Repository;
         private readonly IDocument1SelectedTopicsRepository _selectedTopicsDoc1Repository;
         private readonly IDocument1SubjectRoomsRepository _subjectRoomsDoc1Repository;
         private readonly IDocument1TeachingEquipmentRepository _teachingEquipmentDoc1Repository;
         public Document1Controller(IDocument1Repository repository, IMapper mapper, IGradeRepository gradeRepository,
             IUserRepository userRepository,
             IDocument1CuriculumDistributionRepository curiculumDistributionDoc1Repository,
-            IDocument1PeriodicAssessmentRepository Document1PeriodicAssessmentDoc1Repository,
+            IDocument1PeriodicAssessmentsRepository Document1PeriodicAssessmentDoc1Repository,
             IDocument1SelectedTopicsRepository selectedTopicsDoc1Repository,
             IDocument1SubjectRoomsRepository subjectRoomsDoc1Repository,
             IDocument1TeachingEquipmentRepository teachingEquipmentDoc1Repository)

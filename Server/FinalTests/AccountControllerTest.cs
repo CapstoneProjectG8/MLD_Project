@@ -21,7 +21,7 @@ public class AccountControllerTests
     private readonly Mock<IAccountRepository> _mockRepository;
     private readonly Mock<IPasswordHasher> _mockPasswordHasher;
     private readonly AccountController _controller;
-    private readonly MldDatabaseContext _mockContext;
+    private readonly MldDatabase2Context _mockContext;
     private readonly Mock<IEmailSender> _mockEmailSender;
     private readonly Mock<IMailBody> _mockMailBody;
     private readonly Mock<IGenerateCode> _mockCodeGenerate;
@@ -30,11 +30,11 @@ public class AccountControllerTests
 
     public AccountControllerTests()
     {
-        var options = new DbContextOptionsBuilder<MldDatabaseContext>()
+        var options = new DbContextOptionsBuilder<MldDatabase2Context>()
                .UseSqlServer("ConnectionStrings")
                 .Options;
 
-        _mockContext = new MldDatabaseContext(options);
+        _mockContext = new MldDatabase2Context(options);
         _mockRepository = new Mock<IAccountRepository>();
         _mockPasswordHasher = new Mock<IPasswordHasher>();
         _mockEmailSender = new Mock<IEmailSender> ();

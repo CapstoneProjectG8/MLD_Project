@@ -12,10 +12,10 @@ namespace Project_MLD.Controllers
     [ApiController]
     public class Document1PeriodicAssessmentController : ControllerBase
     {
-        private readonly IDocument1PeriodicAssessmentRepository _repository;
+        private readonly IDocument1PeriodicAssessmentsRepository _repository;
         private readonly IMapper _mapper;
 
-        public Document1PeriodicAssessmentController(IDocument1PeriodicAssessmentRepository repository, IMapper mapper)
+        public Document1PeriodicAssessmentController(IDocument1PeriodicAssessmentsRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;

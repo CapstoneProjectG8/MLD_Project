@@ -16,12 +16,14 @@ namespace Project_MLD.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
+
         private readonly IAccountRepository _repository;
         private readonly IMapper _mapper;
         private readonly IPasswordHasher _passwordHasher;
         private readonly IEmailSender _emailSender;
         private readonly IMailBody _mailBody;
         private readonly IGenerateCode _codeGenerate;
+
 
         public AccountController(IAccountRepository repository,
             IMapper mapper, IPasswordHasher passwordHasher,
