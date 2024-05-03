@@ -18,14 +18,14 @@ namespace Project_MLD.Controllers
             _repository = repository;
         }
 
-        [HttpGet]
+        [HttpGet("GetAllCurriculums")]
         public async Task<ActionResult<IEnumerable<CurriculumDistribution>>> GetAllCurriculumDistributions()
         {
             var CurriculumDistributions = await _repository.GetAllCurriculumDistributions();
             return Ok(CurriculumDistributions);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetCurriculumById/{id}")]
         public async Task<ActionResult<CurriculumDistribution>> GetCurriculumDistributionById(int id)
         {
             var CurriculumDistribution = await _repository.GetCurriculumDistributionById(id);
@@ -37,7 +37,7 @@ namespace Project_MLD.Controllers
             return Ok(CurriculumDistribution);
         }
 
-        [HttpPost]
+        [HttpPost("AddCurriculum")]
         public async Task<ActionResult<CurriculumDistribution>> AddCurriculumDistribution(CurriculumDistribution cd)
         {
             await _repository.AddCurriculumDistribution(cd);

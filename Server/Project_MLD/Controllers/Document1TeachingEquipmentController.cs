@@ -20,7 +20,7 @@ namespace Project_MLD.Controllers
 
         }
 
-        [HttpGet]
+        [HttpGet("GetDoc1TeachingEquipmentByDoc1ID")]
         public async Task<ActionResult<IEnumerable<Document1TeachingEquipment>>> GetDocument1TeachingEquipmentByDocument1ID(int id)
         {
             var TeachingEquipment = await _repository.GetTeachingEquipmentByDocument1Id(id);
@@ -28,7 +28,7 @@ namespace Project_MLD.Controllers
             return Ok(mapper);
         }
 
-        [HttpPut]
+        [HttpPut("UpdateDoc1TeachingEquipment")]
         public async Task<IActionResult> UpdateDocument1TeachingEquipment( List<Document1TeachingEquipmentsDTO> requests)
         {
             try
@@ -46,7 +46,7 @@ namespace Project_MLD.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpDelete("DeleteDoc1TeachingEquipment")]
         public async Task<IActionResult> DeleteDocument1TeachingEquipment( List<Document1TeachingEquipmentsDTO> requests)
         {
             try

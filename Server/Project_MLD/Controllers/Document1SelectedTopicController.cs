@@ -25,7 +25,7 @@ namespace Project_MLD.Controllers
 
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetDoc1SelectedTopicByDoc1ID/{id}")]
         public async Task<ActionResult<IEnumerable<Document1SelectedTopic>>> GetDocument1SelectedTopicByDocument1ID(int id)
         {
             var selectedTopic = await _repository.GetSelectedTopicByDocument1Id(id);
@@ -33,7 +33,7 @@ namespace Project_MLD.Controllers
             return Ok(mapper);
         }
 
-        [HttpPut]
+        [HttpPut("UpdateDoc1SelectedTopic")]
         public async Task<IActionResult> UpdateDocument1SelectedTopic( List<Document1SelectedTopicsDTO> requests)
         {
             try
@@ -51,7 +51,7 @@ namespace Project_MLD.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpDelete("DeleteDoc1SelectedTopic")]
         public async Task<IActionResult> DeleteDocument1SelectedTopic( List<Document1SelectedTopicsDTO> requests)
         {
             try

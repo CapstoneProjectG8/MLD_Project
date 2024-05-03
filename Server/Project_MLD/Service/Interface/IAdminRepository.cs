@@ -10,6 +10,6 @@ namespace Project_MLD.Service.Interface
         Task<bool> UpdateAccount(Account acc);
         Task<Account> GetAccountByUsername(string username);
         Task<IEnumerable<Notification>> GetAllNotification();
-        Task<IEnumerable<Report>> GetAllFeedback();
+        Task<IEnumerable<Report>> GetAllReport();
     }
 }

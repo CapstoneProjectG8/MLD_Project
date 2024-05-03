@@ -20,15 +20,15 @@ namespace Project_MLD.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Document3CurriculumDistribution>>> GetDocument3CuriculumDistributionByDocument3ID(int id)
+        [HttpGet("GetDoc3CuriculumDistributionByDoc3ID/{id}")]
+        public async Task<ActionResult<IEnumerable<Document3CurriculumDistribution>>> GetDoc3CuriculumDistributionByDoc3ID(int id)
         {
             var cd = await _repository.GetCurriculumDistributionByDocument3Id(id);
             var mapper = _mapper.Map<List<Document3CurriculumDistributionDTO>>(cd);
             return Ok(mapper);
         }
 
-        [HttpPut]
+        [HttpPut("UpdateDoc3CurriculumDistribution")]
         public async Task<IActionResult> UpdateDocument3CurriculumDistribution(List<Document3CurriculumDistributionDTO> requests)
         {
             try
@@ -46,7 +46,7 @@ namespace Project_MLD.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpDelete("DeleteDoc3CurriculumDistribution")]
         public async Task<IActionResult> DeleteDocument3CurriculumDistribution(List<Document3CurriculumDistributionDTO> requests)
         {
             try
@@ -63,6 +63,6 @@ namespace Project_MLD.Controllers
             }
         }
 
-        
+
     }
 }

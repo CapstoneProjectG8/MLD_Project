@@ -9,8 +9,12 @@ public partial class ClassDTO
 
     public string? Name { get; set; }
 
-    public int? GradeId { get; set; }
+    public int? TotalStudent { get; set; }
 
-    public string? GradeName { get;set; }
+    public int? TotalStudentSelectedTopics { get; set; }
+
+    public int GradeId { get; set; }
+
+    public string? GradeName { get; set; }
 
 }

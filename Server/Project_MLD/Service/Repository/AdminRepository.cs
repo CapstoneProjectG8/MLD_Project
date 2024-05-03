@@ -79,7 +79,7 @@ namespace Project_MLD.Service.Repository
            return await _context.Notifications.ToListAsync();
         }
 
-        public async Task<IEnumerable<Report>> GetAllFeedback()
+        public async Task<IEnumerable<Report>> GetAllReport()
         {
             return await _context.Reports.ToListAsync();
         }

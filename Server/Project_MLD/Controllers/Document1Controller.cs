@@ -19,16 +19,14 @@ namespace Project_MLD.Controllers
         private readonly IUserRepository _userRepository;
 
         private readonly IDocument1CuriculumDistributionRepository _curiculumDistributionDoc1Repository;
-        private readonly IDocument1PeriodicAssessmentsRepository _periodicAssessmentDoc1Repository;
+        private readonly IDocument1PeriodicAssessmentsRepository _Document1PeriodicAssessmentDoc1Repository;
         private readonly IDocument1SelectedTopicsRepository _selectedTopicsDoc1Repository;
         private readonly IDocument1SubjectRoomsRepository _subjectRoomsDoc1Repository;
         private readonly IDocument1TeachingEquipmentRepository _teachingEquipmentDoc1Repository;
-
-
         public Document1Controller(IDocument1Repository repository, IMapper mapper, IGradeRepository gradeRepository,
             IUserRepository userRepository,
             IDocument1CuriculumDistributionRepository curiculumDistributionDoc1Repository,
-            IDocument1PeriodicAssessmentsRepository periodicAssessmentDoc1Repository,
+            IDocument1PeriodicAssessmentsRepository Document1PeriodicAssessmentDoc1Repository,
             IDocument1SelectedTopicsRepository selectedTopicsDoc1Repository,
             IDocument1SubjectRoomsRepository subjectRoomsDoc1Repository,
             IDocument1TeachingEquipmentRepository teachingEquipmentDoc1Repository)
@@ -38,20 +36,16 @@ namespace Project_MLD.Controllers
             _gradeRepository = gradeRepository;
             _userRepository = userRepository;
             _curiculumDistributionDoc1Repository = curiculumDistributionDoc1Repository;
-            _periodicAssessmentDoc1Repository = periodicAssessmentDoc1Repository;
+            _Document1PeriodicAssessmentDoc1Repository = Document1PeriodicAssessmentDoc1Repository;
             _selectedTopicsDoc1Repository = selectedTopicsDoc1Repository;
             _subjectRoomsDoc1Repository = subjectRoomsDoc1Repository;
             _teachingEquipmentDoc1Repository = teachingEquipmentDoc1Repository;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Document1>>> GetAllDocument1()
+        [HttpGet("GetAllDocument1s")]
+        public async Task<ActionResult<IEnumerable<Document1DTO>>> GetAllDocument1s()
         {
             var Document1 = await _repository.GetAllDocument1s();
-            //if (Document1 == null || Document1.Count() == 0)
-            //{
-            //    return NotFound("No Document 1 Available");
-            //}
             var mappedDocuments = _mapper.Map<List<Document1DTO>>(Document1);
             foreach (var document in mappedDocuments)
             {
@@ -62,15 +56,15 @@ namespace Project_MLD.Controllers
                     {
                         document.ApproveByName = getUser.FullName;
                     }
-                }
+                }   
             }
             return Ok(mappedDocuments);
         }
 
-        [HttpGet("GetAllDoc1s")]
-        public async Task<ActionResult<IEnumerable<Document1>>> GetAllDoc1s()
+        [HttpGet("GetAllDoc1sWithCondition")]
+        public async Task<ActionResult<IEnumerable<Document1DTO>>> GetAllDoc1sWithCondition(bool status, int isApprove)
         {
-            var Document1 = await _repository.GetAllDoc1s();
+            var Document1 = await _repository.GetAllDoc1sWithCondition(status, isApprove);
             var mappedDocuments = _mapper.Map<List<Document1DTO>>(Document1);
             foreach (var document in mappedDocuments)
             {
@@ -86,14 +80,10 @@ namespace Project_MLD.Controllers
             return Ok(mappedDocuments);
         }
 
-        [HttpGet("ById/{id}")]
-        public async Task<ActionResult<Document1>> GetDocument1ById(int id)
+        [HttpGet("GetDoc1ById/{id}")]
+        public async Task<ActionResult<Document1DTO>> GetDocument1ById(int id)
         {
             var Document1 = await _repository.GetDocument1ById(id);
-            //if (Document1 == null)
-            //{
-            //    return NotFound("No Document 1 Available");
-            //}
             var mapDoc = _mapper.Map<Document1DTO>(Document1);
             if (mapDoc.ApproveBy != null)
             {
@@ -107,36 +97,28 @@ namespace Project_MLD.Controllers
         }
 
         [HttpGet("FilterDocument1")]
-        public async Task<ActionResult<IEnumerable<Document1>>> FilterDocument1(int gradeId, int subjectId)
+        public async Task<ActionResult<IEnumerable<Document1DTO>>> FilterDocument1(int gradeId, int subjectId)
         {
-            var Document1 = await _repository.FilterDocument1(gradeId, subjectId);
-            //if (Document1 == null)
-            //{
-            //    return NotFound("No Document 1 Found");
-            //}
+            var Document1 = await _repository.FilterAllDoc1(gradeId, subjectId);
             var mapDocument = _mapper.Map<List<Document1DTO>>(Document1);
             return Ok(mapDocument);
         }
 
-        [HttpGet("ByApproveID/{id}")]
-        public async Task<ActionResult<IEnumerable<Document1>>> GetDocument1ByApprovalID(int id)
+        [HttpGet("GetAllDoc1sByApprovalID/{id}")]
+        public async Task<ActionResult<IEnumerable<Document1DTO>>> GetAllDoc1sByApprovalID(int id)
         {
-            var Document1 = await _repository.GetDocument1ByApprovalID(id);
-            //if (Document1 == null)
-            //{
-            //    return NotFound("No Document 1 Found");
-            //}
+            var Document1 = await _repository.GetAllDoc1sByApprovalID(id);
             var mapDocument = _mapper.Map<List<Document1DTO>>(Document1);
             return Ok(mapDocument);
         }
 
-        [HttpPost]
+        [HttpPost("AddDoc1")]
         public async Task<ActionResult<Document1DTO>> AddDocument1(Document1DTO doc1)
         {
             try
             {
                 doc1.Status = true;
-                doc1.CreatedDate = DateOnly.FromDateTime(DateTime.Now);
+                doc1.CreatedDate = DateOnly.FromDateTime(DateTime.Now); 
                 var document = _mapper.Map<Document1>(doc1);
 
                 var addedDocument = await _repository.AddDocument1(document);
@@ -153,7 +135,7 @@ namespace Project_MLD.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteDoc1/{id}")]
         public async Task<IActionResult> DeleteDocument1(int id)
         {
             var result = await _repository.DeleteDocument1(id);
@@ -164,10 +146,9 @@ namespace Project_MLD.Controllers
             return NoContent();
         }
 
-        [HttpPut]
+        [HttpPut("UpdateDoc1")]
         public async Task<IActionResult> UpdateDocument1(Document1DTO document1)
         {
-
             var mapper = _mapper.Map<Document1>(document1);
             var result = await _repository.UpdateDocument1(mapper);
             if (!result)
@@ -182,7 +163,7 @@ namespace Project_MLD.Controllers
             });
         }
 
-        [HttpGet("GetTotalClassByGradeId")]
+        [HttpGet("GetTotalClassAndStudentByGradeId/{gradeId}")]
         public async Task<IActionResult> GetTotalClassAndStudentByGradeId(int gradeId)
         {
             if (gradeId == 0)
@@ -190,9 +171,7 @@ namespace Project_MLD.Controllers
                 return BadRequest("Grade Id is Null");
             }
             var totalClass = await _gradeRepository.GetTotalClassByGradeId(gradeId);
-
             var totalStudent = await _gradeRepository.GetTotalStudentByGradeId(gradeId);
-
             var totalStudentSelected = await _gradeRepository.GetTotalStudentSelectedTopicsByGradeId(gradeId);
             return Ok(new
             {
@@ -203,7 +182,7 @@ namespace Project_MLD.Controllers
         }
 
 
-        [HttpGet("GetTeacherInformation")]
+        [HttpGet("GetTeacherInformation/{specializedDepartmentId}")]
         public async Task<IActionResult> GetTeacherInformation(int specializedDepartmentId)
         {
             if (specializedDepartmentId == 0)
@@ -213,8 +192,6 @@ namespace Project_MLD.Controllers
             var totalTeacher = await _userRepository.GetTotalUserBySpecializedDepartmentId(specializedDepartmentId);
             var totalTeacherProfessionalStandard = await _userRepository.GetTotalUserProfessionalStandard();
             var totalTeacherLevelOfTrainning = await _userRepository.GetTotalUserLevelOfTrainning();
-
-
             return Ok(new
             {
                 totalTeacher = totalTeacher,
@@ -223,7 +200,7 @@ namespace Project_MLD.Controllers
             });
         }
 
-        [HttpPut("ApproveDocument1")]
+        [HttpPut("ApproveDoc1")]
         public async Task<IActionResult> ApproveDocument1(Document1DTO document1)
         {
 
@@ -241,50 +218,36 @@ namespace Project_MLD.Controllers
             });
         }
 
-        [HttpGet("GetDocument1ByUserSpecialiedDepartment")]
+        [HttpGet("GetDoc1ByUserDepartment")]
         public async Task<ActionResult<IEnumerable<object>>> GetDocument1ByUserSpecialiedDepartment([FromQuery] List<int> listId)
         {
-
-            //var documents = await _repository.GetDocument1ByUserSpecialiedDepartment(listId);
-            //var mappedDocuments = _mapper.Map<List<Document1DTO>>(documents);
-            //return Ok(mappedDocuments);
-
-            var documents = await _repository.GetDocument1ByUserSpecialiedDepartment(listId);
-
+            var documents = await _repository.GetDoc1ByUserDepartment(listId);
             var modifiedDocuments = new List<object>();
-
             foreach (var document in documents)
             {
-                // Kiểm tra xem document có thuộc tính "id" và "document" không
                 if (document.GetType().GetProperty("id") != null && document.GetType().GetProperty("document") != null)
                 {
-                    // Truy cập thuộc tính "id" và "document"
                     var id = document.GetType().GetProperty("id").GetValue(document, null);
                     var doc = document.GetType().GetProperty("document").GetValue(document, null);
-
                     var dataMap = _mapper.Map<List<Document1DTO>>(doc);
-
                     var modifiedDocument = new
                     {
                         SpecializedDepartmentId = id,
                         documents = dataMap
                     };
-
                     modifiedDocuments.Add(modifiedDocument);
                 }
             }
-
             return Ok(modifiedDocuments);
-
         }
 
-        [HttpDelete("DeleteDocument1ForeignTableByDocument1ID")]
+        [HttpDelete("DeleteDoc1ForeignTableByDoc1ID")]
         public async Task<IActionResult> DeleteDocument1ForeignTableByDocument1ID(int id)
         {
             try
             {
                 await _curiculumDistributionDoc1Repository.DeleteDocument1CurriculumDistributionByDoc1ID(id);
-                await _periodicAssessmentDoc1Repository.DeletePeriodicAssessmentsByDoc1ID(id);
+                await _Document1PeriodicAssessmentDoc1Repository.DeleteDocument1PeriodicAssessmentByDoc1ID(id);
                 await _selectedTopicsDoc1Repository.DeleteDocument1SelectedTopicByDoc1Id(id);
                 await _teachingEquipmentDoc1Repository.DeleteDocument1TeachingEquipmentByDoc1ID(id);
                 await _subjectRoomsDoc1Repository.DeleteDocument1SubjectRoomByDoc1Id(id);
@@ -293,9 +256,8 @@ namespace Project_MLD.Controllers
             }
             catch (Exception ex)
             {
-                // Log the exception or handle it accordingly
-                return StatusCode(500, $"An error occurred while delete Document1 Curriculum Distribution: {ex.Message}");
+                return StatusCode(500, $"An error occurred while delete Document1 Foreign Table: {ex.Message}");
             }
         }
-    }
+    }   
 }

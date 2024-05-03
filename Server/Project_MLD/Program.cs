@@ -71,7 +71,7 @@ builder.Services.AddAWSService<IAmazonS3>();
 
 //Admin
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();
-builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
+builder.Services.AddScoped<IReportRepository, ReportRepository>();
 
 //User-Account-Role-Notification
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();

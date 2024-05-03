@@ -102,7 +102,7 @@ public partial class MldDatabase2Context : DbContext
     {
         modelBuilder.Entity<Account>(entity =>
         {
-            entity.ToTable("Account");
+            entity.ToTable("Account", tb => tb.HasTrigger("trgCreateUserForAccount"));
 
             entity.Property(e => e.AccountId).HasColumnName("account_id");
             entity.Property(e => e.Active).HasColumnName("active");
