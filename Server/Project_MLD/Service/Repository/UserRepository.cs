@@ -7,9 +7,9 @@ namespace Project_MLD.Service.Repository
 {
     public class UserRepository : IUserRepository
     {
-        private readonly MldDatabaseContext _context;
+        private readonly MldDatabase2Context _context;
 
-        public UserRepository(MldDatabaseContext context)
+        public UserRepository(MldDatabase2Context context)
         {
             _context = context;
         }
@@ -95,12 +95,12 @@ namespace Project_MLD.Service.Repository
         public async Task<IEnumerable<object>> GetTotalUserBySpecializedDepartmentId(int id)
         {
             var specializedDepartment = await _context.SpecializedDepartments
-                .Include(x => x.Users)
+                .Include(x => x.UserDepartments)
                 .Where(x => x.Id == id)
                 .Select(x => new
                 {
                     SpecializedDepartmentName = x.Name,
-                    UserCount = x.Users.Count()
+                    UserCount = x.UserDepartments.Count()
                 })
                 .ToListAsync();
 
@@ -110,10 +110,10 @@ namespace Project_MLD.Service.Repository
         public async Task<IEnumerable<User>> GetAllUsersByDepartmentId(int id)
         {
             return await _context.Users
-                .Include(x => x.SpecializedDepartment)
+                .Include(x => x.UserDepartments)
                 .Include(x => x.Account)
                     .ThenInclude(x => x.Role)
-                .Where(y => y.SpecializedDepartmentId == id)
+                .Where(y => y.UserDepartments.Any(x => x.DepartmentId == id))
                 .ToListAsync();
         }
 

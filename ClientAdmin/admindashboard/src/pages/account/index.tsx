@@ -1,14 +1,22 @@
+<<<<<<< HEAD
 import React, { FC, useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { Button, DatePicker, Form, Input, message, Modal, Radio, Select, Space, Table } from 'antd';
 import { CheckCircleOutlined } from '@ant-design/icons/lib/icons';
 import { CloseCircleOutlined, SearchOutlined } from '@ant-design/icons';
 import Highlighter from 'react-highlight-words';
+=======
+import React, { FC, useEffect, useState } from 'react';
+import axios from 'axios';
+import { Button, Form, Input, message, Modal, Select, Table } from 'antd';
+
+>>>>>>> main
 interface User {
   id: string;
   fullName: string;
   email: string;
   placeOfBirth: string;
+<<<<<<< HEAD
   gender: boolean;
   active: boolean;
   createdDate: string;
@@ -18,6 +26,12 @@ interface User {
   levelOfTrainningId: string;
   specializedDepartmentId: string;
   professionalStandardsId: string;
+=======
+  gender: string;
+  active: boolean;
+  createdDate: string;
+  accountId: string;
+>>>>>>> main
 }
 
 interface AccountDetail {
@@ -46,9 +60,13 @@ const Account: FC = () => {
   const [newAccountFormData, setNewAccountFormData] = useState<any>({});
   const [newUserData, setNewUserData] = useState<any>({});
   const [addUserModalVisible, setAddUserModalVisible] = useState(false);
+<<<<<<< HEAD
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef(null);
+=======
+
+>>>>>>> main
   useEffect(() => {
     axios.get('https://localhost:7241/api/User')
       .then(response => {
@@ -58,6 +76,7 @@ const Account: FC = () => {
           fullName: user.fullName,
           email: user.email,
           active: user.active,
+<<<<<<< HEAD
           gender: user.gender,
           createdDate: user.createdDate,
           placeOfBirth: user.placeOfBirth,
@@ -67,6 +86,12 @@ const Account: FC = () => {
           levelOfTrainningId: user.levelOfTrainningId,
           specializedDepartmentId: user.specializedDepartmentId,
           professionalStandardsId: user.professionalStandardsId,
+=======
+          gender: user.gender ? 'Male' : 'Female',
+          createdDate: user.createdDate,
+          placeOfBirth: user.placeOfBirth,
+          accountId: user.accountId,
+>>>>>>> main
         }));
         setUsers(formattedUsers);
       })
@@ -74,6 +99,7 @@ const Account: FC = () => {
         console.error(error);
       });
   }, []);
+<<<<<<< HEAD
   useEffect(() => {
     if (accountDetail) {
       // Cập nhật giá trị cho updatedRole khi accountDetail thay đổi
@@ -82,6 +108,9 @@ const Account: FC = () => {
       setUpdatedActive(accountDetail.active);
     }
   }, [accountDetail]);
+=======
+
+>>>>>>> main
   const handleDetail = (user: User) => {
     setSelectedUser(user);
     setDetailModalVisible(true);
@@ -106,11 +135,16 @@ const Account: FC = () => {
 
   const handleUpdate = async () => {
     try {
+<<<<<<< HEAD
       const updatedUser1 = { ...selectedUser, active: !selectedUser.active };
       const requestBody = { id: selectedUser.id, accountId: selectedUser.accountId, active: updatedUser1.active };
       await axios.put(`https://localhost:7241/api/User/${selectedUser.id}`, requestBody);
       const updatedUsers1 = users.map(u => (u.id === selectedUser.id ? updatedUser1 : u));
       setUsers(updatedUsers1);
+=======
+      const updatedDetail = { ...accountDetail, roleId: updatedRole, active: updatedActive };
+      await axios.put(`https://localhost:7241/api/Account/${selectedUser?.accountId}`, updatedDetail);
+>>>>>>> main
       message.success(`User details updated successfully.`);
       setDetailModalVisible(false);
     } catch (error) {
@@ -122,7 +156,11 @@ const Account: FC = () => {
   const confirmBanUnban = async () => {
     try {
       const updatedUser = { ...selectedUser, active: !selectedUser.active };
+<<<<<<< HEAD
       const requestBody = { id: selectedUser.id, accountId: selectedUser.accountId, active: updatedUser.active };
+=======
+      const requestBody = { id: selectedUser.id, active: updatedUser.active };
+>>>>>>> main
       await axios.put(`https://localhost:7241/api/User/${selectedUser.id}`, requestBody);
       const updatedUsers = users.map(u => (u.id === selectedUser.id ? updatedUser : u));
       setUsers(updatedUsers);
@@ -146,33 +184,59 @@ const Account: FC = () => {
 
       console.log('Received accountId:', accountId); // Kiểm tra accountId từ phản hồi
 
+<<<<<<< HEAD
       // Cập nhật state với accountId mới
       setNewAccountFormData({ ...newAccountFormData, accountId });
 
       // Đóng modal tạo account
       setAddAccountModalVisible(false);
 
+=======
+      // Đóng modal tạo account
+      setAddAccountModalVisible(false);
+
+      // Lưu accountId vào state để sử dụng khi tạo user
+      setNewAccountFormData({ ...newAccountFormData, accountId });
+
+>>>>>>> main
       // Mở modal tạo user và truyền accountId vào
       setAddUserModalVisible(true);
 
       message.success('Account created successfully.');
+<<<<<<< HEAD
 
     } catch (error) {
       console.error(error);
       message.error('Failed to create account.');
+=======
+      setNewAccountFormData({});
+
+    } catch (error) {
+      console.error(error);
+      message.error('Failed to create account and user.');
+>>>>>>> main
     }
   };
 
 
+<<<<<<< HEAD
   const handleCreateUser = () => {
+=======
+  const handleCreateUser = (accountId: string) => {
+    const userDataWithAccountId = { ...newUserData, accountId: newAccountFormData.accountId };
+
+>>>>>>> main
     // Trước khi gửi yêu cầu tạo user, kiểm tra xem accountId đã được gán hay chưa
     if (!newAccountFormData.accountId) {
       message.error('Please create an account first.');
       return;
     }
 
+<<<<<<< HEAD
     const userDataWithAccountId = { ...newUserData, accountId: newAccountFormData.accountId };
 
+=======
+>>>>>>> main
     axios.post('https://localhost:7241/api/User', userDataWithAccountId)
       .then(() => {
         setAddUserModalVisible(false);
@@ -185,7 +249,10 @@ const Account: FC = () => {
       });
   };
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
   const handleNewAccountFormChange = (changedValues: any, allValues: any) => {
     setNewAccountFormData(allValues);
   };
@@ -193,6 +260,7 @@ const Account: FC = () => {
   const handleNewUserFormChange = (changedValues: any, allValues: any) => {
     setNewUserData(allValues);
   };
+<<<<<<< HEAD
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
@@ -261,6 +329,9 @@ const Account: FC = () => {
     filters: filters,
     onFilter: (value, record) => record[dataIndex] === value,
   });
+=======
+
+>>>>>>> main
   const columns = [
     {
       title: '#',
@@ -272,7 +343,10 @@ const Account: FC = () => {
       title: 'Full Name',
       dataIndex: 'fullName',
       key: 'fullName',
+<<<<<<< HEAD
       ...getColumnSearchProps('fullName'),
+=======
+>>>>>>> main
     },
     {
       title: 'Email',
@@ -280,6 +354,7 @@ const Account: FC = () => {
       key: 'email',
     },
     {
+<<<<<<< HEAD
       title: 'Gender',
       dataIndex: 'gender',
       key: 'gender',
@@ -288,27 +363,44 @@ const Account: FC = () => {
         {text: 'Male', value: true},
         {text: 'Female', value: false},
       ]),
+=======
+      title: 'Place of Birth',
+      dataIndex: 'placeOfBirth',
+      key: 'placeOfBirth',
+    },
+    {
+      title: 'Gender',
+      dataIndex: 'gender',
+      key: 'gender',
+>>>>>>> main
     },
     {
       title: 'Active',
       dataIndex: 'active',
       key: 'active',
+<<<<<<< HEAD
       align: "center",
       ...getColumnFilterStatus('active', [
         {text: 'Active', value: true},
         {text: 'Inactive', value: false},
       ]),
       render: (active: boolean) => (active ? <CheckCircleOutlined style={{color: "green"}}/> : <CloseCircleOutlined style={{color: "red"}}/>),
+=======
+      render: (active: boolean) => (active ? 'Active' : 'Inactive'),
+>>>>>>> main
     },
     {
       title: 'Created Date',
       dataIndex: 'createdDate',
       key: 'createdDate',
+<<<<<<< HEAD
       sorter: (a, b) => {
         const dateA = new Date(a.createdDate);
         const dateB = new Date(b.createdDate);
         return dateA - dateB;
       },
+=======
+>>>>>>> main
     },
     {
       title: 'Action',
@@ -344,6 +436,7 @@ const Account: FC = () => {
           </Button>,
           <Button key="createUser" type="primary" onClick={handleCreateAccount}>
             Create Account and User
+<<<<<<< HEAD
           </Button>,
         ]}
       >
@@ -397,6 +490,22 @@ const Account: FC = () => {
             <Input.Password />
           </Form.Item>
           <Form.Item label="Role" name="roleId" rules={[{ required: true, message: 'Please select a role!' }]}>
+=======
+          </Button>
+        ]}
+      >
+        <Form {...layout} onValuesChange={handleNewAccountFormChange}>
+          <Form.Item label="Username" name="username">
+            <Input />
+          </Form.Item>
+          <Form.Item label="Password" name="password">
+            <Input.Password />
+          </Form.Item>
+          <Form.Item label="Confirm Password" name="confirmPassword">
+            <Input.Password />
+          </Form.Item>
+          <Form.Item label="Role" name="roleId">
+>>>>>>> main
             <Select>
               <Option value="1">Admin</Option>
               <Option value="2">Teacher</Option>
@@ -418,6 +527,7 @@ const Account: FC = () => {
           </Button>,
           <Button key="createUser" type="primary" onClick={() => handleCreateUser(newUserData.accountId)}>
             Create User
+<<<<<<< HEAD
           </Button>,
         ]}
       >
@@ -490,6 +600,27 @@ const Account: FC = () => {
           <Form.Item label="Active" name="active" hidden initialValue={true}>
             <Input value={newUserData.active} disabled />
           </Form.Item>
+=======
+          </Button>
+        ]}
+      >
+        <Form {...layout} onValuesChange={handleNewUserFormChange}>
+          <Form.Item label="First Name" name="firstName">
+            <Input />
+          </Form.Item>
+          <Form.Item label="Last Name" name="lastName">
+            <Input />
+          </Form.Item>
+          <Form.Item label="Email" name="email">
+            <Input />
+          </Form.Item>
+          <Form.Item label="Address" name="address">
+            <Input />
+          </Form.Item>
+          <Form.Item label="Account ID" name="accountId" hidden>
+            <Input value={newUserData.accountId} disabled />
+          </Form.Item>
+>>>>>>> main
         </Form>
       </Modal>
 
@@ -530,6 +661,7 @@ const Account: FC = () => {
             <Form.Item label="Created Date">
               <Input value={accountDetail.createdDate} disabled />
             </Form.Item>
+<<<<<<< HEAD
             {/*<Form.Item label="Role">*/}
             {/*  <Select value={updatedRole} onChange={(value: string) => setUpdatedRole(value)}>*/}
             {/*    <Select.Option value="1">Admin</Select.Option>*/}
@@ -550,6 +682,15 @@ const Account: FC = () => {
                   }[accountDetail.roleId]
                 ) : ''
               } disabled />
+=======
+            <Form.Item label="Role">
+              <Select value={updatedRole} onChange={(value: string) => setUpdatedRole(value)}>
+                <Option value="1">Admin</Option>
+                <Option value="2">Teacher</Option>
+                <Option value="3">Leader</Option>
+                <Option value="5">Principle</Option>
+              </Select>
+>>>>>>> main
             </Form.Item>
             <Form.Item label="Login Attempt">
               <Input value={accountDetail.loginAttempt} disabled />

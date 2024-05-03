@@ -19,7 +19,7 @@ namespace Project_MLD.Controllers
         private readonly IUserRepository _userRepository;
 
         private readonly IDocument1CuriculumDistributionRepository _curiculumDistributionDoc1Repository;
-        private readonly IDocument1PeriodicAssessmentRepository _periodicAssessmentDoc1Repository;
+        private readonly IDocument1PeriodicAssessmentsRepository _periodicAssessmentDoc1Repository;
         private readonly IDocument1SelectedTopicsRepository _selectedTopicsDoc1Repository;
         private readonly IDocument1SubjectRoomsRepository _subjectRoomsDoc1Repository;
         private readonly IDocument1TeachingEquipmentRepository _teachingEquipmentDoc1Repository;
@@ -28,7 +28,7 @@ namespace Project_MLD.Controllers
         public Document1Controller(IDocument1Repository repository, IMapper mapper, IGradeRepository gradeRepository,
             IUserRepository userRepository,
             IDocument1CuriculumDistributionRepository curiculumDistributionDoc1Repository,
-            IDocument1PeriodicAssessmentRepository periodicAssessmentDoc1Repository,
+            IDocument1PeriodicAssessmentsRepository periodicAssessmentDoc1Repository,
             IDocument1SelectedTopicsRepository selectedTopicsDoc1Repository,
             IDocument1SubjectRoomsRepository subjectRoomsDoc1Repository,
             IDocument1TeachingEquipmentRepository teachingEquipmentDoc1Repository)
@@ -284,7 +284,7 @@ namespace Project_MLD.Controllers
             try
             {
                 await _curiculumDistributionDoc1Repository.DeleteDocument1CurriculumDistributionByDoc1ID(id);
-                await _periodicAssessmentDoc1Repository.DeleteDocument1PeriodicAssessmentByDoc1ID(id);
+                await _periodicAssessmentDoc1Repository.DeletePeriodicAssessmentsByDoc1ID(id);
                 await _selectedTopicsDoc1Repository.DeleteDocument1SelectedTopicByDoc1Id(id);
                 await _teachingEquipmentDoc1Repository.DeleteDocument1TeachingEquipmentByDoc1ID(id);
                 await _subjectRoomsDoc1Repository.DeleteDocument1SubjectRoomByDoc1Id(id);

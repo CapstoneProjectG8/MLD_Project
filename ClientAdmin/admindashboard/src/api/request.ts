@@ -56,7 +56,11 @@ axiosInstance.interceptors.response.use(
     let errorMessage = 'Network Error';
 
     if (error?.message?.includes('Network Error')) {
+<<<<<<< HEAD
       errorMessage = 'Network Error';
+=======
+      errorMessage = 'Lỗi kết nối';
+>>>>>>> main
     } else {
       errorMessage = error?.message;
     }

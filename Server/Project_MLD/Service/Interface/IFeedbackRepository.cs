@@ -4,10 +4,10 @@ namespace Project_MLD.Service.Interface
 {
     public interface IFeedbackRepository
     {
-        Task<IEnumerable<Feedback>> GetAllFeedbacks();
-        Task<Feedback> GetFeedbackById(int id);
-        Task<Feedback> AddFeedback(Feedback cl);
-        Task<bool> UpdateFeedback(Feedback cl);
+        Task<IEnumerable<Report>> GetAllFeedbacks();
+        Task<Report> GetFeedbackById(int id);
+        Task<Report> AddFeedback(Report cl);
+        Task<bool> UpdateFeedback(Report cl);
 
     }
 }

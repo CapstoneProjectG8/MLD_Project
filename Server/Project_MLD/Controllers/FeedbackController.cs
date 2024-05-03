@@ -24,30 +24,30 @@ namespace Project_MLD.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Feedback>>> GetAllFeedbacks()
+        public async Task<ActionResult<IEnumerable<Report>>> GetAllFeedbacks()
         {
             return Ok(await _repository.GetAllFeedbacks());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Feedback>> GetFeedbackById(int id)
+        public async Task<ActionResult<Report>> GetFeedbackById(int id)
         {
             return Ok(await _repository.GetFeedbackById(id));
         }
 
         [HttpPost]
-        public async Task<ActionResult<Feedback>> AddFeedback(FeedbackDTO st)
+        public async Task<ActionResult<Report>> AddFeedback(FeedbackDTO st)
         {
             st.Read = false;
-            var fb = _mappper.Map<Feedback>(st);
+            var fb = _mappper.Map<Report>(st);
             var addFB = await _repository.AddFeedback(fb);
             var mapFB = _mappper.Map<FeedbackDTO>(addFB);
             return Ok(mapFB);
         }
         [HttpPut]
-        public async Task<ActionResult<Feedback>> PutFeedback(FeedbackDTO st)
+        public async Task<ActionResult<Report>> PutFeedback(FeedbackDTO st)
         {
-            var mapperFB = _mappper.Map<Feedback>(st);
+            var mapperFB = _mappper.Map<Report>(st);
             var result = await _repository.UpdateFeedback(mapperFB);
             if (!result)
             {

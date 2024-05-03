@@ -7,9 +7,9 @@ namespace Project_MLD.Service.Repository
 {
     public class ProfessionalStandardRepository : IProfessionalStandardRepository
     {
-        private readonly MldDatabaseContext2 _context;
+        private readonly MldDatabase2Context _context;
 
-        public ProfessionalStandardRepository(MldDatabaseContext2 context)
+        public ProfessionalStandardRepository(MldDatabase2Context context)
         {
             _context = context;
         }

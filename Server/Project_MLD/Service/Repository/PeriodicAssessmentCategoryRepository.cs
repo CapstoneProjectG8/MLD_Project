@@ -7,9 +7,9 @@ namespace Project_MLD.Service.Repository
 {
     public class PeriodicAssessmentCategoryRepository : IPeriodicAssessmentCategoryRepository
     {
-        private readonly MldDatabaseContext2 _context;
+        private readonly MldDatabase2Context _context;
 
-        public PeriodicAssessmentCategoryRepository(MldDatabaseContext2 context)
+        public PeriodicAssessmentCategoryRepository(MldDatabase2Context context)
         {
             _context = context;
         }

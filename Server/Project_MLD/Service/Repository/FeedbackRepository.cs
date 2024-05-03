@@ -8,39 +8,39 @@ namespace Project_MLD.Service.Repository
 {
     public class FeedbackRepository : IFeedbackRepository
     {
-        private readonly MldDatabaseContext2 _context;
+        private readonly MldDatabase2Context _context;
 
-        public FeedbackRepository(MldDatabaseContext2 context)
+        public FeedbackRepository(MldDatabase2Context context)
         {
             _context = context;
         }
 
-        public async Task<Feedback> AddFeedback(Feedback cl)
+        public async Task<Report> AddFeedback(Report cl)
         {
-            _context.Feedbacks.Add(cl);
+            _context.Reports.Add(cl);
             await _context.SaveChangesAsync();
             return cl;
         }
 
-        public async Task<IEnumerable<Feedback>> GetAllFeedbacks()
+        public async Task<IEnumerable<Report>> GetAllFeedbacks()
         {
-            return await _context.Feedbacks.OrderByDescending(x => x.Id).ToListAsync();
+            return await _context.Reports.OrderByDescending(x => x.Id).ToListAsync();
         }
 
-        public async Task<Feedback> GetFeedbackById(int id)
+        public async Task<Report> GetFeedbackById(int id)
         {
-            return await _context.Feedbacks.FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.Reports.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<bool> UpdateFeedback(Feedback cl)
+        public async Task<bool> UpdateFeedback(Report cl)
         {
-            var existFB = await _context.Feedbacks.FindAsync(cl.Id);
+            var existFB = await _context.Reports.FindAsync(cl.Id);
             if (existFB == null)
             {
                 return false;
             }
 
-            var entityType = typeof(Feedback);
+            var entityType = typeof(Report);
             var properties = entityType.GetProperties();
 
             foreach (var property in properties)

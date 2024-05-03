@@ -11,7 +11,7 @@ using Project_MLD.Models;
 
 namespace Project_MLD.Migrations
 {
-    [DbContext(typeof(MldDatabaseContext2))]
+    [DbContext(typeof(MldDatabase2Context))]
     [Migration("20240418161642_Migration_v3")]
     partial class Migration_v3
     {

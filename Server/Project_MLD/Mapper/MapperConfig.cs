@@ -28,12 +28,12 @@ namespace Project_MLD.Mapper
             CreateMap<NotificationDTO, Notification>()
                 .ForMember(x => x.SentByNavigation, y => y.Ignore())
                 .ReverseMap();
-            CreateMap<Feedback, FeedbackDTO>()
-                .ForMember(x => x.UserName, y => y.MapFrom(src => src.User.FullName))
-                .ReverseMap();
-            CreateMap<FeedbackDTO, Feedback>()
-                .ForMember(x => x.User, y => y.Ignore())
-                .ReverseMap();
+            //CreateMap<Report, Report>()
+            //    .ForMember(x => x.UserName, y => y.MapFrom(src => src.User.FullName))
+            //    .ReverseMap();
+            //CreateMap<FeedbackDTO, Feedback>()
+            //    .ForMember(x => x.User, y => y.Ignore())
+            //    .ReverseMap();
 
             CreateMap<User, UserDTO>()
                 //.ForMember(x => x.Id, y => y.MapFrom(src => src.Id))
@@ -46,11 +46,11 @@ namespace Project_MLD.Mapper
                 //.ForMember(x => x.CreatedBy, y => y.MapFrom(x => "ADMIN"))
                 .ReverseMap();
             CreateMap<UserDTO, User>()
-                .ForMember(x => x.Feedbacks, y => y.Ignore())
-                .ForMember(x => x.Account, y => y.Ignore())
-                .ForMember(x => x.ProfessionalStandards, y => y.Ignore())
-                .ForMember(x => x.LevelOfTrainning, y => y.Ignore())
-                .ForMember(x => x.SpecializedDepartment, y => y.Ignore())
+                //.ForMember(x => x.Feedbacks, y => y.Ignore())
+                //.ForMember(x => x.Account, y => y.Ignore())
+                //.ForMember(x => x.ProfessionalStandards, y => y.Ignore())
+                //.ForMember(x => x.LevelOfTrainning, y => y.Ignore())
+                //.ForMember(x => x.SpecializedDepartment, y => y.Ignore())
                 .ReverseMap();
 
             CreateMap<Document1, Document1DTO>()

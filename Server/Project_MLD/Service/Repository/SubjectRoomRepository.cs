@@ -7,9 +7,9 @@ namespace Project_MLD.Service.Repository
 {
     public class SubjectRoomRepository : ISubjectRoomRepository
     {
-        private readonly MldDatabaseContext2 _context;
+        private readonly MldDatabase2Context _context;
 
-        public SubjectRoomRepository(MldDatabaseContext2 context)
+        public SubjectRoomRepository(MldDatabase2Context context)
         {
             _context = context;
         }

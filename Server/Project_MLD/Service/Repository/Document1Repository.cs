@@ -7,9 +7,9 @@ namespace Project_MLD.Service.Repository
 {
     public class Document1Repository : IDocument1Repository
     {
-        private readonly MldDatabaseContext2 _context;
+        private readonly MldDatabase2Context _context;
 
-        public Document1Repository(MldDatabaseContext2 context)
+        public Document1Repository(MldDatabase2Context context)
         {
             _context = context;
         }
@@ -116,7 +116,7 @@ namespace Project_MLD.Service.Repository
                 .Include(x => x.User)
                 .Include(x => x.Grade)
                 .Include(x => x.Subject)
-                .Where(x => x.User.SpecializedDepartmentId == id && x.Status == true)
+                .Where(x => x.User.UserDepartments.Any(x => x.Id == id) && x.Status == true)
                 .ToListAsync();
 
                 var anObject = new

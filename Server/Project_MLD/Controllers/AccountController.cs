@@ -23,7 +23,7 @@ namespace Project_MLD.Controllers
     public class AccountController : ControllerBase
     {
         private IConfiguration _config;
-        private readonly MldDatabaseContext2 _context;
+        private readonly MldDatabase2Context _context;
         private readonly IAccountRepository _repository;
         private readonly IMapper _mapper;
         private readonly IPasswordHasher _passwordHasher;
@@ -32,7 +32,7 @@ namespace Project_MLD.Controllers
         private readonly IGenerateCode _codeGenerate;
 
         public AccountController(IConfiguration configuration, IAccountRepository repository,
-            MldDatabaseContext2 context, IMapper mapper, IPasswordHasher passwordHasher,
+            MldDatabase2Context context, IMapper mapper, IPasswordHasher passwordHasher,
             IEmailSender emailSender, IMailBody mailBody, IGenerateCode codeGenerate)
         {
             _config = configuration;

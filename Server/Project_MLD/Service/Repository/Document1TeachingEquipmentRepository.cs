@@ -10,9 +10,9 @@ namespace Project_MLD.Service.Repository
 {
     public class Document1TeachingEquipmentRepository : IDocument1TeachingEquipmentRepository
     {
-        private readonly MldDatabaseContext2 _context;
+        private readonly MldDatabase2Context _context;
 
-        public Document1TeachingEquipmentRepository(MldDatabaseContext2 context)
+        public Document1TeachingEquipmentRepository(MldDatabase2Context context)
         {
             _context = context;
         }
