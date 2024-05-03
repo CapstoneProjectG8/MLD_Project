@@ -111,7 +111,9 @@ namespace FinalTest
         {
             try
             {
-                var result = await _repository.GetDocument2ByApproval();
+                //1 bien ko lien quan de GetDocument2ByApprovalID ko bi loi
+                var id = 1;
+                var result = await _repository.GetDocument2ByApprovalID(id);
             }
             catch (Exception)
             {

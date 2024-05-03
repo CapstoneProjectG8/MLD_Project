@@ -92,7 +92,7 @@ namespace Project_MLD.Controllers
         [HttpGet("GetAccountById/{id}")]
         public async Task<ActionResult<Account>> GetAccountById(int id)
         {
-            var exAcc = await _repository.GetAccountById(id);
+            var exAcc = await _repository.GetAccountById(id);   
             if (exAcc == null)
             {
                 return NotFound("Account not exist");
