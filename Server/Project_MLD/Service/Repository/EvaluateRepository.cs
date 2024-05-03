@@ -7,9 +7,9 @@ namespace Project_MLD.Service.Repository
 {
     public class EvaluateRepository : IEvaluateRepository
     {
-        private readonly MldDatabaseContext _context;
+        private readonly MldDatabaseContext2 _context;
 
-        public EvaluateRepository(MldDatabaseContext context)
+        public EvaluateRepository(MldDatabaseContext2 context)
         {
             _context = context;
         }

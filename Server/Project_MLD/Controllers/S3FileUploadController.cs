@@ -20,8 +20,8 @@ namespace Project_MLD.Controllers
         private readonly IAmazonS3 _s3Client;
         private readonly ILogger<S3FileUploadController> _logger;
         private static List<S3FileMetadatum> _fileMetadataStore = new List<S3FileMetadatum>();
-        private readonly MldDatabaseContext _context;
-        public S3FileUploadController(IAmazonS3 s3Client, ILogger<S3FileUploadController> logger, MldDatabaseContext context)
+        private readonly MldDatabaseContext2 _context;
+        public S3FileUploadController(IAmazonS3 s3Client, ILogger<S3FileUploadController> logger, MldDatabaseContext2 context)
         {
             _s3Client = s3Client;
             _logger = logger;

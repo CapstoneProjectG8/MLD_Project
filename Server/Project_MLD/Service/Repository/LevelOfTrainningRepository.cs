@@ -7,9 +7,9 @@ namespace Project_MLD.Service.Repository
 {
     public class LevelOfTrainningRepository : ILevelOfTrainningRepository
     {
-        private readonly MldDatabaseContext _context;
+        private readonly MldDatabaseContext2 _context;
 
-        public LevelOfTrainningRepository(MldDatabaseContext context)
+        public LevelOfTrainningRepository(MldDatabaseContext2 context)
         {
             _context = context;
         }

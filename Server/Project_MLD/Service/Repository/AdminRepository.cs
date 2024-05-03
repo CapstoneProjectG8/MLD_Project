@@ -7,9 +7,9 @@ namespace Project_MLD.Service.Repository
 {
     public class AdminRepository : IAdminRepository
     {
-        private readonly MldDatabaseContext _context;
+        private readonly MldDatabaseContext2 _context;
 
-        public AdminRepository(MldDatabaseContext context)
+        public AdminRepository(MldDatabaseContext2 context)
         {
             _context = context;
         }

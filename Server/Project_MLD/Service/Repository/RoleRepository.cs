@@ -7,9 +7,9 @@ namespace Project_MLD.Service.Repository
 {
     public class RoleRepository : IRoleRepository
     {
-        private readonly MldDatabaseContext _context;
+        private readonly MldDatabaseContext2 _context;
 
-        public RoleRepository(MldDatabaseContext context)
+        public RoleRepository(MldDatabaseContext2 context)
         {
             _context = context;
         }

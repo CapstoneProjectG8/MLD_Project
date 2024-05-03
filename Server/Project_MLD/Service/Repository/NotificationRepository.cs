@@ -6,8 +6,8 @@ namespace Project_MLD.Service.Repository
 {
     public class NotificationRepository : INotificationRepository
     {
-        private readonly MldDatabaseContext _context;
-        public NotificationRepository(MldDatabaseContext context)
+        private readonly MldDatabaseContext2 _context;
+        public NotificationRepository(MldDatabaseContext2 context)
         {
             _context = context;
         }

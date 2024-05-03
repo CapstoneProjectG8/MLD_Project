@@ -7,9 +7,9 @@ namespace Project_MLD.Service.Repository
 {
     public class ClassRepository : IClassRepository
     {
-        private readonly MldDatabaseContext _context;
+        private readonly MldDatabaseContext2 _context;
 
-        public ClassRepository(MldDatabaseContext context)
+        public ClassRepository(MldDatabaseContext2 context)
         {
             _context = context;
         }

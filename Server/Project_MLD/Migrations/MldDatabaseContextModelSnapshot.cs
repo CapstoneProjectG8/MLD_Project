@@ -10,7 +10,7 @@ using Project_MLD.Models;
 
 namespace Project_MLD.Migrations
 {
-    [DbContext(typeof(MldDatabaseContext))]
+    [DbContext(typeof(MldDatabaseContext2))]
     partial class MldDatabaseContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

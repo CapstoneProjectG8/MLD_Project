@@ -23,7 +23,7 @@ namespace Project_MLD.Controllers
     public class AccountController : ControllerBase
     {
         private IConfiguration _config;
-        private readonly MldDatabaseContext _context;
+        private readonly MldDatabaseContext2 _context;
         private readonly IAccountRepository _repository;
         private readonly IMapper _mapper;
         private readonly IPasswordHasher _passwordHasher;
@@ -32,7 +32,7 @@ namespace Project_MLD.Controllers
         private readonly IGenerateCode _codeGenerate;
 
         public AccountController(IConfiguration configuration, IAccountRepository repository,
-            MldDatabaseContext context, IMapper mapper, IPasswordHasher passwordHasher,
+            MldDatabaseContext2 context, IMapper mapper, IPasswordHasher passwordHasher,
             IEmailSender emailSender, IMailBody mailBody, IGenerateCode codeGenerate)
         {
             _config = configuration;
@@ -61,14 +61,14 @@ namespace Project_MLD.Controllers
 
 
                 var authenticatedAccount = Authenticate(accountLogin.Username, accountLogin.Password);
-
                 if (authenticatedAccount != null)
                 {
                     var token = GenerateToken(authenticatedAccount);
+                    var roleId = authenticatedAccount.Account.Role.RoleId;
 
                     if (token != null)
                     {
-                        return Ok(token);
+                        return Ok(new { Token = token, RoleId = roleId });
                     }
 
                     return BadRequest("Unable to generate token.");

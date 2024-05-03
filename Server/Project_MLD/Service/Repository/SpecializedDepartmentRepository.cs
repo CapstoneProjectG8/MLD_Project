@@ -7,9 +7,9 @@ namespace Project_MLD.Service.Repository
 {
     public class SpecializedDepartmentRepository : ISpecializedDepartmentRepository
     {
-        private readonly MldDatabaseContext _context;
+        private readonly MldDatabaseContext2 _context;
 
-        public SpecializedDepartmentRepository(MldDatabaseContext context)
+        public SpecializedDepartmentRepository(MldDatabaseContext2 context)
         {
             _context = context;
         }

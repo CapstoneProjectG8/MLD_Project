@@ -33,6 +33,8 @@ public partial class Document1
 
     public virtual ICollection<Document1CurriculumDistribution> Document1CurriculumDistributions { get; set; } = new List<Document1CurriculumDistribution>();
 
+    public virtual ICollection<Document1PeriodicAssessment> Document1PeriodicAssessments { get; set; } = new List<Document1PeriodicAssessment>();
+
     public virtual ICollection<Document1SelectedTopic> Document1SelectedTopics { get; set; } = new List<Document1SelectedTopic>();
 
     public virtual ICollection<Document1SubjectRoom> Document1SubjectRooms { get; set; } = new List<Document1SubjectRoom>();
@@ -43,7 +45,7 @@ public partial class Document1
 
     public virtual Grade Grade { get; set; } = null!;
 
-    public virtual ICollection<PeriodicAssessment> PeriodicAssessments { get; set; } = new List<PeriodicAssessment>();
+    public virtual IsApprove? IsApproveNavigation { get; set; }
 
     public virtual Subject Subject { get; set; } = null!;
 

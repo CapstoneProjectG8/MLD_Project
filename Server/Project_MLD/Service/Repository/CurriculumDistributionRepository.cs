@@ -7,9 +7,9 @@ namespace Project_MLD.Service.Repository
 {
     public class CurriculumDistributionRepository : ICurriculumDistributionRepository
     {
-        private readonly MldDatabaseContext _context;
+        private readonly MldDatabaseContext2 _context;
 
-        public CurriculumDistributionRepository(MldDatabaseContext context)
+        public CurriculumDistributionRepository(MldDatabaseContext2 context)
         {
             _context = context;
         }

@@ -8,9 +8,9 @@ namespace Project_MLD.Service.Repository
 {
     public class FeedbackRepository : IFeedbackRepository
     {
-        private readonly MldDatabaseContext _context;
+        private readonly MldDatabaseContext2 _context;
 
-        public FeedbackRepository(MldDatabaseContext context)
+        public FeedbackRepository(MldDatabaseContext2 context)
         {
             _context = context;
         }

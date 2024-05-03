@@ -27,21 +27,9 @@ public partial class User
 
     public int? LevelOfTrainningId { get; set; }
 
-    public int? SpecializedDepartmentId { get; set; }
-
     public int AccountId { get; set; }
 
     public int? ProfessionalStandardsId { get; set; }
-
-    public string? CreatedBy { get; set; }
-
-    public DateOnly? CreatedDate { get; set; }
-
-    public int? ModifiedBy { get; set; }
-
-    public DateOnly? ModifiedDate { get; set; }
-
-    public bool? Active { get; set; }
 
     public virtual Account Account { get; set; } = null!;
 
@@ -55,15 +43,15 @@ public partial class User
 
     public virtual ICollection<Document5> Document5s { get; set; } = new List<Document5>();
 
-    public virtual ICollection<Feedback> Feedbacks { get; set; } = new List<Feedback>();
-
     public virtual LevelOfTrainning? LevelOfTrainning { get; set; }
 
     public virtual ICollection<Notification> Notifications { get; set; } = new List<Notification>();
 
     public virtual ProfessionalStandard? ProfessionalStandards { get; set; }
 
-    public virtual SpecializedDepartment? SpecializedDepartment { get; set; }
+    public virtual Report? Report { get; set; }
 
     public virtual ICollection<TeachingPlanner> TeachingPlanners { get; set; } = new List<TeachingPlanner>();
+
+    public virtual ICollection<UserDepartment> UserDepartments { get; set; } = new List<UserDepartment>();
 }
