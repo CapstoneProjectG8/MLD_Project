@@ -35,16 +35,50 @@ namespace Project_MLD.Controllers
             try
             {
                 var mapRequests = _mapper.Map<List<Document3SelectedTopic>>(requests);
-
-
                 await _repository.UpdateDocument3SelectedTopics(mapRequests);
 
                 return Ok("Update Successfully");
             }
             catch (Exception ex)
             {
-                // Log the exception or handle it accordingly
                 return StatusCode(500, $"An error occurred while updating Document3 Selected Topic: {ex.Message}");
+            }
+        }
+
+        [HttpPut("AddDocument3SelectedTopics")]
+        public async Task<IActionResult> AddDocument3SelectedTopics(int document3Id, int? selectedTopicsId, List<int?> listEquipment,
+            int? subjectId, int? slot, DateOnly time)
+        {
+            try
+            {
+                var listDoc3 = new List<Document3SelectedTopic>();
+                var doc3SelectedTopics = new Document3SelectedTopic();
+                doc3SelectedTopics.Document3Id = document3Id;
+                doc3SelectedTopics.SelectedTopicsId = (int)selectedTopicsId;
+                doc3SelectedTopics.SelectedTopicsId = (int)selectedTopicsId;
+                doc3SelectedTopics.Slot = slot;
+                doc3SelectedTopics.Time = time;
+
+                if (listEquipment != null)
+                {
+                    foreach (var item in listEquipment)
+                    {
+                        doc3SelectedTopics.EquipmentId = item.Value;
+                        var doc = await _repository.AddDoc3SelectedTopics(doc3SelectedTopics);
+                        listDoc3.Add(doc);
+                    }
+                    return Ok(listDoc3);
+                }
+                else
+                {
+                    var doc = await _repository.AddDoc3SelectedTopics(doc3SelectedTopics);
+                    listDoc3.Add(doc);
+                    return Ok(listDoc3);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while adding document 3 selected topic.");
             }
         }
 
@@ -60,7 +94,6 @@ namespace Project_MLD.Controllers
             }
             catch (Exception ex)
             {
-                // Log the exception or handle it accordingly
                 return StatusCode(500, $"An error occurred while delete Document3 Selected Topics: {ex.Message}");
             }
         }

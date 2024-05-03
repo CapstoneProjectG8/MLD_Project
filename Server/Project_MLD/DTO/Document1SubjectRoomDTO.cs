@@ -5,7 +5,9 @@ namespace Project_MLD.Models;
 
 public partial class Document1SubjectRoomDTO
 {
-    public int SubjectRoomId { get; set; }
+    public int Id { get; set; }
+
+    public int? SubjectRoomId { get; set; }
 
     public int Document1Id { get; set; }
 

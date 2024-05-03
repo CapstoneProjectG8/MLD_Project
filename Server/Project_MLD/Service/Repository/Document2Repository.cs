@@ -51,7 +51,6 @@ namespace Project_MLD.Service.Repository
             return await _context.Document2s
                 .Include(x => x.User)
                 .Where(x => x.Name == condition ||
-                x.User.FullName.Contains(condition) ||
                 x.User.FirstName.Contains(condition) ||
                 x.User.LastName.Contains(condition))
                 .ToListAsync();
@@ -76,13 +75,6 @@ namespace Project_MLD.Service.Repository
             }
             await _context.SaveChangesAsync();
             return true;
-        }
-
-        public async Task<IEnumerable<Document2>> GetDocument2ByApprovalID(int id)
-        {
-            return await _context.Document2s
-                .Include(x => x.User)
-                .Where(x => x.IsApprove == id).ToListAsync();
         }
 
         public async Task<IEnumerable<object>> GetDocument2ByUserSpecialiedDepartment(List<int> listId)
@@ -123,11 +115,19 @@ namespace Project_MLD.Service.Repository
             return hostIds;
         }
 
-        public async Task<IEnumerable<Document2>> GetAllDoc2sByCondition(bool status, int isApprove)
+        public async Task<IEnumerable<Document2>> GetAllDoc2sByCondition(bool? status, int? isApprove)
         {
+            IQueryable<Document2> query = _context.Document2s;
+            if (status != true)
+            {
+                query = query.Where(x => x.Status == status);
+            }
+            if (isApprove != null)
+            {
+                query = query.Where(x => x.IsApprove == isApprove);
+            }
             return await _context.Document2s
                 .Include(x => x.User)
-                .Where(x => x.Status == status && x.IsApprove == isApprove)
                 .ToListAsync();
         }
     }

@@ -153,9 +153,7 @@ public partial class MldDatabase2Context : DbContext
         {
             entity.ToTable("Department_Subject");
 
-            entity.Property(e => e.Id)
-                .ValueGeneratedNever()
-                .HasColumnName("id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.DepartmentId).HasColumnName("department_id");
             entity.Property(e => e.SubjectId).HasColumnName("subject_id");
 
@@ -210,18 +208,18 @@ public partial class MldDatabase2Context : DbContext
 
         modelBuilder.Entity<Document1CurriculumDistribution>(entity =>
         {
-            entity.HasKey(e => new { e.Document1Id, e.CurriculumId });
+            entity.HasKey(e => e.Id).HasName("PK_Document1_CurriculumDistribution_1");
 
             entity.ToTable("Document1_CurriculumDistribution");
 
-            entity.Property(e => e.Document1Id).HasColumnName("document1_id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.CurriculumId).HasColumnName("curriculum_id");
             entity.Property(e => e.Description).HasColumnName("description");
+            entity.Property(e => e.Document1Id).HasColumnName("document1_id");
             entity.Property(e => e.Slot).HasColumnName("slot");
 
             entity.HasOne(d => d.Curriculum).WithMany(p => p.Document1CurriculumDistributions)
                 .HasForeignKey(d => d.CurriculumId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Document1_CurriculumDistribution_Curriculum Distribution");
 
             entity.HasOne(d => d.Document1).WithMany(p => p.Document1CurriculumDistributions)
@@ -259,13 +257,14 @@ public partial class MldDatabase2Context : DbContext
 
         modelBuilder.Entity<Document1SelectedTopic>(entity =>
         {
-            entity.HasKey(e => new { e.Document1Id, e.SelectedTopicsId });
+            entity.HasKey(e => e.Id).HasName("PK_Document1_SelectedTopics_1");
 
             entity.ToTable("Document1_SelectedTopics");
 
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.Document1Id).HasColumnName("document1_id");
             entity.Property(e => e.SelectedTopicsId).HasColumnName("selected_topics_id");
-            entity.Property(e => e.Description).HasColumnName("description");
             entity.Property(e => e.Slot).HasColumnName("slot");
 
             entity.HasOne(d => d.Document1).WithMany(p => p.Document1SelectedTopics)
@@ -274,21 +273,19 @@ public partial class MldDatabase2Context : DbContext
 
             entity.HasOne(d => d.SelectedTopics).WithMany(p => p.Document1SelectedTopics)
                 .HasForeignKey(d => d.SelectedTopicsId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Document1_SelectedTopics_Selected Topics");
         });
 
         modelBuilder.Entity<Document1SubjectRoom>(entity =>
         {
-            entity.HasKey(e => new { e.SubjectRoomId, e.Document1Id }).HasName("PK_Document1_Subject Room_1");
-
             entity.ToTable("Document1_Subject Room");
 
-            entity.Property(e => e.SubjectRoomId).HasColumnName("subject_room_id");
-            entity.Property(e => e.Document1Id).HasColumnName("document1_id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Description).HasColumnName("description");
+            entity.Property(e => e.Document1Id).HasColumnName("document1_id");
             entity.Property(e => e.Note).HasColumnName("note");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
+            entity.Property(e => e.SubjectRoomId).HasColumnName("subject_room_id");
 
             entity.HasOne(d => d.Document1).WithMany(p => p.Document1SubjectRooms)
                 .HasForeignKey(d => d.Document1Id)
@@ -296,21 +293,19 @@ public partial class MldDatabase2Context : DbContext
 
             entity.HasOne(d => d.SubjectRoom).WithMany(p => p.Document1SubjectRooms)
                 .HasForeignKey(d => d.SubjectRoomId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Document1_Subject Room_Subject Room");
         });
 
         modelBuilder.Entity<Document1TeachingEquipment>(entity =>
         {
-            entity.HasKey(e => new { e.Document1Id, e.TeachingEquipmentId });
-
             entity.ToTable("Document1_TeachingEquipment");
 
-            entity.Property(e => e.Document1Id).HasColumnName("document1_id");
-            entity.Property(e => e.TeachingEquipmentId).HasColumnName("teaching_equipment_id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Description).HasColumnName("description");
+            entity.Property(e => e.Document1Id).HasColumnName("document1_id");
             entity.Property(e => e.Note).HasColumnName("note");
             entity.Property(e => e.Quantity).HasColumnName("quantity");
+            entity.Property(e => e.TeachingEquipmentId).HasColumnName("teaching_equipment_id");
 
             entity.HasOne(d => d.Document1).WithMany(p => p.Document1TeachingEquipments)
                 .HasForeignKey(d => d.Document1Id)
@@ -318,7 +313,6 @@ public partial class MldDatabase2Context : DbContext
 
             entity.HasOne(d => d.TeachingEquipment).WithMany(p => p.Document1TeachingEquipments)
                 .HasForeignKey(d => d.TeachingEquipmentId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Document1_TeachingEquipment_Teaching Equipment");
         });
 
@@ -413,20 +407,20 @@ public partial class MldDatabase2Context : DbContext
 
         modelBuilder.Entity<Document3CurriculumDistribution>(entity =>
         {
-            entity.HasKey(e => new { e.Document3Id, e.CurriculumId, e.EquipmentId });
+            entity.HasKey(e => e.Id).HasName("PK_Document3_CurriculumDistribution_1");
 
             entity.ToTable("Document3_CurriculumDistribution");
 
-            entity.Property(e => e.Document3Id).HasColumnName("document3_id");
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.CurriculumId).HasColumnName("curriculum_id");
+            entity.Property(e => e.Document3Id).HasColumnName("document3_id");
             entity.Property(e => e.EquipmentId).HasColumnName("equipment_id");
             entity.Property(e => e.Slot).HasColumnName("slot");
-            entity.Property(e => e.SubjectRoomName).HasColumnName("subject_room_name");
+            entity.Property(e => e.SubjectRoomId).HasColumnName("subject_room_id");
             entity.Property(e => e.Time).HasColumnName("time");
 
             entity.HasOne(d => d.Curriculum).WithMany(p => p.Document3CurriculumDistributions)
                 .HasForeignKey(d => d.CurriculumId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Document3_CurriculumDistribution_Curriculum Distribution");
 
             entity.HasOne(d => d.Document3).WithMany(p => p.Document3CurriculumDistributions)
@@ -436,21 +430,23 @@ public partial class MldDatabase2Context : DbContext
 
             entity.HasOne(d => d.Equipment).WithMany(p => p.Document3CurriculumDistributions)
                 .HasForeignKey(d => d.EquipmentId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Document3_CurriculumDistribution_Teaching Equipment");
+
+            entity.HasOne(d => d.SubjectRoom).WithMany(p => p.Document3CurriculumDistributions)
+                .HasForeignKey(d => d.SubjectRoomId)
+                .HasConstraintName("FK_Document3_CurriculumDistribution_Subject Room");
         });
 
         modelBuilder.Entity<Document3SelectedTopic>(entity =>
         {
-            entity.HasKey(e => new { e.Document3Id, e.SelectedTopicsId, e.EquipmentId });
-
             entity.ToTable("Document3_SelectedTopics");
 
+            entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Document3Id).HasColumnName("document3_id");
-            entity.Property(e => e.SelectedTopicsId).HasColumnName("selectedTopics_id");
             entity.Property(e => e.EquipmentId).HasColumnName("equipment_id");
+            entity.Property(e => e.SelectedTopicsId).HasColumnName("selectedTopics_id");
             entity.Property(e => e.Slot).HasColumnName("slot");
-            entity.Property(e => e.SubjectRoomName).HasColumnName("subject_room_name");
+            entity.Property(e => e.SubjectRoomId).HasColumnName("subject_room_id");
             entity.Property(e => e.Time).HasColumnName("time");
 
             entity.HasOne(d => d.Document3).WithMany(p => p.Document3SelectedTopics)
@@ -460,13 +456,15 @@ public partial class MldDatabase2Context : DbContext
 
             entity.HasOne(d => d.Equipment).WithMany(p => p.Document3SelectedTopics)
                 .HasForeignKey(d => d.EquipmentId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Document3_SelectedTopics_Teaching Equipment");
 
             entity.HasOne(d => d.SelectedTopics).WithMany(p => p.Document3SelectedTopics)
                 .HasForeignKey(d => d.SelectedTopicsId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Document3_SelectedTopics_Selected Topics");
+
+            entity.HasOne(d => d.SubjectRoom).WithMany(p => p.Document3SelectedTopics)
+                .HasForeignKey(d => d.SubjectRoomId)
+                .HasConstraintName("FK_Document3_SelectedTopics_Subject Room");
         });
 
         modelBuilder.Entity<Document4>(entity =>
@@ -774,12 +772,12 @@ public partial class MldDatabase2Context : DbContext
             entity.Property(e => e.DateOfBirth).HasColumnName("date_of_birth");
             entity.Property(e => e.Email).HasColumnName("email");
             entity.Property(e => e.FirstName).HasColumnName("first_name");
-            entity.Property(e => e.FullName).HasColumnName("full_name");
             entity.Property(e => e.Gender).HasColumnName("gender");
             entity.Property(e => e.LastName).HasColumnName("last_name");
             entity.Property(e => e.LevelOfTrainningId).HasColumnName("level_of_trainning_id");
             entity.Property(e => e.Photo).HasColumnName("photo");
             entity.Property(e => e.ProfessionalStandardsId).HasColumnName("professional_standards_id");
+            entity.Property(e => e.Signature).HasColumnName("signature");
 
             entity.HasOne(d => d.Account).WithMany(p => p.Users)
                 .HasForeignKey(d => d.AccountId)

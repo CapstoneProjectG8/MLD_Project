@@ -35,7 +35,7 @@ namespace Project_MLD.Controllers
                     var getUser = await _userRepository.GetUserById(pl.ApproveBy.Value);
                     if (getUser != null)
                     {
-                        pl.ApproveByName = getUser.FullName;
+                        pl.ApproveByName = getUser.FirstName + " " + getUser.LastName;
                     }
                 }
             }
@@ -43,7 +43,7 @@ namespace Project_MLD.Controllers
         }
 
         [HttpGet("GetAllDoc2sWithCondition")]
-        public async Task<ActionResult<IEnumerable<Document2DTO>>> GetAllDoc2sWithCondition(bool status, int isApprove)
+        public async Task<ActionResult<IEnumerable<Document2DTO>>> GetAllDoc2sWithCondition(bool? status, int? isApprove)
         {
             var pl2 = await _repository.GetAllDoc2sByCondition(status, isApprove);
             var mapDocumemt = _mapper.Map<List<Document2DTO>>(pl2);
@@ -54,7 +54,7 @@ namespace Project_MLD.Controllers
                     var getUser = await _userRepository.GetUserById(pl.ApproveBy.Value);
                     if (getUser != null)
                     {
-                        pl.ApproveByName = getUser.FullName;
+                        pl.ApproveByName = getUser.FirstName + " " + getUser.LastName;
                     }
                 }
             }
@@ -94,29 +94,10 @@ namespace Project_MLD.Controllers
                 var getUser = await _userRepository.GetUserById((int)mapDocumemt.ApproveBy);
                 if (getUser != null)
                 {
-                    mapDocumemt.ApproveByName = getUser.FullName;
+                    mapDocumemt.ApproveByName = getUser.FirstName + " " + getUser.LastName;
                 }
             }
             return Ok(mapDocumemt);
-        }
-
-        [HttpGet("GetDoc2ByApprovalID/{id}")]
-        public async Task<ActionResult<IEnumerable<Document2DTO>>> GetDocument2ByApprovalID(int id)
-        {
-            var document2 = await _repository.GetDocument2ByApprovalID(id);
-            var mapDocument = _mapper.Map<List<Document2DTO>>(document2);
-            foreach (var doc in mapDocument)
-            {
-                if (doc.ApproveBy != null)
-                {
-                    var getUser = await _userRepository.GetUserById((int)doc.ApproveBy);
-                    if (getUser != null)
-                    {
-                        doc.ApproveByName = getUser.FullName;
-                    }
-                }
-            }
-            return Ok(mapDocument);
         }
 
         [HttpPost("AddDocument2")]

@@ -14,6 +14,7 @@ namespace Project_MLD.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin, Teacher, Leader, Principle")]
     public class AccountController : ControllerBase
     {
 
@@ -38,7 +39,7 @@ namespace Project_MLD.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("Login")]
+        [HttpPost("/Login")]
         public IActionResult Login(string username, string password)
         {
             try
@@ -52,8 +53,6 @@ namespace Project_MLD.Controllers
                 {
                     return BadRequest("Please fill in all required fields.");
                 }
-
-                //kiểm tra xác thực của tài khoản
                 var authenticatedAccount = _repository.AuthenticateAccountByUser(accountLogin.Username, accountLogin.Password);
                 if (authenticatedAccount != null)
                 {
@@ -72,7 +71,7 @@ namespace Project_MLD.Controllers
             }
         }
 
-        [HttpGet("CheckAuthenciation")]
+        [HttpGet("/CheckAuthenciation")]
         public IActionResult CheckAuthenciation()
         {
             var s = GetCurrentAccount();
@@ -94,7 +93,7 @@ namespace Project_MLD.Controllers
         [HttpGet("GetAccountById/{id}")]
         public async Task<ActionResult<Account>> GetAccountById(int id)
         {
-            var exAcc = await _repository.GetAccountById(id);   
+            var exAcc = await _repository.GetAccountById(id);
             if (exAcc == null)
             {
                 return NotFound("Account not exist");
@@ -144,7 +143,7 @@ namespace Project_MLD.Controllers
             return Ok(result);
         }
 
-        [HttpPost("SendMailResetPassword")]
+        [HttpPost("/SendMailResetPassword")]
         public async Task<IActionResult> SendMailResetPassword(string mail)
         {
             var currentAccount = await _repository.GetUserByEmail(mail);
@@ -162,11 +161,7 @@ namespace Project_MLD.Controllers
                         var hashedPassword = _passwordHasher.Hash(codeGenerate);
                         account.Password = hashedPassword;
 
-                        // Update account password
                         await _repository.UpdateAccount(account);
-                        //_context.Accounts.Update(account);
-                        //await _context.SaveChangesAsync();
-                        // Send email
                         await _emailSender.SendEmailAsync(
                             mail,
                             _mailBody.SubjectTitleResetPassword(codeGenerate),
@@ -189,7 +184,7 @@ namespace Project_MLD.Controllers
                 return BadRequest("User not found.");
             }
         }
-        [HttpPost("ChangePassword")]
+        [HttpPost("/ChangePassword")]
         public async Task<IActionResult> ChangePassword(string username, string currentPassword, string newPassword)
         {
             try
@@ -222,9 +217,6 @@ namespace Project_MLD.Controllers
                 }
                 account.Password = hashedNewPassword;
                 await _repository.UpdateAccount(account);
-                //_context.Accounts.Update(account);
-                //_context.SaveChanges();
-
                 return Ok("Password updated successfully.");
             }
             catch (Exception ex)
@@ -232,17 +224,6 @@ namespace Project_MLD.Controllers
                 return BadRequest("Failed to update password. Please try again. " + ex.Message);
             }
         }
-
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteAccount(int id)
-        //{
-        //    var result = await _repository.DeleteAccount(id);
-        //    if (!result)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return NoContent();
-        //}
 
         private string GetCurrentAccount()
         {

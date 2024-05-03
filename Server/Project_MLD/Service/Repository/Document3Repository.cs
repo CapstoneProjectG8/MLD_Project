@@ -33,12 +33,20 @@ namespace Project_MLD.Service.Repository
             return true;
         }
 
-        public async Task<IEnumerable<Document3>> GetAllDoc3sWithCondition(bool status, int isApprove)
+        public async Task<IEnumerable<Document3>> GetAllDoc3sWithCondition(bool? status, int? isApprove)
         {
+            IQueryable<Document3> query = _context.Document3s;
+            if (status != null)
+            {
+                query = query.Where(x => x.Status == status);
+            }
+            if (isApprove != null)
+            {
+                query = query.Where(x => x.IsApprove == isApprove);
+            }
             return await _context.Document3s
                .Include(x => x.User)
                .Include(x => x.Document1)
-               .Where(x => x.Status == status && x.IsApprove == isApprove)
                .ToListAsync();
         }
 
@@ -86,7 +94,7 @@ namespace Project_MLD.Service.Repository
                 .Include(x => x.User)
                 .ThenInclude(x => x.UserDepartments)
 
-                .Where(x => x.User.UserDepartments.Any(ud => ud.Id == id)&& x.Status == true)
+                .Where(x => x.User.UserDepartments.Any(ud => ud.Id == id) && x.Status == true)
                 .ToListAsync();
 
                 var anObject = new
@@ -106,7 +114,6 @@ namespace Project_MLD.Service.Repository
             return await _context.Document3s
                 .Include(x => x.User)
                 .Where(x => x.Name == condition ||
-                x.User.FullName.Contains(condition) ||
                 x.User.FirstName.Contains(condition) ||
                 x.User.LastName.Contains(condition))
                 .ToListAsync();

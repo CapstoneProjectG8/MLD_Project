@@ -54,7 +54,7 @@ namespace Project_MLD.Controllers
                     var getUser = await _userRepository.GetUserById(document.ApproveBy.Value);
                     if (getUser != null)
                     {
-                        document.ApproveByName = getUser.FullName;
+                        document.ApproveByName = getUser.FirstName + " " + getUser.LastName;
                     }
                 }   
             }
@@ -62,7 +62,7 @@ namespace Project_MLD.Controllers
         }
 
         [HttpGet("GetAllDoc1sWithCondition")]
-        public async Task<ActionResult<IEnumerable<Document1DTO>>> GetAllDoc1sWithCondition(bool status, int isApprove)
+        public async Task<ActionResult<IEnumerable<Document1DTO>>> GetAllDoc1sWithCondition(bool? status, int? isApprove)
         {
             var Document1 = await _repository.GetAllDoc1sWithCondition(status, isApprove);
             var mappedDocuments = _mapper.Map<List<Document1DTO>>(Document1);
@@ -73,7 +73,7 @@ namespace Project_MLD.Controllers
                     var getUser = await _userRepository.GetUserById(document.ApproveBy.Value);
                     if (getUser != null)
                     {
-                        document.ApproveByName = getUser.FullName;
+                        document.ApproveByName = getUser.FirstName + " " + getUser.LastName;
                     }
                 }
             }
@@ -90,7 +90,7 @@ namespace Project_MLD.Controllers
                 var getUser = await _userRepository.GetUserById((int)Document1.ApproveBy);
                 if (getUser != null)
                 {
-                    mapDoc.ApproveByName = getUser.FullName;
+                    mapDoc.ApproveByName = getUser.FirstName + " " + getUser.LastName;
                 }
             }
             return Ok(mapDoc);
@@ -100,14 +100,6 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<IEnumerable<Document1DTO>>> FilterDocument1(int gradeId, int subjectId)
         {
             var Document1 = await _repository.FilterAllDoc1(gradeId, subjectId);
-            var mapDocument = _mapper.Map<List<Document1DTO>>(Document1);
-            return Ok(mapDocument);
-        }
-
-        [HttpGet("GetAllDoc1sByApprovalID/{id}")]
-        public async Task<ActionResult<IEnumerable<Document1DTO>>> GetAllDoc1sByApprovalID(int id)
-        {
-            var Document1 = await _repository.GetAllDoc1sByApprovalID(id);
             var mapDocument = _mapper.Map<List<Document1DTO>>(Document1);
             return Ok(mapDocument);
         }

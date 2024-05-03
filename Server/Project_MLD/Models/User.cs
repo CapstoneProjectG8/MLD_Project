@@ -13,8 +13,6 @@ public partial class User
 
     public string? Email { get; set; }
 
-    public string? FullName { get; set; }
-
     public string? Photo { get; set; }
 
     public string? Address { get; set; }
@@ -24,6 +22,8 @@ public partial class User
     public DateOnly? DateOfBirth { get; set; }
 
     public int? Age { get; set; }
+
+    public string? Signature { get; set; }
 
     public int? LevelOfTrainningId { get; set; }
 
