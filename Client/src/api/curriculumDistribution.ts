@@ -2,6 +2,8 @@ import { config } from "process";
 import { base_url } from "../utils/baseUrl"
 import axios from "axios";
 
+
+// thay đổi
 export const apiGetCurriculumDistribution = async () => {
     const result = await axios.get(`${base_url}CurriculumDistribution`);
     if (result)

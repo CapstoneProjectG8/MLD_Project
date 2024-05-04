@@ -162,15 +162,13 @@ namespace Project_MLD.Controllers
 
                         // Update account password
                         await _repository.UpdateAccount(account);
-                        //_context.Accounts.Update(account);
-                        //await _context.SaveChangesAsync();
-                        // Send email
+                     
                         await _emailSender.SendEmailAsync(
                             mail,
                             _mailBody.SubjectTitleResetPassword(codeGenerate),
                             _mailBody.EmailBodyResetPassword(account.Username, codeGenerate)
                         );
-                        return Ok(new { message = "Reset password email sent to " + mail });
+                        return Ok("Reset password email sent to " + mail);
                     }
                     else
                     {
