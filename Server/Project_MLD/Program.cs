@@ -88,7 +88,7 @@ builder.Services.AddScoped<IClassRepository, ClassRepository>();
 //Document1
 builder.Services.AddScoped<IDocument1Repository, Document1Repository>();
 builder.Services.AddScoped<IDocument1CuriculumDistributionRepository, Document1CuriculumDistributionRepository>();
-builder.Services.AddScoped<IDocument1PeriodicAssessmentRepository, Document1PeriodicAssessmentRepository>();
+builder.Services.AddScoped<IDocument1PeriodicAssessmentsRepository, Document1PeriodicAssessmentRepository>();
 builder.Services.AddScoped<IDocument1SelectedTopicsRepository, Document1SelectedTopicsRepository>();
 builder.Services.AddScoped<IDocument1TeachingEquipmentRepository, Document1TeachingEquipmentRepository>();
 builder.Services.AddScoped<IDocument1SubjectRoomsRepository, Document1SubjectRoomsRepository>();

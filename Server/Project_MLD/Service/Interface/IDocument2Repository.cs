@@ -9,8 +9,7 @@ namespace Project_MLD.Service.Interface
         Task<Document2> AddDocument2(Document2 pl2);
         Task<bool> UpdateDocument2(Document2 pl2);
         Task<bool> DeleteDocument2(int id);
-        Task<IEnumerable<Document2>> GetAllDoc2sByCondition(bool status, int isApprove);
-        Task<IEnumerable<Document2>> GetDocument2ByApprovalID(int id);
+        Task<IEnumerable<Document2>> GetAllDoc2sByCondition(bool? status, int? isApprove);
         Task<IEnumerable<Document2>> GetAllDocument2sByUserIdAndApproveId(int id, int approveId);
         Task<IEnumerable<object>> GetDocument2ByUserSpecialiedDepartment(List<int> specialiedDepartmentListId);
         Task<IEnumerable<int?>> GetListHostbyByIdOfUserByDoc2Id(int doc2Id);

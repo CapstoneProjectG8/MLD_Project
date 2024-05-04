@@ -2,7 +2,7 @@
 
 namespace Project_MLD.Service.Interface
 {
-    public interface IDocument1PeriodicAssessmentRepository
+    public interface IDocument1PeriodicAssessmentsRepository
     {
         Task<IEnumerable<Document1PeriodicAssessment>> GetAllDocument1PeriodicAssessment();
         Task<IEnumerable<Document1PeriodicAssessment>> GetDocument1PeriodicAssessmentByDocument1Id(int id);

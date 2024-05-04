@@ -10,25 +10,19 @@ namespace Project_MLD.Mapper
         public MapperConfig()
         {
             CreateMap<Account, AccountDTO>()
-                .ForMember(x => x.AccountId, y => y.MapFrom(src => src.AccountId))
-                .ForMember(x => x.RoleId, y => y.MapFrom(src => src.RoleId))
-                .ForMember(x => x.CreatedDate, y => y.MapFrom(x => DateOnly.FromDateTime(DateTime.Now)))
-                .ForMember(x => x.CreatedBy, y => y.MapFrom(x => "ADMIN"))
-                .ForMember(x => x.LoginAttempt, y => y.MapFrom(src => src.LoginAttempt))
-                .ForMember(x => x.LoginLast, y => y.MapFrom(src => src.LoginLast))
                 .ReverseMap();
             CreateMap<AccountDTO, Account>()
                 .ForMember(x => x.Users, y => y.Ignore())
                 .ForMember(x => x.Role, y => y.Ignore())
                 .ReverseMap();
             CreateMap<Notification, NotificationDTO>()
-                .ForMember(x => x.SentByName, y => y.MapFrom(src => src.SentByNavigation.FullName))
+                .ForMember(x => x.SentByName, y => y.MapFrom(src => src.SentByNavigation.FirstName + " " + src.SentByNavigation.LastName))
                 .ReverseMap();
             CreateMap<NotificationDTO, Notification>()
                 .ForMember(x => x.SentByNavigation, y => y.Ignore())
                 .ReverseMap();
             CreateMap<Report, ReportDTO>()
-                .ForMember(x => x.UserName, y => y.MapFrom(src => src.IdNavigation.FullName))
+                .ForMember(x => x.UserName, y => y.MapFrom(src => src.IdNavigation.FirstName + " " + src.IdNavigation.LastName))
                 .ReverseMap();
             CreateMap<ReportDTO, Report>()
                 .ForMember(x => x.IdNavigation, y => y.Ignore())
@@ -105,7 +99,7 @@ namespace Project_MLD.Mapper
 
             CreateMap<Document2Grade, Document2GradeDTO>()
                 .ForMember(x => x.GradeName, y => y.MapFrom(src => src.Grade.Name))
-                .ForMember(x => x.HostByName, y => y.MapFrom(src => src.HostByNavigation.FullName))
+                .ForMember(x => x.HostByName, y => y.MapFrom(src => src.HostByNavigation.FirstName + " " + src.HostByNavigation.LastName))
                 .ReverseMap();
             CreateMap<Document2GradeDTO, Document2Grade>()
                 .ForMember(x => x.Grade, y => y.Ignore())

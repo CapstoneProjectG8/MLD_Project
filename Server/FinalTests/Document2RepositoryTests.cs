@@ -106,18 +106,21 @@
 //            }
 //        }
 
-//        [Fact]
-//        public async Task GetDocument2ByApprovalTest()
-//        {
-//            try
-//            {
-//                var result = await _repository.GetDocument2ByApproval();
-//            }
-//            catch (Exception)
-//            {
-//                // Ignore the exception
-//            }
-//        }
+
+        [Fact]
+        public async Task GetDocument2ByApprovalTest()
+        {
+            try
+            {
+                //1 bien ko lien quan de GetDocument2ByApprovalID ko bi loi
+                var id = 1;
+                var result = await _repository.GetDocument2ByApprovalID(id);
+            }
+            catch (Exception)
+            {
+                // Ignore the exception
+            }
+        }
 
 
 //    }

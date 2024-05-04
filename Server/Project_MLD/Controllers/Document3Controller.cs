@@ -41,7 +41,7 @@ namespace Project_MLD.Controllers
                     var getUser = await _userRepository.GetUserById(document3.ApproveBy.Value);
                     if (getUser != null)
                     {
-                        document3.ApproveByName = getUser.FullName;
+                        document3.ApproveByName = getUser.FirstName + " " + getUser.LastName; 
                     }
                 }
             }
@@ -49,7 +49,7 @@ namespace Project_MLD.Controllers
         }
 
         [HttpGet("GetAllDoc3sWithCondition")]
-        public async Task<ActionResult<IEnumerable<Document3>>> GetAllDoc3sWithCondition(bool status, int isApprove)
+        public async Task<ActionResult<IEnumerable<Document3>>> GetAllDoc3sWithCondition(bool? status, int? isApprove)
         {
             var document3s = await _repository.GetAllDoc3sWithCondition(status, isApprove);
             var mapDocument = _mapper.Map<List<Document3DTO>>(document3s);
@@ -60,7 +60,7 @@ namespace Project_MLD.Controllers
                     var getUser = await _userRepository.GetUserById(document3.ApproveBy.Value);
                     if (getUser != null)
                     {
-                        document3.ApproveByName = getUser.FullName;
+                        document3.ApproveByName = getUser.FirstName + " " + getUser.LastName;
                     }
                 }
             }
@@ -91,14 +91,6 @@ namespace Project_MLD.Controllers
 
         }
 
-        [HttpGet("GetDoc3ByApprovalID/{id}")]
-        public async Task<ActionResult<IEnumerable<Document3>>> GetDoc3ByApprovalID(int id)
-        {
-            var Document3 = await _repository.GetDocument3ByApprovalID(id);
-            var mapDocument = _mapper.Map<List<Document3DTO>>(Document3);
-            return Ok(mapDocument);
-        }
-
         [HttpGet("GetDoc3ById/{id}")]
         public async Task<ActionResult<Document3DTO>> GetDoc3ById(int id)
         {
@@ -110,7 +102,7 @@ namespace Project_MLD.Controllers
                 var getUser = await _userRepository.GetUserById(mapDocument.ApproveBy.Value);
                 if (getUser != null)
                 {
-                    mapDocument.ApproveByName = getUser.FullName;
+                    mapDocument.ApproveByName = getUser.FirstName + " " + getUser.LastName;
                 }
             }
             return Ok(mapDocument);

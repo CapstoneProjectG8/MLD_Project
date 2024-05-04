@@ -9,7 +9,7 @@ using System.Reflection.Metadata;
 
 namespace Project_MLD.Service.Repository
 {
-    public class Document1PeriodicAssessmentRepository : IDocument1PeriodicAssessmentRepository
+    public class Document1PeriodicAssessmentRepository : IDocument1PeriodicAssessmentsRepository
     {
         private readonly MldDatabase2Context _context;
 

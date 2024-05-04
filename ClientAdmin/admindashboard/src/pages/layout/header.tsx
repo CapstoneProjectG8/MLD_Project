@@ -1,7 +1,7 @@
 import type { FC } from 'react';
 
 import { LogoutOutlined, MenuFoldOutlined, MenuUnfoldOutlined, UserOutlined } from '@ant-design/icons';
-import { Dropdown, Layout, theme as antTheme, Tooltip } from 'antd';
+import { Avatar, Dropdown, Layout, theme as antTheme, Tooltip } from 'antd';
 import { createElement } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -62,7 +62,7 @@ const HeaderComponent: FC<HeaderProps> = ({ collapsed, toggle }) => {
   };
 
   const onChangeTheme = () => {
-    const newTheme = theme === 'dark' ? 'light' : 'dark';
+    const newTheme = theme === 'light' ? 'dark' : 'light';
 
     localStorage.setItem('theme', newTheme);
     dispatch(
@@ -90,7 +90,7 @@ const HeaderComponent: FC<HeaderProps> = ({ collapsed, toggle }) => {
             })}
           >
             <span>
-              {createElement(theme === 'dark' ? SunSvg : MoonSvg, {
+              {createElement(theme === 'light' ?MoonSvg  : SunSvg, {
                 onClick: onChangeTheme,
               })}
             </span>
@@ -128,7 +128,7 @@ const HeaderComponent: FC<HeaderProps> = ({ collapsed, toggle }) => {
                     key: '1',
                     icon: <UserOutlined />,
                     label: (
-                      <span onClick={() => navigate('/dashboard')}>
+                      <span onClick={() => navigate('/profile')}>
                         <LocaleFormatter id="header.avator.account" />
                       </span>
                     ),
@@ -146,7 +146,7 @@ const HeaderComponent: FC<HeaderProps> = ({ collapsed, toggle }) => {
               }}
             >
               <span className="user-action">
-                <img src={Avator} className="user-avator" alt="avator" />
+                <Avatar style={{ backgroundColor: '#87d068' }} icon={<UserOutlined />} />
               </span>
             </Dropdown>
           ) : (

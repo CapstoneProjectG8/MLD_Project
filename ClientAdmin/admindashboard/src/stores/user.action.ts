@@ -4,6 +4,7 @@ import type { Dispatch } from '@reduxjs/toolkit';
 import { apiLogin, apiLogout } from '../api/user.api';
 import { setUserItem } from './user.store';
 import { createAsyncAction } from './utils';
+import Cookies from 'js-cookie';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 // typed wrapper async thunk function demo, no extra feature, just for powerful typings
 export const loginAsync = createAsyncAction<LoginParams, boolean>(payload => {
@@ -32,7 +33,10 @@ export const logoutAsync = () => {
     const { status } = await apiLogout({ token: localStorage.getItem('t')! });
 
     if (status) {
-      localStorage.clear();
+      // Xóa toàn bộ cookie
+      Object.keys(Cookies.get()).forEach(cookie => {
+        Cookies.remove(cookie);});
+        localStorage.clear();
       dispatch(
         setUserItem({
           logged: false,

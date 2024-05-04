@@ -12,8 +12,8 @@ using Project_MLD.Models;
 namespace Project_MLD.Migrations
 {
     [DbContext(typeof(MldDatabase2Context))]
-    [Migration("20240501140031_Migration_v7")]
-    partial class Migration_v7
+    [Migration("20240503110000_Migration_v8")]
+    partial class Migration_v8
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -133,8 +133,11 @@ namespace Project_MLD.Migrations
             modelBuilder.Entity("Project_MLD.Models.DepartmentSubject", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("DepartmentId")
                         .HasColumnType("int")
@@ -145,6 +148,10 @@ namespace Project_MLD.Migrations
                         .HasColumnName("subject_id");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("SubjectId");
 
                     b.ToTable("Department_Subject", (string)null);
                 });
@@ -222,11 +229,14 @@ namespace Project_MLD.Migrations
 
             modelBuilder.Entity("Project_MLD.Models.Document1CurriculumDistribution", b =>
                 {
-                    b.Property<int>("Document1Id")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("document1_id");
+                        .HasColumnName("id");
 
-                    b.Property<int>("CurriculumId")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CurriculumId")
                         .HasColumnType("int")
                         .HasColumnName("curriculum_id");
 
@@ -234,13 +244,20 @@ namespace Project_MLD.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("description");
 
-                    b.Property<int>("Slot")
+                    b.Property<int>("Document1Id")
+                        .HasColumnType("int")
+                        .HasColumnName("document1_id");
+
+                    b.Property<int?>("Slot")
                         .HasColumnType("int")
                         .HasColumnName("slot");
 
-                    b.HasKey("Document1Id", "CurriculumId");
+                    b.HasKey("Id")
+                        .HasName("PK_Document1_CurriculumDistribution_1");
 
                     b.HasIndex("CurriculumId");
+
+                    b.HasIndex("Document1Id");
 
                     b.ToTable("Document1_CurriculumDistribution", (string)null);
                 });
@@ -283,23 +300,33 @@ namespace Project_MLD.Migrations
 
             modelBuilder.Entity("Project_MLD.Models.Document1SelectedTopic", b =>
                 {
-                    b.Property<int>("Document1Id")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("document1_id");
+                        .HasColumnName("id");
 
-                    b.Property<int>("SelectedTopicsId")
-                        .HasColumnType("int")
-                        .HasColumnName("selected_topics_id");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("description");
 
+                    b.Property<int>("Document1Id")
+                        .HasColumnType("int")
+                        .HasColumnName("document1_id");
+
+                    b.Property<int?>("SelectedTopicsId")
+                        .HasColumnType("int")
+                        .HasColumnName("selected_topics_id");
+
                     b.Property<int?>("Slot")
                         .HasColumnType("int")
                         .HasColumnName("slot");
 
-                    b.HasKey("Document1Id", "SelectedTopicsId");
+                    b.HasKey("Id")
+                        .HasName("PK_Document1_SelectedTopics_1");
+
+                    b.HasIndex("Document1Id");
 
                     b.HasIndex("SelectedTopicsId");
 
@@ -308,17 +335,20 @@ namespace Project_MLD.Migrations
 
             modelBuilder.Entity("Project_MLD.Models.Document1SubjectRoom", b =>
                 {
-                    b.Property<int>("SubjectRoomId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("subject_room_id");
+                        .HasColumnName("id");
 
-                    b.Property<int>("Document1Id")
-                        .HasColumnType("int")
-                        .HasColumnName("document1_id");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("description");
+
+                    b.Property<int>("Document1Id")
+                        .HasColumnType("int")
+                        .HasColumnName("document1_id");
 
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)")
@@ -328,27 +358,35 @@ namespace Project_MLD.Migrations
                         .HasColumnType("int")
                         .HasColumnName("quantity");
 
-                    b.HasKey("SubjectRoomId", "Document1Id")
-                        .HasName("PK_Document1_Subject Room_1");
+                    b.Property<int?>("SubjectRoomId")
+                        .HasColumnType("int")
+                        .HasColumnName("subject_room_id");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("Document1Id");
+
+                    b.HasIndex("SubjectRoomId");
 
                     b.ToTable("Document1_Subject Room", (string)null);
                 });
 
             modelBuilder.Entity("Project_MLD.Models.Document1TeachingEquipment", b =>
                 {
-                    b.Property<int>("Document1Id")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("document1_id");
+                        .HasColumnName("id");
 
-                    b.Property<int>("TeachingEquipmentId")
-                        .HasColumnType("int")
-                        .HasColumnName("teaching_equipment_id");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("description");
+
+                    b.Property<int>("Document1Id")
+                        .HasColumnType("int")
+                        .HasColumnName("document1_id");
 
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)")
@@ -358,7 +396,13 @@ namespace Project_MLD.Migrations
                         .HasColumnType("int")
                         .HasColumnName("quantity");
 
-                    b.HasKey("Document1Id", "TeachingEquipmentId");
+                    b.Property<int?>("TeachingEquipmentId")
+                        .HasColumnType("int")
+                        .HasColumnName("teaching_equipment_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Document1Id");
 
                     b.HasIndex("TeachingEquipmentId");
 
@@ -543,15 +587,22 @@ namespace Project_MLD.Migrations
 
             modelBuilder.Entity("Project_MLD.Models.Document3CurriculumDistribution", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CurriculumId")
+                        .HasColumnType("int")
+                        .HasColumnName("curriculum_id");
+
                     b.Property<int>("Document3Id")
                         .HasColumnType("int")
                         .HasColumnName("document3_id");
 
-                    b.Property<int>("CurriculumId")
-                        .HasColumnType("int")
-                        .HasColumnName("curriculum_id");
-
-                    b.Property<int>("EquipmentId")
+                    b.Property<int?>("EquipmentId")
                         .HasColumnType("int")
                         .HasColumnName("equipment_id");
 
@@ -559,54 +610,70 @@ namespace Project_MLD.Migrations
                         .HasColumnType("int")
                         .HasColumnName("slot");
 
-                    b.Property<string>("SubjectRoomName")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("subject_room_name");
+                    b.Property<int?>("SubjectRoomId")
+                        .HasColumnType("int")
+                        .HasColumnName("subject_room_id");
 
                     b.Property<DateOnly?>("Time")
                         .HasColumnType("date")
                         .HasColumnName("time");
 
-                    b.HasKey("Document3Id", "CurriculumId", "EquipmentId");
+                    b.HasKey("Id")
+                        .HasName("PK_Document3_CurriculumDistribution_1");
 
                     b.HasIndex("CurriculumId");
 
+                    b.HasIndex("Document3Id");
+
                     b.HasIndex("EquipmentId");
+
+                    b.HasIndex("SubjectRoomId");
 
                     b.ToTable("Document3_CurriculumDistribution", (string)null);
                 });
 
             modelBuilder.Entity("Project_MLD.Models.Document3SelectedTopic", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
                     b.Property<int>("Document3Id")
                         .HasColumnType("int")
                         .HasColumnName("document3_id");
 
-                    b.Property<int>("SelectedTopicsId")
-                        .HasColumnType("int")
-                        .HasColumnName("selectedTopics_id");
-
-                    b.Property<int>("EquipmentId")
+                    b.Property<int?>("EquipmentId")
                         .HasColumnType("int")
                         .HasColumnName("equipment_id");
+
+                    b.Property<int?>("SelectedTopicsId")
+                        .HasColumnType("int")
+                        .HasColumnName("selectedTopics_id");
 
                     b.Property<int?>("Slot")
                         .HasColumnType("int")
                         .HasColumnName("slot");
 
-                    b.Property<string>("SubjectRoomName")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("subject_room_name");
+                    b.Property<int?>("SubjectRoomId")
+                        .HasColumnType("int")
+                        .HasColumnName("subject_room_id");
 
                     b.Property<DateOnly?>("Time")
                         .HasColumnType("date")
                         .HasColumnName("time");
 
-                    b.HasKey("Document3Id", "SelectedTopicsId", "EquipmentId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("Document3Id");
 
                     b.HasIndex("EquipmentId");
 
                     b.HasIndex("SelectedTopicsId");
+
+                    b.HasIndex("SubjectRoomId");
 
                     b.ToTable("Document3_SelectedTopics", (string)null);
                 });
@@ -1215,10 +1282,6 @@ namespace Project_MLD.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("first_name");
 
-                    b.Property<string>("FullName")
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("full_name");
-
                     b.Property<bool?>("Gender")
                         .HasColumnType("bit")
                         .HasColumnName("gender");
@@ -1238,6 +1301,10 @@ namespace Project_MLD.Migrations
                     b.Property<int?>("ProfessionalStandardsId")
                         .HasColumnType("int")
                         .HasColumnName("professional_standards_id");
+
+                    b.Property<string>("Signature")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("signature");
 
                     b.HasKey("Id");
 
@@ -1297,6 +1364,23 @@ namespace Project_MLD.Migrations
                     b.Navigation("Grade");
                 });
 
+            modelBuilder.Entity("Project_MLD.Models.DepartmentSubject", b =>
+                {
+                    b.HasOne("Project_MLD.Models.SpecializedDepartment", "Department")
+                        .WithMany("DepartmentSubjects")
+                        .HasForeignKey("DepartmentId")
+                        .HasConstraintName("FK_Department_Subject_Specialized Department");
+
+                    b.HasOne("Project_MLD.Models.Subject", "Subject")
+                        .WithMany("DepartmentSubjects")
+                        .HasForeignKey("SubjectId")
+                        .HasConstraintName("FK_Department_Subject_Subject");
+
+                    b.Navigation("Department");
+
+                    b.Navigation("Subject");
+                });
+
             modelBuilder.Entity("Project_MLD.Models.Document1", b =>
                 {
                     b.HasOne("Project_MLD.Models.Grade", "Grade")
@@ -1336,7 +1420,6 @@ namespace Project_MLD.Migrations
                     b.HasOne("Project_MLD.Models.CurriculumDistribution", "Curriculum")
                         .WithMany("Document1CurriculumDistributions")
                         .HasForeignKey("CurriculumId")
-                        .IsRequired()
                         .HasConstraintName("FK_Document1_CurriculumDistribution_Curriculum Distribution");
 
                     b.HasOne("Project_MLD.Models.Document1", "Document1")
@@ -1391,7 +1474,6 @@ namespace Project_MLD.Migrations
                     b.HasOne("Project_MLD.Models.SelectedTopic", "SelectedTopics")
                         .WithMany("Document1SelectedTopics")
                         .HasForeignKey("SelectedTopicsId")
-                        .IsRequired()
                         .HasConstraintName("FK_Document1_SelectedTopics_Selected Topics");
 
                     b.Navigation("Document1");
@@ -1411,7 +1493,6 @@ namespace Project_MLD.Migrations
                     b.HasOne("Project_MLD.Models.SubjectRoom", "SubjectRoom")
                         .WithMany("Document1SubjectRooms")
                         .HasForeignKey("SubjectRoomId")
-                        .IsRequired()
                         .HasConstraintName("FK_Document1_Subject Room_Subject Room");
 
                     b.Navigation("Document1");
@@ -1431,7 +1512,6 @@ namespace Project_MLD.Migrations
                     b.HasOne("Project_MLD.Models.TeachingEquipment", "TeachingEquipment")
                         .WithMany("Document1TeachingEquipments")
                         .HasForeignKey("TeachingEquipmentId")
-                        .IsRequired()
                         .HasConstraintName("FK_Document1_TeachingEquipment_Teaching Equipment");
 
                     b.Navigation("Document1");
@@ -1514,7 +1594,6 @@ namespace Project_MLD.Migrations
                     b.HasOne("Project_MLD.Models.CurriculumDistribution", "Curriculum")
                         .WithMany("Document3CurriculumDistributions")
                         .HasForeignKey("CurriculumId")
-                        .IsRequired()
                         .HasConstraintName("FK_Document3_CurriculumDistribution_Curriculum Distribution");
 
                     b.HasOne("Project_MLD.Models.Document3", "Document3")
@@ -1526,14 +1605,20 @@ namespace Project_MLD.Migrations
                     b.HasOne("Project_MLD.Models.TeachingEquipment", "Equipment")
                         .WithMany("Document3CurriculumDistributions")
                         .HasForeignKey("EquipmentId")
-                        .IsRequired()
                         .HasConstraintName("FK_Document3_CurriculumDistribution_Teaching Equipment");
+
+                    b.HasOne("Project_MLD.Models.SubjectRoom", "SubjectRoom")
+                        .WithMany("Document3CurriculumDistributions")
+                        .HasForeignKey("SubjectRoomId")
+                        .HasConstraintName("FK_Document3_CurriculumDistribution_Subject Room");
 
                     b.Navigation("Curriculum");
 
                     b.Navigation("Document3");
 
                     b.Navigation("Equipment");
+
+                    b.Navigation("SubjectRoom");
                 });
 
             modelBuilder.Entity("Project_MLD.Models.Document3SelectedTopic", b =>
@@ -1547,20 +1632,25 @@ namespace Project_MLD.Migrations
                     b.HasOne("Project_MLD.Models.TeachingEquipment", "Equipment")
                         .WithMany("Document3SelectedTopics")
                         .HasForeignKey("EquipmentId")
-                        .IsRequired()
                         .HasConstraintName("FK_Document3_SelectedTopics_Teaching Equipment");
 
                     b.HasOne("Project_MLD.Models.SelectedTopic", "SelectedTopics")
                         .WithMany("Document3SelectedTopics")
                         .HasForeignKey("SelectedTopicsId")
-                        .IsRequired()
                         .HasConstraintName("FK_Document3_SelectedTopics_Selected Topics");
+
+                    b.HasOne("Project_MLD.Models.SubjectRoom", "SubjectRoom")
+                        .WithMany("Document3SelectedTopics")
+                        .HasForeignKey("SubjectRoomId")
+                        .HasConstraintName("FK_Document3_SelectedTopics_Subject Room");
 
                     b.Navigation("Document3");
 
                     b.Navigation("Equipment");
 
                     b.Navigation("SelectedTopics");
+
+                    b.Navigation("SubjectRoom");
                 });
 
             modelBuilder.Entity("Project_MLD.Models.Document4", b =>
@@ -1818,11 +1908,15 @@ namespace Project_MLD.Migrations
 
             modelBuilder.Entity("Project_MLD.Models.SpecializedDepartment", b =>
                 {
+                    b.Navigation("DepartmentSubjects");
+
                     b.Navigation("UserDepartments");
                 });
 
             modelBuilder.Entity("Project_MLD.Models.Subject", b =>
                 {
+                    b.Navigation("DepartmentSubjects");
+
                     b.Navigation("Document1s");
 
                     b.Navigation("TeachingPlanners");
@@ -1831,6 +1925,10 @@ namespace Project_MLD.Migrations
             modelBuilder.Entity("Project_MLD.Models.SubjectRoom", b =>
                 {
                     b.Navigation("Document1SubjectRooms");
+
+                    b.Navigation("Document3CurriculumDistributions");
+
+                    b.Navigation("Document3SelectedTopics");
                 });
 
             modelBuilder.Entity("Project_MLD.Models.TeachingEquipment", b =>

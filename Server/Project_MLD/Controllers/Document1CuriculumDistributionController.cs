@@ -34,7 +34,7 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPut("UpdateDoc1Curiculum")]
-        public async Task<IActionResult> UpdateDocument1CurriculumDistribution( List<Document1CurriculumDistributionDTO> requests)
+        public async Task<IActionResult> UpdateDocument1CurriculumDistribution(List<Document1CurriculumDistributionDTO> requests)
         {
             try
             {

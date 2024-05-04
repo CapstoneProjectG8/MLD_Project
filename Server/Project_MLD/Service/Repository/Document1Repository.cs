@@ -96,16 +96,6 @@ namespace Project_MLD.Service.Repository
             return true;
         }
 
-        public async Task<IEnumerable<Document1>> GetAllDoc1sByApprovalID(int id)
-        {
-            return await _context.Document1s
-                .Include(x => x.User)
-                .Include(x => x.Grade)
-                .Include(x => x.Subject)
-                .Where(x => x.IsApprove == id)
-                .ToListAsync();
-        }
-
         public async Task<IEnumerable<object>> GetDoc1ByUserDepartment(List<int> listID)
         {
             var listObject = new List<object>();
@@ -131,14 +121,25 @@ namespace Project_MLD.Service.Repository
             return listObject;
         }
 
-        public async Task<IEnumerable<Document1>> GetAllDoc1sWithCondition(bool status, int isApprove)
+        public async Task<IEnumerable<Document1>> GetAllDoc1sWithCondition(bool? status, int? isApprove)
         {
-            return await _context.Document1s
-           .Include(x => x.User)
-           .Include(x => x.Grade)
-           .Include(x => x.Subject)
-           .Where(x => x.Status == status && x.IsApprove == isApprove)
-           .ToListAsync();
+            IQueryable<Document1> query = _context.Document1s;
+
+            if (status != null)
+            {
+                query = query.Where(x => x.Status == status);
+            }
+
+            if (isApprove != null)
+            {
+                query = query.Where(x => x.IsApprove == isApprove);
+            }
+
+            return await query
+                .Include(x => x.User)
+                .Include(x => x.Grade)
+                .Include(x => x.Subject)
+                .ToListAsync();
         }
     }
 }

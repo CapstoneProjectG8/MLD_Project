@@ -43,7 +43,11 @@ const HeaderNoticeComponent: FC = () => {
   const noticeListFilter = <T extends Notice['type']>(type: T) => {
     return noticeList.filter(notice => notice.type === type) as Notice<T>[];
   };
+  // Tính toán số lượng thông báo chưa đọc
+  const unreadNoticeCount = noticeList.filter(notice => !notice.read).length;
 
+  // Hàm lọc thông báo chưa đọc
+  const unreadNoticeList = noticeList.filter(notice => !notice.read);
   // loads the notices belonging to logged in user
   // and sets loading flag in-process
   const getNotice = async () => {
@@ -89,7 +93,7 @@ const HeaderNoticeComponent: FC = () => {
           userId: selectedFB.userId,
           docType: selectedFB.docType,
           docId: selectedFB.docId,
-          read: true
+          read: true,
         };
 
         // Gửi yêu cầu PUT để cập nhật trạng thái read của phần tử trong danh sách Feedback
@@ -120,27 +124,28 @@ const HeaderNoticeComponent: FC = () => {
           <TabPane
             tab={`${formatMessage({
               id: 'app.notice.news',
-            })}(${noticeListFilter('message').length})`}
+            })}(${unreadNoticeCount})`}
             key="2"
           >
             <List
               dataSource={noticeListFilter('message')}
               renderItem={item => (
                 !item.read ? (<List.Item>
-                    <List.Item.Meta
-                      avatar={<Avatar src={item.avatar} />}
-                      title={<a onClick={() => handleDetail(item.docId, item.index)}>{item.title}</a>}
-                      description={
-                        <div className="notice-description">
-                          <div className="notice-description-content">{item.description}</div>
-                          <div className="notice-description-datetime">{item.datetime}</div>
-                        </div>
-                      }
-                    />
-                  </List.Item>) : (<List.Item>
                   <List.Item.Meta
                     avatar={<Avatar src={item.avatar} />}
-                    title={<a onClick={() => handleDetail(item.docId, item.index)} style={{color:'gray'}}>{item.title}</a>}
+                    title={<a onClick={() => handleDetail(item.docId, item.index)}>{item.title}</a>}
+                    description={
+                      <div className="notice-description">
+                        <div className="notice-description-content">{item.description}</div>
+                        <div className="notice-description-datetime">{item.datetime}</div>
+                      </div>
+                    }
+                  />
+                </List.Item>) : (<List.Item>
+                  <List.Item.Meta
+                    avatar={<Avatar src={item.avatar} />}
+                    title={<a onClick={() => handleDetail(item.docId, item.index)}
+                              style={{ color: 'gray' }}>{item.title}</a>}
                     description={
                       <div className="notice-description">
                         <div className="notice-description-content">{item.description}</div>
@@ -229,8 +234,8 @@ const HeaderNoticeComponent: FC = () => {
         onOpenChange={v => setVisible(v)}
         overlayStyle={{
           width: 336,
-          height:500,
-          overflow:'auto',
+          height: 500,
+          overflow: 'auto',
         }}
       >
         <Tooltip
@@ -238,7 +243,7 @@ const HeaderNoticeComponent: FC = () => {
             id: 'gloabal.tips.theme.noticeTooltip',
           })}
         >
-          <Badge count={noticeCount} overflowCount={999}>
+          <Badge count={unreadNoticeCount} overflowCount={999}>
           <span className="notice" id="notice-center">
             <NoticeSvg className="anticon" />
           </span>

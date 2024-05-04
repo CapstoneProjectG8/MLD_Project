@@ -20,7 +20,7 @@ namespace Project_MLD.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("GetDoc3CuriculumDistributionByDoc3ID/{id}")]
+        [HttpGet("GetAllByDoc3ID/{id}")]
         public async Task<ActionResult<IEnumerable<Document3CurriculumDistribution>>> GetDoc3CuriculumDistributionByDoc3ID(int id)
         {
             var cd = await _repository.GetCurriculumDistributionByDocument3Id(id);
@@ -28,7 +28,51 @@ namespace Project_MLD.Controllers
             return Ok(mapper);
         }
 
-        [HttpPut("UpdateDoc3CurriculumDistribution")]
+        [HttpGet("GetAllByDoc1ID/{id}")]
+        public async Task<ActionResult<IEnumerable<Document3CurriculumDistribution>>> GetCurriculumDistributionByDocument1Id(int id)
+        {
+            var cd = await _repository.GetCurriculumDistributionByDocument1Id(id);
+            var mapper = _mapper.Map<List<Document3CurriculumDistributionDTO>>(cd);
+            return Ok(mapper);
+        }
+        [HttpPost("AddDoc3CurriculumDistribution")]
+        public async Task<IActionResult> AddDoc3CurriculumDistribution(int document3Id, int? curriculumId, List<int?> equipmentIds,
+            int? subjectRoomId, int slot, DateOnly time)
+        {
+            try
+            {
+                var doc3 = new List<Document3CurriculumDistribution>();
+                var docDistribution = new Document3CurriculumDistribution();
+                docDistribution.Document3Id = document3Id;
+                docDistribution.CurriculumId = (int)curriculumId;
+                docDistribution.SubjectRoomId = (int)subjectRoomId;
+                docDistribution.Slot = slot;
+                docDistribution.Time = time;
+
+                if (equipmentIds != null)
+                {
+                    foreach (var equipmentId in equipmentIds)
+                    {
+                        docDistribution.EquipmentId = equipmentId.Value;
+                        var doc = await _repository.AddDoc3curriculumDistribution(docDistribution);
+                        doc3.Add(doc);
+                    }
+                    return Ok(doc3);
+                }
+                else
+                {
+                    var doc = await _repository.AddDoc3curriculumDistribution(docDistribution);
+                    doc3.Add(doc);
+                    return Ok(doc3);
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while adding document 3 curriculum distribution.");
+            }
+        }
+
+        [HttpPut("Update")]
         public async Task<IActionResult> UpdateDocument3CurriculumDistribution(List<Document3CurriculumDistributionDTO> requests)
         {
             try
@@ -46,7 +90,7 @@ namespace Project_MLD.Controllers
             }
         }
 
-        [HttpDelete("DeleteDoc3CurriculumDistribution")]
+        [HttpDelete("Delete")]
         public async Task<IActionResult> DeleteDocument3CurriculumDistribution(List<Document3CurriculumDistributionDTO> requests)
         {
             try
