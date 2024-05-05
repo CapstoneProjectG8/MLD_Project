@@ -62,10 +62,6 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<Document4>> GetDocument4ById(int id)
         {
             var existDocument4 = await _repository.GetDocument4ById(id);
-            //if (existDocument4 == null)
-            //{
-            //    return NotFound("No Document 4 Available");
-            //}
 
             return Ok(existDocument4);
         }

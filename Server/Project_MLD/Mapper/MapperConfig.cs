@@ -45,12 +45,9 @@ namespace Project_MLD.Mapper
                 .ReverseMap();
 
             CreateMap<Document1, Document1DTO>()
-                .ForMember(x => x.SubjectId, y => y.MapFrom(src => src.SubjectId))
-                .ForMember(x => x.GradeId, y => y.MapFrom(src => src.GradeId))
-                .ForMember(x => x.UserId, y => y.MapFrom(src => src.UserId))
                 .ForMember(x => x.SubjectName, y => y.MapFrom(src => src.Subject.Name))
                 .ForMember(x => x.GradeName, y => y.MapFrom(src => src.Grade.Name))
-                .ForMember(x => x.UserFullName, y => y.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
+                .ForMember(dest => dest.UserFullName, x => x.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
                 .ReverseMap();
             CreateMap<Document1DTO, Document1>()
                 .ForMember(dest => dest.Subject, opt => opt.Ignore())

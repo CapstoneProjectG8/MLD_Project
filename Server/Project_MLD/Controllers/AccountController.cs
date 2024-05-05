@@ -14,7 +14,6 @@ namespace Project_MLD.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin, Teacher, Leader, Principle")]
     public class AccountController : ControllerBase
     {
 
@@ -167,7 +166,7 @@ namespace Project_MLD.Controllers
                             _mailBody.SubjectTitleResetPassword(codeGenerate),
                             _mailBody.EmailBodyResetPassword(account.Username, codeGenerate)
                         );
-                        return Ok(new { message = "Reset password email sent to " + mail });
+                        return Ok("Reset password email sent to " + mail);
                     }
                     else
                     {

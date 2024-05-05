@@ -18,4 +18,7 @@ public partial class Document4DTO
     public string? LinkFile { get; set; }
 
     public string? LinkImage { get; set; }
+
+    public int? IsApprove { get; set; }
+
 }
