@@ -45,8 +45,10 @@ namespace Project_MLD.Controllers
         [HttpGet("GetAllDocument1s")]
         public async Task<ActionResult<IEnumerable<Document1DTO>>> GetAllDocument1s()
         {
-            var Document1 = await _repository.GetAllDocument1s();
-            var mappedDocuments = _mapper.Map<List<Document1DTO>>(Document1);
+
+            var documents = await _repository.GetAllDocument1s();
+            var mappedDocuments = _mapper.Map<List<Document1DTO>>(documents);
+
             foreach (var document in mappedDocuments)
             {
                 if (document.ApproveBy.HasValue)
@@ -54,11 +56,15 @@ namespace Project_MLD.Controllers
                     var getUser = await _userRepository.GetUserById(document.ApproveBy.Value);
                     if (getUser != null)
                     {
-                        document.ApproveByName = getUser.FirstName + " " + getUser.LastName;
+                        document.ApproveByName = $"{getUser.FirstName} {getUser.LastName}";
                     }
-                }   
+                }
+                var getUserName = await _userRepository.GetUserById(document.UserId);
+                document.UserFullName = getUserName.FirstName + " " + getUserName.LastName;
             }
+
             return Ok(mappedDocuments);
+
         }
 
         [HttpGet("GetAllDoc1sWithCondition")]
@@ -76,6 +82,8 @@ namespace Project_MLD.Controllers
                         document.ApproveByName = getUser.FirstName + " " + getUser.LastName;
                     }
                 }
+                var getUserName = await _userRepository.GetUserById(document.UserId);
+                document.UserFullName = getUserName.FirstName + " " + getUserName.LastName;
             }
             return Ok(mappedDocuments);
         }
@@ -93,6 +101,8 @@ namespace Project_MLD.Controllers
                     mapDoc.ApproveByName = getUser.FirstName + " " + getUser.LastName;
                 }
             }
+            var getUserName = await _userRepository.GetUserById(Document1.UserId);
+            mapDoc.UserFullName = getUserName.FirstName + " " + getUserName.LastName;
             return Ok(mapDoc);
         }
 
@@ -110,7 +120,7 @@ namespace Project_MLD.Controllers
             try
             {
                 doc1.Status = true;
-                doc1.CreatedDate = DateOnly.FromDateTime(DateTime.Now); 
+                doc1.CreatedDate = DateOnly.FromDateTime(DateTime.Now);
                 var document = _mapper.Map<Document1>(doc1);
 
                 var addedDocument = await _repository.AddDocument1(document);
@@ -251,5 +261,5 @@ namespace Project_MLD.Controllers
                 return StatusCode(500, $"An error occurred while delete Document1 Foreign Table: {ex.Message}");
             }
         }
-    }   
+    }
 }

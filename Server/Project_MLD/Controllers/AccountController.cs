@@ -14,7 +14,6 @@ namespace Project_MLD.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin, Teacher, Leader, Principle")]
     public class AccountController : ControllerBase
     {
 

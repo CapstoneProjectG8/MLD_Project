@@ -38,6 +38,8 @@ namespace Project_MLD.Controllers
                         pl.ApproveByName = getUser.FirstName + " " + getUser.LastName;
                     }
                 }
+                var getUserName = await _userRepository.GetUserById(pl.UserId);
+                pl.UserFullName = getUserName.FirstName + " " + getUserName.LastName;
             }
             return Ok(mapDocumemt);
         }
@@ -57,6 +59,8 @@ namespace Project_MLD.Controllers
                         pl.ApproveByName = getUser.FirstName + " " + getUser.LastName;
                     }
                 }
+                var getUserName = await _userRepository.GetUserById(pl.UserId);
+                pl.UserFullName = getUserName.FirstName + " " + getUserName.LastName;
             }
             return Ok(mapDocumemt);
         }
@@ -97,6 +101,8 @@ namespace Project_MLD.Controllers
                     mapDocumemt.ApproveByName = getUser.FirstName + " " + getUser.LastName;
                 }
             }
+            var getUserName = await _userRepository.GetUserById(mapDocumemt.UserId);
+            mapDocumemt.UserFullName = getUserName.FirstName + " " + getUserName.LastName;
             return Ok(mapDocumemt);
         }
 
