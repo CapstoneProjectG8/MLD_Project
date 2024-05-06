@@ -35,13 +35,15 @@ namespace Project_MLD.Controllers
             var mapper = _mapper.Map<List<Document3CurriculumDistributionDTO>>(cd);
             return Ok(mapper);
         }
+
         [HttpPost("AddDoc3CurriculumDistribution")]
-        public async Task<IActionResult> AddDoc3CurriculumDistribution(int document3Id, int? curriculumId, List<int?> equipmentIds,
+        public async Task<IActionResult> AddDoc3CurriculumDistribution(int document3Id, int? curriculumId, List<int?> listEquipmentIds,
             int? subjectRoomId, int slot, DateOnly time)
         {
             try
             {
                 var doc3 = new List<Document3CurriculumDistribution>();
+
                 var docDistribution = new Document3CurriculumDistribution();
                 docDistribution.Document3Id = document3Id;
                 docDistribution.CurriculumId = (int)curriculumId;
@@ -49,11 +51,11 @@ namespace Project_MLD.Controllers
                 docDistribution.Slot = slot;
                 docDistribution.Time = time;
 
-                if (equipmentIds != null)
+                if (listEquipmentIds != null)
                 {
-                    foreach (var equipmentId in equipmentIds)
+                    foreach (var item in listEquipmentIds)
                     {
-                        docDistribution.EquipmentId = equipmentId.Value;
+                        docDistribution.EquipmentId = item.Value;
                         var doc = await _repository.AddDoc3curriculumDistribution(docDistribution);
                         doc3.Add(doc);
                     }
@@ -68,45 +70,9 @@ namespace Project_MLD.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "An error occurred while adding document 3 curriculum distribution.");
+                return StatusCode(500, ex.Message);
             }
         }
-
-        [HttpPut("Update")]
-        public async Task<IActionResult> UpdateDocument3CurriculumDistribution(List<Document3CurriculumDistributionDTO> requests)
-        {
-            try
-            {
-                var mapRequests = _mapper.Map<List<Document3CurriculumDistribution>>(requests);
-
-                await _repository.UpdateDocument3CurriculumDistribution(mapRequests);
-
-                return Ok("Update Successfully");
-            }
-            catch (Exception ex)
-            {
-                // Log the exception or handle it accordingly
-                return StatusCode(500, $"An error occurred while updating Document3 CurriculumDistribution: {ex.Message}");
-            }
-        }
-
-        [HttpDelete("Delete")]
-        public async Task<IActionResult> DeleteDocument3CurriculumDistribution(List<Document3CurriculumDistributionDTO> requests)
-        {
-            try
-            {
-                var mapRequests = _mapper.Map<List<Document3CurriculumDistribution>>(requests);
-                await _repository.DeleteDocument3CurriculumDistribution(mapRequests);
-
-                return Ok("Delete Successfully");
-            }
-            catch (Exception ex)
-            {
-                // Log the exception or handle it accordingly
-                return StatusCode(500, $"An error occurred while delete Document3 CurriculumDistribution: {ex.Message}");
-            }
-        }
-
 
     }
 }

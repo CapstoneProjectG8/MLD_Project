@@ -106,7 +106,7 @@ namespace Project_MLD.Service.Repository
                     .Include(x => x.User)
                     .Include(x => x.Grade)
                     .Include(x => x.Subject)
-                    .Where(x => x.User.UserDepartments.Any(ud => ud.DepartmentId == id) && x.Status == true)
+                    .Where(x => x.User.DepartmentId == id && x.Status == true)
                     .ToListAsync();
 
                 var anObject = new

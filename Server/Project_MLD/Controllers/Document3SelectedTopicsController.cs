@@ -29,23 +29,7 @@ namespace Project_MLD.Controllers
             return Ok(mapper);
         }
 
-        [HttpPut("UpdateDoc3SelectedTopics")]
-        public async Task<IActionResult> UpdateDocument3SelectedTopics(List<Document3SelectedTopicDTO> requests)
-        {
-            try
-            {
-                var mapRequests = _mapper.Map<List<Document3SelectedTopic>>(requests);
-                await _repository.UpdateDocument3SelectedTopics(mapRequests);
-
-                return Ok("Update Successfully");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"An error occurred while updating Document3 Selected Topic: {ex.Message}");
-            }
-        }
-
-        [HttpPut("AddDocument3SelectedTopics")]
+        [HttpPost("AddDocument3SelectedTopics")]
         public async Task<IActionResult> AddDocument3SelectedTopics(int document3Id, int? selectedTopicsId, List<int?> listEquipment,
             int? subjectId, int? slot, DateOnly time)
         {
@@ -78,7 +62,7 @@ namespace Project_MLD.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "An error occurred while adding document 3 selected topic.");
+                return StatusCode(500, ex.Message);
             }
         }
 

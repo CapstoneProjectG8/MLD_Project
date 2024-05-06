@@ -33,26 +33,25 @@ namespace Project_MLD.Controllers
             return Ok(mapper);
         }
 
-        [HttpPut("UpdateDoc1Curiculum")]
-        public async Task<IActionResult> UpdateDocument1CurriculumDistribution(List<Document1CurriculumDistributionDTO> requests)
+        [HttpPost("AddDoc1Curiculum")]
+        public async Task<IActionResult> AddDocument1CurriculumDistribution(List<Document1CurriculumDistributionDTO> requests)
         {
             try
             {
                 var mapRequests = _mapper.Map<List<Document1CurriculumDistribution>>(requests);
 
-                await _repository.UpdateDocument1CurriculumDistribution(mapRequests);
+                await _repository.AddDocument1CurriculumDistribution(mapRequests);
 
-                return Ok("Update Successfully");
+                return Ok("Add Successfully");
             }
             catch (Exception ex)
             {
-                // Log the exception or handle it accordingly
-                return StatusCode(500, $"An error occurred while updating Document1 CurriculumDistribution: {ex.Message}");
+                return StatusCode(500, $"An error occurred while add Document1 CurriculumDistribution: {ex.Message}");
             }
         }
 
         [HttpDelete("DeleteDoc1Curriculum")]
-        public async Task<IActionResult> DeleteDocument1CurriculumDistribution( List<Document1CurriculumDistributionDTO> requests)
+        public async Task<IActionResult> DeleteDocument1CurriculumDistribution(List<Document1CurriculumDistributionDTO> requests)
         {
             try
             {
@@ -68,6 +67,6 @@ namespace Project_MLD.Controllers
             }
         }
 
-        
+
     }
 }

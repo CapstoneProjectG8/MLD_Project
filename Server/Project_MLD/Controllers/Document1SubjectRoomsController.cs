@@ -33,26 +33,26 @@ namespace Project_MLD.Controllers
             return Ok(mapper);
         }
 
-        [HttpPut("UpdateDoc1SubjectRoom")]
-        public async Task<IActionResult> UpdateDocument1SubjectRoom( List<Document1SubjectRoomDTO> requests)
+        [HttpPost("AddDoc1SubjectRoom")]
+        public async Task<IActionResult> AddDoc1SubjectRoom(List<Document1SubjectRoomDTO> requests)
         {
             try
             {
                 var mapRequests = _mapper.Map<List<Document1SubjectRoom>>(requests);
 
-                await _repository.UpdateDocument1SubjectRoom(mapRequests);
+                await _repository.AddDocument1SubjectRoom(mapRequests);
 
-                return Ok("Update Successfully");
+                return Ok("add Successfully");
             }
             catch (Exception ex)
             {
                 // Log the exception or handle it accordingly
-                return StatusCode(500, $"An error occurred while updating Document1 Subject Room: {ex.Message}");
+                return StatusCode(500, $"An error occurred while add Document1 Subject Room: {ex.Message}");
             }
         }
 
         [HttpDelete("DeleteDoc1SubjectRoom")]
-        public async Task<IActionResult> DeleteDocument1SubjectRoom( List<Document1SubjectRoomDTO> requests)
+        public async Task<IActionResult> DeleteDocument1SubjectRoom(List<Document1SubjectRoomDTO> requests)
         {
             try
             {

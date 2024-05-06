@@ -67,28 +67,6 @@ namespace Project_MLD.Service.Repository
             return await _context.Document4s.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<IEnumerable<object>> GetDocument4ByUserSpecializedDepartment(List<int> listId)
-        {
-            var listObject = new List<object>();
-
-            foreach (var id in listId)
-            {
-                var list = await _context.Document4s
-                    .Include(x => x.TeachingPlanner)
-                    .ThenInclude(y => y.User)
-                    .ThenInclude(z => z.UserDepartments)
-                    .Where(doc => doc.TeachingPlanner.User.UserDepartments.Any(dep => dep.Id == id))
-                    .ToListAsync();
-                var anObject = new
-                {
-                    id = id,
-                    document = list
-                };
-                listObject.Add(anObject);
-            }
-            return listObject;
-        }
-
         public async Task<IEnumerable<Document4>> GetDocument4sWithCondition(bool status, int isApprove)
         {
             return await _context.Document4s
@@ -127,8 +105,7 @@ namespace Project_MLD.Service.Repository
                 var documents = await _context.Document4s
                     .Include(x => x.TeachingPlanner)
                     .ThenInclude(x => x.User)
-                    .ThenInclude(x => x.UserDepartments)
-                    .Where(x => x.TeachingPlanner.User.UserDepartments.Any(d => d.DepartmentId == id))
+                    .Where(x => x.TeachingPlanner.User.DepartmentId == id)
                     .ToListAsync();
 
                 result.Add(new

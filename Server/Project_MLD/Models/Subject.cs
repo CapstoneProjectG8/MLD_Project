@@ -9,7 +9,9 @@ public partial class Subject
 
     public string? Name { get; set; }
 
-    public virtual ICollection<DepartmentSubject> DepartmentSubjects { get; set; } = new List<DepartmentSubject>();
+    public int? DepartmentId { get; set; }
+
+    public virtual SpecializedDepartment? Department { get; set; }
 
     public virtual ICollection<Document1> Document1s { get; set; } = new List<Document1>();
 

@@ -105,21 +105,22 @@ namespace Project_MLD.Service.Repository
         public async Task<IEnumerable<User>> GetAllUsersByDepartmentId(int id)
         {
             return await _context.Users
-                .Include(x => x.UserDepartments)
-                .Where(x => x.UserDepartments.Any(ud => ud.Id == id))
+                .Where(x => x.DepartmentId == id)
                 .ToListAsync();
         }
 
         public async Task<IEnumerable<object>> GetTotalUserBySpecializedDepartmentId(int id)
         {
-            return await _context.UserDepartments
-                .Where(x => x.DepartmentId == id) // Lọc các bản ghi có DepartmentId trùng với id được cung cấp
-                .GroupBy(x => x.DepartmentId) // Nhóm các bản ghi theo DepartmentId
-                .Select(g => new // Dùng Select để chọn ra các thông tin bạn muốn
+            var totalUser = await _context.Users
+                .Where(x => x.DepartmentId == id)
+                .Select(x => new
                 {
-                    DepartmentId = g.Key, // Lấy ra DepartmentId từ nhóm
-                    TotalUsers = g.Count() // Đếm số lượng người dùng trong mỗi nhóm
-                }).ToListAsync();
+                    DepartmentId = x.DepartmentId,
+                    TotalUsers = _context.Users.Count(u => u.DepartmentId == x.DepartmentId)
+                })
+                .ToListAsync();
+
+            return totalUser;
         }
     }
 }

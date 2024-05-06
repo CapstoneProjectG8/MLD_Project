@@ -21,8 +21,6 @@ public partial class MldDatabase2Context : DbContext
 
     public virtual DbSet<CurriculumDistribution> CurriculumDistributions { get; set; }
 
-    public virtual DbSet<DepartmentSubject> DepartmentSubjects { get; set; }
-
     public virtual DbSet<Document1> Document1s { get; set; }
 
     public virtual DbSet<Document1CurriculumDistribution> Document1CurriculumDistributions { get; set; }
@@ -87,8 +85,6 @@ public partial class MldDatabase2Context : DbContext
 
     public virtual DbSet<User> Users { get; set; }
 
-    public virtual DbSet<UserDepartment> UserDepartments { get; set; }
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         var builder = new ConfigurationBuilder()
@@ -147,23 +143,6 @@ public partial class MldDatabase2Context : DbContext
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Name).HasColumnName("name");
-        });
-
-        modelBuilder.Entity<DepartmentSubject>(entity =>
-        {
-            entity.ToTable("Department_Subject");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.DepartmentId).HasColumnName("department_id");
-            entity.Property(e => e.SubjectId).HasColumnName("subject_id");
-
-            entity.HasOne(d => d.Department).WithMany(p => p.DepartmentSubjects)
-                .HasForeignKey(d => d.DepartmentId)
-                .HasConstraintName("FK_Department_Subject_Specialized Department");
-
-            entity.HasOne(d => d.Subject).WithMany(p => p.DepartmentSubjects)
-                .HasForeignKey(d => d.SubjectId)
-                .HasConstraintName("FK_Department_Subject_Subject");
         });
 
         modelBuilder.Entity<Document1>(entity =>
@@ -425,7 +404,6 @@ public partial class MldDatabase2Context : DbContext
 
             entity.HasOne(d => d.Document3).WithMany(p => p.Document3CurriculumDistributions)
                 .HasForeignKey(d => d.Document3Id)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Document3_CurriculumDistribution_Document 3");
 
             entity.HasOne(d => d.Equipment).WithMany(p => p.Document3CurriculumDistributions)
@@ -451,7 +429,6 @@ public partial class MldDatabase2Context : DbContext
 
             entity.HasOne(d => d.Document3).WithMany(p => p.Document3SelectedTopics)
                 .HasForeignKey(d => d.Document3Id)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Document3_SelectedTopics_Document 3");
 
             entity.HasOne(d => d.Equipment).WithMany(p => p.Document3SelectedTopics)
@@ -700,7 +677,12 @@ public partial class MldDatabase2Context : DbContext
             entity.ToTable("Subject");
 
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.DepartmentId).HasColumnName("department_id");
             entity.Property(e => e.Name).HasColumnName("name");
+
+            entity.HasOne(d => d.Department).WithMany(p => p.Subjects)
+                .HasForeignKey(d => d.DepartmentId)
+                .HasConstraintName("FK_Subject_Specialized Department");
         });
 
         modelBuilder.Entity<SubjectRoom>(entity =>
@@ -770,6 +752,7 @@ public partial class MldDatabase2Context : DbContext
             entity.Property(e => e.Address).HasColumnName("address");
             entity.Property(e => e.Age).HasColumnName("age");
             entity.Property(e => e.DateOfBirth).HasColumnName("date_of_birth");
+            entity.Property(e => e.DepartmentId).HasColumnName("department_id");
             entity.Property(e => e.Email).HasColumnName("email");
             entity.Property(e => e.FirstName).HasColumnName("first_name");
             entity.Property(e => e.Gender).HasColumnName("gender");
@@ -784,6 +767,10 @@ public partial class MldDatabase2Context : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_User_Account");
 
+            entity.HasOne(d => d.Department).WithMany(p => p.Users)
+                .HasForeignKey(d => d.DepartmentId)
+                .HasConstraintName("FK_User_Specialized Department");
+
             entity.HasOne(d => d.LevelOfTrainning).WithMany(p => p.Users)
                 .HasForeignKey(d => d.LevelOfTrainningId)
                 .HasConstraintName("FK_User_Level Of Trainning");
@@ -791,23 +778,6 @@ public partial class MldDatabase2Context : DbContext
             entity.HasOne(d => d.ProfessionalStandards).WithMany(p => p.Users)
                 .HasForeignKey(d => d.ProfessionalStandardsId)
                 .HasConstraintName("FK_User_Professional Standards");
-        });
-
-        modelBuilder.Entity<UserDepartment>(entity =>
-        {
-            entity.ToTable("User_Department");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.DepartmentId).HasColumnName("department_id");
-            entity.Property(e => e.UserId).HasColumnName("user_id");
-
-            entity.HasOne(d => d.Department).WithMany(p => p.UserDepartments)
-                .HasForeignKey(d => d.DepartmentId)
-                .HasConstraintName("FK_User_Department_Specialized Department");
-
-            entity.HasOne(d => d.User).WithMany(p => p.UserDepartments)
-                .HasForeignKey(d => d.UserId)
-                .HasConstraintName("FK_User_Department_User");
         });
 
         OnModelCreatingPartial(modelBuilder);

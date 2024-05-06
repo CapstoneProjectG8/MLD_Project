@@ -92,9 +92,8 @@ namespace Project_MLD.Service.Repository
             {
                 var documents = await _context.Document3s
                 .Include(x => x.User)
-                .ThenInclude(x => x.UserDepartments)
 
-                .Where(x => x.User.UserDepartments.Any(ud => ud.Id == id) && x.Status == true)
+                .Where(x => x.User.DepartmentId == id && x.Status == true)
                 .ToListAsync();
 
                 var anObject = new
@@ -102,9 +101,7 @@ namespace Project_MLD.Service.Repository
                     id = id,
                     document = documents
                 };
-
                 listObject.Add(anObject);
-
             }
             return listObject;
         }

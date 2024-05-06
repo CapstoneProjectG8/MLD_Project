@@ -31,7 +31,11 @@ public partial class User
 
     public int? ProfessionalStandardsId { get; set; }
 
+    public int? DepartmentId { get; set; }
+
     public virtual Account Account { get; set; } = null!;
+
+    public virtual SpecializedDepartment? Department { get; set; }
 
     public virtual ICollection<Document1> Document1s { get; set; } = new List<Document1>();
 
@@ -52,6 +56,4 @@ public partial class User
     public virtual Report? Report { get; set; }
 
     public virtual ICollection<TeachingPlanner> TeachingPlanners { get; set; } = new List<TeachingPlanner>();
-
-    public virtual ICollection<UserDepartment> UserDepartments { get; set; } = new List<UserDepartment>();
 }

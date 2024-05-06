@@ -57,49 +57,19 @@ namespace Project_MLD.Service.Repository
             return te;
         }
 
-        public async Task UpdateDocument1TeachingEquipment(List<Document1TeachingEquipment> list)
+        public async Task AddDocument1TeachingEquipment(List<Document1TeachingEquipment> list)
         {
             try
             {
                 foreach (var item in list)
                 {
-                    var existTeachingEquipments = await _context.TeachingEquipments
-                        .FindAsync(item.TeachingEquipmentId);
-                    if (existTeachingEquipments == null)
-                    {
-                        existTeachingEquipments = new TeachingEquipment
-                        {
-                            Name = item.TeachingEquipment.Name
-                        };
-                        _context.TeachingEquipments.Add(existTeachingEquipments);
-                        _context.SaveChanges();
-                    }
-                    var existDocument1TeachingEquipment = await _context.Document1TeachingEquipments
-                        .FindAsync(item.Document1Id, existTeachingEquipments.Id);
-                    if (existDocument1TeachingEquipment == null)
-                    {
-                        var newItem = new Document1TeachingEquipment
-                        {
-                            Document1Id = item.Document1Id,
-                            TeachingEquipmentId = existTeachingEquipments.Id,
-                            Quantity = item.Quantity,
-                            Note = item.Note,
-                            Description = item.Description
-                        };
-                        _context.Document1TeachingEquipments.Add(newItem);
-                    }
-                    else
-                    {
-                        existDocument1TeachingEquipment.Quantity = item.Quantity;
-                        existDocument1TeachingEquipment.Note = item.Note;
-                        existDocument1TeachingEquipment.Description = item.Description;
-                    }
+                    _context.Document1TeachingEquipments.Add(item);
                 }
                 await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
-                throw new Exception("An error occurred while updating Teaching Equipment.", ex);
+                throw new Exception("An error occurred while add Teaching Equipment.", ex);
             }
         }
     }

@@ -57,42 +57,13 @@ namespace Project_MLD.Service.Repository
             return st;
         }
 
-        public async Task UpdateDocument1SelectedTopic(List<Document1SelectedTopic> list)
+        public async Task AddDocument1SelectedTopic(List<Document1SelectedTopic> list)
         {
             try
             {
                 foreach (var item in list)
                 {
-                    var existSelectedTopics = await _context.SelectedTopics
-                        .FindAsync(item.SelectedTopicsId);
-                    if (existSelectedTopics == null)
-                    {
-                        existSelectedTopics = new SelectedTopic
-                        {
-                            Name = item.SelectedTopics.Name
-                        };
-                        _context.SelectedTopics.Add(existSelectedTopics);
-                        _context.SaveChanges();
-                        //throw new Exception("Selected Topics Id is not Exist");
-                    }
-                    var existDocument1SelectedTopics = await _context.Document1SelectedTopics
-                        .FindAsync(item.Document1Id, existSelectedTopics.Id);
-                    if (existDocument1SelectedTopics == null)
-                    {
-                        var newItem = new Document1SelectedTopic
-                        {
-                            Document1Id = item.Document1Id,
-                            SelectedTopicsId = existSelectedTopics.Id,
-                            Slot = item.Slot,
-                            Description = item.Description
-                        };
-                        _context.Document1SelectedTopics.Add(newItem);
-                    }
-                    else
-                    {
-                        existDocument1SelectedTopics.Slot = item.Slot;
-                        existDocument1SelectedTopics.Description = item.Description;
-                    }
+                    _context.Document1SelectedTopics.Add(item);
                 }
                 await _context.SaveChangesAsync();
             }

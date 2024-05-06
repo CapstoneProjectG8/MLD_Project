@@ -1,4 +1,7 @@
-﻿namespace Project_MLD.Models;
+﻿using System;
+using System.Collections.Generic;
+
+namespace Project_MLD.Models;
 
 public partial class Document1
 {

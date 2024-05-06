@@ -30,5 +30,7 @@ namespace Project_MLD.DTO
 
         public int? ProfessionalStandardsId { get; set; }
 
+        public int? DepartmentId { get; set; }
+
     }
 }
