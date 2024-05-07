@@ -41,7 +41,7 @@ namespace Project_MLD.Controllers
                     var getUser = await _userRepository.GetUserById(document3.ApproveBy.Value);
                     if (getUser != null)
                     {
-                        document3.ApproveByName = getUser.FirstName + " " + getUser.LastName; 
+                        document3.ApproveByName = getUser.FirstName + " " + getUser.LastName;
                     }
                 }
                 var getUserName = await _userRepository.GetUserById(document3.UserId);
@@ -99,7 +99,10 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<Document3DTO>> GetDoc3ById(int id)
         {
             var existDocument3 = await _repository.GetDocument3ById(id);
-
+            if (existDocument3 == null)
+            {
+                return StatusCode(200, "No Document 3 Found");
+            }
             var mapDocument = _mapper.Map<Document3DTO>(existDocument3);
             if (mapDocument.ApproveBy.HasValue)
             {

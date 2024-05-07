@@ -120,7 +120,7 @@ namespace Project_MLD.Service.Repository
         public async Task<IEnumerable<Document2>> GetAllDoc2sByCondition(bool? status, int? isApprove)
         {
             IQueryable<Document2> query = _context.Document2s;
-            if (status != true)
+            if (status != null)
             {
                 query = query.Where(x => x.Status == status);
             }
@@ -128,7 +128,7 @@ namespace Project_MLD.Service.Repository
             {
                 query = query.Where(x => x.IsApprove == isApprove);
             }
-            return await _context.Document2s
+            return await query
                 .Include(x => x.User)
                 .ToListAsync();
         }

@@ -22,10 +22,18 @@ namespace Project_MLD.Controllers
         }
 
         [HttpGet("GetAllDocument4s")]
-        public async Task<ActionResult<IEnumerable<Document4>>> GetAllDocument4s()
+        public async Task<ActionResult<IEnumerable<Document4DTO>>> GetAllDocument4s()
         {
-            var Document4 = await _repository.GetAllDocument4s();
-            var mapDocument = _mapper.Map<List<Document4DTO>>(Document4);
+            var doc4 = await _repository.GetAllDocument4s();
+            var mapDocument = _mapper.Map<List<Document4DTO>>(doc4);
+            //foreach (var item in mapDocument)
+            //{
+            //    if (item.ClassName == null)
+            //    {
+            //        return BadRequest("Null");
+            //    }
+            //}
+            
             return Ok(mapDocument);
         }
 
@@ -67,7 +75,7 @@ namespace Project_MLD.Controllers
         }
 
         [HttpGet("GetDocument4sWithCondition")]
-        public async Task<ActionResult<IEnumerable<Document4>>> GetDocument4sWithCondition(bool status, int isApprove)
+        public async Task<ActionResult<IEnumerable<Document4>>> GetDocument4sWithCondition(bool? status, int? isApprove)
         {
             var existDocument4 = await _repository.GetDocument4sWithCondition(status, isApprove);
             //if (existDocument4 == null)

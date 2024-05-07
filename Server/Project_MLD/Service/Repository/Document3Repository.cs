@@ -44,7 +44,7 @@ namespace Project_MLD.Service.Repository
             {
                 query = query.Where(x => x.IsApprove == isApprove);
             }
-            return await _context.Document3s
+            return await query
                .Include(x => x.User)
                .Include(x => x.Document1)
                .ToListAsync();

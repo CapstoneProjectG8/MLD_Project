@@ -92,6 +92,10 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<Document2DTO>> GetDocument2ById(int id)
         {
             var existDocument2 = await _repository.GetDocument2ById(id);
+            if(existDocument2 == null)
+            {
+                return StatusCode(200, "No Document 2 Found");
+            }
             var mapDocumemt = _mapper.Map<Document2DTO>(existDocument2);
             if (mapDocumemt.ApproveBy != null)
             {

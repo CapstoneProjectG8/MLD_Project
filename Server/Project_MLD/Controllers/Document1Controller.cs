@@ -92,6 +92,10 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<Document1DTO>> GetDocument1ById(int id)
         {
             var Document1 = await _repository.GetDocument1ById(id);
+            if(Document1 == null)
+            {
+                return StatusCode(200, "No Document 1 Found");
+            }
             var mapDoc = _mapper.Map<Document1DTO>(Document1);
             if (mapDoc.ApproveBy != null)
             {
@@ -103,6 +107,7 @@ namespace Project_MLD.Controllers
             }
             var getUserName = await _userRepository.GetUserById(Document1.UserId);
             mapDoc.UserFullName = getUserName.FirstName + " " + getUserName.LastName;
+
             return Ok(mapDoc);
         }
 
@@ -192,8 +197,8 @@ namespace Project_MLD.Controllers
                 return BadRequest("specialized Department Id is Null");
             }
             var totalTeacher = await _userRepository.GetTotalUserBySpecializedDepartmentId(specializedDepartmentId);
-            var totalTeacherProfessionalStandard = await _userRepository.GetTotalUserProfessionalStandard();
-            var totalTeacherLevelOfTrainning = await _userRepository.GetTotalUserLevelOfTrainning();
+            var totalTeacherProfessionalStandard = await _userRepository.GetTotalUserProfessionalStandard(specializedDepartmentId);
+            var totalTeacherLevelOfTrainning = await _userRepository.GetTotalUserLevelOfTrainning(specializedDepartmentId);
             return Ok(new
             {
                 totalTeacher = totalTeacher,

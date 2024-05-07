@@ -37,7 +37,11 @@ namespace Project_MLD.Service.Repository
         {
             return await _context.Document4s
                 .Include(x => x.TeachingPlanner)
-                .Where(x => x.Status == true)
+                 .ThenInclude(x => x.User)
+                 .Include(x => x.TeachingPlanner)
+                 .ThenInclude(x => x.Class)
+                 .Include(x => x.TeachingPlanner)
+                 .ThenInclude(x => x.Subject)
                 .ToListAsync();
         }
 
@@ -67,12 +71,21 @@ namespace Project_MLD.Service.Repository
             return await _context.Document4s.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<IEnumerable<Document4>> GetDocument4sWithCondition(bool status, int isApprove)
+        public async Task<IEnumerable<Document4>> GetDocument4sWithCondition(bool? status, int? isApprove)
         {
-            return await _context.Document4s
+            IQueryable<Document4> query = _context.Document4s;
+            if (status != null)
+            {
+                query = query.Where(x => x.Status == status);
+            }
+            if (isApprove != null)
+            {
+                query = query.Where(x => x.IsApprove == isApprove);
+            }
+
+            return await query
                 .Include(x => x.TeachingPlanner)
                 .ThenInclude(x => x.User)
-                .Where(x => x.Status == status && x.IsApprove == isApprove)
                 .ToListAsync();
         }
 
