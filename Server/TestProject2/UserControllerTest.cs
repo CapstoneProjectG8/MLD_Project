@@ -1,140 +1,193 @@
-﻿//using AutoMapper;
-//using Microsoft.AspNetCore.Mvc;
-//using Moq;
-//using Project_MLD.Controllers;
-//using Project_MLD.DTO;
-//using Project_MLD.Models;
-//using Project_MLD.Service.Interface;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
+using Project_MLD.Controllers;
+using Project_MLD.DTO;
+using Project_MLD.Models;
+using Project_MLD.Service.Interface;
 
-//namespace ControllerTest;
-//public class UserControllerTests
-//{
-//    private readonly Mock<IUserRepository> _mockRepository;
-//    private readonly Mock<IMapper> _mockMapper;
-//    private readonly UserController _controller;
+namespace ControllerTest;
+public class UserControllerTests
+{
+    private Mock<IUserRepository> _mockRepo;
+    private Mock<IMapper> _mockMapper;
+    private UserController _controller;
 
-//    public UserControllerTests()
-//    {
-//        _mockRepository = new Mock<IUserRepository>();
-//        _mockMapper = new Mock<IMapper>();
-//        _controller = new UserController(_mockRepository.Object, _mockMapper.Object);
-//    }
+    public UserControllerTests()
+    {
+        _mockRepo = new Mock<IUserRepository>();
+        _mockMapper = new Mock<IMapper>();
+        _controller = new UserController(_mockRepo.Object, _mockMapper.Object);
+    }
 
-//    [Fact]
-//    public async Task GetAllUser_ReturnsOk()
-//    {
-//        // Arrange
-//        _mockRepository.Setup(r => r.GetAllUsers()).ReturnsAsync(new List<User>());
+    // Test cases for GetAllUsers method
+    [Fact]
+    public async Task GetAllUsers_ReturnsOkResult_WhenUsersExist()
+    {
+        // Arrange
+        var users = new List<User> { new User(), new User() };
+        _mockRepo.Setup(repo => repo.GetAllUsers()).ReturnsAsync(users);
 
-//        // Act
-//        var result = await _controller.GetAllUser();
+        // Act
+        var result = await _controller.GetAllUsers();
 
-//        // Assert
-//        Assert.IsType<OkObjectResult>(result.Result);
-//    }
+        // Assert
+        Assert.IsType<OkObjectResult>(result.Result);
+    }
 
-//    [Fact]
-//    public async Task GetUserById_WithExistingId_ReturnsOk()
-//    {
-//        // Arrange
-//        var id = 1;
-//        _mockRepository.Setup(r => r.GetUserById(id)).ReturnsAsync(new User());
+    [Fact]
+    public async Task GetAllUsers_ReturnsOkResult_WithEmptyList_WhenNoUsersExist()
+    {
+        // Arrange
+        var users = new List<User>();
+        var userDtos = new List<UserDTO>();
+        _mockRepo.Setup(repo => repo.GetAllUsers()).ReturnsAsync(users);
+        _mockMapper.Setup(mapper => mapper.Map<List<UserDTO>>(It.IsAny<List<User>>())).Returns(userDtos);
 
-//        // Act
-//        var result = await _controller.GetUserById(id);
+        // Act
+        var result = await _controller.GetAllUsers();
 
-//        // Assert
-//        Assert.IsType<OkObjectResult>(result.Result);
-//    }
+        // Assert
+        var okResult = Assert.IsType<OkObjectResult>(result.Result);
+        var returnValue = Assert.IsType<List<UserDTO>>(okResult.Value);
+        Assert.Empty(returnValue);
+    }
 
-//    [Fact]
-//    public async Task GetUserById_WithNonExistingId_ReturnsNotFound()
-//    {
-//        // Arrange
-//        var id = 1;
-//        _mockRepository.Setup(r => r.GetUserById(id)).ReturnsAsync((User)null);
 
-//        // Act
-//        var result = await _controller.GetUserById(id);
+    [Fact]
+    public async Task GetAllUsers_ReturnsCorrectType_WhenUsersExist()
+    {
+        // Arrange
+        var users = new List<User> { new User(), new User() };
+        _mockRepo.Setup(repo => repo.GetAllUsers()).ReturnsAsync(users);
 
-//        // Assert
-//        Assert.IsType<NotFoundResult>(result.Result);
-//    }
+        // Act
+        var result = await _controller.GetAllUsers();
 
-//    [Fact]
-//    public async Task AddUser_WithValidUser_ReturnsOk()
-//    {
-//        // Arrange
-//        var userDto = new UserDTO { Id = 1, FirstName = "Test", LastName = "User" };
-//        _mockRepository.Setup(r => r.AddUser(It.IsAny<User>())).ReturnsAsync(new User());
-//        _mockMapper.Setup(m => m.Map<User>(It.IsAny<UserDTO>())).Returns(new User());
+        // Assert
+        Assert.IsAssignableFrom<ActionResult<IEnumerable<UserDTO>>>(result);
+    }
 
-//        // Act
-//        var result = await _controller.AddUser(userDto);
+    // Test cases for GetUserById method
+    [Fact]
+    public async Task GetUserById_ReturnsOkResult_WhenUserExists()
+    {
+        // Arrange
+        var user = new User();
+        _mockRepo.Setup(repo => repo.GetUserById(It.IsAny<int>())).ReturnsAsync(user);
 
-//        // Assert
-//        Assert.IsType<OkObjectResult>(result.Result);
-//    }
+        // Act
+        var result = await _controller.GetUserById(1);
 
-//    [Fact]
-//    public async Task UpdateUser_WithMismatchedId_ReturnsBadRequest()
-//    {
-//        // Arrange
-//        var userDto = new UserDTO { Id = 1 };
-//        var id = 2;
+        // Assert
+        Assert.IsType<OkObjectResult>(result.Result);
+    }
 
-//        // Act
-//        var result = await _controller.UpdateUser(id, userDto);
+    [Fact]
+    public async Task GetUserById_ReturnsNotFoundObjectResult_WhenUserDoesNotExist()
+    {
+        // Arrange
+        _mockRepo.Setup(repo => repo.GetUserById(It.IsAny<int>())).ReturnsAsync((User)null);
 
-//        // Assert
-//        Assert.IsType<BadRequestObjectResult>(result);
-//    }
+        // Act
+        var result = await _controller.GetUserById(1);
 
-//    [Fact]
-//    public async Task UpdateUser_WithValidUser_ReturnsNoContent()
-//    {
-//        // Arrange
-//        var userDto = new UserDTO { Id = 1 };
-//        var id = 1;
-//        _mockRepository.Setup(r => r.UpdateUser(It.IsAny<User>())).ReturnsAsync(true);
-//        _mockMapper.Setup(m => m.Map<User>(It.IsAny<UserDTO>())).Returns(new User());
+        // Assert
+        Assert.IsType<NotFoundObjectResult>(result.Result);
+    }
 
-//        // Act
-//        var result = await _controller.UpdateUser(id, userDto);
+    [Fact]
+    public async Task GetUserById_ReturnsCorrectType_WhenUserExists()
+    {
+        // Arrange
+        var user = new User();
+        _mockRepo.Setup(repo => repo.GetUserById(It.IsAny<int>())).ReturnsAsync(user);
 
-//        // Assert
-//        Assert.IsType<NoContentResult>(result);
-//    }
-//    [Fact]
-//    public async Task UpdateUser_WithNonExistingUser_ReturnsNotFound()
-//    {
-//        // Arrange
-//        var userDto = new UserDTO { Id = 1 };
-//        var id = 1;
-//        _mockRepository.Setup(r => r.UpdateUser(It.IsAny<User>())).ReturnsAsync(false);
-//        _mockMapper.Setup(m => m.Map<User>(It.IsAny<UserDTO>())).Returns(new User());
+        // Act
+        var result = await _controller.GetUserById(1);
 
-//        // Act
-//        var result = await _controller.UpdateUser(id, userDto);
+        // Assert
+        Assert.IsAssignableFrom<ActionResult<UserDTO>>(result);
+    }
 
-//        // Assert
-//        Assert.IsType<NotFoundResult>(result);
-//    }
+    // Test cases for AddUser method
+    [Fact]
+    public async Task AddUser_ReturnsOkResult_WhenUserIsAdded()
+    {
+        // Arrange
+        var user = new UserDTO();
+        _mockRepo.Setup(repo => repo.AddUser(It.IsAny<User>())).ReturnsAsync(new User());
 
-//    [Fact]
-//    public async Task UpdateUser_WithExistingUser_ReturnsNoContent()
-//    {
-//        // Arrange
-//        var userDto = new UserDTO { Id = 1 };
-//        var id = 1;
-//        _mockRepository.Setup(r => r.UpdateUser(It.IsAny<User>())).ReturnsAsync(true);
-//        _mockMapper.Setup(m => m.Map<User>(It.IsAny<UserDTO>())).Returns(new User());
+        // Act
+        var result = await _controller.AddUser(user);
 
-//        // Act
-//        var result = await _controller.UpdateUser(id, userDto);
+        // Assert
+        Assert.IsType<OkObjectResult>(result.Result);
+    }
 
-//        // Assert
-//        Assert.IsType<NoContentResult>(result);
-//    }
+    [Fact]
+    public async Task AddUser_ThrowsException_WhenUserCannotBeAdded()
+    {
+        // Arrange
+        var user = new UserDTO();
+        _mockRepo.Setup(repo => repo.AddUser(It.IsAny<User>())).Throws(new Exception());
 
-//}
+        // Act & Assert
+        await Assert.ThrowsAsync<Exception>(() => _controller.AddUser(user));
+    }
+
+    [Fact]
+    public async Task AddUser_ReturnsCorrectType_WhenUserIsAdded()
+    {
+        // Arrange
+        var user = new UserDTO();
+        _mockRepo.Setup(repo => repo.AddUser(It.IsAny<User>())).ReturnsAsync(new User());
+
+        // Act
+        var result = await _controller.AddUser(user);
+
+        // Assert
+        Assert.IsAssignableFrom<ActionResult<User>>(result);
+    }
+
+    // Test cases for UpdateUser method
+    [Fact]
+    public async Task UpdateUser_ReturnsOkResult_WhenUserIsUpdated()
+    {
+        // Arrange
+        var user = new UserDTO();
+        _mockRepo.Setup(repo => repo.UpdateUser(It.IsAny<User>())).ReturnsAsync(true);
+
+        // Act
+        var result = await _controller.UpdateUser(user);
+
+        // Assert
+        Assert.IsType<OkObjectResult>(result);
+    }
+
+    [Fact]
+    public async Task UpdateUser_ReturnsBadRequestResult_WhenUserCannotBeUpdated()
+    {
+        // Arrange
+        var user = new UserDTO();
+        _mockRepo.Setup(repo => repo.UpdateUser(It.IsAny<User>())).ReturnsAsync(false);
+
+        // Act
+        var result = await _controller.UpdateUser(user);
+
+        // Assert
+        Assert.IsType<BadRequestObjectResult>(result);
+    }
+
+    [Fact]
+    public async Task UpdateUser_ThrowsException_WhenExceptionOccurs()
+    {
+        // Arrange
+        var user = new UserDTO();
+        _mockRepo.Setup(repo => repo.UpdateUser(It.IsAny<User>())).Throws(new Exception());
+
+        // Act & Assert
+        await Assert.ThrowsAsync<Exception>(() => _controller.UpdateUser(user));
+    }
+
+}
