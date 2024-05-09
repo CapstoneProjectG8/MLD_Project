@@ -2,8 +2,6 @@ import { config } from "process";
 import { base_url } from "../utils/baseUrl"
 import axios from "axios";
 
-
-//chưa đổi
 export const apiGetAllClass = async () => {
     const result = await axios.get(`${base_url}Class`);
     if (result)
@@ -12,7 +10,6 @@ export const apiGetAllClass = async () => {
         return null;
 }
 
-//chưa đổi
 export const apiGetClassByGradeId = async (gradeId: any) => {
     const result = await axios.get(`${base_url}Class/GetClassByGradeId/${gradeId}`);
     if (result)
