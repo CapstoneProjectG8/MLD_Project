@@ -37,15 +37,20 @@ namespace Project_MLD.Controllers
             _codeGenerate = codeGenerate;
         }
 
+        public class LoginModel
+        {
+            public string Username { get; set; }
+            public string Password { get; set; }
+        }
         [AllowAnonymous]
-        [HttpPost("/Login")]
-        public IActionResult Login(string username, string password)
+        [HttpPost("Login")]
+        public IActionResult Login([FromBody] LoginModel login)
         {
             try
             {
                 var accountLogin = new AccountDTO();
-                accountLogin.Username = username;
-                accountLogin.Password = password;
+                accountLogin.Username = login.Username;
+                accountLogin.Password = login.Password;
 
                 //check username hoặc password nếu null
                 if (accountLogin.Username == null || accountLogin.Password == null)
@@ -70,7 +75,7 @@ namespace Project_MLD.Controllers
             }
         }
 
-        [HttpGet("/CheckAuthenciation")]
+        [HttpGet("CheckAuthenciation")]
         public IActionResult CheckAuthenciation()
         {
             var s = GetCurrentAccount();
@@ -142,7 +147,7 @@ namespace Project_MLD.Controllers
             return Ok(result);
         }
 
-        [HttpPost("/SendMailResetPassword")]
+        [HttpPost("SendMailResetPassword")]
         public async Task<IActionResult> SendMailResetPassword(string mail)
         {
             var currentAccount = await _repository.GetUserByEmail(mail);
@@ -183,7 +188,7 @@ namespace Project_MLD.Controllers
                 return BadRequest("User not found.");
             }
         }
-        [HttpPost("/ChangePassword")]
+        [HttpPost("ChangePassword")]
         public async Task<IActionResult> ChangePassword(string username, string currentPassword, string newPassword)
         {
             try
