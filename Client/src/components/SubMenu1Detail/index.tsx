@@ -701,12 +701,9 @@ const SubMenu1Detail = () => {
     <div className="sub-menu-container">
       {location.pathname?.includes("create") ||
       location.pathname?.includes("edit") ? (
-        <div style={{ borderRadius: "0" }}>
+        <div>
           <div id="main-content">
-            <div
-              className="sub-menu-content"
-              style={{ border: "none", borderRadius: "0px" }}
-            >
+            <div className="sub-menu-content">
               <div className="sub-menu-content-header">
                 <strong className="phu-luc">Phụ lục I</strong>
                 <div className="sub-menu-content-header-title">
@@ -722,7 +719,7 @@ const SubMenu1Detail = () => {
                 </div>
                 <div className="sub-menu-content-header-infomation">
                   <div className="sub-menu-content-header-infomation-detail">
-                    <div style={{ display: "flex" }}>
+                    <div>
                       {" "}
                       <div>
                         <strong>TRƯỜNG: </strong>
@@ -734,7 +731,6 @@ const SubMenu1Detail = () => {
                       </div>
                     </div>
                     <div style={{ display: "flex" }}>
-                      {" "}
                       <div>
                         <strong>TỔ: </strong>
                         {specializedDepartment?.name}
@@ -743,17 +739,14 @@ const SubMenu1Detail = () => {
                   </div>
                   <div className="sub-menu-content-header-infomation-slogan">
                     <div>
-                      {" "}
                       <strong>CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</strong>
                     </div>
                     <div>
-                      {" "}
                       <strong>Độc lập - Tự do - Hạnh phúc</strong>
                     </div>
                   </div>
                 </div>
               </div>
-
               <div className="sub-menu-content-title">
                 <div>
                   <strong>KẾ HOẠCH DẠY HỌC CỦA TỔ CHUYÊN MÔN</strong>
@@ -1977,7 +1970,7 @@ function setSelectWidth() {
     var selectedIndex = grades.selectedIndex;
     var selectedOption = grades.options[selectedIndex];
     templateOption.textContent = selectedOption?.textContent;
-    if (template != undefined) {
+    if (template !== undefined) {
       grades.style.width = `${template?.clientWidth + 7}px`;
     }
   }
