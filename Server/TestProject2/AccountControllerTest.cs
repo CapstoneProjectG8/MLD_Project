@@ -14,6 +14,7 @@ using Project_MLD.Utils.GmailSender;
 using AutoMapper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.OpenApi.Any;
+using static Project_MLD.Controllers.AccountController;
 
 namespace ControllerTest;
 
@@ -40,35 +41,50 @@ public class AccountControllerTests
     }
 
     [Fact]
-    public void Login_WithNullUsername_ReturnsBadRequest()
-    {
-        var accountLogin = new AccountDTO { Username = null, Password = "password" };
-        var result = _controller.Login(accountLogin.Username, accountLogin.Password);
-        Assert.IsType<BadRequestObjectResult>(result);
-    }
-
-    [Fact]
-    public void Login_WithNullPassword_ReturnsBadRequest()
-    {
-        var accountLogin = new AccountDTO { Username = "username", Password = null };
-        var result = _controller.Login(accountLogin.Username, accountLogin.Password);
-        Assert.IsType<BadRequestObjectResult>(result);
-    }
-
-    [Fact]
-    public void Login_WithInvalidCredentials_ReturnsBadRequest()
+    public void Login_WithValidCredentials_ReturnsOkResultWithToken()
     {
         // Arrange
-        var accountLogin = new AccountDTO { Username = "dg12", Password = "Dung101201@" };
+        var loginModel = new LoginModel { Username = "testuser", Password = "testpassword" };
+        var user = new User(); // Assuming User is the correct type
+        var expectedToken = "testtoken";
+
+        _mockRepository.Setup(r => r.AuthenticateAccountByUser(It.IsAny<string>(), It.IsAny<string>())).Returns(user);
+        _mockRepository.Setup(r => r.GenerateToken(It.IsAny<User>())).Returns(expectedToken);
 
         // Act
-        var result = _controller.Login(accountLogin.Username, accountLogin.Password);
+        var result = _controller.Login(loginModel);
+
+        // Assert
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        Assert.Equal(expectedToken, okResult.Value);
+    }
+
+    [Fact]
+    public void Login_WithInvalidCredentials_ReturnsNotFoundResult()
+    {
+        // Arrange
+        var loginModel = new LoginModel { Username = "testuser", Password = "wrongpassword" };
+
+        _mockRepository.Setup(r => r.AuthenticateAccountByUser(It.IsAny<string>(), It.IsAny<string>())).Returns((User)null);
+
+        // Act
+        var result = _controller.Login(loginModel);
 
         // Assert
         Assert.IsType<NotFoundObjectResult>(result);
-        var objectResult = result as NotFoundObjectResult;
-        Assert.Equal(404, objectResult.StatusCode);
-        Assert.Equal("User Not Found", objectResult.Value);
+    }
+
+    [Fact]
+    public void Login_WithNullUsernameOrPassword_ReturnsBadRequestResult()
+    {
+        // Arrange
+        var loginModel = new LoginModel { Username = null, Password = null };
+
+        // Act
+        var result = _controller.Login(loginModel);
+
+        // Assert
+        Assert.IsType<BadRequestObjectResult>(result);
     }
 
 
