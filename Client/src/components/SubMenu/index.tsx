@@ -33,6 +33,7 @@ import {
   MenuItem,
   InputLabel,
   SelectChangeEvent,
+  Pagination,
 } from "@mui/material";
 
 const SubMenu = () => {
@@ -57,6 +58,21 @@ const SubMenu = () => {
     navigate(`/sub-menu-${indexSubMenu}/detail-create`);
   };
 
+  const [pages, setPages] = useState(Array(subMenu1Data.length).fill(1));
+  const itemsPerPage = 6;
+
+  const handlePageChange = (
+    event: React.ChangeEvent<unknown>,
+    value: number,
+    index: number
+  ) => {
+    setPages((prevPages) => {
+      const newPages = [...prevPages];
+      newPages[index] = value;
+      return newPages;
+    });
+  };
+
   useEffect(() => {
     if (indexSubMenu === "1")
       setSubMenuName(
@@ -78,26 +94,34 @@ const SubMenu = () => {
         const res = await apiGetDocument1ByUserSpecialiedDepartment(
           specializedDepartmentId
         );
-        if (res) setSubMenu1Data(res.data);
-        else setSubMenu1Data([]);
+        if (res) {
+          setSubMenu1Data(res.data);
+          setPages(Array(res.data.length).fill(1));
+        } else setSubMenu1Data([]);
       } else if (indexSubMenu === "2") {
         const res = await apiGetDocument2ByUserSpecialiedDepartment(
           specializedDepartmentId
         );
-        if (res) setSubMenu1Data(res.data);
-        else setSubMenu1Data([]);
+        if (res) {
+          setSubMenu1Data(res.data);
+          setPages(Array(res.data.length).fill(1));
+        } else setSubMenu1Data([]);
       } else if (indexSubMenu === "3") {
         const res = await apiGetDocument3ByUserSpecialiedDepartment(
           specializedDepartmentId
         );
-        if (res) setSubMenu1Data(res.data);
-        else setSubMenu1Data([]);
+        if (res) {
+          setSubMenu1Data(res.data);
+          setPages(Array(res.data.length).fill(1));
+        } else setSubMenu1Data([]);
       } else if (indexSubMenu === "4") {
         const res = await apiGetDocument4ByUserSpecialiedDepartment(
           specializedDepartmentId
         );
-        if (res) setSubMenu1Data(res.data);
-        else setSubMenu1Data([]);
+        if (res) {
+          setSubMenu1Data(res.data);
+          setPages(Array(res.data.length).fill(1));
+        } else setSubMenu1Data([]);
       } else if (indexSubMenu === "5") {
         const res = await apiGetSubMenu5();
         if (res) setSubMenu5Data(res.data);
@@ -108,6 +132,10 @@ const SubMenu = () => {
   }, [indexSubMenu, specializedDepartmentId]);
 
   console.log("subMenu1Data: ", subMenu1Data);
+
+  useEffect(() => {
+    setPages(Array(subMenu1Data.length).fill(1));
+  }, [indexSubMenu, specializedDepartmentId]);
 
   useEffect(() => {
     if (indexSubMenu !== "5") {
@@ -226,26 +254,56 @@ const SubMenu = () => {
                         index === grades.length - 1
                           ? "none"
                           : "1px solid black",
+                      display: "flex",
+                      flexDirection: "column",
                     }}
                   >
-                    {doc?.documents?.map((item: any, index: number) => (
+                    <div className="home-panel1-content-sub-menu-item-content-grid">
+                      {doc?.documents
+                        ?.slice(
+                          (pages[index] - 1) * itemsPerPage,
+                          pages[index] * itemsPerPage
+                        )
+                        .map((item: any, idx: number) => (
+                          <div
+                            key={idx}
+                            className="sub-menu-content-detail"
+                            onClick={() =>
+                              navigate(
+                                `/sub-menu-${indexSubMenu}/detail-view/${item?.id}`
+                              )
+                            }
+                            style={{
+                              backgroundImage: item?.linkImage
+                                ? `url('${item?.linkImage}')`
+                                : `url('${imageurl}')`,
+                            }}
+                          >
+                            <div className="sub-menu-subject-name">
+                              {item.name}
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                    {doc?.documents?.length > 6 && (
                       <div
-                        key={index}
-                        className="sub-menu-content-detail"
-                        onClick={() =>
-                          navigate(
-                            `/sub-menu-${indexSubMenu}/detail-view/${item?.id}`
-                          )
-                        }
                         style={{
-                          backgroundImage: item?.linkImage
-                            ? `url('${item?.linkImage}')`
-                            : `url('${imageurl}')`,
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
                         }}
                       >
-                        <div className="sub-menu-subject-name">{item.name}</div>
+                        <Pagination
+                          count={Math.ceil(
+                            doc?.documents?.length / itemsPerPage
+                          )}
+                          page={pages[index]}
+                          onChange={(event, value) =>
+                            handlePageChange(event, value, index)
+                          }
+                        />
                       </div>
-                    ))}
+                    )}
                   </div>
                 </div>
               ))}

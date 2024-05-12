@@ -79,8 +79,14 @@ const Header = () => {
     setOpenNews(!openNews);
   };
 
+  const handleAccClick = (event: React.KeyboardEvent | React.MouseEvent) => {
+    event.stopPropagation();
+    setOpenAcc(!openAcc);
+  };
+
   const [openAppendix, setOpenAppendix] = useState(false);
   const [openNews, setOpenNews] = useState(false);
+  const [openAcc, setOpenAcc] = useState(false);
 
   const list = () => (
     <div
@@ -90,6 +96,76 @@ const Header = () => {
     >
       <List>
         {/* Add your menu items here */}
+        <ListItem button onClick={() => setOpenAcc(!openAcc)}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "flex-start",
+            }}
+          >
+            <div
+              onClick={handleAccClick}
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <AccountCircle
+                style={{
+                  width: "32px",
+                  height: "32px",
+                  color: "#CD8D7A",
+                }}
+              />
+              {user && (
+                <span
+                  style={{ fontSize: "16px", color: "#000", marginLeft: "5px" }}
+                >
+                  {user.username}
+                </span>
+              )}
+              {openAcc ? (
+                <ExpandLessIcon onClick={handleAccClick} />
+              ) : (
+                <ExpandMoreIcon onClick={handleAccClick} />
+              )}
+            </div>
+            <Collapse in={openAcc} timeout="auto" unmountOnExit>
+              <List component="div" disablePadding>
+                <ListItem
+                  button
+                  style={{ listStyleType: "none", paddingLeft: "20px" }}
+                >
+                  <Link to="/profile" style={{ color: "black" }}>
+                    Thông tin tài khoản
+                  </Link>
+                </ListItem>
+                <ListItem
+                  button
+                  style={{ listStyleType: "none", paddingLeft: "20px" }}
+                >
+                  <Link to="/yeu-cau-phe-duyet" style={{ color: "black" }}>
+                    Yêu cầu phê duyệt
+                  </Link>
+                </ListItem>
+                <ListItem
+                  button
+                  style={{ listStyleType: "none", paddingLeft: "20px" }}
+                >
+                  <Link
+                    to="/"
+                    style={{ color: "black" }}
+                    onClick={handleLogout}
+                  >
+                    Đăng xuất
+                  </Link>
+                </ListItem>
+              </List>
+            </Collapse>
+          </div>
+        </ListItem>
         <ListItem button>
           <Home />
           <Link to="/" style={{ color: "black" }}>
