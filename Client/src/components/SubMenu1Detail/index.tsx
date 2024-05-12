@@ -703,7 +703,10 @@ const SubMenu1Detail = () => {
       location.pathname?.includes("edit") ? (
         <div>
           <div id="main-content">
-            <div className="sub-menu-content">
+            <div
+              className="sub-menu-content"
+              style={{ border: "none", borderRadius: "0px" }}
+            >
               <div className="sub-menu-content-header">
                 <strong className="phu-luc">Phụ lục I</strong>
                 <div className="sub-menu-content-header-title">

@@ -10,14 +10,13 @@
   border-radius: 20px;
   font-size: 14px;
   padding: 48px 64px;
+  min-width: 35%;
 
   .sub-menu-content {
     background-color: #fff;
-    border: none;
     max-height: 100%;
     font-family: "Times New Roman", serif !important;
     padding: 32px;
-
     &-header-title {
       margin-top: 8px;
       text-align: center;

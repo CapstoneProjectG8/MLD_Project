@@ -216,7 +216,7 @@ const SubMenu = () => {
             {indexSubMenu !== "5" &&
               subMenu1Data?.map((doc, index) => (
                 <div key={index}>
-                  <div className="grade-name" style={{ fontSize: "24px" }}>
+                  <div className="grade-name" style={{ fontSize: "20px" }}>
                     Tổ {specializedDepartment[index]?.name}
                   </div>
                   <div

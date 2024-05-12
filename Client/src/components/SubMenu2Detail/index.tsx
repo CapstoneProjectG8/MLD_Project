@@ -631,8 +631,6 @@ const SubMenu2Detail = () => {
                             width: "40px",
                             height: "20px",
                             marginLeft: "4px",
-                            border: "none",
-                            outline: "none",
                           }}
                           value={gradeIds[indexGrade]?.gradeId ?? ""}
                           defaultValue={subRows[0]?.gradeId ?? ""}

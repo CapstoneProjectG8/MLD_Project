@@ -640,7 +640,7 @@ const SubMenu3Detail = () => {
       justifyContent="center"
       style={{ overflow: "visible" }}
     >
-      <div className="sub-menu-container" style={{ minWidth: "25rem" }}>
+      <div className="sub-menu-container">
         {location.pathname?.includes("edit") ||
         location.pathname?.includes("create") ? (
           <div>
@@ -713,8 +713,6 @@ const SubMenu3Detail = () => {
                       style={{
                         height: "25px",
                         marginLeft: "4px",
-                        border: "none",
-                        outline: "none",
                         fontSize: "inherit",
                         fontFamily: "Times New Roman,Times",
                         fontWeight: "bold",
