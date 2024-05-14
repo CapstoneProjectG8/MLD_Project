@@ -16,7 +16,6 @@ using Amazon.Runtime;
 using Amazon.S3;
 using Project_MLD.Utils.GenerateCode;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 var configuration = new ConfigurationBuilder()
@@ -67,7 +66,6 @@ builder.Services.AddDefaultAWSOptions(awsOptions);
 
 //Add the AWS S3 Service
 builder.Services.AddAWSService<IAmazonS3>();
-
 
 //Admin
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();
@@ -133,18 +131,20 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-//app.UseSwagger();
-//app.UseSwaggerUI(c =>
-//{
-//    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Project MLD API");
-//    c.RoutePrefix = string.Empty;
-//});
-///swagger/v1/swagger.json
 
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseWebSockets();
+var webSocketOptions = new WebSocketOptions
+{
+    KeepAliveInterval = TimeSpan.FromMinutes(2),
+    AllowedOrigins = { "https://localhost:7241", "http://localhost:3000", "http://localhost:8889" }
+};
+
+app.UseWebSockets(webSocketOptions);
 
 app.UseCors(builder =>
 {

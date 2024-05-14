@@ -42,6 +42,7 @@ namespace Project_MLD.Controllers
             public string Username { get; set; }
             public string Password { get; set; }
         }
+
         [AllowAnonymous]
         [HttpPost("Login")]
         public IActionResult Login([FromBody] LoginModel login)

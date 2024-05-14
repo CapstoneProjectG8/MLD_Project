@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Project_MLD", "Project_MLD.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinalTests", "..\FinalTests\FinalTests.csproj", "{32BB22F6-B0F4-49F3-BBE5-4D42343C24DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject2", "..\TestProject2\TestProject2.csproj", "{212D8564-A45F-48FE-AEEB-FBEF21DC44CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestProject2", "..\TestProject2\TestProject2.csproj", "{212D8564-A45F-48FE-AEEB-FBEF21DC44CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

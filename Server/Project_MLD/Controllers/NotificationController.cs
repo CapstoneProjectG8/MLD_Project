@@ -43,7 +43,7 @@ namespace Project_MLD.Controllers
         }
 
         [HttpGet("GetNotificationByReceiverId/{receiverId}")]
-        public async Task<ActionResult<User>> GetNotificationByReceiverId(int receiverId)
+        public async Task<ActionResult<Notification>> GetNotificationByReceiverId(int receiverId)
         {
             var notification = await _repository.GetNotificationByReceiveIdDESC(receiverId);
             if (notification == null)
