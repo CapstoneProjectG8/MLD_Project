@@ -8,7 +8,7 @@ const Question = () => {
       <div className="question-content ">
         <div className="header-content">
           <div className="main-header-content">
-            <h2 style={{ marginBottom: "0" }}>VÌ SAO BẠN NÊN CHỌN</h2>
+            <h2>VÌ SAO BẠN NÊN CHỌN</h2>
             <h2 style={{ color: "#FFB38E", fontWeight: "500" }}>
               E-LESSON.COM
             </h2>

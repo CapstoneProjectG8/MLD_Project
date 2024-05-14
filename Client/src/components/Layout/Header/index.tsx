@@ -478,6 +478,7 @@ const Header = () => {
                           padding: "12px 0 12px 0",
                           width: "200px",
                           textAlign: "center",
+                          boxShadow: "0px 0px 10px 0px #ccc",
                         },
                       },
                     }}

@@ -185,6 +185,7 @@ const SubMenu = () => {
                 )}
               </div>
             </div>
+
             <form action="">
               <div className="input-group mb-4 border rounded-pill p-1 bg-white rounded">
                 <div className="input-group-prepend border-0">
@@ -205,29 +206,10 @@ const SubMenu = () => {
               </div>
               <div className="container d-flex justify-content-center align-items-center"></div>
             </form>
+
             <div>
               <FormControl style={{ width: "15%", background: "white" }}>
-                <InputLabel id="demo-simple-select-label">Lớp</InputLabel>
-                <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value={age}
-                  label="Age"
-                  onChange={handleChange}
-                >
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
-                </Select>
-              </FormControl>
-              <FormControl
-                style={{
-                  width: "15%",
-                  marginLeft: "20px",
-                  background: "white",
-                }}
-              >
-                <InputLabel id="demo-simple-select-label">Môn học</InputLabel>
+                <InputLabel id="demo-simple-select-label">Tổ</InputLabel>
                 <Select
                   labelId="demo-simple-select-label"
                   id="demo-simple-select"
