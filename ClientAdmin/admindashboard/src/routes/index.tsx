@@ -20,10 +20,7 @@ const Documentation5 = lazy(() => import(/* webpackChunkName: "404'"*/ '@/pages/
 const Guide = lazy(() => import(/* webpackChunkName: "guide'"*/ '@/pages/guide'));
 const RoutePermission = lazy(() => import(/* webpackChunkName: "route-permission"*/ '@/pages/permission/route'));
 const AccountPermission = lazy(() => import(/* webpackChunkName: "route-permission"*/ '@/pages/account'));
-<<<<<<< HEAD
 const Profile = lazy(() => import(/* webpackChunkName: "guide'"*/ '@/pages/profile'));
-=======
->>>>>>> main
 
 const routeList: RouteObject[] = [
   {
