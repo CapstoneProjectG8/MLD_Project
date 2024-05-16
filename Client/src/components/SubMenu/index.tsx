@@ -36,6 +36,8 @@ import {
   Pagination,
 } from "@mui/material";
 
+import { useMediaQuery } from "@mui/material";
+
 const SubMenu = () => {
   const [age, setAge] = React.useState("");
 
@@ -57,6 +59,18 @@ const SubMenu = () => {
   const handleAddSubMenu = () => {
     navigate(`/sub-menu-${indexSubMenu}/detail-create`);
   };
+
+  const matches = useMediaQuery("(max-width:600px)");
+  const matchesPhone = useMediaQuery("(max-width:400px)");
+
+  let columnCount;
+  if (matchesPhone) {
+    columnCount = 1;
+  } else if (matches) {
+    columnCount = 2;
+  } else {
+    columnCount = 3;
+  }
 
   const [pages, setPages] = useState(Array(subMenu1Data.length).fill(1));
   const itemsPerPage = 6;
@@ -160,7 +174,7 @@ const SubMenu = () => {
     indexSubMenu === "3" || user?.role !== "Leader" ? "none" : "initial";
 
   return (
-    <div className="home-panel1">
+    <div className="home-panel" style={{ minWidth: "20rem" }}>
       <div className="home-panel1-content">
         <div className="home-panel1-content-sub-menu">
           <div className="home-panel1-content-sub-menu-list">
@@ -230,7 +244,7 @@ const SubMenu = () => {
                     Tổ {specializedDepartment[index]?.name}
                   </div>
                   <div
-                    className="home-panel1-content-sub-menu-item-content-grid"
+                    className="home-panel1-content-sub-menu-item-content-grid justify-content-center align-items-center"
                     style={{
                       borderBottom:
                         index === grades.length - 1
@@ -238,9 +252,18 @@ const SubMenu = () => {
                           : "1px solid black",
                       display: "flex",
                       flexDirection: "column",
+                      alignItems: "center",
                     }}
                   >
-                    <div className="home-panel1-content-sub-menu-item-content-grid">
+                    <div
+                      className="home-panel1-content-sub-menu-item-content-grid justify-content-center align-items-center"
+                      style={{
+                        display: "flex",
+                        flexWrap: "wrap",
+                        justifyContent: "center",
+                        gap: "1rem",
+                      }}
+                    >
                       {doc?.documents
                         ?.slice(
                           (pages[index] - 1) * itemsPerPage,
@@ -259,6 +282,8 @@ const SubMenu = () => {
                               backgroundImage: item?.linkImage
                                 ? `url('${item?.linkImage}')`
                                 : `url('${imageurl}')`,
+                              maxWidth: "250px",
+                              flex: "1 0 auto",
                             }}
                           >
                             <div className="sub-menu-subject-name">
