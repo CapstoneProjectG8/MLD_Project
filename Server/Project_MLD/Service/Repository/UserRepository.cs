@@ -106,6 +106,8 @@ namespace Project_MLD.Service.Repository
         public async Task<IEnumerable<User>> GetAllUsersByDepartmentId(int id)
         {
             return await _context.Users
+                .Include(x => x.Account)
+                   .ThenInclude(x => x.Role)
                 .Where(x => x.DepartmentId == id)
                 .ToListAsync();
         }
