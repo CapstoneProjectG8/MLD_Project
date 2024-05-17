@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Project_MLD.DTO;
 using Project_MLD.Models;
 using Project_MLD.Service.Interface;
 using Project_MLD.Service.Repository;
@@ -92,7 +93,7 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<Document2DTO>> GetDocument2ById(int id)
         {
             var existDocument2 = await _repository.GetDocument2ById(id);
-            if(existDocument2 == null)
+            if (existDocument2 == null)
             {
                 return StatusCode(200, "No Document 2 Found");
             }
@@ -183,5 +184,21 @@ namespace Project_MLD.Controllers
                 data
             });
         }
+
+        [HttpGet("GetUserByDepId")]
+        public async Task<IActionResult> GetUserByDepId([FromQuery] List<int> depIds)
+        {
+            var listUser = new List<object>();
+
+            foreach (var id in depIds)
+            {
+                var user = await _userRepository.GetAllUsersByDepartmentId(id);
+                var mapperUser = _mapper.Map<List<UserDTO>>(user);
+                listUser.Add(mapperUser);
+            }
+
+            return Ok(listUser);
+        }
+
     }
 }
