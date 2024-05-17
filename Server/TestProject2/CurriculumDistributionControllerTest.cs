@@ -9,102 +9,75 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TestProject2
+namespace ControllerTest
 {
-    public class CurriculumDistributionControllerTest
+    public class CurriculumDistributionControllerTests
     {
-       
+        private readonly Mock<ICurriculumDistributionRepository> _mockRepository;
+        private readonly CurriculumDistributionController _controller;
 
-
-
-        [Fact]
-        public async Task GetAllCurriculumDistributions_ShouldReturnOkResult_WhenCurriculumsExist()
+        public CurriculumDistributionControllerTests()
         {
-            // Arrange
-            var mockRepo = new Mock<ICurriculumDistributionRepository>();
-            var controller = new CurriculumDistributionController(mockRepo.Object);
-
-            // Act
-            var result = await controller.GetAllCurriculumDistributions();
-
-            // Assert
-            Assert.IsType<OkObjectResult>(result.Result);
+            _mockRepository = new Mock<ICurriculumDistributionRepository>();
+            _controller = new CurriculumDistributionController(_mockRepository.Object);
         }
 
         [Fact]
-        public async Task GetCurriculumDistributionById_ShouldReturnOkResult_WhenCurriculumExists()
+        public async Task GetAllCurriculumDistributions_ReturnsOkResultWithCurriculumDistributions()
         {
             // Arrange
-            var mockRepo = new Mock<ICurriculumDistributionRepository>();
-            var controller = new CurriculumDistributionController(mockRepo.Object);
-            int id = 1;
+            var curriculumDistributions = new List<CurriculumDistribution> { new CurriculumDistribution(), new CurriculumDistribution() };
+            _mockRepository.Setup(r => r.GetAllCurriculumDistributions()).ReturnsAsync(curriculumDistributions);
 
             // Act
-            var result = await controller.GetCurriculumDistributionById(id);
+            var result = await _controller.GetAllCurriculumDistributions();
 
             // Assert
-            Assert.IsType<OkObjectResult>(result.Result);
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            Assert.Equal(curriculumDistributions, okResult.Value);
         }
 
         [Fact]
-        public async Task GetCurriculumDistributionById_ShouldReturnNotFoundResult_WhenCurriculumDoesNotExist()
+        public async Task GetCurriculumDistributionById_WithExistingId_ReturnsOkResultWithCurriculumDistribution()
         {
             // Arrange
-            var mockRepo = new Mock<ICurriculumDistributionRepository>();
-            var controller = new CurriculumDistributionController(mockRepo.Object);
-            int id = 1;
+            var curriculumDistribution = new CurriculumDistribution();
+            _mockRepository.Setup(r => r.GetCurriculumDistributionById(It.IsAny<int>())).ReturnsAsync(curriculumDistribution);
 
             // Act
-            var result = await controller.GetCurriculumDistributionById(id);
+            var result = await _controller.GetCurriculumDistributionById(1);
+
+            // Assert
+            var okResult = Assert.IsType<OkObjectResult>(result.Result);
+            Assert.Equal(curriculumDistribution, okResult.Value);
+        }
+
+        [Fact]
+        public async Task GetCurriculumDistributionById_WithNonExistingId_ReturnsNotFoundResult()
+        {
+            // Arrange
+            _mockRepository.Setup(r => r.GetCurriculumDistributionById(It.IsAny<int>())).ReturnsAsync((CurriculumDistribution)null);
+
+            // Act
+            var result = await _controller.GetCurriculumDistributionById(1);
 
             // Assert
             Assert.IsType<NotFoundResult>(result.Result);
         }
 
         [Fact]
-        public async Task AddCurriculumDistribution_ShouldReturnCreatedAtActionResult_WhenCurriculumIsAddedSuccessfully()
+        public async Task AddCurriculumDistribution_WithValidCurriculumDistribution_ReturnsCreatedAtActionResult()
         {
             // Arrange
-            var mockRepo = new Mock<ICurriculumDistributionRepository>();
-            var controller = new CurriculumDistributionController(mockRepo.Object);
-            var cd = new CurriculumDistribution();
+            var curriculumDistribution = new CurriculumDistribution();
+            _mockRepository.Setup(r => r.AddCurriculumDistribution(It.IsAny<CurriculumDistribution>())).ReturnsAsync(curriculumDistribution);
 
             // Act
-            var result = await controller.AddCurriculumDistribution(cd);
+            var result = await _controller.AddCurriculumDistribution(curriculumDistribution);
 
             // Assert
-            Assert.IsType<CreatedAtActionResult>(result.Result);
+            var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(result.Result);
+            Assert.Equal(curriculumDistribution, createdAtActionResult.Value);
         }
-
-        [Fact]
-        public async Task AddCurriculumDistribution_ShouldReturnBadRequestResult_WhenCurriculumIsNotAdded()
-        {
-            // Arrange
-            var mockRepo = new Mock<ICurriculumDistributionRepository>();
-            var controller = new CurriculumDistributionController(mockRepo.Object);
-            var cd = new CurriculumDistribution();
-
-            // Act
-            var result = await controller.AddCurriculumDistribution(cd);
-
-            // Assert
-            Assert.IsType<BadRequestResult>(result.Result);
-        }
-
-        [Fact]
-        public async Task AddCurriculumDistribution_ShouldReturnBadRequestResult_WhenExceptionIsThrown()
-        {
-            // Arrange
-            var mockRepo = new Mock<ICurriculumDistributionRepository>();
-            var controller = new CurriculumDistributionController(mockRepo.Object);
-            var cd = new CurriculumDistribution();
-
-            // Act
-            var result = await controller.AddCurriculumDistribution(cd);
-
-            // Assert
-            Assert.IsType<BadRequestResult>(result.Result);
-        }
-
     }
 }

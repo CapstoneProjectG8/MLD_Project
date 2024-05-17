@@ -34,85 +34,115 @@ public class Document1ControllerTests
     }
 
     [Fact]
-    public async Task GetAllDocument1_ReturnsOkResult_WhenDocumentsExist()
+    public async Task GetAllDocument1s_ReturnsOkResultWithDocument1s_WhenRepositoryReturnsNonEmptyList()
     {
         // Arrange
         var documents = new List<Document1> { new Document1(), new Document1() };
-        var documentDTOs = new List<Document1DTO> { new Document1DTO(), new Document1DTO() };
-        _mockRepo.Setup(repo => repo.GetAllDocument1s()).ReturnsAsync(documents);
-        _mockMapper.Setup(mapper => mapper.Map<List<Document1DTO>>(documents)).Returns(documentDTOs);
+        var documentDtos = new List<Document1DTO> { new Document1DTO(), new Document1DTO() };
+        _mockRepo.Setup(r => r.GetAllDocument1s()).ReturnsAsync(documents);
+        _mockMapper.Setup(m => m.Map<List<Document1DTO>>(documents)).Returns(documentDtos);
+
         // Act
         var result = await _controller.GetAllDocument1s();
+
         // Assert
-        Assert.IsType<OkObjectResult>(result.Result);
+        var okResult = Assert.IsType<OkObjectResult>(result.Result);
+        Assert.Equal(documentDtos, okResult.Value);
     }
 
     [Fact]
-    public async Task GetAllDocument1_ReturnsNotFoundResult_WhenNoDocumentsExist()
+    public async Task GetAllDocument1s_ReturnsOkResultWithEmptyList_WhenRepositoryReturnsEmptyList()
     {
         // Arrange
-        var documents = new List<Document1> { new Document1(), new Document1() };
-        var documentDTOs = new List<Document1DTO> { new Document1DTO(), new Document1DTO() };
-        _mockRepo.Setup(repo => repo.GetAllDocument1s()).ReturnsAsync(documents);
-        _mockMapper.Setup(mapper => mapper.Map<List<Document1DTO>>(documents)).Returns(documentDTOs);
+        var documents = new List<Document1>();
+        var documentDtos = new List<Document1DTO>();
+        _mockRepo.Setup(r => r.GetAllDocument1s()).ReturnsAsync(documents);
+        _mockMapper.Setup(m => m.Map<List<Document1DTO>>(documents)).Returns(documentDtos);
+
         // Act
         var result = await _controller.GetAllDocument1s();
-        // Assert
-        if (result == null)
-            Assert.IsType<NotFoundResult>(result.Result);
-    }
 
+        // Assert
+        var okResult = Assert.IsType<OkObjectResult>(result.Result);
+        Assert.Equal(documentDtos, okResult.Value);
+    }
     [Fact]
-    public async Task GetAllDocument1_ReturnsCorrectType_WhenDocumentsExist()
+    public async Task GetDocument1ById_ReturnsOkResultWithDocument1_WhenRepositoryReturnsDocument1()
     {
         // Arrange
-        var documents = new List<Document1> { new Document1(), new Document1() };
-        var documentDTOs = new List<Document1DTO> { new Document1DTO(), new Document1DTO() };
-        _mockRepo.Setup(repo => repo.GetAllDocument1s()).ReturnsAsync(documents);
-        _mockMapper.Setup(mapper => mapper.Map<List<Document1DTO>>(documents)).Returns(documentDTOs);
-        // Act
-        var result = await _controller.GetAllDocument1s();
-        // Assert
-        var okResult = result.Result as OkObjectResult;
-        Assert.IsType<List<Document1DTO>>(okResult.Value);
-        Assert.Equal(documentDTOs, okResult.Value);
-    }
+        var document1DTO = new Document1DTO
+        {
+            Name = "Document1",
+            SubjectId = 2,
+            GradeId = 1,
+            UserId = 6,
+            Note = "This is a note.",
+            Status = true,
+            ApproveBy = 4,
+            IsApprove = 1,
+            LinkFile = "www.example.com/linkfile",
+            LinkImage = "www.example.com/linkimage",
+            OtherTasks = "Other tasks here",
+            UserFullName = "John Doe",
+            SubjectName = "Subject Name",
+            GradeName = "Grade Name",
+            ApproveByName = "Approver Name"
+        };
 
-    [Fact]
-    public async Task GetDocument1ById_ReturnsCorrectType_WhenDocumentExists()
-    {
-        // Arrange
-        var document = new Document1();
-        var documentDTO = new Document1DTO();
-        _mockRepo.Setup(repo => repo.GetDocument1ById(It.IsAny<int>())).ReturnsAsync(document);
-        _mockMapper.Setup(mapper => mapper.Map<Document1DTO>(document)).Returns(documentDTO);
+        var document = new Document1
+        {
+            Name = document1DTO.Name,
+            SubjectId = document1DTO.SubjectId,
+            GradeId = document1DTO.GradeId,
+            UserId = document1DTO.UserId,
+            Note = document1DTO.Note,
+            Status = document1DTO.Status,
+            ApproveBy = document1DTO.ApproveBy,
+            IsApprove = document1DTO.IsApprove,
+            CreatedDate = document1DTO.CreatedDate,
+            LinkFile = document1DTO.LinkFile,
+            LinkImage = document1DTO.LinkImage,
+            OtherTasks = document1DTO.OtherTasks
+            // Assuming you handle the mapping of the collections and navigation properties elsewhere
+        };
+        _mockRepo.Setup(r => r.GetDocument1ById(It.IsAny<int>())).ReturnsAsync(document);
+        _mockMapper.Setup(m => m.Map<Document1DTO>(document)).Returns(document1DTO);
+
         // Act
         var result = await _controller.GetDocument1ById(1);
+
         // Assert
-        var okResult = result.Result as OkObjectResult;
-        Assert.IsType<Document1DTO>(okResult.Value);
-        Assert.Equal(documentDTO, okResult.Value);
+        var okResult = Assert.IsType<OkObjectResult>(result.Result);
+        Assert.Equal(document1DTO, okResult.Value);
     }
+
+
 
     [Fact]
-    public async Task GetDocument1ById_ReturnsNotFoundResult_WhenNoDocumentExists()
+    public async Task GetTeacherInformation_ReturnsOkResultWithCorrectData_WhenValidIdIsProvided()
     {
         // Arrange
-        var document = new Document1();
-        var documentDTO = new Document1DTO();
-        _mockRepo.Setup(repo => repo.GetDocument1ById(It.IsAny<int>())).ReturnsAsync(document);
-        _mockMapper.Setup(mapper => mapper.Map<Document1DTO>(document)).Returns(documentDTO);
-        // Act
+        var expectedSpecializedDepartmentId = 1;
+        var expectedTotalTeacher = Task.FromResult<IEnumerable<object>>(new List<object> { 10 });
+        var expectedTotalTeacherProfessionalStandard = Task.FromResult<IEnumerable<object>>(new List<object> { 5 });
+        var expectedTotalTeacherLevelOfTrainning = Task.FromResult<IEnumerable<object>>(new List<object> { 3 });
 
-        var result = await _controller.GetDocument1ById(document.Id);
+        _mockUserRepository.Setup(r => r.GetTotalUserBySpecializedDepartmentId(expectedSpecializedDepartmentId)).Returns(expectedTotalTeacher);
+        _mockUserRepository.Setup(r => r.GetTotalUserProfessionalStandard(expectedSpecializedDepartmentId)).Returns(expectedTotalTeacherProfessionalStandard);
+        _mockUserRepository.Setup(r => r.GetTotalUserLevelOfTrainning(expectedSpecializedDepartmentId)).Returns(expectedTotalTeacherLevelOfTrainning);
+
+        // Act
+        var result = await _controller.GetTeacherInformation(expectedSpecializedDepartmentId);
 
         // Assert
-        if (result == null)
-        {
-            Assert.IsType<NotFoundResult>(result.Result);
-        }
-
+        var okResult = Assert.IsType<OkObjectResult>(result);
+        var actualResult = okResult.Value as dynamic;
+        Assert.NotNull(actualResult);
+        Assert.Equal(expectedTotalTeacher.Result, (IEnumerable<object>)actualResult.totalTeacher);
+        Assert.Equal(expectedTotalTeacherProfessionalStandard.Result, (IEnumerable<object>)actualResult.totalTeacherProfessionalStandard);
+        Assert.Equal(expectedTotalTeacherLevelOfTrainning.Result, (IEnumerable<object>)actualResult.totalTeacherLevelOfTrainning);
     }
+
 
     [Fact]
     public async Task FilterDocument1_ReturnsOk_WhenDocumentsExist()
@@ -124,24 +154,6 @@ public class Document1ControllerTests
 
         // Act
         var result = await _controller.FilterDocument1(gradeId, subjectId);
-
-        // Assert
-        Assert.IsType<OkObjectResult>(result.Result);
-    }
-
-    [Fact]
-    public async Task GetDocument1ByApprovalID_ReturnsOk_WhenDocumentExists()
-    {
-        // Arrange
-        var document = new Document1();
-        var documentDTO = new Document1DTO();
-        _mockRepo.Setup(repo => repo.GetDocument1ById(It.IsAny<int>())).ReturnsAsync(document);
-        _mockMapper.Setup(mapper => mapper.Map<Document1DTO>(document)).Returns(documentDTO);
-        var id = 3;
-
-
-        // Act
-        var result = await _controller.GetDocument1ById(id);
 
         // Assert
         Assert.IsType<OkObjectResult>(result.Result);
@@ -187,7 +199,7 @@ public class Document1ControllerTests
             // Assuming you handle the mapping of the collections and navigation properties elsewhere
         };
 
-        _mockRepo.Setup(r => r.AddDocument1(It.IsAny<Document1>())).ReturnsAsync(document);
+    _mockRepo.Setup(r => r.AddDocument1(It.IsAny<Document1>())).ReturnsAsync(document);
         _mockMapper.Setup(mapper => mapper.Map<Document1DTO>(document)).Returns(document1DTO);
         // Act
         var result = await _controller.AddDocument1(document1DTO);
