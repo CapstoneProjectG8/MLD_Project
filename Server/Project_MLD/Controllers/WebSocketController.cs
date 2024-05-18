@@ -15,15 +15,18 @@ namespace Project_MLD.Controllers
         private static readonly List<WebSocket> _sockets = new List<WebSocket>();
         private readonly IUserRepository _userRepo;
         private readonly IAccountRepository _accountRepo;
+        private readonly INotificationRepository _notiRepo;
+
 
         //chỉ để test
         private readonly ILogger<WebSocketController> _logger;
 
-        public WebSocketController(IUserRepository userRepo, IAccountRepository accountRepo, ILogger<WebSocketController> logger)
+        public WebSocketController(IUserRepository userRepo, IAccountRepository accountRepo, INotificationRepository notiRepo, ILogger<WebSocketController> logger)
         {
             _userRepo = userRepo;
             _accountRepo = accountRepo;
             _logger = logger;
+            _notiRepo = notiRepo;
         }
 
         [Route("/ws")]
@@ -53,6 +56,33 @@ namespace Project_MLD.Controllers
                 using var webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
 
                 var users = await _userRepo.GetAllUsers();
+
+                var userJson = System.Text.Json.JsonSerializer.Serialize(users);
+
+                var buffer = System.Text.Encoding.UTF8.GetBytes(userJson);
+
+                await webSocket.SendAsync(
+                    new ArraySegment<byte>(buffer),
+                    WebSocketMessageType.Text, true,
+                    CancellationToken.None);
+
+                await Echo(webSocket);
+            }
+            else
+            {
+                HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+            }
+        }
+
+        [Route("/GetAllNotification")]
+        [HttpGet]
+        public async Task GetAllNotification()
+        {
+            if (HttpContext.WebSockets.IsWebSocketRequest)
+            {
+                using var webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
+
+                var users = await _notiRepo.GetAllNotification();
 
                 var userJson = System.Text.Json.JsonSerializer.Serialize(users);
 
