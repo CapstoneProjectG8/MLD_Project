@@ -20,7 +20,7 @@ namespace Project_MLD.Controllers
 
         }
 
-        [HttpGet]
+        [HttpGet("GetDoc1TeachingEquipmentByDoc1ID")]
         public async Task<ActionResult<IEnumerable<Document1TeachingEquipment>>> GetDocument1TeachingEquipmentByDocument1ID(int id)
         {
             var TeachingEquipment = await _repository.GetTeachingEquipmentByDocument1Id(id);
@@ -28,25 +28,25 @@ namespace Project_MLD.Controllers
             return Ok(mapper);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateDocument1TeachingEquipment( List<Document1TeachingEquipmentsDTO> requests)
+        [HttpPost("AddDoc1TeachingEquipment")]
+        public async Task<IActionResult> AddDoc1TeachingEquipment(List<Document1TeachingEquipmentsDTO> requests)
         {
             try
             {
                 var mapRequests = _mapper.Map<List<Document1TeachingEquipment>>(requests);
 
-                await _repository.UpdateDocument1TeachingEquipment(mapRequests);
+                await _repository.AddDocument1TeachingEquipment(mapRequests);
 
-                return Ok("Update Successfully");
+                return Ok("add Successfully");
             }
             catch (Exception ex)
             {
                 // Log the exception or handle it accordingly
-                return StatusCode(500, $"An error occurred while updating Document1 TeachingEquipment: {ex.Message}");
+                return StatusCode(500, $"An error occurred while add Document1 TeachingEquipment: {ex.Message}");
             }
         }
 
-        [HttpDelete]
+        [HttpDelete("DeleteDoc1TeachingEquipment")]
         public async Task<IActionResult> DeleteDocument1TeachingEquipment( List<Document1TeachingEquipmentsDTO> requests)
         {
             try

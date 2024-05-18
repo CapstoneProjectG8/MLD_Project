@@ -13,8 +13,6 @@ public partial class User
 
     public string? Email { get; set; }
 
-    public string? FullName { get; set; }
-
     public string? Photo { get; set; }
 
     public string? Address { get; set; }
@@ -25,25 +23,19 @@ public partial class User
 
     public int? Age { get; set; }
 
-    public int? LevelOfTrainningId { get; set; }
+    public string? Signature { get; set; }
 
-    public int? SpecializedDepartmentId { get; set; }
+    public int? LevelOfTrainningId { get; set; }
 
     public int AccountId { get; set; }
 
     public int? ProfessionalStandardsId { get; set; }
 
-    public string? CreatedBy { get; set; }
-
-    public DateOnly? CreatedDate { get; set; }
-
-    public int? ModifiedBy { get; set; }
-
-    public DateOnly? ModifiedDate { get; set; }
-
-    public bool? Active { get; set; }
+    public int? DepartmentId { get; set; }
 
     public virtual Account Account { get; set; } = null!;
+
+    public virtual SpecializedDepartment? Department { get; set; }
 
     public virtual ICollection<Document1> Document1s { get; set; } = new List<Document1>();
 
@@ -55,15 +47,13 @@ public partial class User
 
     public virtual ICollection<Document5> Document5s { get; set; } = new List<Document5>();
 
-    public virtual ICollection<Feedback> Feedbacks { get; set; } = new List<Feedback>();
-
     public virtual LevelOfTrainning? LevelOfTrainning { get; set; }
 
     public virtual ICollection<Notification> Notifications { get; set; } = new List<Notification>();
 
     public virtual ProfessionalStandard? ProfessionalStandards { get; set; }
 
-    public virtual SpecializedDepartment? SpecializedDepartment { get; set; }
+    public virtual Report? Report { get; set; }
 
     public virtual ICollection<TeachingPlanner> TeachingPlanners { get; set; } = new List<TeachingPlanner>();
 }

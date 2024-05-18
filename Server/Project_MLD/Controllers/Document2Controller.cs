@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Project_MLD.DTO;
 using Project_MLD.Models;
 using Project_MLD.Service.Interface;
 using Project_MLD.Service.Repository;
+using System.Collections.Immutable;
 
 namespace Project_MLD.Controllers
 {
@@ -14,44 +16,22 @@ namespace Project_MLD.Controllers
     {
         private readonly IDocument2Repository _repository;
         private readonly IUserRepository _userRepository;
+        private readonly ISpecializedDepartmentRepository _specialDepartmentRepository;
         private readonly IMapper _mapper;
 
-        public Document2Controller(IDocument2Repository repository, IMapper mapper, IUserRepository userRepository)
+        public Document2Controller(IDocument2Repository repository, IMapper mapper,
+            IUserRepository userRepository, ISpecializedDepartmentRepository specializedDepartmentRepository)
         {
             _repository = repository;
             _mapper = mapper;
             _userRepository = userRepository;
-        }
-
-
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Document2>>> GetAllDocument2s()
-        {
-            var pl2 = await _repository.GetAllDocument2s();
-            //if (pl2 == null)
-            //{
-            //    return NotFound("No Document 2 Found");
-            //}
-            var mapDocumemt = _mapper.Map<List<Document2DTO>>(pl2);
-            foreach (var pl in mapDocumemt)
-            {
-                if(pl.ApproveBy.HasValue)
-                {
-                    var getUser = await _userRepository.GetUserById(pl.ApproveBy.Value);
-                    if (getUser != null)
-                    {
-                        pl.ApproveByName = getUser.FullName;
-                    }
-                }
-            }
-            return Ok(mapDocumemt);
+            _specialDepartmentRepository = specializedDepartmentRepository;
         }
 
         [HttpGet("GetAllDoc2s")]
-        public async Task<ActionResult<IEnumerable<Document2>>> GetAllDoc2s()
+        public async Task<ActionResult<IEnumerable<Document2DTO>>> GetAllDocument2s()
         {
-            var pl2 = await _repository.GetAllDoc2s();
-
+            var pl2 = await _repository.GetAllDocument2s();
             var mapDocumemt = _mapper.Map<List<Document2DTO>>(pl2);
             foreach (var pl in mapDocumemt)
             {
@@ -60,107 +40,93 @@ namespace Project_MLD.Controllers
                     var getUser = await _userRepository.GetUserById(pl.ApproveBy.Value);
                     if (getUser != null)
                     {
-                        pl.ApproveByName = getUser.FullName;
+                        pl.ApproveByName = getUser.FirstName + " " + getUser.LastName;
                     }
                 }
+                var getUserName = await _userRepository.GetUserById(pl.UserId);
+                pl.UserFullName = getUserName.FirstName + " " + getUserName.LastName;
             }
             return Ok(mapDocumemt);
         }
 
-        [HttpGet("GetDocument2ByUserSpecialiedDepartment")]
+        [HttpGet("GetAllDoc2sWithCondition")]
+        public async Task<ActionResult<IEnumerable<Document2DTO>>> GetAllDoc2sWithCondition(bool? status, int? isApprove)
+        {
+            var pl2 = await _repository.GetAllDoc2sByCondition(status, isApprove);
+            var mapDocumemt = _mapper.Map<List<Document2DTO>>(pl2);
+            foreach (var pl in mapDocumemt)
+            {
+                if (pl.ApproveBy.HasValue)
+                {
+                    var getUser = await _userRepository.GetUserById(pl.ApproveBy.Value);
+                    if (getUser != null)
+                    {
+                        pl.ApproveByName = getUser.FirstName + " " + getUser.LastName;
+                    }
+                }
+                var getUserName = await _userRepository.GetUserById(pl.UserId);
+                pl.UserFullName = getUserName.FirstName + " " + getUserName.LastName;
+            }
+            return Ok(mapDocumemt);
+        }
+
+        [HttpGet("GetDoc2ByUserDepartment")]
         public async Task<ActionResult<IEnumerable<object>>> GetDocument2ByUserSpecialiedDepartment([FromQuery] List<int> listId)
         {
-            //var pl2 = await _repository.GetDocument2ByUserSpecialiedDepartment(specializedDepartmentId);
-            //if (pl2 == null)
-            //{
-            //    return NotFound("No Document 2 Found");
-            //}
-            //var mapDocumemt = _mapper.Map<List<Document2DTO>>(pl2);
-            //return Ok(mapDocumemt);
-
-
             var documents = await _repository.GetDocument2ByUserSpecialiedDepartment(listId);
             var modifiedDocuments = new List<object>();
-
             foreach (var document in documents)
             {
-                // Kiểm tra xem document có thuộc tính "id" và "document" không
                 if (document.GetType().GetProperty("id") != null && document.GetType().GetProperty("document") != null)
                 {
-                    // Truy cập thuộc tính "id" và "document"
                     var id = document.GetType().GetProperty("id").GetValue(document, null);
                     var doc = document.GetType().GetProperty("document").GetValue(document, null);
-
                     var dataMap = _mapper.Map<List<Document2DTO>>(doc);
-
                     var modifiedDocument = new
                     {
                         SpecializedDepartmentId = id,
                         documents = dataMap
                     };
-
                     modifiedDocuments.Add(modifiedDocument);
                 }
             }
-
             return Ok(modifiedDocuments);
-
         }
 
-        [HttpGet("ById/{id}")]
-        public async Task<ActionResult<Document2>> GetDocument2ById(int id)
+        [HttpGet("GetDoc2ById/{id}")]
+        public async Task<ActionResult<Document2DTO>> GetDocument2ById(int id)
         {
             var existDocument2 = await _repository.GetDocument2ById(id);
-            //if (existDocument2 == null)
-            //{
-            //    return NotFound();
-            //}
+            if (existDocument2 == null)
+            {
+                return StatusCode(200, "No Document 2 Found");
+            }
             var mapDocumemt = _mapper.Map<Document2DTO>(existDocument2);
-            if(mapDocumemt.ApproveBy != null)
+            if (mapDocumemt.ApproveBy != null)
             {
                 var getUser = await _userRepository.GetUserById((int)mapDocumemt.ApproveBy);
-                if(getUser != null)
+                if (getUser != null)
                 {
-                    mapDocumemt.ApproveByName = getUser.FullName;
+                    mapDocumemt.ApproveByName = getUser.FirstName + " " + getUser.LastName;
                 }
             }
+            var getUserName = await _userRepository.GetUserById(mapDocumemt.UserId);
+            mapDocumemt.UserFullName = getUserName.FirstName + " " + getUserName.LastName;
             return Ok(mapDocumemt);
         }
 
-        [HttpGet("ByCondition/{condition}")]
-        public async Task<ActionResult<IEnumerable<Document2>>> GetDoucment2ByCondition(string condition)
-        {
-            var existDocument2 = await _repository.GetDocument2ByCondition(condition);
-            //if (existDocument2 == null)
-            //{
-            //    return NotFound("No Document 2 Found");
-            //}
-            var mapDocumemt = _mapper.Map<List<Document2DTO>>(existDocument2);
-            return Ok(mapDocumemt);
-        }
-
-        [HttpGet("ByApproveID/{id}")]
-        public async Task<ActionResult<IEnumerable<Document2>>> GetDocument2ByApprovalID(int id)
-        {
-            var document2 = await _repository.GetDocument2ByApprovalID(id);
-            //if (document2 == null)
-            //{
-            //    return NotFound("No Document 2 Found");
-            //}
-            var mapDocument = _mapper.Map<List<Document2DTO>>(document2);
-            return Ok(mapDocument);
-        }
-
-        [HttpPost]
-        public async Task<ActionResult<Document2>> AddDocument2(List<Document2DTO> doc2)
+        [HttpPost("AddDocument2")]
+        public async Task<ActionResult<Document2DTO>> AddDocument2(List<Document2DTO> doc2)
         {
             try
             {
                 var listDocumentDTO = new List<Document2DTO>();
                 foreach (var item in doc2)
                 {
+                    //Bien truyen
                     item.Status = true;
                     item.CreatedDate = DateOnly.FromDateTime(DateTime.Now);
+
                     var document = _mapper.Map<Document2>(item);
                     var addedDocument = await _repository.AddDocument2(document);
                     if (addedDocument == null)
@@ -170,7 +136,6 @@ namespace Project_MLD.Controllers
                     var doc = _mapper.Map<Document2DTO>(addedDocument);
                     listDocumentDTO.Add(doc);
                 }
-
                 return Ok(listDocumentDTO);
             }
             catch (Exception ex)
@@ -179,7 +144,7 @@ namespace Project_MLD.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteDoc2/{id}")]
         public async Task<IActionResult> DeleteDocument2(int id)
         {
             var result = await _repository.DeleteDocument2(id);
@@ -190,7 +155,7 @@ namespace Project_MLD.Controllers
             return NoContent();
         }
 
-        [HttpPut]
+        [HttpPut("UpdateDoc2")]
         public async Task<IActionResult> UpdateDocument2(Document2DTO pl2)
         {
             var mapDocument = _mapper.Map<Document2>(pl2);
@@ -207,7 +172,7 @@ namespace Project_MLD.Controllers
             });
         }
 
-        [HttpPut("ApproveDocument2")]
+        [HttpPut("ApproveDoc2")]
         public async Task<IActionResult> ApproveDocument2(Document2DTO pl2)
         {
             var mapDocument = _mapper.Map<Document2>(pl2);
@@ -223,5 +188,40 @@ namespace Project_MLD.Controllers
                 data
             });
         }
+
+        public class HostBy
+        {
+            public int? Id { get; set; }
+            public string? Name { get; set; }
+        }
+
+        [HttpGet("GetUserByDepId")]
+        public async Task<IActionResult> GetUserByDepId(int depIds)
+        {
+            var department = await _specialDepartmentRepository.GetSpecializedDepartmentById(depIds);
+
+            if (department == null)
+            {
+                return NotFound("Department not found");
+            }
+
+            var listUser = new List<HostBy>
+            {
+                new HostBy { Id = 0, Name = "Tất cả gv bộ môn " + department.Name }
+            };
+
+            var users = await _userRepository.GetAllUsersByDepartmentId(depIds);
+
+            foreach (var u in users)
+            {
+                listUser.Add(new HostBy
+                {
+                    Id = u.Id,
+                    Name = u.FirstName + " " + u.LastName
+                });
+            }
+            return Ok(listUser);
+        }
+
     }
 }

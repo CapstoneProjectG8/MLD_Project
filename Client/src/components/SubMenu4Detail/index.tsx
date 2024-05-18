@@ -275,6 +275,7 @@ const SubMenu4Detail = () => {
             onClick={handleCloseReport}
             style={{ color: "#000", fontWeight: 600 }}
           >
+            {" "}
             Quay lại trang
           </Button>
           <Button onClick={handleSubmitReport} className="button-mui" autoFocus>

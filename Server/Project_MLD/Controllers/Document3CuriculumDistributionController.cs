@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Project_MLD.DTO;
 using Project_MLD.Models;
 using Project_MLD.Service.Interface;
+using static Project_MLD.Controllers.Document2Controller;
 
 namespace Project_MLD.Controllers
 {
@@ -20,49 +21,85 @@ namespace Project_MLD.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Document3CurriculumDistribution>>> GetDocument3CuriculumDistributionByDocument3ID(int id)
+        [HttpGet("GetAllByDoc3ID/{id}")]
+        public async Task<ActionResult<IEnumerable<Document3CurriculumDistribution>>> GetDoc3CuriculumDistributionByDoc3ID(int id)
         {
             var cd = await _repository.GetCurriculumDistributionByDocument3Id(id);
             var mapper = _mapper.Map<List<Document3CurriculumDistributionDTO>>(cd);
             return Ok(mapper);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateDocument3CurriculumDistribution(List<Document3CurriculumDistributionDTO> requests)
+        [HttpGet("GetAllByDoc1ID/{id}")]
+        public async Task<ActionResult<IEnumerable<Document3CurriculumDistribution>>> GetCurriculumDistributionByDocument1Id(int id)
+        {
+            var cd = await _repository.GetCurriculumDistributionByDocument1Id(id);
+            var mapper = _mapper.Map<List<Document3CurriculumDistributionDTO>>(cd);
+            return Ok(mapper);
+        }
+
+        public class Doc3CDRequest
+        {
+            public int Id { get; set; }
+
+            public int Document3Id { get; set; }
+
+            public int? CurriculumId { get; set; }
+
+            public List<int>? EquipmentId { get; set; }
+
+            public int? SubjectRoomId { get; set; }
+
+            public int? Slot { get; set; }
+
+            public DateOnly? Time { get; set; }
+        }
+
+        [HttpPost("AddDoc3CurriculumDistribution")]
+        public async Task<IActionResult> AddDoc3CurriculumDistribution([FromBody] List<Doc3CDRequest> listRequest)
         {
             try
             {
-                var mapRequests = _mapper.Map<List<Document3CurriculumDistribution>>(requests);
-
-                await _repository.UpdateDocument3CurriculumDistribution(mapRequests);
-
-                return Ok("Update Successfully");
+                foreach (var itemList in listRequest)
+                {
+                    if (itemList.EquipmentId != null)
+                    {
+                        foreach (var equipment in itemList.EquipmentId)
+                        {
+                            var document3 = new Document3CurriculumDistributionDTO
+                            {
+                                Document3Id = itemList.Document3Id,
+                                CurriculumId = itemList.CurriculumId,
+                                EquipmentId = equipment,
+                                SubjectRoomId = itemList.SubjectRoomId,
+                                Slot = itemList.Slot,
+                                Time = itemList.Time
+                            };
+                            var map = _mapper.Map<Document3CurriculumDistribution>(document3);
+                            var doc = await _repository.AddDoc3curriculumDistribution(map);
+                        }
+                    }
+                    else
+                    {
+                        var document3 = new Document3CurriculumDistributionDTO
+                        {
+                            Document3Id = itemList.Document3Id,
+                            CurriculumId = itemList.CurriculumId,
+                            EquipmentId = null,
+                            SubjectRoomId = itemList.SubjectRoomId,
+                            Slot = itemList.Slot,
+                            Time = itemList.Time
+                        };
+                        var map = _mapper.Map<Document3CurriculumDistribution>(document3);
+                        var doc = await _repository.AddDoc3curriculumDistribution(map);
+                    }
+                }
+                return Ok("Add");
             }
             catch (Exception ex)
             {
-                // Log the exception or handle it accordingly
-                return StatusCode(500, $"An error occurred while updating Document3 CurriculumDistribution: {ex.Message}");
+                return StatusCode(500, ex.Message);
             }
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> DeleteDocument3CurriculumDistribution(List<Document3CurriculumDistributionDTO> requests)
-        {
-            try
-            {
-                var mapRequests = _mapper.Map<List<Document3CurriculumDistribution>>(requests);
-                await _repository.DeleteDocument3CurriculumDistribution(mapRequests);
-
-                return Ok("Delete Successfully");
-            }
-            catch (Exception ex)
-            {
-                // Log the exception or handle it accordingly
-                return StatusCode(500, $"An error occurred while delete Document3 CurriculumDistribution: {ex.Message}");
-            }
-        }
-
-        
     }
 }

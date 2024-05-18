@@ -340,6 +340,7 @@ const Header = () => {
       setOpenlogin(true);
     }
   }, [authStatus, location.pathname, navigate]);
+    }, [authStatus, location.pathname, navigate])
 
   useEffect(() => {
     if (loginStatus === 4) {
@@ -383,7 +384,6 @@ const Header = () => {
     window.location.reload();
     setIsLogin(false);
   };
-
   return (
     <div className={`header  ${isScrolling ? "scroll" : ""}`}>
       <div className="container">
@@ -767,5 +767,6 @@ const Header = () => {
     </div>
   );
 };
+}
 
 export default Header;

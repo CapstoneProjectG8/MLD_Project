@@ -5,11 +5,11 @@ using System;
 
 namespace Project_MLD.Service.Repository
 {
-    public class PeriodicAssessmentCategoryRepository : IPeriodicAssessmentCategoryRepository
+    public class Document1PeriodicAssessmentCategoryRepository : IDocument1PeriodicAssessmentCategoryRepository
     {
-        private readonly MldDatabaseContext _context;
+        private readonly MldDatabase2Context _context;
 
-        public PeriodicAssessmentCategoryRepository(MldDatabaseContext context)
+        public Document1PeriodicAssessmentCategoryRepository(MldDatabase2Context context)
         {
             _context = context;
         }

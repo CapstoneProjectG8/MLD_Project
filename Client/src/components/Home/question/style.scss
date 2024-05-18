@@ -43,7 +43,7 @@
         margin: 15px 0;
         color: #333;
 
-        @media (max-width: 768px) {
+        @media (min-width: 768px) and (max-width: 992px) {
           font-size: 20px !important;
         }
       }
@@ -54,16 +54,16 @@
         width: 80%;
         margin: auto;
         color: #333;
-
-        @media (max-width: 768px) {
+        overflow: hidden;
+        @media (min-width: 768px) and (max-width: 992px) {
           font-size: 15px !important;
-          width: 88% !important;
+          width: 60% !important;
           letter-spacing: 1px;
         }
       }
     }
 
-    @media (max-width: 768px) {
+    @media (min-width: 768px) and (max-width: 992px) {
       display: flex;
       padding-top: 32px;
       flex-direction: column;

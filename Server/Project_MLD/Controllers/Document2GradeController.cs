@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Amazon.S3.Model.Internal.MarshallTransformations;
+using AutoMapper;
 using Azure.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,7 @@ using Project_MLD.Models;
 using Project_MLD.Service.Interface;
 using Project_MLD.Service.Repository;
 using System.Reflection.Metadata;
+using static Project_MLD.Controllers.Document2Controller;
 
 namespace Project_MLD.Controllers
 {
@@ -19,14 +21,15 @@ namespace Project_MLD.Controllers
         private readonly IGradeRepository _gradeRepository;
         private readonly IMapper _mapper;
 
-        public Document2GradeController(IDocument2GradeRepository repository, IMapper mapper, IGradeRepository gradeRepository)
+        public Document2GradeController(IDocument2GradeRepository repository,
+            IMapper mapper, IGradeRepository gradeRepository)
         {
             _repository = repository;
             _mapper = mapper;
             _gradeRepository = gradeRepository;
         }
 
-        [HttpGet]
+        [HttpGet("GetAllDoc2sGrade")]
         public async Task<ActionResult<IEnumerable<Document2Grade>>> GetAllDocument2sGrade()
         {
             var pl2 = await _repository.GetAllDocuemnt2Grades();
@@ -38,7 +41,7 @@ namespace Project_MLD.Controllers
             return Ok(mapDocumemt);
         }
 
-        [HttpGet("GetDocument2GradeById/{id}")]
+        [HttpGet("GetDoc2GradeById/{id}")]
         public async Task<ActionResult<IEnumerable<Document2Grade>>> GetDocument2GradeById(int id)
         {
             var existDocument2 = await _repository.GetDocument2GradeByDocument2Id(id);
@@ -69,31 +72,82 @@ namespace Project_MLD.Controllers
         //    }
         //}
 
-        [HttpPost]
-        public async Task<IActionResult> AddDocument2Grade(List<Document2GradeDTO> listDto)
+        public class Doc2GradeRequestBody
+        {
+            public int Document2Id { get; set; }
+            public int? GradeId { get; set; }
+            public string? TitleName { get; set; }
+            public string? Description { get; set; }
+            public int? Slot { get; set; }
+            public DateOnly? Time { get; set; }
+            public string? Place { get; set; }
+            public List<int>? HostBy { get; set; }
+            public string? CollaborateWith { get; set; }
+            public string? Condition { get; set; }
+        }
+
+        [HttpPost("AddDoc2Grade")]
+        public async Task<IActionResult> AddDocument2Grade(List<Doc2GradeRequestBody> listRequest)
         {
             try
             {
-                var listDoc2 = new List<Document2GradeDTO>();
-                foreach(var item in listDto)
+                foreach (var itemRequest in listRequest)
                 {
-                    var document2 = _mapper.Map<Document2Grade>(item);
-                    var doc = await _repository.AddDocument2Grade(document2);
-                    var mapDoc2 = _mapper.Map<Document2GradeDTO>(document2);
-                    listDoc2.Add(mapDoc2);
+                    if (itemRequest.HostBy != null)
+                    {
+                        foreach (var hostby in itemRequest.HostBy)
+                        {
+                            var document2 = new Document2GradeDTO // Assuming Document2Grade is your domain model
+                            {
+                                Document2Id = itemRequest.Document2Id,
+                                GradeId = itemRequest.GradeId,
+                                TitleName = itemRequest.TitleName,
+                                Description = itemRequest.Description,
+                                Slot = itemRequest.Slot,
+                                Time = itemRequest.Time,
+                                Place = itemRequest.Place,
+                                HostBy = hostby,
+                                CollaborateWith = itemRequest.CollaborateWith,
+                                Condition = itemRequest.Condition
+                            };
+
+                            var mapper = _mapper.Map<Document2Grade>(document2);
+
+                            var doc = await _repository.AddDocument2Grade(mapper);
+                        }
+                    }
+                    else
+                    {
+                        var document2 = new Document2GradeDTO 
+                        {
+                            Document2Id = itemRequest.Document2Id,
+                            GradeId = itemRequest.GradeId,
+                            TitleName = itemRequest.TitleName,
+                            Description = itemRequest.Description,
+                            Slot = itemRequest.Slot,
+                            Time = itemRequest.Time,
+                            Place = itemRequest.Place,
+                            HostBy = null,
+                            CollaborateWith = itemRequest.CollaborateWith,
+                            Condition = itemRequest.Condition
+                        };
+
+                        var mapper = _mapper.Map<Document2Grade>(document2);
+
+                        var doc = await _repository.AddDocument2Grade(mapper);
+                    }
                 }
-                
-                return Ok(listDoc2);
+                return Ok("ADD");
             }
             catch (Exception ex)
             {
                 // Log the exception or handle it accordingly
-                return StatusCode(500, $"An error occurred while add Document2 Grade: {ex.Message}");
+                return StatusCode(500, $"An error occurred while adding Document2 Grade: {ex.Message}");
             }
         }
 
 
-        [HttpDelete]
+        [HttpDelete("DeleteDoc2Grade")]
         public async Task<IActionResult> DeleteDocument2Grade(List<Document2GradeDTO> requests)
         {
             try
@@ -125,7 +179,7 @@ namespace Project_MLD.Controllers
             });
         }
 
-        [HttpDelete("DeleteDocument2GradeByDocument2Id")]
+        [HttpDelete("DeleteDoc2GradeByDoc2Id")]
         public async Task<IActionResult> DeleteDocument2GradeByDocument2Id(int id)
         {
             try

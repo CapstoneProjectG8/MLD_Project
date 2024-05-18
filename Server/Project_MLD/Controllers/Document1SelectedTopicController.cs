@@ -25,7 +25,7 @@ namespace Project_MLD.Controllers
 
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetDoc1SelectedTopicByDoc1ID/{id}")]
         public async Task<ActionResult<IEnumerable<Document1SelectedTopic>>> GetDocument1SelectedTopicByDocument1ID(int id)
         {
             var selectedTopic = await _repository.GetSelectedTopicByDocument1Id(id);
@@ -33,26 +33,26 @@ namespace Project_MLD.Controllers
             return Ok(mapper);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateDocument1SelectedTopic( List<Document1SelectedTopicsDTO> requests)
+        [HttpPost("AddDoc1SelectedTopic")]
+        public async Task<IActionResult> AddDocument1SelectedTopic(List<Document1SelectedTopicsDTO> requests)
         {
             try
             {
                 var mapRequests = _mapper.Map<List<Document1SelectedTopic>>(requests);
 
-                await _repository.UpdateDocument1SelectedTopic(mapRequests);
+                await _repository.AddDocument1SelectedTopic(mapRequests);
 
-                return Ok("Update Successfully");
+                return Ok("Add Successfully");
             }
             catch (Exception ex)
             {
                 // Log the exception or handle it accordingly
-                return StatusCode(500, $"An error occurred while updating Document1 SelectedTopic: {ex.Message}");
+                return StatusCode(500, $"An error occurred while add Document1 SelectedTopic: {ex.Message}");
             }
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> DeleteDocument1SelectedTopic( List<Document1SelectedTopicsDTO> requests)
+        [HttpDelete("DeleteDoc1SelectedTopic")]
+        public async Task<IActionResult> DeleteDocument1SelectedTopic(List<Document1SelectedTopicsDTO> requests)
         {
             try
             {
@@ -67,21 +67,5 @@ namespace Project_MLD.Controllers
                 return StatusCode(500, $"An error occurred while delete Document1 Selected Topics: {ex.Message}");
             }
         }
-
-        //[HttpDelete("DeleteDocument1SelectedTopicByDocument1Id")]
-        //public async Task<IActionResult> DeleteDocument1SelectedTopicByDocument1Id(int id)
-        //{
-        //    try
-        //    {
-        //        await _repository.DeleteDocument1SelectedTopicByDoc1Id(id);
-
-        //        return Ok("Delete Successfully");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log the exception or handle it accordingly
-        //        return StatusCode(500, $"An error occurred while delete Document1 Selected Topics: {ex.Message}");
-        //    }
-        //}
     }
 }

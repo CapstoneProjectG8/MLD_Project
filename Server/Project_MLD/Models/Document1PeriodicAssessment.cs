@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Project_MLD.Models;
 
-public partial class PeriodicAssessment
+public partial class Document1PeriodicAssessment
 {
     public int TestingCategoryId { get; set; }
 

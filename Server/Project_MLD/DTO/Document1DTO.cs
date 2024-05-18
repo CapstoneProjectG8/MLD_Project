@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Project_MLD.Models;
+﻿namespace Project_MLD.Models;
 
 public partial class Document1DTO
 {
@@ -31,9 +28,9 @@ public partial class Document1DTO
 
     public string? OtherTasks { get; set; }
 
-    public string? UserFullName {  get; set; }
-    public string? SubjectName { get; set;}
-    public string? GradeName { get; set;}
-    public string? ApproveByName { get; set;}
+    public string? UserFullName { get; set; }
+    public string? SubjectName { get; set; }
+    public string? GradeName { get; set; }
+    public string? ApproveByName { get; set; }
 
 }

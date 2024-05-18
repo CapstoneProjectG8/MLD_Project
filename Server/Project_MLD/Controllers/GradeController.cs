@@ -18,14 +18,14 @@ namespace Project_MLD.Controllers
             _repository = repository;
         }
 
-        [HttpGet]
+        [HttpGet("GetAllGrades")]
         public async Task<ActionResult<IEnumerable<Grade>>> GetAllGrades()
         {
             var grades = await _repository.GetAllGrades();
             return Ok(grades);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("GetGradeById/{id}")]
         public async Task<ActionResult<Grade>> GetGradeById(int id)
         {
             var existGrade = await _repository.GetGradeById(id);
@@ -37,14 +37,14 @@ namespace Project_MLD.Controllers
             return Ok(existGrade);
         }
 
-        [HttpPost]
+        [HttpPost("AddGrade")]
         public async Task<ActionResult<Grade>> AddGrade(Grade grade)
         {
             await _repository.AddGrade(grade);
             return CreatedAtAction(nameof(GetGradeById), new { id = grade.Id }, grade);
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("DeleteGrade/{id}")]
         public async Task<IActionResult> DeleteGrade(int id)
         {
             var result = await _repository.DeleteGrade(id);
@@ -55,13 +55,9 @@ namespace Project_MLD.Controllers
             return NoContent();
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateGrade(int id, Grade grade)
+        [HttpPut("UpdateGrade/{id}")]
+        public async Task<IActionResult> UpdateGrade(Grade grade)
         {
-            if (id != grade.Id)
-            {
-                return BadRequest();
-            }
 
             var result = await _repository.UpdateGrade(grade);
             if (!result)

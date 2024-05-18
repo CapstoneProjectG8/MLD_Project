@@ -2,7 +2,7 @@
 
 namespace Project_MLD.DTO
 {
-    public class FeedbackDTO
+    public class ReportDTO
     {
         public int Id { get; set; }
 

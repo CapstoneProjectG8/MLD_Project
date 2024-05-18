@@ -9,9 +9,9 @@ public partial class Document3DTO
 
     public string? Name { get; set; }
 
-    public int? Document1Id { get; set; }
+    public int Document1Id { get; set; }
 
-    public int? UserId { get; set; }
+    public int UserId { get; set; }
 
     public string? ClaasName { get; set; }
 

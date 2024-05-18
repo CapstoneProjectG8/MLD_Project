@@ -13,7 +13,7 @@ public partial class Account
 
     public bool? Active { get; set; }
 
-    public string? CreatedBy { get; set; }
+    public int? CreatedBy { get; set; }
 
     public DateOnly? CreatedDate { get; set; }
 

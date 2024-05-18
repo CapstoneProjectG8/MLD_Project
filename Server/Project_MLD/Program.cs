@@ -16,7 +16,6 @@ using Amazon.Runtime;
 using Amazon.S3;
 using Project_MLD.Utils.GenerateCode;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 var configuration = new ConfigurationBuilder()
@@ -45,7 +44,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 });
 
 //DbContext
-builder.Services.AddDbContext<MldDatabaseContext>(option =>
+builder.Services.AddDbContext<MldDatabase2Context>(option =>
 {
     option.UseSqlServer("MyCnn");
 });
@@ -68,10 +67,9 @@ builder.Services.AddDefaultAWSOptions(awsOptions);
 //Add the AWS S3 Service
 builder.Services.AddAWSService<IAmazonS3>();
 
-
 //Admin
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();
-builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
+builder.Services.AddScoped<IReportRepository, ReportRepository>();
 
 //User-Account-Role-Notification
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
@@ -88,7 +86,7 @@ builder.Services.AddScoped<IClassRepository, ClassRepository>();
 //Document1
 builder.Services.AddScoped<IDocument1Repository, Document1Repository>();
 builder.Services.AddScoped<IDocument1CuriculumDistributionRepository, Document1CuriculumDistributionRepository>();
-builder.Services.AddScoped<IDocument1PeriodicAssessmentRepository, Document1PeriodicAssessmentRepository>();
+builder.Services.AddScoped<IDocument1PeriodicAssessmentsRepository, Document1PeriodicAssessmentRepository>();
 builder.Services.AddScoped<IDocument1SelectedTopicsRepository, Document1SelectedTopicsRepository>();
 builder.Services.AddScoped<IDocument1TeachingEquipmentRepository, Document1TeachingEquipmentRepository>();
 builder.Services.AddScoped<IDocument1SubjectRoomsRepository, Document1SubjectRoomsRepository>();
@@ -133,18 +131,19 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-//app.UseSwagger();
-//app.UseSwaggerUI(c =>
-//{
-//    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Project MLD API");
-//    c.RoutePrefix = string.Empty;
-//});
-///swagger/v1/swagger.json
 
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+var webSocketOptions = new WebSocketOptions
+{
+    KeepAliveInterval = TimeSpan.FromMinutes(2),
+    AllowedOrigins = { "https://localhost:7241", "http://localhost:3000", "http://localhost:8889" }
+};
+
+app.UseWebSockets(webSocketOptions);
 
 app.UseCors(builder =>
 {

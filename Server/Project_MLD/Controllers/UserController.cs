@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project_MLD.DTO;
 using Project_MLD.Models;
@@ -19,50 +18,58 @@ namespace Project_MLD.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetAllUser()
+        [HttpGet("GetAllUsers")]
+        public async Task<ActionResult<IEnumerable<UserDTO>>> GetAllUsers()
         {
             var users = await _repository.GetAllUsers();
-            return Ok(users);
+            var mapperUser = _mapper.Map<List<UserDTO>>(users);
+            return Ok(mapperUser);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUserById(int id)
+        [HttpGet("GetUserById/{id}")]
+        public async Task<ActionResult<UserDTO>> GetUserById(int id)
         {
             var exUser = await _repository.GetUserById(id);
             if (exUser == null)
             {
-                return NotFound();
+                return NotFound("User Not Found");
             }
-
-            return Ok(exUser);
+            var mapperUser = _mapper.Map<UserDTO>(exUser);
+            return Ok(mapperUser);
         }
 
-        [HttpPost]
+        [HttpPost("AddUser")]
         public async Task<ActionResult<User>> AddUser(UserDTO user)
         {
-            user.CreatedBy = 1;
-            user.CreatedDate = DateOnly.FromDateTime(DateTime.Now);
-            user.FullName = user.FirstName + " " + user.LastName;
-            var u = await _repository.AddUser(_mapper.Map<User>(user));
-            return Ok(u);
+            try
+            {
+                var u = await _repository.AddUser(_mapper.Map<User>(user));
+                return Ok(u);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, UserDTO user)
+        [HttpPut("UpdateUser")]
+        public async Task<IActionResult> UpdateUser(UserDTO user)
         {
-            if (id != user.Id)
+            try
             {
-                return BadRequest("Id Not Match");
-            }
-            var mapUser = _mapper.Map<User>(user);
+                var mapUser = _mapper.Map<User>(user);
 
-            var result = await _repository.UpdateUser(mapUser);
-            if (!result)
-            {
-                return NotFound();
+                var result = await _repository.UpdateUser(mapUser);
+                if (!result)
+                {
+                    return BadRequest("Can not Update");
+                }
+                return Ok("Update Success");
             }
-            return NoContent();
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

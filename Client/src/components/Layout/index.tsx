@@ -14,7 +14,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
       <Header />
       <Grid container spacing={2} style={{ marginTop: "100px" }}>
         <LeftSubNavBar />
-        <Grid item xs={12} sm={8} style={{ padding: "15px 55px" }}>
+        <Grid item xs={8} style={{ padding: "24px 64px" }}>
           {/* <div className="search-panel">
                         <span>Search</span>
                         <div className='search-panel-input'>

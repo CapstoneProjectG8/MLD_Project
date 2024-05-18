@@ -7,9 +7,9 @@ namespace Project_MLD.Service.Repository
 {
     public class Document3Repository : IDocument3Repository
     {
-        private readonly MldDatabaseContext _context;
+        private readonly MldDatabase2Context _context;
 
-        public Document3Repository(MldDatabaseContext context)
+        public Document3Repository(MldDatabase2Context context)
         {
             _context = context;
         }
@@ -33,12 +33,21 @@ namespace Project_MLD.Service.Repository
             return true;
         }
 
-        public async Task<IEnumerable<Document3>> GetAllDoc3s()
+        public async Task<IEnumerable<Document3>> GetAllDoc3sWithCondition(bool? status, int? isApprove)
         {
-            return await _context.Document3s
-                .Include(x => x.User)
-                .Include(x => x.Document1)
-                .ToListAsync();
+            IQueryable<Document3> query = _context.Document3s;
+            if (status != null)
+            {
+                query = query.Where(x => x.Status == status);
+            }
+            if (isApprove != null)
+            {
+                query = query.Where(x => x.IsApprove == isApprove);
+            }
+            return await query
+               .Include(x => x.User)
+               .Include(x => x.Document1)
+               .ToListAsync();
         }
 
         public async Task<IEnumerable<Document3>> GetAllDocument3s()
@@ -46,7 +55,6 @@ namespace Project_MLD.Service.Repository
             return await _context.Document3s
                 .Include(x => x.User)
                 .Include(x => x.Document1)
-                .Where(x => x.Status == true && x.IsApprove != 1)
                 .ToListAsync();
         }
 
@@ -78,26 +86,14 @@ namespace Project_MLD.Service.Repository
 
         public async Task<IEnumerable<object>> GetDocument3ByUserSpecialiedDepartment(List<int> listId)
         {
-            //var document3 = new List<Document3>();
-            //foreach(var id in listId)
-            //{
-            //    var documents = await _context.Document3s
-            //    .Include(x => x.User)
-            //    .Include(x => x.Document1)
-            //    .Where(x => x.User.SpecializedDepartmentId == id && x.Status == true)
-            //    .ToListAsync();
-            //    document3.AddRange(list);
-            //}
-            //return document3;
-
             var listObject = new List<object>();
 
             foreach (var id in listId)
             {
                 var documents = await _context.Document3s
                 .Include(x => x.User)
-                .Include(x => x.Document1)
-                .Where(x => x.User.SpecializedDepartmentId == id && x.Status == true)
+
+                .Where(x => x.User.DepartmentId == id && x.Status == true)
                 .ToListAsync();
 
                 var anObject = new
@@ -105,9 +101,7 @@ namespace Project_MLD.Service.Repository
                     id = id,
                     document = documents
                 };
-
                 listObject.Add(anObject);
-
             }
             return listObject;
         }
@@ -117,7 +111,6 @@ namespace Project_MLD.Service.Repository
             return await _context.Document3s
                 .Include(x => x.User)
                 .Where(x => x.Name == condition ||
-                x.User.FullName.Contains(condition) ||
                 x.User.FirstName.Contains(condition) ||
                 x.User.LastName.Contains(condition))
                 .ToListAsync();

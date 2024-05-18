@@ -4,7 +4,7 @@ import { intercepter, mock } from '../config';
 
 const mockMenuList: MenuList = [
   {
-    code: 'documentation',
+    code: 'permission',
     label: {
       zh_CN: 'Tài liệu 1',
       en_US: 'Documentation 1',
@@ -13,7 +13,7 @@ const mockMenuList: MenuList = [
     path: '/documentation',
   },
   {
-    code: 'documentation',
+    code: 'permission',
     label: {
       zh_CN: 'Tài liệu 2',
       en_US: 'Documentation 2',
@@ -22,7 +22,7 @@ const mockMenuList: MenuList = [
     path: '/documentation2',
   },
   {
-    code: 'documentation',
+    code: 'permission',
     label: {
       zh_CN: 'Tài liệu 3',
       en_US: 'Documentation 3',
@@ -31,7 +31,7 @@ const mockMenuList: MenuList = [
     path: '/documentation3',
   },
   {
-    code: 'documentation',
+    code: 'permission',
     label: {
       zh_CN: 'Tài liệu 4',
       en_US: 'Documentation 4',
@@ -40,7 +40,7 @@ const mockMenuList: MenuList = [
     path: '/documentation4',
   },
   {
-    code: 'documentation',
+    code: 'permission',
     label: {
       zh_CN: 'Tài liệu 5',
       en_US: 'Documentation 5',

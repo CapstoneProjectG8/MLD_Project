@@ -18,4 +18,10 @@ public partial class Document4DTO
     public string? LinkFile { get; set; }
 
     public string? LinkImage { get; set; }
+
+    public int? IsApprove { get; set; }
+
+    public string UserName { get; set; }
+    public string ClassName { get; set; }
+    public string SubjectName { get; set; }
 }

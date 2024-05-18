@@ -19,9 +19,9 @@ const Home = () => {
 
   useEffect(() => {
     const fetchList = async () => {
-      const res1 = await apiGetSubMenu1();
-      const res2 = await apiGetSubMenu2();
-      const res3 = await apiGetSubMenu3();
+      const res1 = await apiGetSubMenu1({ status: true, isApprove: 3 });
+      const res2 = await apiGetSubMenu2({ status: true, isApprove: 3 });
+      const res3 = await apiGetSubMenu3({ status: true, isApprove: 3 });
       if (res1) setSubMenu1Data(res1.data);
       if (res2) setSubMenu2Data(res2.data);
       if (res3) setSubMenu3Data(res3.data);

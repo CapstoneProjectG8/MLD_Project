@@ -32,15 +32,15 @@ namespace Project_MLD.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("GetDocumentByUserId")]
-        public async Task<IActionResult> GetDocumentByUserId(int userId, int docType, int approveId)
+        [HttpGet("GetDocumentsByUserAndApproveDoc/{userId}/{docType}/{approveId}")]
+        public async Task<IActionResult> GetDocumentsByUserAndApproveDoc(int userId, int docType, int approveId)
         {
             try
             {
                 switch (docType)
                 {
                     case 1:
-                        var doc1 = await _document1Repository.GetAllDocument1sByUserIdAndApproveId(userId, approveId);
+                        var doc1 = await _document1Repository.GetAllDoc1sByUserIdAndApproveId(userId, approveId);
                         if (doc1 != null)
                         {
                             var mapperDoc1 = _mapper.Map<List<Document1DTO>>(doc1);
@@ -103,7 +103,7 @@ namespace Project_MLD.Controllers
             }
         }
 
-        [HttpDelete("DeleteDocumentByDocumentId")]
+        [HttpDelete("DeleteDocumentByDocumentId/{docType}/{docId}")]
         public async Task<IActionResult> DeleteDocumentByDocumentId(int docType, int docId)
         {
             try

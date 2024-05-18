@@ -134,7 +134,7 @@ const defaultRows: Row5[] = [
   },
   {
     testingCategoryName: "Cuối Học kỳ 2",
-    testingCategoryId: 14,
+    testingCategoryId: 4,
     time: null,
     date: "",
     description: "",
@@ -250,12 +250,15 @@ const SubMenu1Detail = () => {
     fetchUserInfoLogin();
   }, [user]);
 
+  console.log("userInfoLogin: ", userInfoLogin)
+  console.log("document1Info: ", document1Info)
+
   useEffect(() => {
     const fetchSpecializedDepartmentById = async () => {
       if (!location.pathname.split("/")[3]) {
         if (userInfoLogin) {
           const res = await apiGetSpecializedDepartmentById(
-            userInfoLogin?.specializedDepartmentId
+            userInfoLogin?.departmentId
           );
           if (res && res.data) {
             const departmentData: any = res.data;
@@ -274,7 +277,7 @@ const SubMenu1Detail = () => {
             const userData: any = fecthUserResult.data;
             setUserInfoDocument(userData);
             const res = await apiGetSpecializedDepartmentById(
-              userData?.specializedDepartmentId
+              userData?.departmentId
             );
             if (res && res.data) {
               const departmentData: any = res.data;
@@ -700,13 +703,10 @@ const SubMenu1Detail = () => {
   return (
     <div className="sub-menu-container">
       {location.pathname?.includes("create") ||
-      location.pathname?.includes("edit") ? (
+        location.pathname?.includes("edit") ? (
         <div>
           <div id="main-content">
-            <div
-              className="sub-menu-content"
-              style={{ border: "none", borderRadius: "0px" }}
-            >
+            <div className="sub-menu-content">
               <div className="sub-menu-content-header">
                 <strong className="phu-luc">Phụ lục I</strong>
                 <div className="sub-menu-content-header-title">
@@ -1574,6 +1574,7 @@ const SubMenu1Detail = () => {
             <div className="sub-menu-action">
               <div className="verify" style={{ justifyContent: "center" }}>
                 <div style={{ display: "flex", columnGap: "10px" }}>
+                  {/* {!location.pathname.includes("-create") && userInfoLogin?.id === document1Info?.userId && ( */}
                   {!location.pathname.includes("-create") && (
                     <div className="action-button" onClick={handleClickCreate}>
                       Tạo khung kế hoạch

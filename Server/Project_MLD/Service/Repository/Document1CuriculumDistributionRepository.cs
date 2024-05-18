@@ -7,9 +7,9 @@ namespace Project_MLD.Service.Repository
 {
     public class Document1CuriculumDistributionRepository : IDocument1CuriculumDistributionRepository
     {
-        private readonly MldDatabaseContext _context;
+        private readonly MldDatabase2Context _context;
 
-        public Document1CuriculumDistributionRepository(MldDatabaseContext context)
+        public Document1CuriculumDistributionRepository(MldDatabase2Context context)
         {
             _context = context;
         }
@@ -24,42 +24,13 @@ namespace Project_MLD.Service.Repository
             return cd;
         }
 
-        public async Task UpdateDocument1CurriculumDistribution(List<Document1CurriculumDistribution> list)
+        public async Task AddDocument1CurriculumDistribution(List<Document1CurriculumDistribution> list)
         {
             try
             {
                 foreach (var item in list)
                 {
-                    var curriculum = await _context.CurriculumDistributions
-                        .FindAsync(item.CurriculumId);
-                    if (curriculum == null)
-                    {
-                        curriculum = new CurriculumDistribution
-                        {
-                            Name = item.Curriculum.Name
-                        };
-                        _context.CurriculumDistributions.Add(curriculum);
-                        _context.SaveChanges();
-                        //throw new Exception("Curriculum Distribution ID is not Exist");
-                    }
-                    var existingItem = await _context.Document1CurriculumDistributions
-                        .FindAsync(item.Document1Id, curriculum.Id);
-                    if (existingItem == null)
-                    {
-                        var newItem = new Document1CurriculumDistribution
-                        {
-                            Document1Id = item.Document1Id,
-                            CurriculumId = curriculum.Id,
-                            Slot = item.Slot,
-                            Description = item.Description
-                        };
-                        _context.Document1CurriculumDistributions.Add(newItem);
-                    }
-                    else
-                    {
-                        existingItem.Slot = item.Slot;
-                        existingItem.Description = item.Description;
-                    }
+                    _context.Document1CurriculumDistributions.Add(item);
                 }
                 await _context.SaveChangesAsync();
             }
@@ -95,7 +66,7 @@ namespace Project_MLD.Service.Repository
             var existingDoc1CD = await _context.Document1CurriculumDistributions
                 .Where(x => x.Document1Id == id).ToListAsync();
 
-            if(existingDoc1CD != null)
+            if (existingDoc1CD != null)
             {
                 _context.RemoveRange(existingDoc1CD);
             }

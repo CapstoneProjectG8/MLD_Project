@@ -35,5 +35,7 @@ public partial class Document3
 
     public virtual ICollection<Document3SelectedTopic> Document3SelectedTopics { get; set; } = new List<Document3SelectedTopic>();
 
+    public virtual IsApprove? IsApproveNavigation { get; set; }
+
     public virtual User User { get; set; } = null!;
 }

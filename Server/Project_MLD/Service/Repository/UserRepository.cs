@@ -2,14 +2,15 @@
 using Project_MLD.Models;
 using Project_MLD.Service.Interface;
 using System;
+using System.Collections.Immutable;
 
 namespace Project_MLD.Service.Repository
 {
     public class UserRepository : IUserRepository
     {
-        private readonly MldDatabaseContext _context;
+        private readonly MldDatabase2Context _context;
 
-        public UserRepository(MldDatabaseContext context)
+        public UserRepository(MldDatabase2Context context)
         {
             _context = context;
         }
@@ -64,57 +65,33 @@ namespace Project_MLD.Service.Repository
             return true;
         }
 
-        public async Task<IEnumerable<object>> GetTotalUserLevelOfTrainning()
+        public async Task<IEnumerable<object>> GetTotalUserLevelOfTrainning(int departmentId)
         {
             var levelCounts = await _context.LevelOfTrainnings
-                .Include(x => x.Users) 
+                .Include(x => x.Users)
+                .Where(x => x.Users.Any(u => u.DepartmentId == departmentId))
                 .Select(x => new
                 {
                     LevelName = x.Name,
-                    UserCount = x.Users.Count()
+                    UserCount = x.Users.Count(x => x.DepartmentId == departmentId)
                 })
                 .ToListAsync();
 
             return levelCounts;
         }
 
-        public async Task<IEnumerable<object>> GetTotalUserProfessionalStandard()
+        public async Task<IEnumerable<object>> GetTotalUserProfessionalStandard(int departmentId)
         {
-            var professionalCount = await _context.ProfessionalStandards
-                .Include(x => x.Users)
-                .Select(x => new
+            var result = await _context.ProfessionalStandards
+                .Where(ps => ps.Users.Any(u => u.DepartmentId == departmentId))
+                .Select(ps => new
                 {
-                    LevelName = x.Name,
-                    UserCount = x.Users.Count()
+                    ProfessionalStandard = ps.Name,
+                    TotalUsers = ps.Users.Count(u => u.DepartmentId == departmentId)
                 })
                 .ToListAsync();
 
-            return professionalCount;
-        }
-
-        public async Task<IEnumerable<object>> GetTotalUserBySpecializedDepartmentId(int id)
-        {
-            var specializedDepartment = await _context.SpecializedDepartments
-                .Include(x => x.Users)
-                .Where(x => x.Id == id)
-                .Select(x => new
-                {
-                    SpecializedDepartmentName = x.Name,
-                    UserCount = x.Users.Count()
-                })
-                .ToListAsync();
-
-            return specializedDepartment;
-        }
-
-        public async Task<IEnumerable<User>> GetAllUsersByDepartmentId(int id)
-        {
-            return await _context.Users
-                .Include(x => x.SpecializedDepartment)
-                .Include(x => x.Account)
-                    .ThenInclude(x => x.Role)
-                .Where(y => y.SpecializedDepartmentId == id)
-                .ToListAsync();
+            return result;
         }
 
         public async Task<IEnumerable<User>> GetPrinciples()
@@ -124,6 +101,30 @@ namespace Project_MLD.Service.Repository
                    .ThenInclude(x => x.Role)
                .Where(x => x.Account.Role.RoleId == 5)
                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<User>> GetAllUsersByDepartmentId(int id)
+        {
+            return await _context.Users
+                .Include(x => x.Account)
+                   .ThenInclude(x => x.Role)
+                .Where(x => x.DepartmentId == id)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<object>> GetTotalUserBySpecializedDepartmentId(int id)
+        {
+            var totalUsers = await _context.Users
+                .Where(x => x.DepartmentId == id)
+                .GroupBy(x => x.DepartmentId)
+                .Select(g => new
+                {
+                    DepartmentId = g.Key,
+                    TotalUsers = g.Count()
+                })
+                .ToListAsync();
+
+            return totalUsers;
         }
     }
 }

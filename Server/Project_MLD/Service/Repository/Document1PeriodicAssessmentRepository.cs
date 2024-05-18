@@ -9,18 +9,18 @@ using System.Reflection.Metadata;
 
 namespace Project_MLD.Service.Repository
 {
-    public class Document1PeriodicAssessmentRepository : IDocument1PeriodicAssessmentRepository
+    public class Document1PeriodicAssessmentRepository : IDocument1PeriodicAssessmentsRepository
     {
-        private readonly MldDatabaseContext _context;
+        private readonly MldDatabase2Context _context;
 
-        public Document1PeriodicAssessmentRepository(MldDatabaseContext context)
+        public Document1PeriodicAssessmentRepository(MldDatabase2Context context)
         {
             _context = context;
         }
 
-        public async Task<IEnumerable<PeriodicAssessment>> GetPeriodicAssessmentByDocument1Id(int id)
+        public async Task<IEnumerable<Document1PeriodicAssessment>> GetDocument1PeriodicAssessmentByDocument1Id(int id)
         {
-            var pa = await _context.PeriodicAssessments
+            var pa = await _context.Document1PeriodicAssessments
                 .Include(x => x.Document1)
                 .Include(x => x.FormCategory)
                 .Include(x => x.TestingCategory)
@@ -29,7 +29,7 @@ namespace Project_MLD.Service.Repository
             return pa;
         }
 
-        public async Task UpdateDocument1PeriodicAssessment(List<PeriodicAssessment> list)
+        public async Task UpdateDocument1PeriodicAssessment(List<Document1PeriodicAssessment> list)
         {
             try
             {
@@ -46,11 +46,11 @@ namespace Project_MLD.Service.Repository
                         throw new Exception("There is no exist Testing Category");
                     }
 
-                    var existPeriodicAssessment = await _context.PeriodicAssessments
+                    var existDocument1PeriodicAssessment = await _context.Document1PeriodicAssessments
                         .FindAsync(existTestingCategory.Id, existFormCategory.Id, item.Document1Id);
-                    if (existPeriodicAssessment == null)
+                    if (existDocument1PeriodicAssessment == null)
                     {
-                        var newItem = new PeriodicAssessment
+                        var newItem = new Document1PeriodicAssessment
                         {
                             TestingCategoryId = existTestingCategory.Id,
                             FormCategoryId = existFormCategory.Id,
@@ -59,13 +59,13 @@ namespace Project_MLD.Service.Repository
                             Description = item.Description,
                             Document1Id = item.Document1Id,
                         };
-                        _context.PeriodicAssessments.Add(newItem);
+                        _context.Document1PeriodicAssessments.Add(newItem);
                     }
                     else
                     {
-                        existPeriodicAssessment.Time = item.Time;
-                        existPeriodicAssessment.Date = item.Date;
-                        existPeriodicAssessment.Description = item.Description;
+                        existDocument1PeriodicAssessment.Time = item.Time;
+                        existDocument1PeriodicAssessment.Date = item.Date;
+                        existDocument1PeriodicAssessment.Description = item.Description;
                     }
                 }
                 await _context.SaveChangesAsync();
@@ -76,7 +76,7 @@ namespace Project_MLD.Service.Repository
             }
         }
 
-        public async Task DeleteDocument1PeriodicAssessment(List<PeriodicAssessment> list)
+        public async Task DeleteDocument1PeriodicAssessment(List<Document1PeriodicAssessment> list)
         {
             if (list == null || !list.Any())
             {
@@ -85,23 +85,23 @@ namespace Project_MLD.Service.Repository
 
             foreach (var item in list)
             {
-                var existingItem = await _context.PeriodicAssessments
+                var existingItem = await _context.Document1PeriodicAssessments
                     .FirstOrDefaultAsync(x => x.Document1Id == item.Document1Id
                     && x.TestingCategoryId == item.TestingCategoryId
                     && x.FormCategoryId == item.FormCategoryId);
 
                 if (existingItem != null)
                 {
-                    _context.PeriodicAssessments.RemoveRange(existingItem);
+                    _context.Document1PeriodicAssessments.RemoveRange(existingItem);
                 }
             }
 
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<PeriodicAssessment>> GetAllPeriodicAssessment()
+        public async Task<IEnumerable<Document1PeriodicAssessment>> GetAllDocument1PeriodicAssessment()
         {
-            var pa = await _context.PeriodicAssessments.ToListAsync();
+            var pa = await _context.Document1PeriodicAssessments.ToListAsync();
             return pa;
         }
 
@@ -127,7 +127,7 @@ namespace Project_MLD.Service.Repository
 
         public async Task DeleteDocument1PeriodicAssessmentByDoc1ID(int id)
         {
-            var items = await _context.PeriodicAssessments
+            var items = await _context.Document1PeriodicAssessments
                 .Where(x => x.Document1Id == id).ToListAsync();
             if (items != null)
             {

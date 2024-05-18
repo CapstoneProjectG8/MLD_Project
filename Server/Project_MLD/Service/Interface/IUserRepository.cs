@@ -10,8 +10,8 @@ namespace Project_MLD.Service.Interface
         Task<User> GetUserById(int id);
         Task<User> AddUser(User User);
         Task<bool> UpdateUser(User User);
-        Task<IEnumerable<Object>> GetTotalUserLevelOfTrainning();
-        Task<IEnumerable<Object>> GetTotalUserProfessionalStandard();
-        Task<IEnumerable<Object>> GetTotalUserBySpecializedDepartmentId(int id);
+        Task<IEnumerable<object>> GetTotalUserLevelOfTrainning(int departmentId);
+        Task<IEnumerable<object>> GetTotalUserProfessionalStandard(int departmentId);
+        Task<IEnumerable<object>> GetTotalUserBySpecializedDepartmentId(int id);
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Project_MLD.Service.Interface
 {
-    public interface IPeriodicAssessmentCategoryRepository
+    public interface IDocument1PeriodicAssessmentCategoryRepository
     {
         Task<IEnumerable<TestingCategory>> GetAllTestingCategory();
         Task<TestingCategory> GetTestingCategoryById(int id);
