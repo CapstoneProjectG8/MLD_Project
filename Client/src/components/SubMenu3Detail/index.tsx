@@ -271,7 +271,7 @@ const SubMenu3Detail = () => {
             const fecthUserResult = await apiGetUser(doc1Data?.userId);
             if (fecthUserResult && fecthUserResult.data) {
               const userData: any = fecthUserResult.data;
-              console.log("userData: ", userData)
+              console.log("userData: ", userData);
               setUserInfoDocument(userData);
               const res = await apiGetSpecializedDepartmentById(
                 userData?.departmentId
@@ -643,7 +643,7 @@ const SubMenu3Detail = () => {
     >
       <div className="sub-menu-container" style={{ minWidth: "25rem" }}>
         {location.pathname?.includes("edit") ||
-          location.pathname?.includes("create") ? (
+        location.pathname?.includes("create") ? (
           <div>
             <div
               className="sub-menu-content"
@@ -906,14 +906,14 @@ const SubMenu3Detail = () => {
                                       <div className="add-row-button">
                                         {equipIndex ===
                                           row.equipment.length - 1 && (
-                                            <Add
-                                              style={{ color: "black" }}
-                                              className="add-row-icon"
-                                              onClick={() =>
-                                                handleAddEquip(index)
-                                              }
-                                            />
-                                          )}
+                                          <Add
+                                            style={{ color: "black" }}
+                                            className="add-row-icon"
+                                            onClick={() =>
+                                              handleAddEquip(index)
+                                            }
+                                          />
+                                        )}
                                         {row.equipment.length > 1 && (
                                           <Remove
                                             style={{ color: "black" }}
@@ -1135,14 +1135,14 @@ const SubMenu3Detail = () => {
                                       <div className="add-row-button">
                                         {equipIndex ===
                                           row.equipment.length - 1 && (
-                                            <Add
-                                              style={{ color: "black" }}
-                                              className="add-row-icon"
-                                              onClick={() =>
-                                                handleAddEquip2(index)
-                                              }
-                                            />
-                                          )}
+                                          <Add
+                                            style={{ color: "black" }}
+                                            className="add-row-icon"
+                                            onClick={() =>
+                                              handleAddEquip2(index)
+                                            }
+                                          />
+                                        )}
                                         {row.equipment.length > 1 && (
                                           <Remove
                                             style={{ color: "black" }}
@@ -1347,7 +1347,8 @@ const SubMenu3Detail = () => {
                       className="action-button"
                       onClick={() =>
                         navigate(
-                          `/sub-menu-3/detail-edit/${location.pathname.split("/")[3]
+                          `/sub-menu-3/detail-edit/${
+                            location.pathname.split("/")[3]
                           }`
                         )
                       }

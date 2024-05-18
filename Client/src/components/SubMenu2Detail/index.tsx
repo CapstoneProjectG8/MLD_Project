@@ -26,7 +26,7 @@ import { apiGetSelectedTopic } from "../../api/selectedTopic";
 import { SelectedTopic } from "../../models/SelectedTopic";
 import { User } from "../../models/User";
 import { apiGetAllGetUser, apiGetUser } from "../../api/user";
-import {apiGetUserHostBy} from "../../api/subMenu2";
+import { apiGetUserHostBy } from "../../api/subMenu2";
 import { Grade } from "../../models/grade";
 import { apiGetGrade } from "../../api/grade";
 import { useAppSelector } from "../../hook/useTypedSelector";
@@ -63,9 +63,13 @@ interface Row {
   slot: number | null;
   time: string;
   place: string;
-  hostBy: number | null;
+  host: HostBy[];
   collaborateWith: string;
   condition: string;
+}
+
+interface HostBy {
+  hostBy: number | null;
 }
 
 interface GradeRow {
@@ -85,7 +89,7 @@ const SubMenu2Detail = () => {
         slot: null,
         time: "",
         place: "",
-        hostBy: null,
+        host: [{ hostBy: null }],
         collaborateWith: "",
         condition: "",
       },
@@ -228,7 +232,7 @@ const SubMenu2Detail = () => {
                 slot: null,
                 time: "",
                 place: "",
-                hostBy: null,
+                host: [{ hostBy: null }],
                 collaborateWith: "",
                 condition: "",
               },
@@ -250,7 +254,6 @@ const SubMenu2Detail = () => {
       setMultiTotalClass(updatedMultiTotalClass);
     }
   };
-  
 
   useEffect(() => {
     const fetchSpecializedDepartmentById = async () => {
@@ -466,7 +469,7 @@ const SubMenu2Detail = () => {
       slot: null,
       time: "",
       place: "",
-      hostBy: null,
+      host: [{ hostBy: null }],
       collaborateWith: "",
       condition: "",
     };
@@ -495,7 +498,7 @@ const SubMenu2Detail = () => {
         slot: null,
         time: "",
         place: "",
-        hostBy: null,
+        host: [{ hostBy: null }],
         collaborateWith: "",
         condition: "",
       },
@@ -538,10 +541,24 @@ const SubMenu2Detail = () => {
     setOpen(false);
   };
 
+  const handleAddHost = (rowIndex: number, rowIndex2: number) => {
+    const updatedRows = [...multiRows];
+    updatedRows[rowIndex][rowIndex2].host.push({ hostBy: null });
+    setMultiRows(updatedRows);
+  };
+  const handleRemoveHost = (
+    rowIndex: number,
+    rowIndex2: number,
+    equipIndex: number
+  ) => {
+    const updatedRows = [...multiRows];
+    updatedRows[rowIndex][rowIndex2].host.splice(equipIndex, 1);
+    setMultiRows(updatedRows);
+  };
   return (
-    <div className="sub-menu-container">
+    <div className="sub-menu-container" style={{ minWidth: "30rem" }}>
       {location.pathname?.includes("edit") ||
-        location.pathname?.includes("create") ? (
+      location.pathname?.includes("create") ? (
         <div>
           <div className="sub-menu-content" id="main-content">
             <div className="sub-menu-content-header">
@@ -810,35 +827,64 @@ const SubMenu2Detail = () => {
                                     />
                                   </TableCell>
                                   <TableCell align="center">
-                                    <select
-                                      id="selectedTopic"
-                                      style={{
-                                        width: "150px",
-                                        height: "40px",
-                                        marginLeft: "4px",
-                                        border: "none",
-                                        outline: "none",
-                                      }}
-                                      value={row.hostBy ?? ""}
-                                      onChange={(e) => {
-                                        const newValue = parseInt(
-                                          e.target.value
-                                        );
-                                        const updatedRows = [...multiRows];
-                                        updatedRows[indexGrade][index].hostBy =
-                                          newValue;
-                                        setMultiRows(updatedRows);
-                                      }}
-                                    >
-                                      <option value="" disabled>
-                                        Chọn chủ trì
-                                      </option>
-                                      {users?.map((item) => (
-                                        <option value={item?.id}>
-                                          {item?.fullName}
-                                        </option>
-                                      ))}
-                                    </select>
+                                    {row.host?.map((hos, hosIndex) => (
+                                      <div key={hosIndex}>
+                                        <select
+                                          id="selectedTopic"
+                                          style={{
+                                            width: "150px",
+                                            height: "40px",
+                                            marginLeft: "4px",
+                                            border: "none",
+                                            outline: "none",
+                                          }}
+                                          value={hos.hostBy ?? ""}
+                                          onChange={(e) => {
+                                            const newValue = parseInt(
+                                              e.target.value
+                                            );
+                                            const updatedRows = [...multiRows];
+                                            updatedRows[indexGrade][index].host[
+                                              hosIndex
+                                            ].hostBy = newValue;
+                                            setMultiRows(updatedRows);
+                                          }}
+                                        >
+                                          <option value="" disabled>
+                                            Chọn chủ trì
+                                          </option>
+                                          {users?.map((item) => (
+                                            <option value={item?.id}>
+                                              {item?.fullName}
+                                            </option>
+                                          ))}
+                                        </select>
+                                        <div className="add-row-button">
+                                          {hosIndex === row.host.length - 1 && (
+                                            <Add
+                                              style={{ color: "black" }}
+                                              className="add-row-icon"
+                                              onClick={() =>
+                                                handleAddHost(indexGrade, index)
+                                              }
+                                            />
+                                          )}
+                                          {row.host.length > 1 && (
+                                            <Remove
+                                              style={{ color: "black" }}
+                                              className="add-row-icon"
+                                              onClick={() =>
+                                                handleRemoveHost(
+                                                  indexGrade,
+                                                  index,
+                                                  hosIndex
+                                                )
+                                              }
+                                            />
+                                          )}
+                                        </div>
+                                      </div>
+                                    ))}
                                   </TableCell>
                                   <TableCell align="center">
                                     <textarea

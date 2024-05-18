@@ -170,7 +170,8 @@ const SubMenu = () => {
   const imageurl =
     "https://png.pngtree.com/png-vector/20190701/ourlarge/pngtree-document-icon-for-your-project-png-image_1533118.jpg";
 
-    const displayStyle = indexSubMenu === '3' || user?.role !== "Leader" ? 'none' : 'initial';
+  const displayStyle =
+    indexSubMenu === "3" || user?.role !== "Leader" ? "none" : "initial";
 
   return (
     <div className="home-panel" style={{ minWidth: "20rem" }}>
@@ -261,6 +262,7 @@ const SubMenu = () => {
                         flexWrap: "wrap",
                         justifyContent: "center",
                         gap: "1rem",
+                        width: "100%",
                       }}
                     >
                       {doc?.documents
