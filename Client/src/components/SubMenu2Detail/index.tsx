@@ -26,6 +26,7 @@ import { apiGetSelectedTopic } from "../../api/selectedTopic";
 import { SelectedTopic } from "../../models/SelectedTopic";
 import { User } from "../../models/User";
 import { apiGetAllGetUser, apiGetUser } from "../../api/user";
+import {apiGetUserHostBy} from "../../api/subMenu2";
 import { Grade } from "../../models/grade";
 import { apiGetGrade } from "../../api/grade";
 import { useAppSelector } from "../../hook/useTypedSelector";
@@ -249,6 +250,7 @@ const SubMenu2Detail = () => {
       setMultiTotalClass(updatedMultiTotalClass);
     }
   };
+  
 
   useEffect(() => {
     const fetchSpecializedDepartmentById = async () => {
@@ -289,10 +291,12 @@ const SubMenu2Detail = () => {
 
   useEffect(() => {
     const fetchAllUser = async () => {
-      const res = await apiGetAllGetUser();
-      if (res && res.data) {
-        const usersData: User[] = res.data;
-        setUsers(usersData);
+      if (userInfoLogin) {
+        const res = await apiGetUserHostBy(userInfoLogin?.departmentId);
+        if (res && res.data) {
+          const usersData: User[] = res.data;
+          setUsers(usersData);
+        }
       }
     };
 
