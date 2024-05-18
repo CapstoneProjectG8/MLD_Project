@@ -340,7 +340,6 @@ const Header = () => {
       setOpenlogin(true);
     }
   }, [authStatus, location.pathname, navigate]);
-    }, [authStatus, location.pathname, navigate])
 
   useEffect(() => {
     if (loginStatus === 4) {
@@ -767,6 +766,5 @@ const Header = () => {
     </div>
   );
 };
-}
 
 export default Header;
