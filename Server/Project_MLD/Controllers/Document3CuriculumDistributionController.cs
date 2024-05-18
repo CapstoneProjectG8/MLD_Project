@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Project_MLD.DTO;
 using Project_MLD.Models;
 using Project_MLD.Service.Interface;
+using static Project_MLD.Controllers.Document2Controller;
 
 namespace Project_MLD.Controllers
 {
@@ -36,37 +37,63 @@ namespace Project_MLD.Controllers
             return Ok(mapper);
         }
 
+        public class Doc3CDRequest
+        {
+            public int Id { get; set; }
+
+            public int Document3Id { get; set; }
+
+            public int? CurriculumId { get; set; }
+
+            public List<int>? EquipmentId { get; set; }
+
+            public int? SubjectRoomId { get; set; }
+
+            public int? Slot { get; set; }
+
+            public DateOnly? Time { get; set; }
+        }
+
         [HttpPost("AddDoc3CurriculumDistribution")]
-        public async Task<IActionResult> AddDoc3CurriculumDistribution(int document3Id, int? curriculumId, List<int?> listEquipmentIds,
-            int? subjectRoomId, int slot, DateOnly time)
+        public async Task<IActionResult> AddDoc3CurriculumDistribution([FromBody] List<Doc3CDRequest> listRequest)
         {
             try
             {
-                var doc3 = new List<Document3CurriculumDistribution>();
-
-                var docDistribution = new Document3CurriculumDistribution();
-                docDistribution.Document3Id = document3Id;
-                docDistribution.CurriculumId = (int)curriculumId;
-                docDistribution.SubjectRoomId = (int)subjectRoomId;
-                docDistribution.Slot = slot;
-                docDistribution.Time = time;
-
-                if (listEquipmentIds != null)
+                foreach (var itemList in listRequest)
                 {
-                    foreach (var item in listEquipmentIds)
+                    if (itemList.EquipmentId != null)
                     {
-                        docDistribution.EquipmentId = item.Value;
-                        var doc = await _repository.AddDoc3curriculumDistribution(docDistribution);
-                        doc3.Add(doc);
+                        foreach (var equipment in itemList.EquipmentId)
+                        {
+                            var document3 = new Document3CurriculumDistributionDTO
+                            {
+                                Document3Id = itemList.Document3Id,
+                                CurriculumId = itemList.CurriculumId,
+                                EquipmentId = equipment,
+                                SubjectRoomId = itemList.SubjectRoomId,
+                                Slot = itemList.Slot,
+                                Time = itemList.Time
+                            };
+                            var map = _mapper.Map<Document3CurriculumDistribution>(document3);
+                            var doc = await _repository.AddDoc3curriculumDistribution(map);
+                        }
                     }
-                    return Ok(doc3);
+                    else
+                    {
+                        var document3 = new Document3CurriculumDistributionDTO
+                        {
+                            Document3Id = itemList.Document3Id,
+                            CurriculumId = itemList.CurriculumId,
+                            EquipmentId = null,
+                            SubjectRoomId = itemList.SubjectRoomId,
+                            Slot = itemList.Slot,
+                            Time = itemList.Time
+                        };
+                        var map = _mapper.Map<Document3CurriculumDistribution>(document3);
+                        var doc = await _repository.AddDoc3curriculumDistribution(map);
+                    }
                 }
-                else
-                {
-                    var doc = await _repository.AddDoc3curriculumDistribution(docDistribution);
-                    doc3.Add(doc);
-                    return Ok(doc3);
-                }
+                return Ok("Add");
             }
             catch (Exception ex)
             {

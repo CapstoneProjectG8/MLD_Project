@@ -6,6 +6,7 @@ using Project_MLD.DTO;
 using Project_MLD.Models;
 using Project_MLD.Service.Interface;
 using Project_MLD.Service.Repository;
+using System.Collections.Immutable;
 
 namespace Project_MLD.Controllers
 {
@@ -15,13 +16,16 @@ namespace Project_MLD.Controllers
     {
         private readonly IDocument2Repository _repository;
         private readonly IUserRepository _userRepository;
+        private readonly ISpecializedDepartmentRepository _specialDepartmentRepository;
         private readonly IMapper _mapper;
 
-        public Document2Controller(IDocument2Repository repository, IMapper mapper, IUserRepository userRepository)
+        public Document2Controller(IDocument2Repository repository, IMapper mapper,
+            IUserRepository userRepository, ISpecializedDepartmentRepository specializedDepartmentRepository)
         {
             _repository = repository;
             _mapper = mapper;
             _userRepository = userRepository;
+            _specialDepartmentRepository = specializedDepartmentRepository;
         }
 
         [HttpGet("GetAllDoc2s")]
@@ -185,18 +189,37 @@ namespace Project_MLD.Controllers
             });
         }
 
-        [HttpGet("GetUserByDepId")]
-        public async Task<IActionResult> GetUserByDepId([FromQuery] List<int> depIds)
+        public class HostBy
         {
-            var listUser = new List<object>();
+            public int? Id { get; set; }
+            public string? Name { get; set; }
+        }
 
-            foreach (var id in depIds)
+        [HttpGet("GetUserByDepId")]
+        public async Task<IActionResult> GetUserByDepId(int depIds)
+        {
+            var department = await _specialDepartmentRepository.GetSpecializedDepartmentById(depIds);
+
+            if (department == null)
             {
-                var user = await _userRepository.GetAllUsersByDepartmentId(id);
-                var mapperUser = _mapper.Map<List<UserDTO>>(user);
-                listUser.Add(mapperUser);
+                return NotFound("Department not found");
             }
 
+            var listUser = new List<HostBy>
+            {
+                new HostBy { Id = 0, Name = "Tất cả gv bộ môn " + department.Name }
+            };
+
+            var users = await _userRepository.GetAllUsersByDepartmentId(depIds);
+
+            foreach (var u in users)
+            {
+                listUser.Add(new HostBy
+                {
+                    Id = u.Id,
+                    Name = u.FirstName + " " + u.LastName
+                });
+            }
             return Ok(listUser);
         }
 

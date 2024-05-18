@@ -29,36 +29,62 @@ namespace Project_MLD.Controllers
             return Ok(mapper);
         }
 
-        [HttpPost("AddDocument3SelectedTopics")]
-        public async Task<IActionResult> AddDocument3SelectedTopics(int document3Id, int? selectedTopicsId, List<int?> listEquipment,
-            int? subjectId, int? slot, DateOnly time)
+        public class Doc3STRequest
         {
+            public int Document3Id { get; set; }
+
+            public int? SelectedTopicsId { get; set; }
+
+            public List<int>? EquipmentId { get; set; }
+
+            public int? SubjectRoomId { get; set; }
+
+            public int? Slot { get; set; }
+
+            public DateOnly? Time { get; set; }
+        }
+
+        [HttpPost("AddDocument3SelectedTopics")]
+        public async Task<IActionResult> AddDocument3SelectedTopics(List<Doc3STRequest> listRequest)
+        {
+
             try
             {
-                var listDoc3 = new List<Document3SelectedTopic>();
-                var doc3SelectedTopics = new Document3SelectedTopic();
-                doc3SelectedTopics.Document3Id = document3Id;
-                doc3SelectedTopics.SelectedTopicsId = (int)selectedTopicsId;
-                doc3SelectedTopics.SelectedTopicsId = (int)selectedTopicsId;
-                doc3SelectedTopics.Slot = slot;
-                doc3SelectedTopics.Time = time;
-
-                if (listEquipment != null)
+                foreach (var itemList in listRequest)
                 {
-                    foreach (var item in listEquipment)
+                    if (itemList.EquipmentId != null)
                     {
-                        doc3SelectedTopics.EquipmentId = item.Value;
-                        var doc = await _repository.AddDoc3SelectedTopics(doc3SelectedTopics);
-                        listDoc3.Add(doc);
+                        foreach (var equipment in itemList.EquipmentId)
+                        {
+                            var document3 = new Document3SelectedTopicDTO
+                            {
+                                Document3Id = itemList.Document3Id,
+                                SelectedTopicsId = itemList.SelectedTopicsId,
+                                EquipmentId = equipment,
+                                SubjectRoomId = itemList.SubjectRoomId,
+                                Slot = itemList.Slot,
+                                Time = itemList.Time
+                            };
+                            var map = _mapper.Map<Document3SelectedTopic>(document3);
+                            var doc = await _repository.AddDoc3SelectedTopics(map);
+                        }
                     }
-                    return Ok(listDoc3);
+                    else
+                    {
+                        var document3 = new Document3SelectedTopicDTO
+                        {
+                            Document3Id = itemList.Document3Id,
+                            SelectedTopicsId = itemList.SelectedTopicsId,
+                            EquipmentId = null,
+                            SubjectRoomId = itemList.SubjectRoomId,
+                            Slot = itemList.Slot,
+                            Time = itemList.Time
+                        };
+                        var map = _mapper.Map<Document3SelectedTopic>(document3);
+                        var doc = await _repository.AddDoc3SelectedTopics(map);
+                    }
                 }
-                else
-                {
-                    var doc = await _repository.AddDoc3SelectedTopics(doc3SelectedTopics);
-                    listDoc3.Add(doc);
-                    return Ok(listDoc3);
-                }
+                return Ok("Add");
             }
             catch (Exception ex)
             {
