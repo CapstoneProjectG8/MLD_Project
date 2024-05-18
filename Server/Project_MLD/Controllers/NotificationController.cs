@@ -1,5 +1,6 @@
 ﻿using Amazon.Runtime.Internal.Util;
 using AutoMapper;
+using Google.Protobuf;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Project_MLD.DTO;
@@ -53,31 +54,53 @@ namespace Project_MLD.Controllers
             return Ok(notification);
         }
 
+        public class NotificationRequest()
+        {
+            public string? TitleName { get; set; }
+
+            public int SentBy { get; set; }
+
+            public List<int>? ReceiveBy { get; set; }
+
+            public string? Message { get; set; }
+
+            public int? DocType { get; set; }
+
+            public int? DocId { get; set; }
+        }
+
+
         [HttpPost("AddNotification")]
-        public async Task<ActionResult<Notification>> AddNotification
-                (int userId, List<int> receiverId, string titleName, string message, int docType, int docId)
+        public async Task<ActionResult<Notification>> AddNotification([FromBody] List<NotificationRequest> listRequest)
         {
             try
             {
-                var notifications = new List<Notification>();
-                foreach (var item in receiverId)
+                foreach (var itemRequest in listRequest)
                 {
-                    var notification = new NotificationDTO
+                    if (itemRequest.ReceiveBy != null)
                     {
-                        SentBy = userId,
-                        ReceiveBy = item,
-                        TitleName = titleName,
-                        Message = message,
-                        DocType = docType,
-                        DocId = docId
-                    };
+                        foreach (var item in itemRequest.ReceiveBy)
+                        {
+                            var notification = new NotificationDTO
+                            {
+                                TitleName = itemRequest.TitleName,
+                                SentBy = itemRequest.SentBy,
+                                ReceiveBy = item,
+                                Message = itemRequest.Message,
+                                DocType = itemRequest.DocType,
+                                DocId = itemRequest.DocId
+                            };
 
-                    var mapperNotification = _mapper.Map<Notification>(notification);
-                    var addedNotification = await _repository.AddNotification(mapperNotification);
-                    notifications.Add(addedNotification);
+                            var mapperNotification = _mapper.Map<Notification>(notification);
+                            var addedNotification = await _repository.AddNotification(mapperNotification);
+                        }
+                    }
+                    else
+                    {
+                        return NotFound("Receive By is Null");
+                    }
                 }
-
-                return Ok(notifications);
+                return Ok("Add Noti Success");
             }
             catch (Exception ex)
             {

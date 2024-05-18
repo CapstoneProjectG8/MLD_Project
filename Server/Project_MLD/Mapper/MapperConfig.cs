@@ -124,6 +124,7 @@ namespace Project_MLD.Mapper
             CreateMap<Document2GradeDTO, Document2Grade>()
                 .ForMember(x => x.Grade, y => y.Ignore())
                 .ForMember(x => x.HostByNavigation, y => y.Ignore())
+                .ForMember(x => x.Document2, y => y.Ignore())
                 .ReverseMap();
 
             //Document3

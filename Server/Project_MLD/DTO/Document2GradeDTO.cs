@@ -5,9 +5,11 @@ namespace Project_MLD.Models;
 
 public partial class Document2GradeDTO
 {
-    public int Document2Id { get; set; }
+    public int Id { get; set; }
 
-    public int GradeId { get; set; }
+    public int? Document2Id { get; set; }
+
+    public int? GradeId { get; set; }
 
     public string? TitleName { get; set; }
 
