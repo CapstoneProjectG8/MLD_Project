@@ -262,7 +262,7 @@ const SubMenu3Detail = () => {
         let document1IdInit = 0;
         if (location.pathname.includes("create"))
           document1IdInit = parseInt(location.pathname.split("/")[3]);
-        else if (document3Info) document1IdInit = document3Info.document1Id;
+        else if (document3Info) document1IdInit = document3Info?.document1Id;
         if (document1IdInit !== 0) {
           const fecthDoc1 = await apiGetSubMenu1ById(document1IdInit);
           if (fecthDoc1 && fecthDoc1.data) {
@@ -271,9 +271,10 @@ const SubMenu3Detail = () => {
             const fecthUserResult = await apiGetUser(doc1Data?.userId);
             if (fecthUserResult && fecthUserResult.data) {
               const userData: any = fecthUserResult.data;
+              console.log("userData: ", userData)
               setUserInfoDocument(userData);
               const res = await apiGetSpecializedDepartmentById(
-                userData?.specializedDepartmentId
+                userData?.departmentId
               );
               if (res && res.data) {
                 const departmentData: any = res.data;
@@ -297,7 +298,7 @@ const SubMenu3Detail = () => {
       } else if (location.pathname.includes("edit")) {
         if (document3Info) {
           const res = await apiGetTeachingEquipmentByDoc1Id(
-            document3Info.document1Id
+            document3Info?.document1Id
           );
           if (res && res.data) {
             const teachingEquipmentData: TeachingEquipment[] = res.data;
@@ -319,7 +320,7 @@ const SubMenu3Detail = () => {
       } else if (location.pathname.includes("edit")) {
         if (document3Info) {
           const res = await apiGetSubjectsRoomByDoc1Id(
-            document3Info.document1Id
+            document3Info?.document1Id
           );
           if (res && res.data) {
             const subjectRoomData: SubjectRoom[] = res.data;
@@ -341,7 +342,7 @@ const SubMenu3Detail = () => {
       } else if (location.pathname.includes("edit")) {
         if (document3Info) {
           const res = await apiGetCurriculumDistributionByDoc1Id(
-            document3Info.document1Id
+            document3Info?.document1Id
           );
           if (res && res.data) {
             const curriculumDistributionData: CurriculumDistribution[] =
@@ -364,7 +365,7 @@ const SubMenu3Detail = () => {
       } else if (location.pathname.includes("edit")) {
         if (document3Info) {
           const res = await apiGetSelectedTopicByDoc1Id(
-            document3Info.document1Id
+            document3Info?.document1Id
           );
           if (res && res.data) {
             const selectedTopicsData: SelectedTopic[] = res.data;
@@ -642,7 +643,7 @@ const SubMenu3Detail = () => {
     >
       <div className="sub-menu-container" style={{ minWidth: "25rem" }}>
         {location.pathname?.includes("edit") ||
-        location.pathname?.includes("create") ? (
+          location.pathname?.includes("create") ? (
           <div>
             <div
               className="sub-menu-content"
@@ -905,14 +906,14 @@ const SubMenu3Detail = () => {
                                       <div className="add-row-button">
                                         {equipIndex ===
                                           row.equipment.length - 1 && (
-                                          <Add
-                                            style={{ color: "black" }}
-                                            className="add-row-icon"
-                                            onClick={() =>
-                                              handleAddEquip(index)
-                                            }
-                                          />
-                                        )}
+                                            <Add
+                                              style={{ color: "black" }}
+                                              className="add-row-icon"
+                                              onClick={() =>
+                                                handleAddEquip(index)
+                                              }
+                                            />
+                                          )}
                                         {row.equipment.length > 1 && (
                                           <Remove
                                             style={{ color: "black" }}
@@ -1134,14 +1135,14 @@ const SubMenu3Detail = () => {
                                       <div className="add-row-button">
                                         {equipIndex ===
                                           row.equipment.length - 1 && (
-                                          <Add
-                                            style={{ color: "black" }}
-                                            className="add-row-icon"
-                                            onClick={() =>
-                                              handleAddEquip2(index)
-                                            }
-                                          />
-                                        )}
+                                            <Add
+                                              style={{ color: "black" }}
+                                              className="add-row-icon"
+                                              onClick={() =>
+                                                handleAddEquip2(index)
+                                              }
+                                            />
+                                          )}
                                         {row.equipment.length > 1 && (
                                           <Remove
                                             style={{ color: "black" }}
@@ -1346,8 +1347,7 @@ const SubMenu3Detail = () => {
                       className="action-button"
                       onClick={() =>
                         navigate(
-                          `/sub-menu-3/detail-edit/${
-                            location.pathname.split("/")[3]
+                          `/sub-menu-3/detail-edit/${location.pathname.split("/")[3]
                           }`
                         )
                       }
