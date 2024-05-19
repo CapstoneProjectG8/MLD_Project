@@ -736,7 +736,7 @@ const SubMenu1Detail = () => {
   };
 
   return (
-    <div className="sub-menu-container">
+    <div className="sub-menu-container justify-content-center align-items-center" style={{minWidth: "30rem", justifyContent: "center", alignItems: "center",}}>
       {location.pathname?.includes("create") ||
         location.pathname?.includes("edit") ? (
         <div>
