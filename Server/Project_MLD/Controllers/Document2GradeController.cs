@@ -29,6 +29,20 @@ namespace Project_MLD.Controllers
             _gradeRepository = gradeRepository;
         }
 
+        public class GroupedDocument2GradeDTO
+        {
+            public int? Document2Id { get; set; }
+            public int? GradeId { get; set; }
+            public string? TitleName { get; set; }
+            public string? Description { get; set; }
+            public int? Slot { get; set; }
+            public DateOnly? Time { get; set; }
+            public string? Place { get; set; }
+            public string? CollaborateWith { get; set; }
+            public string? Condition { get; set; }
+            public List<int> HostBy { get; set; } = new List<int>();
+        }
+
         [HttpGet("GetAllDoc2sGrade")]
         public async Task<ActionResult<IEnumerable<Document2Grade>>> GetAllDocument2sGrade()
         {
@@ -38,7 +52,37 @@ namespace Project_MLD.Controllers
                 return NotFound("No Document 2 Grade Found");
             }
             var mapDocumemt = _mapper.Map<List<Document2GradeDTO>>(pl2);
-            return Ok(mapDocumemt);
+
+            // Group tất cả trùng nhau trừ HostBy
+            var groupedData = mapDocumemt
+                .GroupBy(d => new
+                {
+                    d.Document2Id,
+                    d.GradeId,
+                    d.TitleName,
+                    d.Description,
+                    d.Slot,
+                    d.Time,
+                    d.Place,
+                    d.CollaborateWith,
+                    d.Condition
+                })
+                .Select(g => new GroupedDocument2GradeDTO
+                {
+                    Document2Id = g.Key.Document2Id,
+                    GradeId = g.Key.GradeId,
+                    TitleName = g.Key.TitleName,
+                    Description = g.Key.Description,
+                    Slot = g.Key.Slot,
+                    Time = g.Key.Time,
+                    Place = g.Key.Place,
+                    CollaborateWith = g.Key.CollaborateWith,
+                    Condition = g.Key.Condition,
+                    HostBy = g.Select(d => d.HostBy ?? 0).Where(h => h != 0).Distinct().ToList()
+                })
+                .ToList();
+
+            return Ok(groupedData);
         }
 
         [HttpGet("GetDoc2GradeById/{id}")]
@@ -50,27 +94,38 @@ namespace Project_MLD.Controllers
                 return NotFound("No Document 2 Grade Found");
             }
             var mapDocumemt = _mapper.Map<List<Document2GradeDTO>>(existDocument2);
+
+            // Group tất cả trùng nhau trừ HostBy
+            var groupedData = mapDocumemt
+                .GroupBy(d => new
+                {
+                    d.Document2Id,
+                    d.GradeId,
+                    d.TitleName,
+                    d.Description,
+                    d.Slot,
+                    d.Time,
+                    d.Place,
+                    d.CollaborateWith,
+                    d.Condition
+                })
+                .Select(g => new GroupedDocument2GradeDTO
+                {
+                    Document2Id = g.Key.Document2Id,
+                    GradeId = g.Key.GradeId,
+                    TitleName = g.Key.TitleName,
+                    Description = g.Key.Description,
+                    Slot = g.Key.Slot,
+                    Time = g.Key.Time,
+                    Place = g.Key.Place,
+                    CollaborateWith = g.Key.CollaborateWith,
+                    Condition = g.Key.Condition,
+                    HostBy = g.Select(d => d.HostBy ?? 0).Where(h => h != 0).Distinct().ToList()
+                })
+                .ToList();
+
             return Ok(mapDocumemt);
         }
-
-        //[HttpPut]
-        //public async Task<IActionResult> UpdateDocument2Grade(List<Document2GradeDTO> requests)
-        //{
-        //    try
-        //    {
-        //        var mapRequests = _mapper.Map<List<Document2Grade>>(requests);
-
-
-        //        await _repository.UpdateDocument2Grade(mapRequests);
-
-        //        return Ok("Update success");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log the exception or handle it accordingly
-        //        return StatusCode(500, $"An error occurred while updating Document2 Grade: {ex.Message}");
-        //    }
-        //}
 
         public class Doc2GradeRequestBody
         {
@@ -118,7 +173,7 @@ namespace Project_MLD.Controllers
                     }
                     else
                     {
-                        var document2 = new Document2GradeDTO 
+                        var document2 = new Document2GradeDTO
                         {
                             Document2Id = itemRequest.Document2Id,
                             GradeId = itemRequest.GradeId,
@@ -145,7 +200,6 @@ namespace Project_MLD.Controllers
                 return StatusCode(500, $"An error occurred while adding Document2 Grade: {ex.Message}");
             }
         }
-
 
         [HttpDelete("DeleteDoc2Grade")]
         public async Task<IActionResult> DeleteDocument2Grade(List<Document2GradeDTO> requests)

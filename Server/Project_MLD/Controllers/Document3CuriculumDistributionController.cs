@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Project_MLD.DTO;
 using Project_MLD.Models;
 using Project_MLD.Service.Interface;
-using static Project_MLD.Controllers.Document2Controller;
 
 namespace Project_MLD.Controllers
 {
@@ -21,12 +20,46 @@ namespace Project_MLD.Controllers
             _mapper = mapper;
         }
 
+        public class GroupedDocument3CurriculumDistributionDTO
+        {
+            public int Document3Id { get; set; }
+
+            public int? CurriculumId { get; set; }
+
+            public List<int>? EquipmentId { get; set; }
+
+            public int? SubjectRoomId { get; set; }
+
+            public int? Slot { get; set; }
+
+            public DateOnly? Time { get; set; }
+        }
+
         [HttpGet("GetAllByDoc3ID/{id}")]
         public async Task<ActionResult<IEnumerable<Document3CurriculumDistribution>>> GetDoc3CuriculumDistributionByDoc3ID(int id)
         {
             var cd = await _repository.GetCurriculumDistributionByDocument3Id(id);
             var mapper = _mapper.Map<List<Document3CurriculumDistributionDTO>>(cd);
-            return Ok(mapper);
+
+            var groupedData = mapper
+                .GroupBy(d => new
+                {
+                    d.Document3Id, d.CurriculumId, d.SubjectRoomId, d.Slot, d.Time
+
+                })
+                .Select(g => new GroupedDocument3CurriculumDistributionDTO
+                {
+                    Document3Id = g.Key.Document3Id,
+                    CurriculumId = g.Key.CurriculumId,
+                    EquipmentId = g.Select(d => d.EquipmentId ?? 0).Where(h => h != 0).Distinct().ToList(),
+                    SubjectRoomId = g.Key.SubjectRoomId,
+                    Slot = g.Key.Slot,
+                    Time = g.Key.Time
+                    
+                })
+                .ToList();
+
+            return Ok(groupedData);
         }
 
         [HttpGet("GetAllByDoc1ID/{id}")]
@@ -34,7 +67,29 @@ namespace Project_MLD.Controllers
         {
             var cd = await _repository.GetCurriculumDistributionByDocument1Id(id);
             var mapper = _mapper.Map<List<Document3CurriculumDistributionDTO>>(cd);
-            return Ok(mapper);
+
+            var groupedData = mapper
+                .GroupBy(d => new
+                {
+                    d.Document3Id,
+                    d.CurriculumId,
+                    d.SubjectRoomId,
+                    d.Slot,
+                    d.Time
+
+                })
+                .Select(g => new GroupedDocument3CurriculumDistributionDTO
+                {
+                    Document3Id = g.Key.Document3Id,
+                    CurriculumId = g.Key.CurriculumId,
+                    EquipmentId = g.Select(d => d.EquipmentId ?? 0).Where(h => h != 0).Distinct().ToList(),
+                    SubjectRoomId = g.Key.SubjectRoomId,
+                    Slot = g.Key.Slot,
+                    Time = g.Key.Time
+                })
+                .ToList();
+
+            return Ok(groupedData);
         }
 
         public class Doc3CDRequest
