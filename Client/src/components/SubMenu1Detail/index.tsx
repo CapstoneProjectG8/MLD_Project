@@ -209,6 +209,8 @@ const SubMenu1Detail = () => {
   const [principleAndTeacher, setPrincipleAndTeacher] = useState<any>();
   const [hostByList, setHostByList] = useState<any>();
 
+  console.log("principleAndTeacher: ", principleAndTeacher)
+
   useEffect(() => {
     const fecthPrincipleAndTeacher = async () => {
       if (specializedDepartment?.id) {
@@ -517,10 +519,11 @@ const SubMenu1Detail = () => {
         });
         if (post) {
           setDocumentId(post?.data?.id);
-          await apiPostNotification(principleAndTeacher?.principle, {
-            userId: user?.userId,
-            titleName: `${post?.data[0].name} ĐÃ ĐƯỢC ĐĂNG TẢI, HÃY XÉT DUYỆT`,
-            message: `${post?.data[0].name} ĐÃ ĐƯỢC ĐĂNG TẢI, HÃY XÉT DUYỆT`,
+          await apiPostNotification({
+            receiveBy: principleAndTeacher?.principle || [],
+            sentBy: user?.userId,
+            titleName: `${post?.data?.name} ĐÃ ĐƯỢC ĐĂNG TẢI, HÃY XÉT DUYỆT`,
+            message: `${post?.data?.name} ĐÃ ĐƯỢC ĐĂNG TẢI, HÃY XÉT DUYỆT`,
             docType: 1,
             docId: post?.data?.id,
           });
@@ -529,8 +532,9 @@ const SubMenu1Detail = () => {
     } else {
       if (khoiLop && user && hoadDong) {
         setOpen(true);
-        await apiPostNotification(principleAndTeacher?.principle, {
-          userId: user?.userId,
+        await apiPostNotification({
+          receiveBy: principleAndTeacher?.principle || [],
+          sentBy: user?.userId,
           titleName: `${document1Info?.name} ĐÃ ĐƯỢC CHỈNH SỬA, HÃY XÉT DUYỆT`,
           message: `${document1Info?.name} ĐÃ ĐƯỢC CHỈNH SỬA, HÃY XÉT DUYỆT`,
           docType: 1,
@@ -1889,15 +1893,17 @@ const SubMenu1Detail = () => {
                   isApprove: 3,
                   approveBy: user?.userId,
                 });
-                await apiPostNotification([document1Info?.userId], {
-                  userId: user?.userId,
+                await apiPostNotification({
+                  receiveBy: [document1Info?.userId] || [],
+                  sentBy: user?.userId,
                   titleName: `${document1Info?.name} ĐÃ ĐƯỢC CHẤP NHẬN`,
                   message: `${document1Info?.name} ĐÃ ĐƯỢC CHẤP NHẬN`,
                   docType: 1,
                   docId: document1Info?.id,
                 });
-                await apiPostNotification(hostByList, {
-                  userId: user?.userId,
+                await apiPostNotification({
+                  receiveBy: hostByList || [],
+                  sentBy: user?.userId,
                   titleName: `${document1Info?.name} ĐÃ ĐƯỢC CHẤP NHẬN, HÃY TẠO KHUNG KẾ HOẠCH`,
                   message: `${document1Info?.name} ĐÃ ĐƯỢC CHẤP NHẬN, HÃY TẠO KHUNG KẾ HOẠCH`,
                   docType: 1,
