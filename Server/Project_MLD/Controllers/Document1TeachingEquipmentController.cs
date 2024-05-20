@@ -28,13 +28,34 @@ namespace Project_MLD.Controllers
             return Ok(mapper);
         }
 
+        public class RequestDoc1TeachingEquip
+        {
+            public int Document1Id { get; set; }
+            public int? TeachingEquipmentId { get; set; }
+            public int? Quantity { get; set; }
+            public string? Note { get; set; }
+            public string? Description { get; set; }
+        }
+
         [HttpPost("AddDoc1TeachingEquipment")]
-        public async Task<IActionResult> AddDoc1TeachingEquipment(List<Document1TeachingEquipmentsDTO> requests)
+        public async Task<IActionResult> AddDoc1TeachingEquipment([FromBody] List<RequestDoc1TeachingEquip> listRequest)
         {
             try
             {
-                var mapRequests = _mapper.Map<List<Document1TeachingEquipment>>(requests);
-
+                var listDTO = new List<Document1TeachingEquipmentsDTO>();
+                foreach (var itemList in listRequest)
+                {
+                    var doc1TE = new Document1TeachingEquipmentsDTO
+                    {
+                        Document1Id = itemList.Document1Id,
+                        TeachingEquipmentId = itemList.TeachingEquipmentId,
+                        Quantity = itemList.Quantity,
+                        Note = itemList.Note,
+                        Description = itemList.Description
+                    };
+                    listDTO.Add(doc1TE);
+                }
+                var mapRequests = _mapper.Map<List<Document1TeachingEquipment>>(listDTO);
                 await _repository.AddDocument1TeachingEquipment(mapRequests);
 
                 return Ok("add Successfully");
@@ -47,7 +68,7 @@ namespace Project_MLD.Controllers
         }
 
         [HttpDelete("DeleteDoc1TeachingEquipment")]
-        public async Task<IActionResult> DeleteDocument1TeachingEquipment( List<Document1TeachingEquipmentsDTO> requests)
+        public async Task<IActionResult> DeleteDocument1TeachingEquipment(List<Document1TeachingEquipmentsDTO> requests)
         {
             try
             {
@@ -62,21 +83,5 @@ namespace Project_MLD.Controllers
                 return StatusCode(500, $"An error occurred while delete Document1 Teaaching Equipment: {ex.Message}");
             }
         }
-
-        //[HttpDelete("DeleteDocument1TeachingEquipmentByDocument1Id")]
-        //public async Task<IActionResult> DeleteDocument1TeachingEquipmentByDocument1Id(int id)
-        //{
-        //    try
-        //    {
-        //        await _repository.DeleteDocument1TeachingEquipmentByDoc1ID(id);
-
-        //        return Ok("Delete Successfully");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Log the exception or handle it accordingly
-        //        return StatusCode(500, $"An error occurred while delete Document1 Teaching Equipment Room: {ex.Message}");
-        //    }
-        //}
     }
 }

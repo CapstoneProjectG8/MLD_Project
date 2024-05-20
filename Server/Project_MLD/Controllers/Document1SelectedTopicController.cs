@@ -33,15 +33,33 @@ namespace Project_MLD.Controllers
             return Ok(mapper);
         }
 
+        public class RequestDoc1SelectedTopics
+        {
+            public int Document1Id { get; set; }
+            public int? SelectedTopicsId { get; set; }
+            public int? Slot { get; set; }
+            public string? Description { get; set; }
+        }
         [HttpPost("AddDoc1SelectedTopic")]
-        public async Task<IActionResult> AddDocument1SelectedTopic(List<Document1SelectedTopicsDTO> requests)
+        public async Task<IActionResult> AddDocument1SelectedTopic([FromBody] List<RequestDoc1SelectedTopics> listRequests)
         {
             try
             {
-                var mapRequests = _mapper.Map<List<Document1SelectedTopic>>(requests);
+                var listDTO = new List<Document1SelectedTopicsDTO>();
+                foreach (var itemList in listRequests)
+                {
+                    var doc1ST = new Document1SelectedTopicsDTO
+                    {
+                        Document1Id = itemList.Document1Id,
+                        SelectedTopicsId = itemList.SelectedTopicsId,
+                        Slot = itemList.Slot,
+                        Description = itemList.Description
+                    };
+                    listDTO.Add(doc1ST);
+                }
 
+                var mapRequests = _mapper.Map<List<Document1SelectedTopic>>(listDTO);
                 await _repository.AddDocument1SelectedTopic(mapRequests);
-
                 return Ok("Add Successfully");
             }
             catch (Exception ex)

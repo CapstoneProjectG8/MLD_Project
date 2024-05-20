@@ -22,7 +22,6 @@ namespace Project_MLD.Controllers
         {
             _repository = repository;
             _mapper = mapper;
-
         }
 
         [HttpGet("GetDoc1CuriculumByDoc1ID/{id}")]
@@ -33,12 +32,35 @@ namespace Project_MLD.Controllers
             return Ok(mapper);
         }
 
+        public class RequestDocument1CurriculumDistribution
+        {
+            public int Document1Id { get; set; }
+
+            public int? CurriculumId { get; set; }
+
+            public int? Slot { get; set; }
+
+            public string? Description { get; set; }
+        }
+
         [HttpPost("AddDoc1Curiculum")]
-        public async Task<IActionResult> AddDocument1CurriculumDistribution(List<Document1CurriculumDistributionDTO> requests)
+        public async Task<IActionResult> AddDocument1CurriculumDistribution([FromBody] List<RequestDocument1CurriculumDistribution> listRequests)
         {
             try
             {
-                var mapRequests = _mapper.Map<List<Document1CurriculumDistribution>>(requests);
+                var listDTO = new List<Document1CurriculumDistributionDTO>();
+                foreach (var itemList in listRequests)
+                {
+                    var doc1CD = new Document1CurriculumDistributionDTO
+                    {
+                        Document1Id = itemList.Document1Id,
+                        CurriculumId = itemList.CurriculumId,
+                        Slot = itemList.Slot,
+                        Description = itemList.Description
+                    };
+                    listDTO.Add(doc1CD);
+                }
+                var mapRequests = _mapper.Map<List<Document1CurriculumDistribution>>(listDTO);
 
                 await _repository.AddDocument1CurriculumDistribution(mapRequests);
 

@@ -99,7 +99,7 @@ namespace Project_MLD.Service.Repository
             return await _context.Users
                .Include(x => x.Account)
                    .ThenInclude(x => x.Role)
-               .Where(x => x.Account.Role.RoleId == 5)
+               .Where(x => x.Account.Role.RoleId == 4)
                .ToListAsync();
         }
 

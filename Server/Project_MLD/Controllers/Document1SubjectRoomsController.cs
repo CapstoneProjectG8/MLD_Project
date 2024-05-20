@@ -33,12 +33,39 @@ namespace Project_MLD.Controllers
             return Ok(mapper);
         }
 
+        public class RequestDoc1SubjectRoom
+        {
+            public int? SubjectRoomId { get; set; }
+
+            public int Document1Id { get; set; }
+
+            public int? Quantity { get; set; }
+
+            public string? Description { get; set; }
+
+            public string? Note { get; set; }
+
+        }
+
         [HttpPost("AddDoc1SubjectRoom")]
-        public async Task<IActionResult> AddDoc1SubjectRoom(List<Document1SubjectRoomDTO> requests)
+        public async Task<IActionResult> AddDoc1SubjectRoom([FromBody] List<RequestDoc1SubjectRoom> listRequest)
         {
             try
             {
-                var mapRequests = _mapper.Map<List<Document1SubjectRoom>>(requests);
+                var listDTO = new List<Document1SubjectRoomDTO>();
+                foreach (var itemList in listRequest)
+                {
+                    var doc1SR = new Document1SubjectRoomDTO
+                    {
+                        SubjectRoomId = itemList.SubjectRoomId,
+                        Document1Id = itemList.Document1Id,
+                        Quantity = itemList.Quantity,
+                        Note = itemList.Note,
+                        Description = itemList.Description
+                    };
+                    listDTO.Add(doc1SR);
+                }
+                var mapRequests = _mapper.Map<List<Document1SubjectRoom>>(listDTO);
 
                 await _repository.AddDocument1SubjectRoom(mapRequests);
 
