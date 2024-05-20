@@ -124,7 +124,7 @@ namespace Project_MLD.Controllers
                 })
                 .ToList();
 
-            return Ok(mapDocumemt);
+            return Ok(groupedData);
         }
 
         public class Doc2GradeRequestBody

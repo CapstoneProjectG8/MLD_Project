@@ -149,7 +149,7 @@ const SubMenu = () => {
 
   useEffect(() => {
     setPages(Array(subMenu1Data.length).fill(1));
-  }, [indexSubMenu, specializedDepartmentId]);
+  }, [indexSubMenu, specializedDepartmentId, subMenu1Data.length]);
 
   useEffect(() => {
     if (indexSubMenu !== "5") {
