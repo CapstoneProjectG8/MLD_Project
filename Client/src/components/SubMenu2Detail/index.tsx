@@ -849,9 +849,6 @@ const SubMenu2Detail = () => {
                                             setMultiRows(updatedRows);
                                           }}
                                         >
-                                          <option value={0} disabled>
-                                            Chọn chủ trì
-                                          </option>
                                           {users?.map((item) => (
                                             <option value={item?.id}>
                                               {item?.name}
