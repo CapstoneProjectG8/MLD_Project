@@ -46,18 +46,18 @@ namespace Project_MLD.Controllers
             var modifiedDocuments = new List<object>();
             foreach (var document in documents)
             {
-                if (document.GetType().GetProperty("id") != null && document.GetType().GetProperty("document") != null)
+                if (document.GetType().GetProperty("SpecializedDepartmentId") != null && document.GetType().GetProperty("Document4s") != null)
                 {
-                    // Truy cập thuộc tính "id" và "document"
-                    var id = document.GetType().GetProperty("id").GetValue(document, null);
-                    var doc = document.GetType().GetProperty("document").GetValue(document, null);
+                   
+                    var id = document.GetType().GetProperty("SpecializedDepartmentId").GetValue(document, null);
+                    var doc = document.GetType().GetProperty("Document4s").GetValue(document, null);
 
                     var dataMap = _mapper.Map<List<Document4DTO>>(doc);
 
                     var modifiedDocument = new
                     {
                         SpecializedDepartmentId = id,
-                        documents = dataMap
+                        Document4s = dataMap
                     };
 
                     modifiedDocuments.Add(modifiedDocument);

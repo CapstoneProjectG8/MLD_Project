@@ -123,8 +123,8 @@ namespace Project_MLD.Service.Repository
 
                 result.Add(new
                 {
-                    id = id,
-                    documents = documents
+                    SpecializedDepartmentId = id,
+                    Document4s = documents
                 });
             }
             return result;
