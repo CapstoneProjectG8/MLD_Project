@@ -7,6 +7,7 @@ using Project_MLD.Models;
 using Project_MLD.Service.Interface;
 using Project_MLD.Service.Repository;
 using System.Collections.Immutable;
+using System.Net;
 
 namespace Project_MLD.Controllers
 {
@@ -223,5 +224,32 @@ namespace Project_MLD.Controllers
             return Ok(listUser);
         }
 
+
+        [HttpGet("GetUserIDByDoc2Id")]
+        public async Task<IActionResult> GetUserIDByDocId(int doc2Id)
+        {
+            var doc2 = await _repository.GetDocument2ById(doc2Id);
+            if (doc2 == null)
+            {
+                return BadRequest("doc2 ko ton tai");
+            }
+            var user = await _userRepository.GetUserById(doc2.UserId);
+            var department = new SpecializedDepartment();
+            if (user.DepartmentId != null)
+            {
+                department = await _specialDepartmentRepository.GetSpecializedDepartmentById((int)user.DepartmentId);
+
+            }
+
+            var users = await _userRepository.GetAllUsersByDepartmentId(department.Id);
+
+            var listId = new List<int>();
+            foreach (var u in users)
+            {
+                listId.Add(u.Id);
+            }
+
+            return Ok(listId);
+        }
     }
 }
