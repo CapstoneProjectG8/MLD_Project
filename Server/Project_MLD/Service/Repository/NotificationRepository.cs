@@ -18,6 +18,20 @@ namespace Project_MLD.Service.Repository
             return noti;
         }
 
+        public async Task<bool> DeleteNotification(int doctype, int docId)
+        {
+            
+            var list = await _context.Notifications
+                .Where(x => x.DocType == doctype && x.DocId == docId)
+                .ToListAsync();
+            if(list != null)
+            {
+                _context.Notifications.RemoveRange(list);
+                _context.SaveChanges();
+            }
+            return true;
+        }
+
         public async Task<IEnumerable<Notification>> GetAllNotification()
         {
             return await _context.Notifications.ToListAsync();

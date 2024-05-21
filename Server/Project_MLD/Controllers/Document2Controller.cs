@@ -19,14 +19,17 @@ namespace Project_MLD.Controllers
         private readonly IUserRepository _userRepository;
         private readonly ISpecializedDepartmentRepository _specialDepartmentRepository;
         private readonly IMapper _mapper;
+        private readonly INotificationRepository _notificationRepository;
 
-        public Document2Controller(IDocument2Repository repository, IMapper mapper,
-            IUserRepository userRepository, ISpecializedDepartmentRepository specializedDepartmentRepository)
+        public Document2Controller(IDocument2Repository repository, IMapper mapper, 
+            IUserRepository userRepository, ISpecializedDepartmentRepository specializedDepartmentRepository,
+            INotificationRepository notificationRepository)
         {
             _repository = repository;
             _mapper = mapper;
             _userRepository = userRepository;
             _specialDepartmentRepository = specializedDepartmentRepository;
+            _notificationRepository = notificationRepository;
         }
 
         [HttpGet("GetAllDoc2s")]
@@ -153,6 +156,7 @@ namespace Project_MLD.Controllers
             {
                 return NotFound();
             }
+            await _notificationRepository.DeleteNotification(2, id);
             return NoContent();
         }
 

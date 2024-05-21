@@ -17,6 +17,7 @@ namespace Project_MLD.Controllers
         private readonly IMapper _mapper;
         private readonly IGradeRepository _gradeRepository;
         private readonly IUserRepository _userRepository;
+        private readonly INotificationRepository _notificationRepository;
 
         private readonly IDocument1CuriculumDistributionRepository _curiculumDistributionDoc1Repository;
         private readonly IDocument1PeriodicAssessmentsRepository _Document1PeriodicAssessmentDoc1Repository;
@@ -24,13 +25,14 @@ namespace Project_MLD.Controllers
         private readonly IDocument1SubjectRoomsRepository _subjectRoomsDoc1Repository;
         private readonly IDocument1TeachingEquipmentRepository _teachingEquipmentDoc1Repository;
         public Document1Controller(IDocument1Repository repository, IMapper mapper, IGradeRepository gradeRepository,
-            IUserRepository userRepository,
+            IUserRepository userRepository, INotificationRepository notificationRepository,
             IDocument1CuriculumDistributionRepository curiculumDistributionDoc1Repository,
             IDocument1PeriodicAssessmentsRepository Document1PeriodicAssessmentDoc1Repository,
             IDocument1SelectedTopicsRepository selectedTopicsDoc1Repository,
             IDocument1SubjectRoomsRepository subjectRoomsDoc1Repository,
             IDocument1TeachingEquipmentRepository teachingEquipmentDoc1Repository)
         {
+            _notificationRepository = notificationRepository;
             _repository = repository;
             _mapper = mapper;
             _gradeRepository = gradeRepository;
@@ -92,7 +94,7 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<Document1DTO>> GetDocument1ById(int id)
         {
             var Document1 = await _repository.GetDocument1ById(id);
-            if(Document1 == null)
+            if (Document1 == null)
             {
                 return StatusCode(200, "No Document 1 Found");
             }
@@ -146,10 +148,12 @@ namespace Project_MLD.Controllers
         public async Task<IActionResult> DeleteDocument1(int id)
         {
             var result = await _repository.DeleteDocument1(id);
+
             if (!result)
             {
                 return NotFound("No Document 1 Available");
             }
+            await _notificationRepository.DeleteNotification(1, id);
             return NoContent();
         }
 

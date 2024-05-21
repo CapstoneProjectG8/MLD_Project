@@ -17,16 +17,19 @@ namespace Project_MLD.Controllers
         private readonly IDocument3CurriculumDistributionRepository _curriculumDistributionRepository;
         private readonly IDocument3SelectedTopicsRepository _selectedTopicsRepository;
         private readonly IUserRepository _userRepository;
+        private readonly INotificationRepository _notificationRepository;
 
-        public Document3Controller(IDocument3Repository repository, IMapper mapper,
+        public Document3Controller(IDocument3Repository repository, IMapper mapper, 
             IDocument3CurriculumDistributionRepository curriculumDistributionRepository,
-            IDocument3SelectedTopicsRepository selectedTopicsRepository, IUserRepository userRepository)
+            IDocument3SelectedTopicsRepository selectedTopicsRepository, IUserRepository userRepository,
+            INotificationRepository notificationRepository)
         {
             _repository = repository;
             _mapper = mapper;
             _curriculumDistributionRepository = curriculumDistributionRepository;
             _selectedTopicsRepository = selectedTopicsRepository;
             _userRepository = userRepository;
+            _notificationRepository = notificationRepository;
         }
 
         [HttpGet("GetAllDoc3s")]
@@ -152,6 +155,7 @@ namespace Project_MLD.Controllers
             {
                 return NotFound("No Document 3 Available");
             }
+            await _notificationRepository.DeleteNotification(3, id);
             return NoContent();
         }
 

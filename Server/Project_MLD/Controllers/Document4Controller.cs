@@ -15,10 +15,12 @@ namespace Project_MLD.Controllers
     {
         private readonly IDocument4Repository _repository;
         private readonly IMapper _mapper;
-        public Document4Controller(IDocument4Repository repository, IMapper mapper)
+        private readonly INotificationRepository _notificationRepository;
+        public Document4Controller(IDocument4Repository repository,  IMapper mapper, INotificationRepository notificationRepository)
         {
             _repository = repository;
             _mapper = mapper;
+            _notificationRepository = notificationRepository;
         }
 
         [HttpGet("GetAllDocument4s")]
@@ -121,6 +123,7 @@ namespace Project_MLD.Controllers
             {
                 return NotFound("No Document 4 Available");
             }
+            await _notificationRepository.DeleteNotification(4, id);
             return NoContent();
         }
 
