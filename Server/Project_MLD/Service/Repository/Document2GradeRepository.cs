@@ -46,7 +46,7 @@ namespace Project_MLD.Service.Repository
         {
             var items = await _context.Document2Grades
                 .Where(x => x.Document2Id == id).ToListAsync();
-            if(items != null)
+            if (items != null)
             {
                 _context.RemoveRange(items);
             }
