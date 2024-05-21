@@ -160,7 +160,6 @@ const SubMenu2Detail = () => {
       }
     };
     fetchUserInfoLogin();
-
   }, [user]);
 
   useEffect(() => {
@@ -176,8 +175,7 @@ const SubMenu2Detail = () => {
       }
     };
     fecthPrincipleAndTeacher();
-
-  }, [specializedDepartment?.id])
+  }, [specializedDepartment?.id]);
   useEffect(() => {
     const fecthHostByList = async () => {
       if (document2Info) {
@@ -189,20 +187,22 @@ const SubMenu2Detail = () => {
       }
     };
     fecthHostByList();
-
-  }, [document2Info])
+  }, [document2Info]);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const fecthTotalClass = useCallback(async (gradeId: any, index: any) => {
-    const res = await apiGetTotalClassByGradeId(gradeId);
-    if (res && res.data) {
-      const totalClassData: TotalClass = res.data;
-      setTotalClass(totalClassData);
-      const updatedMultiTotalClass = [...multiTotalClass];
-      updatedMultiTotalClass[index] = res.data;
-      setMultiTotalClass(updatedMultiTotalClass);
-    }
-  }, [multiTotalClass]);
+  const fecthTotalClass = useCallback(
+    async (gradeId: any, index: any) => {
+      const res = await apiGetTotalClassByGradeId(gradeId);
+      if (res && res.data) {
+        const totalClassData: TotalClass = res.data;
+        setTotalClass(totalClassData);
+        const updatedMultiTotalClass = [...multiTotalClass];
+        updatedMultiTotalClass[index] = res.data;
+        setMultiTotalClass(updatedMultiTotalClass);
+      }
+    },
+    [multiTotalClass]
+  );
 
   useEffect(() => {
     if (location.pathname.includes("edit")) {
@@ -309,8 +309,7 @@ const SubMenu2Detail = () => {
       }
     };
     fetchAllUser();
-
-  }, [userInfoLogin])
+  }, [userInfoLogin]);
 
   const handleClickOpen = async () => {
     setDisplayAddRow(!displayAddRow);
@@ -468,7 +467,7 @@ const SubMenu2Detail = () => {
       slot: null,
       time: "",
       place: "",
-      hostBy: [],
+      hostBy: [0],
       collaborateWith: "",
       condition: "",
     };
@@ -557,7 +556,7 @@ const SubMenu2Detail = () => {
   return (
     <div className="sub-menu-container" style={{ minWidth: "30rem" }}>
       {location.pathname?.includes("edit") ||
-        location.pathname?.includes("create") ? (
+      location.pathname?.includes("create") ? (
         <div>
           <div className="sub-menu-content" id="main-content">
             <div className="sub-menu-content-header">
@@ -843,12 +842,15 @@ const SubMenu2Detail = () => {
                                               e.target.value
                                             );
                                             const updatedRows = [...multiRows];
-                                            updatedRows[indexGrade][index].hostBy[
-                                              hosIndex
-                                            ] = newValue;
+                                            updatedRows[indexGrade][
+                                              index
+                                            ].hostBy[hosIndex] = newValue;
                                             setMultiRows(updatedRows);
                                           }}
                                         >
+                                          <option value={0} disabled>
+                                            Chọn chủ trì
+                                          </option>
                                           {users?.map((item) => (
                                             <option value={item?.id}>
                                               {item?.name}
@@ -856,9 +858,15 @@ const SubMenu2Detail = () => {
                                           ))}
                                         </select>
                                         <div className="add-row-button">
-                                          {hosIndex === row.hostBy.length - 1 && (
+                                          {hosIndex ===
+                                            row.hostBy.length - 1 && (
                                             <Add
-                                              style={{ color: "black" }}
+                                              style={{
+                                                color: "black",
+                                                display: displayAddRow
+                                                  ? "none"
+                                                  : "",
+                                              }}
                                               className="add-row-icon"
                                               onClick={() =>
                                                 handleAddHost(indexGrade, index)
@@ -867,7 +875,12 @@ const SubMenu2Detail = () => {
                                           )}
                                           {row.hostBy.length > 1 && (
                                             <Remove
-                                              style={{ color: "black" }}
+                                              style={{
+                                                color: "black",
+                                                display: displayAddRow
+                                                  ? "none"
+                                                  : "",
+                                              }}
                                               className="add-row-icon"
                                               onClick={() =>
                                                 handleRemoveHost(
@@ -916,12 +929,18 @@ const SubMenu2Detail = () => {
                       </TableContainer>
                       <div className="add-row-button">
                         <Add
-                          style={{ color: "black" }}
+                          style={{
+                            color: "black",
+                            display: displayAddRow ? "none" : "",
+                          }}
                           className="add-row-icon"
                           onClick={() => handleAddRow(indexGrade)}
                         />
                         <Remove
-                          style={{ color: "black" }}
+                          style={{
+                            color: "black",
+                            display: displayAddRow ? "none" : "",
+                          }}
                           className="add-row-icon"
                           onClick={() => handleRemoveRow(indexGrade)}
                         />

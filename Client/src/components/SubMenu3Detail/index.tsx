@@ -502,7 +502,7 @@ const SubMenu3Detail = () => {
         ...row,
         document3Id: documentId,
       }));
-      console.log("rows1WithDocumentId: ", rows1WithDocumentId)
+      console.log("rows1WithDocumentId: ", rows1WithDocumentId);
       const res1 = await apiPostSubMenu3CuriculumDistribution(
         rows1WithDocumentId
       );
@@ -631,9 +631,12 @@ const SubMenu3Detail = () => {
       justifyContent="center"
       style={{ overflow: "visible" }}
     >
-      <div className="sub-menu-container" style={{ minWidth: "25rem" }}>
+      <div
+        className="sub-menu-container"
+        style={{ minWidth: "25rem", width: "100rem" }}
+      >
         {location.pathname?.includes("edit") ||
-          location.pathname?.includes("create") ? (
+        location.pathname?.includes("create") ? (
           <div>
             <div
               className="sub-menu-content"
@@ -896,17 +899,27 @@ const SubMenu3Detail = () => {
                                       <div className="add-row-button">
                                         {equipIndex ===
                                           row.equipmentId.length - 1 && (
-                                            <Add
-                                              style={{ color: "black" }}
-                                              className="add-row-icon"
-                                              onClick={() =>
-                                                handleAddEquip(index)
-                                              }
-                                            />
-                                          )}
+                                          <Add
+                                            style={{
+                                              color: "black",
+                                              display: displayAddRow
+                                                ? "none"
+                                                : "",
+                                            }}
+                                            className="add-row-icon"
+                                            onClick={() =>
+                                              handleAddEquip(index)
+                                            }
+                                          />
+                                        )}
                                         {row.equipmentId.length > 1 && (
                                           <Remove
-                                            style={{ color: "black" }}
+                                            style={{
+                                              color: "black",
+                                              display: displayAddRow
+                                                ? "none"
+                                                : "",
+                                            }}
                                             className="add-row-icon"
                                             onClick={() =>
                                               handleRemoveEquip(
@@ -957,12 +970,18 @@ const SubMenu3Detail = () => {
                     </TableContainer>
                     <div className="add-row-button">
                       <Add
-                        style={{ color: "black" }}
+                        style={{
+                          color: "black",
+                          display: displayAddRow ? "none" : "",
+                        }}
                         className="add-row-icon"
                         onClick={handleAddRow1}
                       />
                       <Remove
-                        style={{ color: "black" }}
+                        style={{
+                          color: "black",
+                          display: displayAddRow ? "none" : "",
+                        }}
                         className="add-row-icon"
                         onClick={handleRemoveRow1}
                       />
@@ -1122,17 +1141,22 @@ const SubMenu3Detail = () => {
                                           </option>
                                         ))}
                                       </select>
-                                      <div className="add-row-button">
+                                      <div
+                                        className="add-row-button"
+                                        style={{
+                                          display: displayAddRow ? "none" : "",
+                                        }}
+                                      >
                                         {equipIndex ===
                                           row.equipmentId.length - 1 && (
-                                            <Add
-                                              style={{ color: "black" }}
-                                              className="add-row-icon"
-                                              onClick={() =>
-                                                handleAddEquip2(index)
-                                              }
-                                            />
-                                          )}
+                                          <Add
+                                            style={{ color: "black" }}
+                                            className="add-row-icon"
+                                            onClick={() =>
+                                              handleAddEquip2(index)
+                                            }
+                                          />
+                                        )}
                                         {row.equipmentId.length > 1 && (
                                           <Remove
                                             style={{ color: "black" }}
@@ -1184,7 +1208,10 @@ const SubMenu3Detail = () => {
                         </TableBody>
                       </Table>
                     </TableContainer>
-                    <div className="add-row-button">
+                    <div
+                      className="add-row-button"
+                      style={{ display: displayAddRow ? "none" : "" }}
+                    >
                       <Add
                         style={{ color: "black" }}
                         className="add-row-icon"
@@ -1337,7 +1364,8 @@ const SubMenu3Detail = () => {
                       className="action-button"
                       onClick={() =>
                         navigate(
-                          `/sub-menu-3/detail-edit/${location.pathname.split("/")[3]
+                          `/sub-menu-3/detail-edit/${
+                            location.pathname.split("/")[3]
                           }`
                         )
                       }
