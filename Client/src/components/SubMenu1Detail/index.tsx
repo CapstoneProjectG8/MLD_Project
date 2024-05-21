@@ -881,7 +881,7 @@ const SubMenu1Detail = () => {
                     </div>
                     <div style={{ marginLeft: "8px" }}>
                       <strong>Số giáo viên: </strong>
-                      {teacherInfo?.totalTeacher[0]?.userCount}
+                      {teacherInfo?.totalTeacher[0]?.userCount||0}
                     </div>
                     <div style={{ display: "flex", marginLeft: "8px" }}>
                       <strong>Trình độ đào tạo:</strong>
@@ -889,21 +889,21 @@ const SubMenu1Detail = () => {
                         <strong>Cao đẳng: </strong>
                         {
                           teacherInfo?.totalTeacherLevelOfTrainning[0]
-                            ?.userCount
+                            ?.userCount||0
                         }
                       </div>
                       <div style={{ marginLeft: "8px" }}>
                         <strong>; Đại học: </strong>
                         {
                           teacherInfo?.totalTeacherLevelOfTrainning[1]
-                            ?.userCount
+                            ?.userCount||0
                         }
                       </div>
                       <div style={{ marginLeft: "8px" }}>
                         <strong>; Trên đại học: </strong>
                         {
                           teacherInfo?.totalTeacherLevelOfTrainning[2]
-                            ?.userCount
+                            ?.userCount||0
                         }
                       </div>
                     </div>
@@ -920,21 +920,21 @@ const SubMenu1Detail = () => {
                         Tốt:{" "}
                         {
                           teacherInfo?.totalTeacherProfessionalStandard[0]
-                            ?.userCount
+                            ?.userCount||0
                         }
                       </div>
                       <div style={{ marginLeft: "8px" }}>
                         ; Khá:{" "}
                         {
                           teacherInfo?.totalTeacherProfessionalStandard[1]
-                            ?.userCount
+                            ?.userCount||0
                         }
                       </div>
                       <div style={{ marginLeft: "8px" }}>
                         ; Chưa đạt:{" "}
                         {
                           teacherInfo?.totalTeacherProfessionalStandard[2]
-                            ?.userCount
+                            ?.userCount||0
                         }
                       </div>
                     </div>

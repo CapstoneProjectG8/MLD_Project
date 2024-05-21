@@ -87,7 +87,7 @@ namespace Project_MLD.Service.Repository
                 .Select(ps => new
                 {
                     ProfessionalStandard = ps.Name,
-                    TotalUsers = ps.Users.Count(u => u.DepartmentId == departmentId)
+                    UserCount = ps.Users.Count(u => u.DepartmentId == departmentId)
                 })
                 .ToListAsync();
 
@@ -120,7 +120,7 @@ namespace Project_MLD.Service.Repository
                 .Select(g => new
                 {
                     DepartmentId = g.Key,
-                    TotalUsers = g.Count()
+                    UserCount = g.Count()
                 })
                 .ToListAsync();
 
