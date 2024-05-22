@@ -255,12 +255,12 @@ namespace Project_MLD.Mapper
                 .ForMember(dest => dest.Users, opt => opt.Ignore())
                 .ReverseMap();
 
-            CreateMap<Subject, SubjectDTO>()
+            CreateMap<SubjectRoom, SubjectRoomDTO>()
               .ReverseMap();
-            CreateMap<SubjectDTO, Subject>()
-                .ForMember(dest => dest.Department, opt => opt.Ignore())
-                .ForMember(dest => dest.Document1s, opt => opt.Ignore())
-                .ForMember(dest => dest.TeachingPlanners, opt => opt.Ignore())
+            CreateMap<SubjectRoomDTO, SubjectRoom>()
+                .ForMember(dest => dest.Document1SubjectRooms, opt => opt.Ignore())
+                .ForMember(dest => dest.Document3CurriculumDistributions, opt => opt.Ignore())
+                .ForMember(dest => dest.Document3SelectedTopics, opt => opt.Ignore())
                 .ReverseMap();
         }
     }
