@@ -6,6 +6,7 @@ namespace Project_MLD.Service.Interface
     {
         Task<IEnumerable<Document4>> GetAllDocument4s();
         Task<Document4> GetDocument4ById(int id);
+        Task<Document4> GetDoc4TeachingPlannerByDoc4Id(int document4Id);
         Task<Document4> AddDocument4(Document4 pl4);
         Task<bool> UpdateDocument4(Document4 pl4);
         Task<bool> DeleteDocument4(int id);

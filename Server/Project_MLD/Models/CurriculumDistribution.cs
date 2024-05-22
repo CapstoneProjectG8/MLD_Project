@@ -9,6 +9,8 @@ public partial class CurriculumDistribution
 
     public string? Name { get; set; }
 
+    public int? SubjectId { get; set; }
+
     public virtual ICollection<Document1CurriculumDistribution> Document1CurriculumDistributions { get; set; } = new List<Document1CurriculumDistribution>();
 
     public virtual ICollection<Document3CurriculumDistribution> Document3CurriculumDistributions { get; set; } = new List<Document3CurriculumDistribution>();

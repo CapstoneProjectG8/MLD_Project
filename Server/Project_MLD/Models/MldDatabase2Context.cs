@@ -88,12 +88,11 @@ public partial class MldDatabase2Context : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         var builder = new ConfigurationBuilder()
-                      .SetBasePath(Directory.GetCurrentDirectory())
-                      .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+              .SetBasePath(Directory.GetCurrentDirectory())
+              .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
         IConfigurationRoot configuration = builder.Build();
         optionsBuilder.UseSqlServer(configuration.GetConnectionString("MyCnn"));
     }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Account>(entity =>
@@ -143,6 +142,7 @@ public partial class MldDatabase2Context : DbContext
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Name).HasColumnName("name");
+            entity.Property(e => e.SubjectId).HasColumnName("subject_id");
         });
 
         modelBuilder.Entity<Document1>(entity =>
@@ -451,6 +451,7 @@ public partial class MldDatabase2Context : DbContext
             entity.ToTable("Document 4");
 
             entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.ApproveBy).HasColumnName("approve_by");
             entity.Property(e => e.CreatedDate).HasColumnName("created_date");
             entity.Property(e => e.IsApprove).HasColumnName("isApprove");
             entity.Property(e => e.LinkFile).HasColumnName("link_file");
@@ -658,6 +659,7 @@ public partial class MldDatabase2Context : DbContext
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Name).HasColumnName("name");
+            entity.Property(e => e.SubjectId).HasColumnName("subject_id");
         });
 
         modelBuilder.Entity<SpecializedDepartment>(entity =>

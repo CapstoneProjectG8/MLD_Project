@@ -37,6 +37,18 @@ namespace Project_MLD.Controllers
             return Ok(CurriculumDistribution);
         }
 
+        [HttpGet("GetCurriculumBySubjectId/{subjectId}")]
+        public async Task<ActionResult<CurriculumDistribution>> GetCurriculumDistributionBySubjectId(int subjectId)
+        {
+            var CurriculumDistribution = await _repository.GetCurriculumDistributionsBySubjectId(subjectId);
+            if (CurriculumDistribution == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(CurriculumDistribution);
+        }
+
         [HttpPost("AddCurriculum")]
         public async Task<ActionResult<CurriculumDistribution>> AddCurriculumDistribution(CurriculumDistribution cd)
         {

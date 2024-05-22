@@ -70,6 +70,16 @@ namespace Project_MLD.Service.Repository
         {
             return await _context.Document4s.FirstOrDefaultAsync(x => x.Id == id);
         }
+        public async Task<Document4> GetDoc4TeachingPlannerByDoc4Id(int id)
+        {
+            return await _context.Document4s
+                .Include(x => x.TeachingPlanner)
+                    .ThenInclude(tp => tp.Class)
+                .Include(x => x.TeachingPlanner)
+                    .ThenInclude(tp => tp.Subject)
+                .FirstOrDefaultAsync(x => x.Id == id);
+        }
+
 
         public async Task<IEnumerable<Document4>> GetDocument4sWithCondition(bool? status, int? isApprove)
         {
@@ -118,7 +128,7 @@ namespace Project_MLD.Service.Repository
                 var documents = await _context.Document4s
                     .Include(x => x.TeachingPlanner)
                     .ThenInclude(x => x.User)
-                    .Where(x => x.TeachingPlanner.User.DepartmentId == id)
+                    .Where(x => x.TeachingPlanner.User.DepartmentId == id && x.IsApprove == 3 && x.Status == true)
                     .ToListAsync();
 
                 result.Add(new

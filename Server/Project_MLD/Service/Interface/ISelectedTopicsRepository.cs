@@ -9,6 +9,6 @@ namespace Project_MLD.Service.Interface
         Task<SelectedTopic> AddSelectedTopic(SelectedTopic st);
         Task<bool> UpdateSelectedTopic(SelectedTopic st);
         Task<bool> DeleteSelectedTopic(int id);
-
+        Task<IEnumerable<SelectedTopic>> GetSelectedTopicsBySubjectId(int subjectId);
     }
 }

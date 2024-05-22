@@ -37,6 +37,18 @@ namespace Project_MLD.Controllers
             return Ok(Subject);
         }
 
+        [HttpGet("GetSubjectByDepartmentId/{departmentId}")]
+        public async Task<ActionResult<Subject>> GetSubjectByDepartmentId(int id)
+        {
+            var Subject = await _repository.GetSubjectsByDepartmentId(id);
+            if (Subject == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(Subject);
+        }
+
         [HttpPost]
         public async Task<ActionResult<Subject>> AddSubject(Subject sub)
         {

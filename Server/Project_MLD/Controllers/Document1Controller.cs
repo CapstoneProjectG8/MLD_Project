@@ -192,7 +192,6 @@ namespace Project_MLD.Controllers
             });
         }
 
-
         [HttpGet("GetTeacherInformation/{specializedDepartmentId}")]
         public async Task<IActionResult> GetTeacherInformation(int specializedDepartmentId)
         {

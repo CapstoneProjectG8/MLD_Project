@@ -43,6 +43,11 @@ namespace Project_MLD.Service.Repository
             return await _context.SelectedTopics.FindAsync(id);
         }
 
+        public async Task<IEnumerable<SelectedTopic>> GetSelectedTopicsBySubjectId(int subjectId)
+        {
+            return await _context.SelectedTopics.Where(x => x.SubjectId == subjectId).ToListAsync();
+        }
+
         public async Task<bool> UpdateSelectedTopic(SelectedTopic st)
         {
             var existSelectedTopic = await GetSelectedTopicById(st.Id);

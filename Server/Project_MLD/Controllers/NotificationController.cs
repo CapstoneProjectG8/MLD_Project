@@ -54,6 +54,17 @@ namespace Project_MLD.Controllers
             return Ok(notification);
         }
 
+        [HttpGet("GetNotificationById/{id}")]
+        public async Task<ActionResult<Notification>> GetNotificationById(int id)
+        {
+            var notification = await _repository.GetNotificationById(id);
+            if (notification == null)
+            {
+                return NotFound();
+            }
+            return Ok(notification);
+        }
+
         public class NotificationRequest()
         {
             public string? TitleName { get; set; }

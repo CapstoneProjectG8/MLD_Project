@@ -37,6 +37,19 @@ namespace Project_MLD.Controllers
             return Ok(existSelectedTopic);
         }
 
+        [HttpGet("GetSelectedTopicBySubjectId/{subjectId}")]
+        public async Task<ActionResult<SelectedTopic>> GetSelectedTopicBySubjectId(int subjectId)
+        {
+            var existSelectedTopic = await _repository.GetSelectedTopicsBySubjectId(subjectId);
+            if (existSelectedTopic == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(existSelectedTopic);
+        }
+
+
         [HttpPost]
         public async Task<ActionResult<SelectedTopic>> AddSelectedTopic(SelectedTopic st)
         {

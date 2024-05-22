@@ -43,7 +43,11 @@ namespace Project_MLD.Service.Repository
             return await _context.CurriculumDistributions.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-
+        public async Task<IEnumerable<CurriculumDistribution>> GetCurriculumDistributionsBySubjectId(int subjectId)
+        {
+            return await _context.CurriculumDistributions
+                .Where(x => x.SubjectId == subjectId).ToListAsync();
+        }
 
         public async Task<bool> UpdateCurriculumDistribution(CurriculumDistribution cd)
         {

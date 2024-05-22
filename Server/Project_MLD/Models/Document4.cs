@@ -21,6 +21,8 @@ public partial class Document4
 
     public int? IsApprove { get; set; }
 
+    public int? ApproveBy { get; set; }
+
     public virtual ICollection<Document5> Document5s { get; set; } = new List<Document5>();
 
     public virtual IsApprove? IsApproveNavigation { get; set; }

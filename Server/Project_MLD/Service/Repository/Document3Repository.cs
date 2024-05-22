@@ -93,7 +93,7 @@ namespace Project_MLD.Service.Repository
                 var documents = await _context.Document3s
                 .Include(x => x.User)
 
-                .Where(x => x.User.DepartmentId == id && x.Status == true)
+                .Where(x => x.User.DepartmentId == id && x.Status == true && x.IsApprove == 3)
                 .ToListAsync();
 
                 var anObject = new
