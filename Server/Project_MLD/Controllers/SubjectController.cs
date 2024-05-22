@@ -40,7 +40,7 @@ namespace Project_MLD.Controllers
             return Ok(Subject);
         }
 
-        [HttpGet("GetSubjectByDepartmentId/{departmentId}")]
+        [HttpGet("GetSubjectByDepartmentId")]
         public async Task<ActionResult<Subject>> GetSubjectByDepartmentId(int id)
         {
             var Subject = await _repository.GetSubjectsByDepartmentId(id);

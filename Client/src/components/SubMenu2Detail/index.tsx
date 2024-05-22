@@ -136,13 +136,12 @@ const SubMenu2Detail = () => {
       );
       if (response?.status === 200) {
         const res = await apiUpdateSubMenu2(
-          { id: documentId, linkFile: response?.data, userId: user?.userId },
-          documentId
+          { id: document2Info?.id ?? documentId, linkFile: response?.data, userId: user?.userId }
         );
-        if (res && documentId) {
+        if (res && (document2Info?.id ?? documentId)) {
           setDisplayAddRow(!displayAddRow);
           alert("Thành công! Hãy chờ đợi trong giây lát để chuyển trang");
-          navigate(`/sub-menu-2/detail-view/${documentId}`);
+          navigate(`/sub-menu-2/detail-view/${document2Info?.id ?? documentId}`);
         }
       }
     } catch (error) {
@@ -266,40 +265,42 @@ const SubMenu2Detail = () => {
   }, [location.pathname]);
 
   useEffect(() => {
-    const fetchSpecializedDepartmentById = async () => {
-      if (!location.pathname.split("/")[3]) {
-        if (userInfoLogin) {
-          const res = await apiGetSpecializedDepartmentById(
-            userInfoLogin?.departmentId
-          );
-          if (res && res.data) {
-            const departmentData: any = res.data;
-            setSpecializedDepartment(departmentData);
-          }
-        }
-      } else if (location.pathname.split("/")[3]) {
-        const fecthDoc2 = await apiGetSubMenu2ById(
-          location.pathname.split("/")[3]
-        );
-        if (fecthDoc2 && fecthDoc2.data) {
-          const doc2Data: any = fecthDoc2.data;
-          setDocument2Info(doc2Data);
-          const fecthUserResult = await apiGetUser(doc2Data?.userId);
-          if (fecthUserResult && fecthUserResult.data) {
-            const userData: any = fecthUserResult.data;
-            setUserInfoDocument(userData);
+      const fetchSpecializedDepartmentById = async () => {
+        if (!location.pathname.split("/")[3]) {
+          if (userInfoLogin) {
             const res = await apiGetSpecializedDepartmentById(
-              userData?.departmentId
+              userInfoLogin?.departmentId
             );
             if (res && res.data) {
               const departmentData: any = res.data;
               setSpecializedDepartment(departmentData);
             }
           }
+        } else if (location.pathname.split("/")[3]) {
+          const fecthDoc2 = await apiGetSubMenu2ById(
+            location.pathname.split("/")[3]
+          );
+          if (fecthDoc2 && fecthDoc2.data) {
+            const doc2Data: any = fecthDoc2.data;
+            setDocument2Info(doc2Data);
+            const fecthUserResult = await apiGetUser(doc2Data?.userId);
+            if (fecthUserResult && fecthUserResult.data) {
+              const userData: any = fecthUserResult.data;
+              setUserInfoDocument(userData);
+              const res = await apiGetSpecializedDepartmentById(
+                userData?.departmentId
+              );
+              if (res && res.data) {
+                const departmentData: any = res.data;
+                setSpecializedDepartment(departmentData);
+              }
+            }
+          }
         }
-      }
-    };
-    fetchSpecializedDepartmentById();
+      };
+      fetchSpecializedDepartmentById();
+
+
   }, [location.pathname, userInfoLogin]);
 
   useEffect(() => {
@@ -315,16 +316,16 @@ const SubMenu2Detail = () => {
   }, []);
 
   useEffect(() => {
-    const fetchAllUser = async () => {
-      if (userInfoLogin) {
-        const res = await apiGetUserHostBy(userInfoLogin?.departmentId);
-        if (res && res.data) {
-          const usersData: User[] = res.data;
-          setUsers(usersData);
+      const fetchAllUser = async () => {
+        if (userInfoLogin && !location.pathname.includes("view") ) {
+          const res = await apiGetUserHostBy(userInfoDocument?.departmentId ?? userInfoLogin?.departmentId);
+          if (res && res.data) {
+            const usersData: User[] = res.data;
+            setUsers(usersData);
+          }
         }
-      }
-    };
-    fetchAllUser();
+      };
+      fetchAllUser();
   }, [userInfoLogin]);
 
   const handleClickOpen = async () => {
@@ -345,10 +346,11 @@ const SubMenu2Detail = () => {
               createdDate: createdDate,
               status: true,
               approveByName: "",
-              isApprove: 1,
+              isApprove: 2,
             },
           ]);
           if (post) {
+            console.log(post);
             setDocumentId(post?.data[0]?.id);
             await apiPostNotification({
               receiveBy: principleAndTeacher?.principle || [],
@@ -356,7 +358,7 @@ const SubMenu2Detail = () => {
               titleName: `${post?.data[0].name} ĐÃ ĐƯỢC ĐĂNG TẢI, HÃY XÉT DUYỆT`,
               message: `${post?.data[0].name} ĐÃ ĐƯỢC ĐĂNG TẢI, HÃY XÉT DUYỆT`,
               docType: 2,
-              docId: post?.data?.id,
+              docId: post?.data[0]?.id,
             });
           }
         } catch (error) {
@@ -366,6 +368,14 @@ const SubMenu2Detail = () => {
     } else {
       if (user) {
         setOpen(true);
+        await apiUpdateSubMenu2(
+          {
+            id: document2Info?.id,
+            userId: document2Info?.userId,
+            isApprove: 2,
+            approveBy: user?.userId,
+          }
+        );
         await apiPostNotification({
           receiveBy: principleAndTeacher?.principle || [],
           sentBy: user?.userId,
@@ -395,7 +405,7 @@ const SubMenu2Detail = () => {
             createdDate: createdDate,
             status: true,
             approveByName: "",
-            isApprove: 2,
+            isApprove: 1,
           },
         ]);
         if (post) {
@@ -538,7 +548,7 @@ const SubMenu2Detail = () => {
       return accumulator;
     }, []);
     const rowsWithDocumentId = flattenedRows.map((row) => {
-      return { ...row, document2Id: documentId };
+      return { ...row, document2Id :  document2Info?.id ?? documentId };
     });
 
     if (rowsWithDocumentId) {
@@ -1148,17 +1158,12 @@ const SubMenu2Detail = () => {
             </div>
             <div className="sub-menu-row">
               <div>
-                <strong>Nguồn: </strong> https://baigiang.violet.vn
+                <strong>Ngày gửi: </strong> {document2Info?.createdDate}
               </div>
               <div className="right-action" onClick={handleClickOpenReport}>
                 <strong>
                   <u className="underline-blue">Báo cáo tài liệu có sai sót</u>
                 </strong>
-              </div>
-            </div>
-            <div className="sub-menu-row">
-              <div>
-                <strong>Ngày gửi: </strong> {document2Info?.createdDate}
               </div>
             </div>
           </div>
@@ -1168,14 +1173,14 @@ const SubMenu2Detail = () => {
                 className="verify"
                 style={{
                   display:
-                    user?.role === "Principle" && document2Info?.isApprove === 2
+                    user?.role === "Principal" && document2Info?.isApprove === 2
                       ? "flex"
                       : "none",
                 }}
               >
                 <span>Tình trạng thẩm định:</span>
                 {
-                  user?.role === "principle" && <div style={{ display: "flex", columnGap: "10px" }}>
+                  <div style={{ display: "flex", columnGap: "10px" }}>
                     <div
                       className="action-button"
                       onClick={handleClickOpenAccept}
@@ -1189,10 +1194,7 @@ const SubMenu2Detail = () => {
                 }
               </div>
             </div>
-            <div className="sub-menu-note">
-              Ghi chú <br />
-              <textarea name="" id="" rows={8}></textarea>
-            </div>
+            
           </div>
         </>
       )}
@@ -1360,8 +1362,7 @@ const SubMenu2Detail = () => {
                     userId: document2Info?.userId,
                     isApprove: 3,
                     approveBy: user?.userId,
-                  },
-                  document2Info?.id
+                  }
                 );
                 await apiPostNotification({
                   receiveBy: [document2Info?.userId] || [],
@@ -1379,6 +1380,8 @@ const SubMenu2Detail = () => {
                   docType: 2,
                   docId: document2Info?.id,
                 });
+                alert("Thành công! Hãy chờ đợi trong giây lát để chuyển trang");
+                  navigate(`/sub-menu/2`);
               } catch (error) {
                 alert("Không thể xét duyệt");
               }
@@ -1427,8 +1430,7 @@ const SubMenu2Detail = () => {
                     userId: document2Info?.userId,
                     isApprove: 4,
                     approveBy: user?.userId,
-                  },
-                  document2Info?.id
+                  }
                 );
                 await apiPostNotification({
                   receiveBy: [document2Info?.userId] || [],
@@ -1438,6 +1440,8 @@ const SubMenu2Detail = () => {
                   docType: 2,
                   docId: document2Info?.id,
                 });
+                alert("Thành công! Hãy chờ đợi trong giây lát để chuyển trang");
+                  navigate(`/sub-menu/1`);
               } catch (error) {
                 alert("Không thể từ chối");
               }

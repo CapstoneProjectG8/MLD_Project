@@ -432,7 +432,7 @@ const SubMenu3Detail = () => {
           note: "",
           status: true,
           approveByName: "",
-          isApprove: 1,
+          isApprove: 2,
         });
         if (post) {
           setDocumentId(post?.data?.id);
@@ -473,7 +473,7 @@ const SubMenu3Detail = () => {
         note: "",
         status: true,
         approveByName: "",
-        isApprove: 2,
+        isApprove: 1,
       });
       if (post) {
         setDocumentId(post?.data?.id);
@@ -1425,7 +1425,7 @@ const SubMenu3Detail = () => {
                   <div
                     style={{
                       display:
-                        userInfoLogin?.id === document1Info?.userId
+                        userInfoLogin?.id === document1Info?.userId && document3Info?.isApprove === 2
                           ? "flex"
                           : "none",
                       columnGap: "10px",
