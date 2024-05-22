@@ -166,10 +166,12 @@ const SubMenu2Detail = () => {
   useEffect(() => {
     const fecthPrincipleByDoc = async () => {
       if (document2Info) {
-        const res = await apiGetUser(document2Info?.approveBy)
-        if (res && res.data) {
-          const principleData: any = res.data;
-          setPrinciple(principleData);
+        if (document2Info?.approveBy !== null) {
+          const res = await apiGetUser(document2Info?.approveBy)
+          if (res && res.data) {
+            const principleData: any = res.data;
+            setPrinciple(principleData);
+          }
         }
       }
     }
@@ -1014,9 +1016,10 @@ const SubMenu2Detail = () => {
                       onChange={(e) => setToTruong(e.target.value)}
                     /> */}
                     <img src={userInfoLogin?.signature} alt="" style={{ width: "150px", height: "auto" }} />
+                    <img src={location.pathname.includes("create") ? userInfoLogin?.signature : userInfoDocument?.signature} alt="" style={{ width: "150px", height: "auto" }} />
                     <p>
                       {
-                        location.pathname.includes("create") ? userInfoLogin?.firstName + " " + userInfoLogin?.lastName : userInfoDocument?.fullName
+                        location.pathname.includes("create") ? userInfoLogin?.firstName + " " + userInfoLogin?.lastName : userInfoDocument?.firstName + " " + userInfoDocument?.lastName
                       }
                     </p>
                   </div>
@@ -1060,11 +1063,10 @@ const SubMenu2Detail = () => {
                   <br />
                   <br />
                   {
-                    document2Info?.approveBy !== null ? <input
+                    document2Info?.approveBy == null ? <input
                       type="text"
                       placeholder="................................................................"
                       style={{ width: "150px" }}
-                      onChange={(e) => setToTruong(e.target.value)}
                     /> :
                       <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                         <img src={principle?.signature} alt="" style={{ width: "150px", height: "auto" }} />

@@ -247,7 +247,7 @@ const SubMenu3Detail = () => {
 
   useEffect(() => {
     const fetchSpecializedDepartmentById = async () => {
-      if (!location.pathname.includes("view")) {
+     
         let document1IdInit = 0;
         if (location.pathname.includes("create"))
           document1IdInit = parseInt(location.pathname.split("/")[3]);
@@ -272,7 +272,7 @@ const SubMenu3Detail = () => {
             }
           }
         }
-      }
+      
     };
 
     const fetchTeachingEquipment = async () => {
@@ -1425,7 +1425,7 @@ const SubMenu3Detail = () => {
                   <div
                     style={{
                       display:
-                        parseInt(user?.userId) === document1Info?.userId
+                        userInfoLogin?.id === document1Info?.userId
                           ? "flex"
                           : "none",
                       columnGap: "10px",
