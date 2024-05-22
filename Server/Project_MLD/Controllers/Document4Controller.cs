@@ -57,7 +57,7 @@ namespace Project_MLD.Controllers
                     var modifiedDocument = new
                     {
                         SpecializedDepartmentId = id,
-                        Document4s = dataMap
+                        Documents = dataMap
                     };
 
                     modifiedDocuments.Add(modifiedDocument);

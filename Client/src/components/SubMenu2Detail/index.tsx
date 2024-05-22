@@ -112,6 +112,7 @@ const SubMenu2Detail = () => {
   const [descriptionRp, setDescriptionRp] = useState("");
   const [principleAndTeacher, setPrincipleAndTeacher] = useState<any>();
   const [hostByList, setHostByList] = useState<any>();
+  const [principle, setPrinciple] = useState<any>();
 
   const [truong, setTruong] = useState("");
   const [toTruong, setToTruong] = useState("");
@@ -161,6 +162,19 @@ const SubMenu2Detail = () => {
     };
     fetchUserInfoLogin();
   }, [user]);
+
+  useEffect(() => {
+    const fecthPrincipleByDoc = async () => {
+      if (document2Info) {
+        const res = await apiGetUser(document2Info?.approveBy)
+        if (res && res.data) {
+          const principleData: any = res.data;
+          setPrinciple(principleData);
+        }
+      }
+    }
+    fecthPrincipleByDoc()
+  }, [document2Info])
 
   useEffect(() => {
     const fecthPrincipleAndTeacher = async () => {
@@ -433,7 +447,7 @@ const SubMenu2Detail = () => {
 
   const handleSubmitReport = async () => {
     const rp = {
-      userId: user?.userId,
+      userId: parseInt(user?.userId),
       doctype: 2,
       docId: document2Info?.id,
       message: reasonReport,
@@ -556,7 +570,7 @@ const SubMenu2Detail = () => {
   return (
     <div className="sub-menu-container" style={{ minWidth: "30rem" }}>
       {location.pathname?.includes("edit") ||
-      location.pathname?.includes("create") ? (
+        location.pathname?.includes("create") ? (
         <div>
           <div className="sub-menu-content" id="main-content">
             <div className="sub-menu-content-header">
@@ -848,9 +862,6 @@ const SubMenu2Detail = () => {
                                             setMultiRows(updatedRows);
                                           }}
                                         >
-                                          <option value={0} disabled>
-                                            Chọn chủ trì
-                                          </option>
                                           {users?.map((item) => (
                                             <option value={item?.id}>
                                               {item?.name}
@@ -860,19 +871,19 @@ const SubMenu2Detail = () => {
                                         <div className="add-row-button">
                                           {hosIndex ===
                                             row.hostBy.length - 1 && (
-                                            <Add
-                                              style={{
-                                                color: "black",
-                                                display: displayAddRow
-                                                  ? "none"
-                                                  : "",
-                                              }}
-                                              className="add-row-icon"
-                                              onClick={() =>
-                                                handleAddHost(indexGrade, index)
-                                              }
-                                            />
-                                          )}
+                                              <Add
+                                                style={{
+                                                  color: "black",
+                                                  display: displayAddRow
+                                                    ? "none"
+                                                    : "",
+                                                }}
+                                                className="add-row-icon"
+                                                onClick={() =>
+                                                  handleAddHost(indexGrade, index)
+                                                }
+                                              />
+                                            )}
                                           {row.hostBy.length > 1 && (
                                             <Remove
                                               style={{
@@ -995,13 +1006,19 @@ const SubMenu2Detail = () => {
                     <i>(Ký và ghi rõ họ tên)</i>
                   </div>
                   <br /> <br />
-                  <div>
-                    <input
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                    {/* <input
                       type="text"
                       placeholder="................................................................"
                       style={{ width: "150px" }}
                       onChange={(e) => setToTruong(e.target.value)}
-                    />
+                    /> */}
+                    <img src={userInfoLogin?.signature} alt="" style={{ width: "150px", height: "auto" }} />
+                    <p>
+                      {
+                        location.pathname.includes("create") ? userInfoLogin?.firstName + " " + userInfoLogin?.lastName : userInfoDocument?.fullName
+                      }
+                    </p>
                   </div>
                 </div>
                 <div className="hieu-truong">
@@ -1042,14 +1059,22 @@ const SubMenu2Detail = () => {
                   </div>
                   <br />
                   <br />
-                  <div>
-                    <input
+                  {
+                    document2Info?.approveBy !== null ? <input
                       type="text"
                       placeholder="................................................................"
                       style={{ width: "150px" }}
-                      onChange={(e) => setHieuTruong(e.target.value)}
-                    />
-                  </div>
+                      onChange={(e) => setToTruong(e.target.value)}
+                    /> :
+                      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                        <img src={principle?.signature} alt="" style={{ width: "150px", height: "auto" }} />
+                        <p>
+                          {
+                            document2Info?.approveBy ?? principle?.firstName + " " + principle?.lastName
+                          }
+                        </p>
+                      </div>
+                  }
                 </div>
               </div>
             </div>
@@ -1107,9 +1132,9 @@ const SubMenu2Detail = () => {
             <div className="sub-menu-row">
               <div>
                 <i>
-                  {document2Info?.isApprove === 4
-                    ? "(Tài liệu chưa được thẩm định)"
-                    : "(Tài liệu đã được thẩm định)"}
+                  {document2Info?.isApprove === 3
+                    ? "(Tài liệu đã được thẩm định)"
+                    : "(Tài liệu chưa được thẩm định)"}
                 </i>
               </div>
             </div>
@@ -1147,17 +1172,19 @@ const SubMenu2Detail = () => {
                 }}
               >
                 <span>Tình trạng thẩm định:</span>
-                <div style={{ display: "flex", columnGap: "10px" }}>
-                  <div
-                    className="action-button"
-                    onClick={handleClickOpenAccept}
-                  >
-                    Chấp thuận
+                {
+                  user?.role === "principle" && <div style={{ display: "flex", columnGap: "10px" }}>
+                    <div
+                      className="action-button"
+                      onClick={handleClickOpenAccept}
+                    >
+                      Chấp thuận
+                    </div>
+                    <div className="action-button" onClick={handleClickOpenDeny}>
+                      Từ chối
+                    </div>
                   </div>
-                  <div className="action-button" onClick={handleClickOpenDeny}>
-                    Từ chối
-                  </div>
-                </div>
+                }
               </div>
             </div>
             <div className="sub-menu-note">
@@ -1438,7 +1465,7 @@ const SubMenu2Detail = () => {
             id="alert-dialog-description"
             style={{ textAlign: "center", fontWeight: 600 }}
           >
-            Bạn có chắc muốn xóa thay đổi không?
+            Bạn có chắc muốn xóa tài liệu này không?
           </DialogContentText>
         </DialogContent>
         <DialogActions>

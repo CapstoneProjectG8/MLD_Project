@@ -140,14 +140,14 @@ app.UseAuthorization();
 var webSocketOptions = new WebSocketOptions
 {
     KeepAliveInterval = TimeSpan.FromMinutes(2),
-    AllowedOrigins = { "https://localhost:7241", "http://localhost:3000", "http://localhost:8889" }
+    AllowedOrigins = { "https://localhost:7241", "http://localhost:3000", "http://localhost:8889", "https://andan123.onrender.com" }
 };
 
 app.UseWebSockets(webSocketOptions);
 
 app.UseCors(builder =>
 {
-    builder.WithOrigins("http://localhost:3000", "http://localhost:8889")
+    builder.WithOrigins("http://localhost:3000", "http://localhost:8889", "https://andan123.onrender.com")
            .AllowAnyMethod()
            .AllowAnyHeader()
            .AllowCredentials();
