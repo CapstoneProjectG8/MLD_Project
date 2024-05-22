@@ -775,6 +775,7 @@ const SubMenu2Detail = () => {
                                   </TableCell>
                                   <TableCell align="center">
                                     <textarea
+                                      rows={1}
                                       value={row.titleName ?? null}
                                       onChange={(e) => {
                                         const newValue = e.target.value;
@@ -788,6 +789,7 @@ const SubMenu2Detail = () => {
                                   </TableCell>
                                   <TableCell align="center">
                                     <textarea
+                                      rows={1}
                                       value={row.description ?? null}
                                       onChange={(e) => {
                                         const newValue = e.target.value;
@@ -801,6 +803,7 @@ const SubMenu2Detail = () => {
                                   </TableCell>
                                   <TableCell align="center">
                                     <textarea
+                                      rows={1}
                                       value={row.slot ?? ""}
                                       onChange={(e) => {
                                         const newValue = parseInt(
@@ -830,6 +833,7 @@ const SubMenu2Detail = () => {
                                   </TableCell>
                                   <TableCell align="center">
                                     <textarea
+                                      rows={1}
                                       value={row.place ?? null}
                                       onChange={(e) => {
                                         const newValue = e.target.value;
@@ -851,6 +855,7 @@ const SubMenu2Detail = () => {
                                             marginLeft: "4px",
                                             border: "none",
                                             outline: "none",
+                                            justifyContent: "space-between",
                                           }}
                                           value={hos ?? 0}
                                           onChange={(e) => {
@@ -910,6 +915,7 @@ const SubMenu2Detail = () => {
                                   </TableCell>
                                   <TableCell align="center">
                                     <textarea
+                                      rows={1}
                                       value={row.collaborateWith ?? null}
                                       onChange={(e) => {
                                         const newValue = e.target.value;
@@ -923,6 +929,7 @@ const SubMenu2Detail = () => {
                                   </TableCell>
                                   <TableCell align="center">
                                     <textarea
+                                      rows={1}
                                       value={row.condition ?? null}
                                       onChange={(e) => {
                                         const newValue = e.target.value;
