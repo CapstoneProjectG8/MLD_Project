@@ -19,6 +19,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TextareaAutosize,
   Tooltip,
 } from "@mui/material";
 import "./style.scss";
@@ -72,7 +73,10 @@ import { TeacherInfo } from "../../models/teacherInfo";
 import { options } from "../UploadPhuLuc4";
 import axios from "axios";
 import { textAlign } from "html2canvas/dist/types/css/property-descriptors/text-align";
-import { apiGetListIdOfTeacherAndPricipleByDepartmentId, apiPostNotification } from "../../api/notification";
+import {
+  apiGetListIdOfTeacherAndPricipleByDepartmentId,
+  apiPostNotification,
+} from "../../api/notification";
 
 interface Row1 {
   teachingEquipmentId: number | null;
@@ -221,8 +225,8 @@ const SubMenu1Detail = () => {
         }
       }
     };
-    fecthPrincipleAndTeacher()
-  }, [specializedDepartment?.id])
+    fecthPrincipleAndTeacher();
+  }, [specializedDepartment?.id]);
 
   const getTargetElement = () => document.getElementById("main-content");
 
@@ -268,8 +272,8 @@ const SubMenu1Detail = () => {
     fetchUserInfoLogin();
   }, [user]);
 
-  console.log("userInfoLogin: ", userInfoLogin)
-  console.log("document1Info: ", document1Info)
+  console.log("userInfoLogin: ", userInfoLogin);
+  console.log("document1Info: ", document1Info);
 
   useEffect(() => {
     const fetchSpecializedDepartmentById = async () => {
@@ -735,9 +739,16 @@ const SubMenu1Detail = () => {
   };
 
   return (
-    <div className="sub-menu-container justify-content-center align-items-center" style={{ minWidth: "30rem", justifyContent: "center", alignItems: "center", }}>
+    <div
+      className="sub-menu-container justify-content-center align-items-center"
+      style={{
+        minWidth: "30rem",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       {location.pathname?.includes("create") ||
-        location.pathname?.includes("edit") ? (
+      location.pathname?.includes("edit") ? (
         <div>
           <div id="main-content">
             <div className="sub-menu-content">
@@ -881,30 +892,24 @@ const SubMenu1Detail = () => {
                     </div>
                     <div style={{ marginLeft: "8px" }}>
                       <strong>Số giáo viên: </strong>
-                      {teacherInfo?.totalTeacher[0]?.userCount||0}
+                      {teacherInfo?.totalTeacher[0]?.userCount || 0}
                     </div>
                     <div style={{ display: "flex", marginLeft: "8px" }}>
                       <strong>Trình độ đào tạo:</strong>
                       <div style={{ marginLeft: "8px" }}>
                         <strong>Cao đẳng: </strong>
-                        {
-                          teacherInfo?.totalTeacherLevelOfTrainning[0]
-                            ?.userCount||0
-                        }
+                        {teacherInfo?.totalTeacherLevelOfTrainning[0]
+                          ?.userCount || 0}
                       </div>
                       <div style={{ marginLeft: "8px" }}>
                         <strong>; Đại học: </strong>
-                        {
-                          teacherInfo?.totalTeacherLevelOfTrainning[1]
-                            ?.userCount||0
-                        }
+                        {teacherInfo?.totalTeacherLevelOfTrainning[1]
+                          ?.userCount || 0}
                       </div>
                       <div style={{ marginLeft: "8px" }}>
                         <strong>; Trên đại học: </strong>
-                        {
-                          teacherInfo?.totalTeacherLevelOfTrainning[2]
-                            ?.userCount||0
-                        }
+                        {teacherInfo?.totalTeacherLevelOfTrainning[2]
+                          ?.userCount || 0}
                       </div>
                     </div>
                   </div>
@@ -918,24 +923,18 @@ const SubMenu1Detail = () => {
                     <div style={{ display: "flex" }}>
                       <div>
                         Tốt:{" "}
-                        {
-                          teacherInfo?.totalTeacherProfessionalStandard[0]
-                            ?.userCount||0
-                        }
+                        {teacherInfo?.totalTeacherProfessionalStandard[0]
+                          ?.userCount || 0}
                       </div>
                       <div style={{ marginLeft: "8px" }}>
                         ; Khá:{" "}
-                        {
-                          teacherInfo?.totalTeacherProfessionalStandard[1]
-                            ?.userCount||0
-                        }
+                        {teacherInfo?.totalTeacherProfessionalStandard[1]
+                          ?.userCount || 0}
                       </div>
                       <div style={{ marginLeft: "8px" }}>
                         ; Chưa đạt:{" "}
-                        {
-                          teacherInfo?.totalTeacherProfessionalStandard[2]
-                            ?.userCount||0
-                        }
+                        {teacherInfo?.totalTeacherProfessionalStandard[2]
+                          ?.userCount || 0}
                       </div>
                     </div>
                   </div>
@@ -1313,7 +1312,7 @@ const SubMenu1Detail = () => {
                                   align="center"
                                   style={{ width: "80px" }}
                                 >
-                                  <textarea
+                                  <TextareaAutosize
                                     value={row.slot ?? ""}
                                     onChange={(e) => {
                                       const newValue = parseInt(e.target.value);
@@ -1325,7 +1324,7 @@ const SubMenu1Detail = () => {
                                   />
                                 </TableCell>
                                 <TableCell align="center">
-                                  <textarea
+                                  <TextareaAutosize
                                     value={row.description}
                                     onChange={(e) => {
                                       const newValue = e.target.value;
@@ -1440,7 +1439,7 @@ const SubMenu1Detail = () => {
                                   align="center"
                                   style={{ width: "80px" }}
                                 >
-                                  <textarea
+                                  <TextareaAutosize
                                     value={row.slot ?? ""}
                                     onChange={(e) => {
                                       const newValue = parseInt(e.target.value);
@@ -1452,7 +1451,7 @@ const SubMenu1Detail = () => {
                                   />
                                 </TableCell>
                                 <TableCell align="center">
-                                  <textarea
+                                  <TextareaAutosize
                                     value={row.description}
                                     onChange={(e) => {
                                       const newValue = e.target.value;
@@ -1516,7 +1515,7 @@ const SubMenu1Detail = () => {
                                 {row.testingCategoryName}
                               </TableCell>
                               <TableCell align="center">
-                                <textarea
+                                <TextareaAutosize
                                   value={row.time ?? ""}
                                   onChange={(e) => {
                                     const newValue = parseInt(e.target.value);
@@ -1541,7 +1540,7 @@ const SubMenu1Detail = () => {
                                 />
                               </TableCell>
                               <TableCell align="center">
-                                <textarea
+                                <TextareaAutosize
                                   value={row.description}
                                   onChange={(e) => {
                                     const newValue = e.target.value;
@@ -1608,15 +1607,20 @@ const SubMenu1Detail = () => {
             <div className="sub-menu-action">
               <div className="verify" style={{ justifyContent: "center" }}>
                 <div style={{ display: "flex", columnGap: "10px" }}>
-                  {!location.pathname.includes("-create") && userInfoLogin?.departmentId === userInfoDocument?.departmentId
-                    && user?.role === "Teacher" && (
+                  {!location.pathname.includes("-create") &&
+                    userInfoLogin?.departmentId ===
+                      userInfoDocument?.departmentId &&
+                    user?.role === "Teacher" && (
                       // {!location.pathname.includes("-create") && (
-                      <div className="action-button" onClick={handleClickCreate}>
+                      <div
+                        className="action-button"
+                        onClick={handleClickCreate}
+                      >
                         Tạo khung kế hoạch
                       </div>
                     )}
-                  {
-                    userInfoLogin?.id === document1Info?.userId && <>
+                  {userInfoLogin?.id === document1Info?.userId && (
+                    <>
                       <div
                         className="action-button"
                         onClick={
@@ -1625,7 +1629,9 @@ const SubMenu1Detail = () => {
                             : handleClickSave
                         }
                       >
-                        {location.pathname.includes("create") ? "Tạo mới" : "Sửa"}
+                        {location.pathname.includes("create")
+                          ? "Tạo mới"
+                          : "Sửa"}
                       </div>
                       <div
                         className="action-button"
@@ -1634,7 +1640,7 @@ const SubMenu1Detail = () => {
                         Xóa
                       </div>
                     </>
-                  }
+                  )}
                 </div>
               </div>
             </div>
@@ -1687,7 +1693,7 @@ const SubMenu1Detail = () => {
             </div>
             <div className="sub-menu-note">
               Ghi chú <br />
-              <textarea name="" id="" rows={8}></textarea>
+              <TextareaAutosize name="" id=""></TextareaAutosize>
             </div>
           </div>
         </>

@@ -16,6 +16,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TextareaAutosize,
   Tooltip,
 } from "@mui/material";
 import "./style.scss";
@@ -758,7 +759,7 @@ const SubMenu2Detail = () => {
                                     {index + 1}
                                   </TableCell>
                                   <TableCell align="center">
-                                    <textarea
+                                    <TextareaAutosize
                                       value={row.titleName ?? null}
                                       onChange={(e) => {
                                         const newValue = e.target.value;
@@ -771,7 +772,7 @@ const SubMenu2Detail = () => {
                                     />
                                   </TableCell>
                                   <TableCell align="center">
-                                    <textarea
+                                    <TextareaAutosize
                                       value={row.description ?? null}
                                       onChange={(e) => {
                                         const newValue = e.target.value;
@@ -784,7 +785,7 @@ const SubMenu2Detail = () => {
                                     />
                                   </TableCell>
                                   <TableCell align="center">
-                                    <textarea
+                                    <TextareaAutosize
                                       value={row.slot ?? ""}
                                       onChange={(e) => {
                                         const newValue = parseInt(
@@ -813,7 +814,7 @@ const SubMenu2Detail = () => {
                                     />
                                   </TableCell>
                                   <TableCell align="center">
-                                    <textarea
+                                    <TextareaAutosize
                                       value={row.place ?? null}
                                       onChange={(e) => {
                                         const newValue = e.target.value;
@@ -896,7 +897,7 @@ const SubMenu2Detail = () => {
                                     ))}
                                   </TableCell>
                                   <TableCell align="center">
-                                    <textarea
+                                    <TextareaAutosize
                                       value={row.collaborateWith ?? null}
                                       onChange={(e) => {
                                         const newValue = e.target.value;
@@ -909,7 +910,7 @@ const SubMenu2Detail = () => {
                                     />
                                   </TableCell>
                                   <TableCell align="center">
-                                    <textarea
+                                    <TextareaAutosize
                                       value={row.condition ?? null}
                                       onChange={(e) => {
                                         const newValue = e.target.value;
