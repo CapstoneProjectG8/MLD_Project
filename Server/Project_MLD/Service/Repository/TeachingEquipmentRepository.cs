@@ -51,7 +51,15 @@ namespace Project_MLD.Service.Repository
                 return false;
             }
 
-            _context.Entry(existTeachingEquipment).CurrentValues.SetValues(te);
+            var properties = typeof(TeachingEquipment).GetProperties();
+            foreach (var property in properties)
+            {
+                var updatedValue = property.GetValue(te);
+                if (updatedValue != null)
+                {
+                    property.SetValue(existTeachingEquipment, updatedValue);
+                }
+            }
             await _context.SaveChangesAsync();
             return true;
         }

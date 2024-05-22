@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Project_MLD.DTO;
 using Project_MLD.Models;
 using Project_MLD.Service.Interface;
 using Project_MLD.Service.Repository;
@@ -12,10 +14,11 @@ namespace Project_MLD.Controllers
     public class SubjectController : ControllerBase
     {
         private readonly ISubjectRepository _repository;
-
-        public SubjectController(ISubjectRepository repository)
+        private readonly IMapper _mapper;
+        public SubjectController(ISubjectRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -67,15 +70,12 @@ namespace Project_MLD.Controllers
             return NoContent();
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSubject(int id, Subject sub)
+        [HttpPut("UpdateSubject")]
+        public async Task<IActionResult> UpdateSubject(SubjectDTO sub)
         {
-            if (id != sub.Id)
-            {
-                return BadRequest();
-            }
 
-            var result = await _repository.UpdateSubject(sub);
+            var mapper = _mapper.Map<Subject>(sub);
+            var result = await _repository.UpdateSubject(mapper);
             if (!result)
             {
                 return NotFound();

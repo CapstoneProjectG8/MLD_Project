@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using Project_MLD.Models;
 using Project_MLD.Service.Interface;
 using System;
@@ -51,7 +52,16 @@ namespace Project_MLD.Service.Repository
                 return false;
             }
 
-            _context.Entry(existGrade).CurrentValues.SetValues(grade);
+            var properties = typeof(Grade).GetProperties();
+            foreach (var property in properties)
+            {
+                var updatedValue = property.GetValue(grade);
+                if (updatedValue != null)
+                {
+                    property.SetValue(existGrade, updatedValue);
+                }
+            }
+
             await _context.SaveChangesAsync();
             return true;
         }

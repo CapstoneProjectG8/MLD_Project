@@ -116,5 +116,21 @@ namespace Project_MLD.Controllers
             var allFormCategory = await _repository.GetFormCategoryById(id);
             return Ok(allFormCategory);
         }
+
+        [HttpPut("UpdateTestingCategory")]
+        public async Task<IActionResult> UpdateTestingCategory(TestingCategoryDTO testingCategoryDTO)
+        {
+            var mapper = _mapper.Map<TestingCategory>(testingCategoryDTO);
+            var allTestingCategory = await _repository.UpdateTestingCategory(mapper);
+            return Ok(allTestingCategory);
+        }
+
+        [HttpPut("UpdateFormCategory")]
+        public async Task<IActionResult> UpdateFormCategory(FormCategoryDTO formCategoryDTO)
+        {
+            var mapper = _mapper.Map<FormCategory>(formCategoryDTO);
+            var allFormCategory = await _repository.UpdateFormCategory(mapper);
+            return Ok(allFormCategory);
+        }
     }
 }

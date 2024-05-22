@@ -56,8 +56,15 @@ namespace Project_MLD.Service.Repository
             {
                 return false;
             }
-
-            _context.Entry(existCurriculumDistribution).CurrentValues.SetValues(cd);
+            var properties = typeof(CurriculumDistribution).GetProperties();
+            foreach (var property in properties)
+            {
+                var updatedValue = property.GetValue(cd);
+                if (updatedValue != null)
+                {
+                    property.SetValue(existCurriculumDistribution, updatedValue);
+                }
+            }
             await _context.SaveChangesAsync();
             return true;
         }

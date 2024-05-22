@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Project_MLD.DTO;
 using Project_MLD.Models;
 using Project_MLD.Service.Interface;
 using Project_MLD.Service.Repository;
@@ -12,10 +14,13 @@ namespace Project_MLD.Controllers
     public class SpecializedDepartmentController : ControllerBase
     {
         private readonly ISpecializedDepartmentRepository _repository;
+        private readonly IMapper _mapper;
 
-        public SpecializedDepartmentController(ISpecializedDepartmentRepository repository)
+        public SpecializedDepartmentController(ISpecializedDepartmentRepository repository, IMapper mapper)
         {
             _repository = repository;
+
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -55,15 +60,12 @@ namespace Project_MLD.Controllers
             return NoContent();
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSpecializedDepartment(int id, SpecializedDepartment st)
+        [HttpPut("UpdateSpecializedDepartment")]
+        public async Task<IActionResult> UpdateSpecializedDepartment(SpecializedDepartmentDTO st)
         {
-            if (id != st.Id)
-            {
-                return BadRequest();
-            }
+            var mapper = _mapper.Map<SpecializedDepartment>(st);
 
-            var result = await _repository.UpdateSpecializedDepartment(st);
+            var result = await _repository.UpdateSpecializedDepartment(mapper);
             if (!result)
             {
                 return NotFound();

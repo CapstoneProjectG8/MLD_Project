@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using Project_MLD.Models;
 using Project_MLD.Service.Interface;
 using System;
@@ -50,8 +51,15 @@ namespace Project_MLD.Service.Repository
             {
                 return false;
             }
-
-            _context.Entry(existSubjectRoom).CurrentValues.SetValues(sr);
+            var properties = typeof(SubjectRoom).GetProperties();
+            foreach (var property in properties)
+            {
+                var updatedValue = property.GetValue(sr);
+                if (updatedValue != null)
+                {
+                    property.SetValue(existSubjectRoom, updatedValue);
+                }
+            }
             await _context.SaveChangesAsync();
             return true;
         }

@@ -186,17 +186,81 @@ namespace Project_MLD.Mapper
                 .ForMember(dest => dest.User, opt => opt.Ignore())
                 .ReverseMap();
 
+            //class
             CreateMap<Class, ClassDTO>()
                 .ForMember(x => x.GradeName, y => y.MapFrom(src => src.Grade.Name))
                 .ReverseMap();
             CreateMap<ClassDTO, Class>()
                 .ForMember(dest => dest.Grade, opt => opt.Ignore())
+                .ForMember(dest => dest.TeachingPlanners, opt => opt.Ignore())
                 .ReverseMap();
 
             CreateMap<Evaluate, EvaluateDTO>()
                 .ReverseMap();
             CreateMap<EvaluateDTO, Evaluate>()
                 .ForMember(dest => dest.Document5, opt => opt.Ignore())
+                .ReverseMap();
+
+            //CurriculumDistribution
+            CreateMap<CurriculumDistribution, CurriculumDistributionDTO>()
+                .ReverseMap();
+            CreateMap<CurriculumDistributionDTO, CurriculumDistribution>()
+                .ForMember(dest => dest.Document1CurriculumDistributions, opt => opt.Ignore())
+                .ForMember(dest => dest.Document3CurriculumDistributions, opt => opt.Ignore())
+                .ReverseMap();
+
+            //TestingCategory && FormCategory
+            CreateMap<TestingCategory, TestingCategoryDTO>()
+                .ReverseMap();
+            CreateMap<TestingCategoryDTO, TestingCategory>()
+                .ForMember(dest => dest.Document1PeriodicAssessments, opt => opt.Ignore())
+                .ReverseMap();
+            CreateMap<FormCategory, FormCategoryDTO>()
+                .ReverseMap();
+            CreateMap<FormCategoryDTO, FormCategory>()
+                .ForMember(dest => dest.Document1PeriodicAssessments, opt => opt.Ignore())
+                .ReverseMap();
+
+            //teaching quipment
+            CreateMap<TeachingEquipment, TeachingEquipmentDTO>()
+               .ReverseMap();
+            CreateMap<TeachingEquipmentDTO, TeachingEquipment>()
+                .ForMember(dest => dest.Document1TeachingEquipments, opt => opt.Ignore())
+                .ForMember(dest => dest.Document3CurriculumDistributions, opt => opt.Ignore())
+                .ForMember(dest => dest.Document3SelectedTopics, opt => opt.Ignore())
+                .ReverseMap();
+
+            //subject 
+            CreateMap<Subject, SubjectDTO>()
+               .ReverseMap();
+            CreateMap<SubjectDTO, Subject>()
+                .ForMember(dest => dest.Department, opt => opt.Ignore())
+                .ForMember(dest => dest.Document1s, opt => opt.Ignore())
+                .ForMember(dest => dest.TeachingPlanners, opt => opt.Ignore())
+                .ReverseMap();
+
+            //grade
+            CreateMap<Grade, GradeDTO>()
+               .ReverseMap();
+            CreateMap<GradeDTO, Grade>()
+                .ForMember(dest => dest.Classes, opt => opt.Ignore())
+                .ForMember(dest => dest.Document1s, opt => opt.Ignore())
+                .ForMember(dest => dest.Document2Grades, opt => opt.Ignore())
+                .ReverseMap();
+
+            CreateMap<SpecializedDepartment, SpecializedDepartmentDTO>()
+               .ReverseMap();
+            CreateMap<SpecializedDepartmentDTO, SpecializedDepartment>()
+                .ForMember(dest => dest.Subjects, opt => opt.Ignore())
+                .ForMember(dest => dest.Users, opt => opt.Ignore())
+                .ReverseMap();
+
+            CreateMap<Subject, SubjectDTO>()
+              .ReverseMap();
+            CreateMap<SubjectDTO, Subject>()
+                .ForMember(dest => dest.Department, opt => opt.Ignore())
+                .ForMember(dest => dest.Document1s, opt => opt.Ignore())
+                .ForMember(dest => dest.TeachingPlanners, opt => opt.Ignore())
                 .ReverseMap();
         }
     }

@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Project_MLD.DTO;
 using Project_MLD.Models;
 using Project_MLD.Service.Interface;
 using Project_MLD.Service.Repository;
@@ -12,10 +14,12 @@ namespace Project_MLD.Controllers
     public class TeachingEquipmentController : ControllerBase
     {
         private readonly ITeachingEquipmentRepository _repository;
+        private readonly IMapper _mapper;
 
-        public TeachingEquipmentController(ITeachingEquipmentRepository repository)
+        public TeachingEquipmentController(ITeachingEquipmentRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -55,15 +59,12 @@ namespace Project_MLD.Controllers
             return NoContent();
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateTeachingEquipment(int id, TeachingEquipment te)
+        [HttpPut("UpdateTeachingEquipment")]
+        public async Task<IActionResult> UpdateTeachingEquipment(TeachingEquipmentDTO te)
         {
-            if (id != te.Id)
-            {
-                return BadRequest();
-            }
+            var mapper = _mapper.Map<TeachingEquipment>(te);
 
-            var result = await _repository.UpdateTeachingEquipment(te);
+            var result = await _repository.UpdateTeachingEquipment(mapper);
             if (!result)
             {
                 return NotFound();
