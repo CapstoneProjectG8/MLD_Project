@@ -262,6 +262,26 @@ namespace Project_MLD.Mapper
                 .ForMember(dest => dest.Document3CurriculumDistributions, opt => opt.Ignore())
                 .ForMember(dest => dest.Document3SelectedTopics, opt => opt.Ignore())
                 .ReverseMap();
+
+            CreateMap<SelectedTopic, SelectedTopicDTO>()
+              .ReverseMap();
+            CreateMap<SelectedTopicDTO, SelectedTopic>()
+                .ForMember(dest => dest.Document1SelectedTopics, opt => opt.Ignore())
+                .ForMember(dest => dest.Document3SelectedTopics, opt => opt.Ignore())
+                .ReverseMap();
+
+            CreateMap<LevelOfTrainning, LevelOfTrainningDTO>()
+             .ReverseMap();
+            CreateMap<LevelOfTrainningDTO, LevelOfTrainning>()
+                .ForMember(dest => dest.Users, opt => opt.Ignore())
+                .ReverseMap();
+            CreateMap<ProfessionalStandard, ProfessionalStandardDTO>()
+             .ReverseMap();
+            CreateMap<ProfessionalStandardDTO, ProfessionalStandard>()
+                .ForMember(dest => dest.Users, opt => opt.Ignore())
+                .ReverseMap();
+
         }
+    }
     }
 }

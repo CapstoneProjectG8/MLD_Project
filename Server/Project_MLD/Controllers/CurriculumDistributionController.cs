@@ -54,9 +54,10 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPost("AddCurriculum")]
-        public async Task<ActionResult<CurriculumDistribution>> AddCurriculumDistribution(CurriculumDistribution cd)
+        public async Task<ActionResult<CurriculumDistribution>> AddCurriculumDistribution(CurriculumDistributionDTO cd)
         {
-            await _repository.AddCurriculumDistribution(cd);
+            var map = _mapper.Map<CurriculumDistribution>(cd);
+            await _repository.AddCurriculumDistribution(map);
             return CreatedAtAction(nameof(GetCurriculumDistributionById), new { id = cd.Id }, cd);
         }
 

@@ -52,10 +52,11 @@ namespace Project_MLD.Controllers
             return Ok(Subject);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Subject>> AddSubject(Subject sub)
+        [HttpPost("AddSubject")]
+        public async Task<ActionResult<Subject>> AddSubject(SubjectDTO sub)
         {
-            await _repository.AddSubject(sub);
+            var mapper = _mapper.Map<Subject>(sub);
+            await _repository.AddSubject(mapper);
             return CreatedAtAction(nameof(GetSubjectById), new { id = sub.Id }, sub);
         }
 

@@ -42,9 +42,10 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPost("AddGrade")]
-        public async Task<ActionResult<Grade>> AddGrade(Grade grade)
+        public async Task<ActionResult<Grade>> AddGrade(GradeDTO grade)
         {
-            await _repository.AddGrade(grade);
+            var map = _mapper.Map<Grade>(grade);
+            await _repository.AddGrade(map);
             return CreatedAtAction(nameof(GetGradeById), new { id = grade.Id }, grade);
         }
 

@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Project_MLD.DTO;
 using Project_MLD.Models;
 using Project_MLD.Service.Interface;
 using Project_MLD.Service.Repository;
@@ -12,10 +14,12 @@ namespace Project_MLD.Controllers
     public class SelectedTopicController : ControllerBase
     {
         private readonly ISelectedTopicsRepository _repository;
+        private readonly IMapper _mapper;
 
-        public SelectedTopicController(ISelectedTopicsRepository repository)
+        public SelectedTopicController(ISelectedTopicsRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -51,9 +55,10 @@ namespace Project_MLD.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<SelectedTopic>> AddSelectedTopic(SelectedTopic st)
+        public async Task<ActionResult<SelectedTopic>> AddSelectedTopic(SelectedTopicDTO st)
         {
-            await _repository.AddSelectedTopic(st);
+            var map = _mapper.Map<SelectedTopic>(st);
+            await _repository.AddSelectedTopic(map);
             return CreatedAtAction(nameof(GetSelectedTopicById), new { id = st.Id }, st);
         }
 
@@ -68,15 +73,11 @@ namespace Project_MLD.Controllers
             return NoContent();
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSelectedTopic(int id, SelectedTopic st)
+        [HttpPut("UpdateSelectedTopic")]
+        public async Task<IActionResult> UpdateSelectedTopic(SelectedTopicDTO st)
         {
-            if (id != st.Id)
-            {
-                return BadRequest();
-            }
-
-            var result = await _repository.UpdateSelectedTopic(st);
+            var map = _mapper.Map<SelectedTopic>(st);
+            var result = await _repository.UpdateSelectedTopic(map);
             if (!result)
             {
                 return NotFound();

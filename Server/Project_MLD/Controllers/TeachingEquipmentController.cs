@@ -41,10 +41,11 @@ namespace Project_MLD.Controllers
             return Ok(existTeachingEquipment);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<TeachingEquipment>> AddTeachingEquipment(TeachingEquipment te)
+        [HttpPost("AddTeachingEquipment")]
+        public async Task<ActionResult<TeachingEquipment>> AddTeachingEquipment(TeachingEquipmentDTO te)
         {
-            await _repository.AddTeachingEquipment(te);
+            var mapper = _mapper.Map<TeachingEquipment>(te);
+            await _repository.AddTeachingEquipment(mapper);
             return CreatedAtAction(nameof(GetTeachingEquipmentById), new { id = te.Id }, te);
         }
 

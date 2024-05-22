@@ -56,7 +56,15 @@ namespace Project_MLD.Service.Repository
                 return false;
             }
 
-            _context.Entry(existSelectedTopic).CurrentValues.SetValues(st);
+            var properties = typeof(SelectedTopic).GetProperties();
+            foreach (var property in properties)
+            {
+                var updatedValue = property.GetValue(st);
+                if (updatedValue != null)
+                {
+                    property.SetValue(existSelectedTopic, updatedValue);
+                }
+            }
             await _context.SaveChangesAsync();
             return true;
         }

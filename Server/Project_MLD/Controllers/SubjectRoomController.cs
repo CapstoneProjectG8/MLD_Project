@@ -42,9 +42,10 @@ namespace Project_MLD.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<SubjectRoom>> AddSubjectRoom(SubjectRoom sr)
+        public async Task<ActionResult<SubjectRoom>> AddSubjectRoom(SubjectRoomDTO sr)
         {
-            await _repository.AddSubjectRoom(sr);
+            var mapper = _mapper.Map<SubjectRoom>(sr);
+            await _repository.AddSubjectRoom(mapper);
             return CreatedAtAction(nameof(GetSubjectRoomById), new { id = sr.Id }, sr);
         }
 

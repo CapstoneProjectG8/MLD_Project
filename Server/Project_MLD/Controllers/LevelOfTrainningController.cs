@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Project_MLD.DTO;
 using Project_MLD.Models;
 using Project_MLD.Service.Interface;
 using Project_MLD.Service.Repository;
@@ -12,10 +14,13 @@ namespace Project_MLD.Controllers
     public class LevelOfTrainningController : ControllerBase
     {
         private readonly ILevelOfTrainningRepository _repository;
+        private readonly IMapper _mapper;
 
-        public LevelOfTrainningController(ILevelOfTrainningRepository repository)
+
+        public LevelOfTrainningController(ILevelOfTrainningRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -37,10 +42,11 @@ namespace Project_MLD.Controllers
             return Ok(existLt);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<LevelOfTrainning>> AddLevelOfTrainning(LevelOfTrainning lt)
-        {
-            await _repository.AddLevelOfTrainning(lt);
+        [HttpPost("AddLevelOfTrainning")]
+        public async Task<ActionResult<LevelOfTrainning>> AddLevelOfTrainning(LevelOfTrainningDTO lt)
+        {   
+            var mapper = _mapper.Map<LevelOfTrainning>(lt);
+            await _repository.AddLevelOfTrainning(mapper);
             return CreatedAtAction(nameof(GetLevelOfTrainningById), new { id = lt.Id }, lt);
         }
 
@@ -55,15 +61,11 @@ namespace Project_MLD.Controllers
             return NoContent();
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateLevelOfTrainning(int id, LevelOfTrainning lt)
+        [HttpPut("UpdateLevelOfTrainning")]
+        public async Task<IActionResult> UpdateLevelOfTrainning(LevelOfTrainningDTO lt)
         {
-            if (id != lt.Id)
-            {
-                return BadRequest();
-            }
-
-            var result = await _repository.UpdateLevelOfTrainning(lt);
+            var mapper = _mapper.Map<LevelOfTrainning>(lt);
+            var result = await _repository.UpdateLevelOfTrainning(mapper);
             if (!result)
             {
                 return NotFound();
