@@ -16,7 +16,6 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  TextareaAutosize,
   Tooltip,
 } from "@mui/material";
 import "./style.scss";
@@ -168,16 +167,16 @@ const SubMenu2Detail = () => {
     const fecthPrincipleByDoc = async () => {
       if (document2Info) {
         if (document2Info?.approveBy !== null) {
-          const res = await apiGetUser(document2Info?.approveBy)
+          const res = await apiGetUser(document2Info?.approveBy);
           if (res && res.data) {
             const principleData: any = res.data;
             setPrinciple(principleData);
           }
         }
       }
-    }
-    fecthPrincipleByDoc()
-  }, [document2Info])
+    };
+    fecthPrincipleByDoc();
+  }, [document2Info]);
 
   useEffect(() => {
     const fecthPrincipleAndTeacher = async () => {
@@ -573,7 +572,7 @@ const SubMenu2Detail = () => {
   return (
     <div className="sub-menu-container" style={{ minWidth: "30rem" }}>
       {location.pathname?.includes("edit") ||
-        location.pathname?.includes("create") ? (
+      location.pathname?.includes("create") ? (
         <div>
           <div className="sub-menu-content" id="main-content">
             <div className="sub-menu-content-header">
@@ -775,7 +774,7 @@ const SubMenu2Detail = () => {
                                     {index + 1}
                                   </TableCell>
                                   <TableCell align="center">
-                                    <TextareaAutosize
+                                    <textarea
                                       value={row.titleName ?? null}
                                       onChange={(e) => {
                                         const newValue = e.target.value;
@@ -788,7 +787,7 @@ const SubMenu2Detail = () => {
                                     />
                                   </TableCell>
                                   <TableCell align="center">
-                                    <TextareaAutosize
+                                    <textarea
                                       value={row.description ?? null}
                                       onChange={(e) => {
                                         const newValue = e.target.value;
@@ -801,7 +800,7 @@ const SubMenu2Detail = () => {
                                     />
                                   </TableCell>
                                   <TableCell align="center">
-                                    <TextareaAutosize
+                                    <textarea
                                       value={row.slot ?? ""}
                                       onChange={(e) => {
                                         const newValue = parseInt(
@@ -830,7 +829,7 @@ const SubMenu2Detail = () => {
                                     />
                                   </TableCell>
                                   <TableCell align="center">
-                                    <TextareaAutosize
+                                    <textarea
                                       value={row.place ?? null}
                                       onChange={(e) => {
                                         const newValue = e.target.value;
@@ -874,19 +873,19 @@ const SubMenu2Detail = () => {
                                         <div className="add-row-button">
                                           {hosIndex ===
                                             row.hostBy.length - 1 && (
-                                              <Add
-                                                style={{
-                                                  color: "black",
-                                                  display: displayAddRow
-                                                    ? "none"
-                                                    : "",
-                                                }}
-                                                className="add-row-icon"
-                                                onClick={() =>
-                                                  handleAddHost(indexGrade, index)
-                                                }
-                                              />
-                                            )}
+                                            <Add
+                                              style={{
+                                                color: "black",
+                                                display: displayAddRow
+                                                  ? "none"
+                                                  : "",
+                                              }}
+                                              className="add-row-icon"
+                                              onClick={() =>
+                                                handleAddHost(indexGrade, index)
+                                              }
+                                            />
+                                          )}
                                           {row.hostBy.length > 1 && (
                                             <Remove
                                               style={{
@@ -910,7 +909,7 @@ const SubMenu2Detail = () => {
                                     ))}
                                   </TableCell>
                                   <TableCell align="center">
-                                    <TextareaAutosize
+                                    <textarea
                                       value={row.collaborateWith ?? null}
                                       onChange={(e) => {
                                         const newValue = e.target.value;
@@ -923,7 +922,7 @@ const SubMenu2Detail = () => {
                                     />
                                   </TableCell>
                                   <TableCell align="center">
-                                    <TextareaAutosize
+                                    <textarea
                                       value={row.condition ?? null}
                                       onChange={(e) => {
                                         const newValue = e.target.value;
@@ -1009,19 +1008,41 @@ const SubMenu2Detail = () => {
                     <i>(Ký và ghi rõ họ tên)</i>
                   </div>
                   <br /> <br />
-                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                    }}
+                  >
                     {/* <input
                       type="text"
                       placeholder="................................................................"
                       style={{ width: "150px" }}
                       onChange={(e) => setToTruong(e.target.value)}
                     /> */}
-                    <img src={userInfoLogin?.signature} alt="" style={{ width: "150px", height: "auto" }} />
-                    <img src={location.pathname.includes("create") ? userInfoLogin?.signature : userInfoDocument?.signature} alt="" style={{ width: "150px", height: "auto" }} />
-                    <p>
-                      {
-                        location.pathname.includes("create") ? userInfoLogin?.firstName + " " + userInfoLogin?.lastName : userInfoDocument?.firstName + " " + userInfoDocument?.lastName
+                    <img
+                      src={userInfoLogin?.signature}
+                      alt=""
+                      style={{ width: "150px", height: "auto" }}
+                    />
+                    <img
+                      src={
+                        location.pathname.includes("create")
+                          ? userInfoLogin?.signature
+                          : userInfoDocument?.signature
                       }
+                      alt=""
+                      style={{ width: "150px", height: "auto" }}
+                    />
+                    <p>
+                      {location.pathname.includes("create")
+                        ? userInfoLogin?.firstName +
+                          " " +
+                          userInfoLogin?.lastName
+                        : userInfoDocument?.firstName +
+                          " " +
+                          userInfoDocument?.lastName}
                     </p>
                   </div>
                 </div>
@@ -1063,21 +1084,31 @@ const SubMenu2Detail = () => {
                   </div>
                   <br />
                   <br />
-                  {
-                    document2Info?.approveBy == null ? <input
+                  {document2Info?.approveBy == null ? (
+                    <input
                       type="text"
                       placeholder="................................................................"
                       style={{ width: "150px" }}
-                    /> :
-                      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                        <img src={principle?.signature} alt="" style={{ width: "150px", height: "auto" }} />
-                        <p>
-                          {
-                            document2Info?.approveBy ?? principle?.firstName + " " + principle?.lastName
-                          }
-                        </p>
-                      </div>
-                  }
+                    />
+                  ) : (
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                      }}
+                    >
+                      <img
+                        src={principle?.signature}
+                        alt=""
+                        style={{ width: "150px", height: "auto" }}
+                      />
+                      <p>
+                        {document2Info?.approveBy ??
+                          principle?.firstName + " " + principle?.lastName}
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -1175,19 +1206,22 @@ const SubMenu2Detail = () => {
                 }}
               >
                 <span>Tình trạng thẩm định:</span>
-                {
-                  user?.role === "principle" && <div style={{ display: "flex", columnGap: "10px" }}>
+                {user?.role === "principle" && (
+                  <div style={{ display: "flex", columnGap: "10px" }}>
                     <div
                       className="action-button"
                       onClick={handleClickOpenAccept}
                     >
                       Chấp thuận
                     </div>
-                    <div className="action-button" onClick={handleClickOpenDeny}>
+                    <div
+                      className="action-button"
+                      onClick={handleClickOpenDeny}
+                    >
                       Từ chối
                     </div>
                   </div>
-                }
+                )}
               </div>
             </div>
             <div className="sub-menu-note">
