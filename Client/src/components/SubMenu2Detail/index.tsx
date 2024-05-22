@@ -264,44 +264,52 @@ const SubMenu2Detail = () => {
     }
   }, [location.pathname]);
 
+
   useEffect(() => {
-      const fetchSpecializedDepartmentById = async () => {
-        if (!location.pathname.split("/")[3]) {
-          if (userInfoLogin) {
-            const res = await apiGetSpecializedDepartmentById(
-              userInfoLogin?.departmentId
-            );
-            if (res && res.data) {
-              const departmentData: any = res.data;
-              setSpecializedDepartment(departmentData);
-            }
+    const fetchSpecializedDepartmentById = async () => {
+      const docId = location.pathname.split("/")[3];
+      console.log(docId);
+      if (!docId) {
+        // Trường hợp không có docId, lấy dữ liệu từ userInfoLogin
+        if (userInfoLogin) {
+          const res = await apiGetSpecializedDepartmentById(userInfoLogin.departmentId);
+          if (res && res.data) {
+            const departmentData = res.data;
+            setSpecializedDepartment(departmentData);
           }
-        } else if (location.pathname.split("/")[3]) {
-          const fecthDoc2 = await apiGetSubMenu2ById(
-            location.pathname.split("/")[3]
-          );
-          if (fecthDoc2 && fecthDoc2.data) {
-            const doc2Data: any = fecthDoc2.data;
-            setDocument2Info(doc2Data);
-            const fecthUserResult = await apiGetUser(doc2Data?.userId);
-            if (fecthUserResult && fecthUserResult.data) {
-              const userData: any = fecthUserResult.data;
-              setUserInfoDocument(userData);
-              const res = await apiGetSpecializedDepartmentById(
-                userData?.departmentId
-              );
-              if (res && res.data) {
-                const departmentData: any = res.data;
-                setSpecializedDepartment(departmentData);
-              }
-            }
-          }
+  
+          // Gọi hàm fetchAllUser với userInfoLogin
+          fetchAllUser(userInfoLogin);
         }
-      };
-      fetchSpecializedDepartmentById();
-
-
-  }, [location.pathname, userInfoLogin]);
+      } else {
+        // Trường hợp có docId, lấy dữ liệu từ userInfoDocument
+        if (userInfoDocument) {
+          const res = await apiGetSpecializedDepartmentById(userInfoDocument.departmentId);
+          if (res && res.data) {
+            const departmentData = res.data;
+            setSpecializedDepartment(departmentData);
+          }
+  
+          // Gọi hàm fetchAllUser với userInfoDocument
+          fetchAllUser(userInfoDocument);
+        }
+      }
+    };
+  
+    const fetchAllUser = async (userInfo : User) => {
+      if (userInfo) {
+        const res = await apiGetUserHostBy(userInfo.departmentId);
+        if (res && res.data) {
+          const usersData: User[] = res.data;
+          setUsers(usersData);
+          console.log(users)
+        }
+      }
+    };
+  
+    fetchSpecializedDepartmentById();
+  }, [location.pathname, userInfoLogin, userInfoDocument]);
+  
 
   useEffect(() => {
     const fetchGrades = async () => {
@@ -315,18 +323,19 @@ const SubMenu2Detail = () => {
     fetchGrades();
   }, []);
 
-  useEffect(() => {
-      const fetchAllUser = async () => {
-        if (userInfoLogin && !location.pathname.includes("view") ) {
-          const res = await apiGetUserHostBy(userInfoDocument?.departmentId ?? userInfoLogin?.departmentId);
-          if (res && res.data) {
-            const usersData: User[] = res.data;
-            setUsers(usersData);
-          }
-        }
-      };
-      fetchAllUser();
-  }, [userInfoLogin]);
+  // useEffect(() => {
+  //     const fetchAllUser = async () => {
+  //       if (userInfoLogin  ) {
+  //         console.log(userInfoDocument);
+  //         const res = await apiGetUserHostBy(userInfoDocument?.departmentId ?? userInfoLogin?.departmentId);
+  //         if (res && res.data) {
+  //           const usersData: User[] = res.data;
+  //           setUsers(usersData);
+  //         }
+  //       }
+  //     };
+  //     fetchAllUser();
+  // }, [userInfoLogin]);
 
   const handleClickOpen = async () => {
     setDisplayAddRow(!displayAddRow);
@@ -548,7 +557,7 @@ const SubMenu2Detail = () => {
       return accumulator;
     }, []);
     const rowsWithDocumentId = flattenedRows.map((row) => {
-      return { ...row, document2Id :  document2Info?.id ?? documentId };
+      return { ...row, document2Id: document2Info?.id ?? documentId };
     });
 
     if (rowsWithDocumentId) {
@@ -1194,7 +1203,7 @@ const SubMenu2Detail = () => {
                 }
               </div>
             </div>
-            
+
           </div>
         </>
       )}
@@ -1381,7 +1390,7 @@ const SubMenu2Detail = () => {
                   docId: document2Info?.id,
                 });
                 alert("Thành công! Hãy chờ đợi trong giây lát để chuyển trang");
-                  navigate(`/sub-menu/2`);
+                navigate(`/sub-menu/2`);
               } catch (error) {
                 alert("Không thể xét duyệt");
               }
@@ -1441,7 +1450,7 @@ const SubMenu2Detail = () => {
                   docId: document2Info?.id,
                 });
                 alert("Thành công! Hãy chờ đợi trong giây lát để chuyển trang");
-                  navigate(`/sub-menu/1`);
+                navigate(`/sub-menu/1`);
               } catch (error) {
                 alert("Không thể từ chối");
               }
