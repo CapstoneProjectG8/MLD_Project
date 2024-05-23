@@ -10,14 +10,15 @@ public class Document1ControllerTests
 {
     private readonly Mock<IDocument1Repository> _mockRepo;
     private readonly Mock<IMapper> _mockMapper;
-    private readonly Document1Controller _controller;
     private readonly Mock<IGradeRepository> _mockGradeRepository;
     private readonly Mock<IUserRepository> _mockUserRepository;
+    private readonly Mock<INotificationRepository> _mockNotificationRepository;
     private readonly Mock<IDocument1CuriculumDistributionRepository> _mockCuriculumDistributionDoc1Repository;
     private readonly Mock<IDocument1PeriodicAssessmentsRepository> _mockPeriodicAssessmentDoc1Repository;
     private readonly Mock<IDocument1SelectedTopicsRepository> _mockSelectedTopicsDoc1Repository;
     private readonly Mock<IDocument1SubjectRoomsRepository> _mockSubjectRoomsDoc1Repository;
     private readonly Mock<IDocument1TeachingEquipmentRepository> _mockTeachingEquipmentDoc1Repository;
+    private readonly Document1Controller _controller;
 
     public Document1ControllerTests()
     {
@@ -25,12 +26,24 @@ public class Document1ControllerTests
         _mockMapper = new Mock<IMapper>();
         _mockGradeRepository = new Mock<IGradeRepository>();
         _mockUserRepository = new Mock<IUserRepository>();
+        _mockNotificationRepository = new Mock<INotificationRepository>();
         _mockCuriculumDistributionDoc1Repository = new Mock<IDocument1CuriculumDistributionRepository>();
         _mockPeriodicAssessmentDoc1Repository = new Mock<IDocument1PeriodicAssessmentsRepository>();
         _mockSelectedTopicsDoc1Repository = new Mock<IDocument1SelectedTopicsRepository>();
         _mockSubjectRoomsDoc1Repository = new Mock<IDocument1SubjectRoomsRepository>();
         _mockTeachingEquipmentDoc1Repository = new Mock<IDocument1TeachingEquipmentRepository>();
-        _controller = new Document1Controller(_mockRepo.Object, _mockMapper.Object, _mockGradeRepository.Object, _mockUserRepository.Object, _mockCuriculumDistributionDoc1Repository.Object, _mockPeriodicAssessmentDoc1Repository.Object, _mockSelectedTopicsDoc1Repository.Object, _mockSubjectRoomsDoc1Repository.Object, _mockTeachingEquipmentDoc1Repository.Object);
+
+        _controller = new Document1Controller(
+            _mockRepo.Object,
+            _mockMapper.Object,
+            _mockGradeRepository.Object,
+            _mockUserRepository.Object,
+            _mockNotificationRepository.Object,
+            _mockCuriculumDistributionDoc1Repository.Object,
+            _mockPeriodicAssessmentDoc1Repository.Object,
+            _mockSelectedTopicsDoc1Repository.Object,
+            _mockSubjectRoomsDoc1Repository.Object,
+            _mockTeachingEquipmentDoc1Repository.Object);
     }
 
     [Fact]
