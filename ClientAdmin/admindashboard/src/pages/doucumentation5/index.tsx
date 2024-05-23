@@ -1,9 +1,12 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
-import { Button, Col, Form, Input, message, Modal, Row, Space, Table, Typography } from 'antd';
-import axios from 'axios';
+import type { FC } from 'react';
+
 import { CloseCircleOutlined, SearchOutlined } from '@ant-design/icons';
 import { CheckCircleOutlined } from '@ant-design/icons/lib/icons';
+import { Button, Col, Form, Input, message, Modal, Row, Space, Table, Typography } from 'antd';
+import axios from 'axios';
+import React, { useEffect, useRef, useState } from 'react';
 import Highlighter from 'react-highlight-words';
+
 const { Title, Paragraph } = Typography;
 
 interface Document {
@@ -30,13 +33,15 @@ const DocumentationPage5: FC = () => {
   const [searchText, setSearchText] = useState('');
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef(null);
+
   const handleConfirmBanUnban = (doc: Document, action: string) => {
     setSelectedDoc(doc);
     setActionToPerform(action);
     setConfirmModalVisible(true);
   };
+
   useEffect(() => {
-    fetch('https://localhost:7241/api/Document5')
+    fetch('https://localhost:7241/api/Document5/GetAllDocument5s')
       .then(response => response.json())
       .then(data => setDocuments(data))
       .catch(error => console.error('Error fetching data:', error));
@@ -67,61 +72,63 @@ const DocumentationPage5: FC = () => {
     setModalVisible(false);
     form.resetFields();
   };
+
   const handViewFileModal = () => {
     if (selectedDocument?.linkFile) {
       window.open(selectedDocument.linkFile, '_blank');
     }
-  }
+  };
+
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
     setSearchText(selectedKeys[0]);
     setSearchedColumn(dataIndex);
   };
 
-  const handleReset = (clearFilters) => {
+  const handleReset = clearFilters => {
     clearFilters();
     setSearchText('');
   };
 
-  const getColumnSearchProps = (dataIndex) => ({
-    filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters}) => (
-      <div style={{padding: 8}}>
+  const getColumnSearchProps = dataIndex => ({
+    filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+      <div style={{ padding: 8 }}>
         <Input
           ref={searchInput}
           placeholder={`Search ${dataIndex}`}
           value={selectedKeys[0]}
-          onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
           onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-          style={{width: 188, marginBottom: 8, display: 'block'}}
+          style={{ width: 188, marginBottom: 8, display: 'block' }}
         />
         <Space>
           <Button
             type="primary"
             onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
-            icon={<SearchOutlined/>}
+            icon={<SearchOutlined />}
             size="small"
-            style={{width: 90}}
+            style={{ width: 90 }}
           >
             Search
           </Button>
-          <Button onClick={() => handleReset(clearFilters)} size="small" style={{width: 90}}>
+          <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 90 }}>
             Reset
           </Button>
         </Space>
       </div>
     ),
-    filterIcon: (filtered) => <SearchOutlined style={{color: filtered ? '#1890ff' : undefined}}/>,
+    filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
     onFilter: (value, record) =>
       record[dataIndex] ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()) : '',
-    onFilterDropdownVisibleChange: (visible) => {
+    onFilterDropdownVisibleChange: visible => {
       if (visible) {
         setTimeout(() => searchInput.current.select(), 100);
       }
     },
-    render: (text) =>
+    render: text =>
       searchedColumn === dataIndex ? (
         <Highlighter
-          highlightStyle={{backgroundColor: '#ffc069', padding: 0}}
+          highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
           searchWords={[searchText]}
           autoEscape
           textToHighlight={text ? text.toString() : ''}
@@ -170,9 +177,11 @@ const DocumentationPage5: FC = () => {
     {
       title: 'Created Date',
       dataIndex: 'date',
-      key: 'date',sorter: (a, b) => {
+      key: 'date',
+      sorter: (a, b) => {
         const dateA = new Date(a.createdDate);
         const dateB = new Date(b.createdDate);
+
         return dateA - dateB;
       },
     },
@@ -200,10 +209,12 @@ const DocumentationPage5: FC = () => {
         onCancel={handleCloseModal}
         width={1000}
         footer={[
-          <Button key="submit" onClick={handViewFileModal}>View file</Button>,
+          <Button key="submit" onClick={handViewFileModal}>
+            View file
+          </Button>,
           <Button key="cancel" onClick={handleCloseModal}>
             Close
-          </Button>
+          </Button>,
         ]}
       >
         <Form form={form} layout="vertical">
