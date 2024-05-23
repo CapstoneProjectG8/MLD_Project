@@ -48,6 +48,12 @@ namespace Project_MLD.Service.Repository
             return await _context.Classes.Where(x => x.GradeId == gradeId).ToListAsync();
         }
 
+        public async Task<Class> GetClassIdByClassName(string className)
+        {
+            var @class = await _context.Classes.FirstOrDefaultAsync(x => x.Name == className);
+            return @class;
+        }
+
         public async Task<bool> UpdateClass(Class cl)
         {
             var existClass = await GetClassById(cl.Id);
@@ -56,7 +62,7 @@ namespace Project_MLD.Service.Repository
                 return false;
             }
             var properties = typeof(Class).GetProperties();
-            foreach(var property in properties)
+            foreach (var property in properties)
             {
                 var updatedValue = property.GetValue(cl);
                 if (updatedValue != null)

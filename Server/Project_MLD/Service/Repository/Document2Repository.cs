@@ -132,5 +132,13 @@ namespace Project_MLD.Service.Repository
                 .Include(x => x.User)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<Document2>> GetDoc2sByDepId(int depId)
+        {
+            return await _context.Document2s
+                .Include(x => x.User)
+                .Where(x => x.User.DepartmentId == depId && x.IsApprove == 3)
+                .ToListAsync();
+        }
     }
 }

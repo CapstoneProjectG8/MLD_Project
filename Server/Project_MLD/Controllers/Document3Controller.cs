@@ -18,11 +18,14 @@ namespace Project_MLD.Controllers
         private readonly IDocument3SelectedTopicsRepository _selectedTopicsRepository;
         private readonly IUserRepository _userRepository;
         private readonly INotificationRepository _notificationRepository;
-
-        public Document3Controller(IDocument3Repository repository, IMapper mapper, 
+        private readonly IClassRepository _classRepository;
+        private readonly ICurriculumDistributionRepository _cdRepository;
+        private readonly ISelectedTopicsRepository _stRepository;
+        public Document3Controller(IDocument3Repository repository, IMapper mapper,
             IDocument3CurriculumDistributionRepository curriculumDistributionRepository,
             IDocument3SelectedTopicsRepository selectedTopicsRepository, IUserRepository userRepository,
-            INotificationRepository notificationRepository)
+            INotificationRepository notificationRepository, IClassRepository classRepository,
+            ICurriculumDistributionRepository cdRepository, ISelectedTopicsRepository stRepository)
         {
             _repository = repository;
             _mapper = mapper;
@@ -30,6 +33,9 @@ namespace Project_MLD.Controllers
             _selectedTopicsRepository = selectedTopicsRepository;
             _userRepository = userRepository;
             _notificationRepository = notificationRepository;
+            _classRepository = classRepository;
+            _cdRepository = cdRepository;
+            _stRepository = stRepository;
         }
 
         [HttpGet("GetAllDoc3s")]
@@ -209,5 +215,74 @@ namespace Project_MLD.Controllers
                 return StatusCode(500, $"An error occurred while delete Document3 Foreign Table: {ex.Message}");
             }
         }
+
+        [HttpGet("GetDoc3InformationByDoc3Id")]
+        public async Task<ActionResult<object>> GetDoc3InformationByDoc3Id(int doc3Id)
+        {
+            var doc3CurriculumNames = new List<object>();
+            var doc3SelectedTopicsNames = new List<object>();
+
+            var doc3Info = await _repository.GetDocument3ById(doc3Id);
+            if (doc3Info == null)
+            {
+                return NotFound();
+            }
+
+
+            var doc3SelectedTopics = await _selectedTopicsRepository.GetDocument3SelectedTopicsByDocument3Id(doc3Id);
+            foreach (var item in doc3SelectedTopics)
+            {
+                var st = await _stRepository.GetSelectedTopicById(item.Id);
+                doc3SelectedTopicsNames.Add(st.Name);
+            }
+
+            var doc3Curriculum = await _curriculumDistributionRepository.GetCurriculumDistributionByDocument3Id(doc3Id);
+
+            foreach (var item in doc3Curriculum)
+            {
+                var cd = await _cdRepository.GetCurriculumDistributionById(item.Id);
+                doc3CurriculumNames.Add(cd.Name);
+            }
+
+            var @class = await _classRepository.GetClassIdByClassName(doc3Info.ClaasName);
+
+            // Tạo đối tượng kết quả
+            var result = new
+            {
+                Document3Info = new
+                {
+                    UserId = doc3Info.UserId,
+                    ClassId = @class.Id,
+                    SubjectId = doc3Info.Document1.SubjectId
+                },
+                SelectedTopicsNames = doc3SelectedTopicsNames,
+                CurriculumNames = doc3CurriculumNames
+            };
+
+            // Trả về kết quả
+            return Ok(result);
+        }
+
+        [HttpGet("GetAllDoc3sByDoc1Id")]
+        public async Task<ActionResult<IEnumerable<Document3>>> GetAllDoc3sByDoc1Id(int doc1id)
+        {
+            var document3s = await _repository.GetAllDoc3sByDoc1Id(doc1id);
+            var mapDocument = _mapper.Map<List<Document3DTO>>(document3s);
+            foreach (var document3 in mapDocument)
+            {
+                if (document3.ApproveBy.HasValue)
+                {
+                    var getUser = await _userRepository.GetUserById(document3.ApproveBy.Value);
+                    if (getUser != null)
+                    {
+                        document3.ApproveByName = getUser.FirstName + " " + getUser.LastName;
+                    }
+                }
+                var getUserName = await _userRepository.GetUserById(document3.UserId);
+                document3.UserFullName = getUserName.FirstName + " " + getUserName.LastName;
+            }
+            return Ok(mapDocument);
+        }
     }
+
 }

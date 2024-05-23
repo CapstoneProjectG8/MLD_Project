@@ -113,7 +113,9 @@ namespace Project_MLD.Mapper
                 .ForMember(x => x.UserFullName, y => y.MapFrom(src => src.User.FirstName + " " + src.User.LastName))
                 .ReverseMap();
             CreateMap<Document2DTO, Document2>()
-                .ForMember(dest => dest.User, opt => opt.Ignore()) // Ignore complex User property
+                .ForMember(dest => dest.Document2Grades, opt => opt.Ignore())
+                .ForMember(dest => dest.IsApproveNavigation, opt => opt.Ignore())
+                .ForMember(dest => dest.User, opt => opt.Ignore())// Ignore complex User property
                 .ReverseMap();
 
             //Document2Grade

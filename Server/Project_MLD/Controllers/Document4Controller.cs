@@ -41,7 +41,7 @@ namespace Project_MLD.Controllers
             var existDocument4 = await _repository.GetDoc4TeachingPlannerByDoc4Id(document4Id);
 
             //check leader 
-            var leader = await _userRepository.GetUserIsRole(userLoginId,3);
+            var leader = await _userRepository.GetUserIsRole(userLoginId, 3);
             //check principle
             var principle = await _userRepository.GetUserIsRole(userLoginId, 4);
 
@@ -182,6 +182,14 @@ namespace Project_MLD.Controllers
                 return NotFound("No Document 4 Found");
             }
             return Ok(doc4);
+        }
+
+        [HttpGet("GetDocument4sByDoc3Id")]
+        public async Task<IActionResult> GetDocument4sByDoc3Id(int doc3id)
+        {
+            var doc4 = await _repository.GetDoc4sByDoc3Id(doc3id);
+            var dataMap = _mapper.Map<List<Document4DTO>>(doc4);
+            return Ok(dataMap);
         }
     }
 }

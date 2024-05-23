@@ -33,6 +33,15 @@ namespace Project_MLD.Service.Repository
             return true;
         }
 
+        public async Task<IEnumerable<Document3>> GetAllDoc3sByDoc1Id(int doc1Id)
+        {
+            return await _context.Document3s
+                .Include(x => x.User)
+                .Include(x => x.Document1)
+                .Where(x => x.Document1Id == doc1Id && x.IsApprove == 3)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<Document3>> GetAllDoc3sWithCondition(bool? status, int? isApprove)
         {
             IQueryable<Document3> query = _context.Document3s;
