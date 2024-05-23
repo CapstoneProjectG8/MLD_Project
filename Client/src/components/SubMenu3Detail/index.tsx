@@ -157,17 +157,17 @@ const SubMenu3Detail = () => {
       if (response?.status === 200) {
         const res = await apiUpdateSubMenu3(
           {
-            id: document3Info?.id ?? documentId,
+            id: documentId,
             document1Id: location.pathname.includes("create") ? parseInt(document1Id) : document3Info?.document1Id,
             linkFile: response?.data,
             userId: user?.userId,
           },
           documentId
         );
-        if (res && (document3Info?.id ?? documentId)) {
+        if (res && documentId) {
           setDisplayAddRow(!displayAddRow);
           alert("Thành công! Hãy chờ đợi trong giây lát để chuyển trang");
-          navigate(`/sub-menu-3/detail-view/${document3Info?.id ?? documentId}`);
+          navigate(`/sub-menu-3/detail-view/${documentId}`);
         }
       }
     } catch (error) {
@@ -247,32 +247,32 @@ const SubMenu3Detail = () => {
 
   useEffect(() => {
     const fetchSpecializedDepartmentById = async () => {
-     
-        let document1IdInit = 0;
-        if (location.pathname.includes("create"))
-          document1IdInit = parseInt(location.pathname.split("/")[3]);
-        else if (document3Info) document1IdInit = document3Info?.document1Id;
-        if (document1IdInit !== 0) {
-          const fecthDoc1 = await apiGetSubMenu1ById(document1IdInit);
-          if (fecthDoc1 && fecthDoc1.data) {
-            const doc1Data: any = fecthDoc1.data;
-            setDocument1Info(doc1Data);
-            const fecthUserResult = await apiGetUser(doc1Data?.userId);
-            if (fecthUserResult && fecthUserResult.data) {
-              const userData: any = fecthUserResult.data;
-              console.log("userData: ", userData);
-              setUserInfoDocument(userData);
-              const res = await apiGetSpecializedDepartmentById(
-                userData?.departmentId
-              );
-              if (res && res.data) {
-                const departmentData: any = res.data;
-                setSpecializedDepartment(departmentData);
-              }
+
+      let document1IdInit = 0;
+      if (location.pathname.includes("create"))
+        document1IdInit = parseInt(location.pathname.split("/")[3]);
+      else if (document3Info) document1IdInit = document3Info?.document1Id;
+      if (document1IdInit !== 0) {
+        const fecthDoc1 = await apiGetSubMenu1ById(document1IdInit);
+        if (fecthDoc1 && fecthDoc1.data) {
+          const doc1Data: any = fecthDoc1.data;
+          setDocument1Info(doc1Data);
+          const fecthUserResult = await apiGetUser(doc1Data?.userId);
+          if (fecthUserResult && fecthUserResult.data) {
+            const userData: any = fecthUserResult.data;
+            console.log("userData: ", userData);
+            setUserInfoDocument(userData);
+            const res = await apiGetSpecializedDepartmentById(
+              userData?.departmentId
+            );
+            if (res && res.data) {
+              const departmentData: any = res.data;
+              setSpecializedDepartment(departmentData);
             }
           }
         }
-      
+      }
+
     };
 
     const fetchTeachingEquipment = async () => {
@@ -1399,6 +1399,13 @@ const SubMenu3Detail = () => {
                     {document3Info?.userFullName}
                   </u>
                 </div>
+                <div className="right-action" onClick={() => navigate(`/sub-menu-4/list-view/${document3Info?.id}`)}>
+                  <strong>
+                    <u className="underline-blue">
+                      Xem các kế hoạch bài dạy
+                    </u>
+                  </strong>
+                </div>
               </div>
               <div className="sub-menu-row">
                 <div>
@@ -1415,6 +1422,13 @@ const SubMenu3Detail = () => {
               <div className="sub-menu-row">
                 <div>
                   <strong>Ngày gửi: </strong> {document3Info?.createdDate}
+                </div>
+                <div className="right-action" onClick={() => navigate(`/upload-sub-menu-4/${document3Info?.id}`)}>
+                  <strong>
+                    <u className="underline-blue">
+                      Tạo kế hoạch bài dạy
+                    </u>
+                  </strong>
                 </div>
               </div>
             </div>
@@ -1445,7 +1459,11 @@ const SubMenu3Detail = () => {
                     </div>
                   </div>
                 </div>
-              </div>              
+              </div>
+              <div className="sub-menu-note">
+                Ghi chú <br />
+                <textarea name="" id="" rows={8}></textarea>
+              </div>
             </div>
           </>
         )}
