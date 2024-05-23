@@ -12,7 +12,7 @@ namespace Project_MLD.Service.Interface
         Task<bool> DeleteDocument4(int id);
         Task<IEnumerable<Document4>> GetDocument4sWithCondition(bool? status, int? isApprove);
         Task<IEnumerable<object>> GetDocument4ByUserSpecialiedDepartment(List<int> listId);
-        Task<IEnumerable<Document4>> GetDocument4sByUserId(int userId);
+        Task<IEnumerable<Document4>> GetDocument4sByUserId(int userId, int approveId);
         Task<object> GetDoc4InformationByDoc4Id(int id);
         Task<IEnumerable<Document4>> GetDoc4sByDoc3Id(int doc3Id);
 

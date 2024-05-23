@@ -73,7 +73,7 @@ namespace Project_MLD.Controllers
                             return NotFound("Document 3 not found");
                         }
                     case 4:
-                        var doc4 = await _document4Repository.GetDocument4sByUserId(userId);
+                        var doc4 = await _document4Repository.GetDocument4sByUserId(userId, approveId);
                         if (doc4 != null)
                         {
                             var mapperDoc4 = _mapper.Map<List<Document4DTO>>(doc4);
@@ -147,6 +147,7 @@ namespace Project_MLD.Controllers
                 throw new Exception(ex.Message);
             }
         }
+
 
     }
 }

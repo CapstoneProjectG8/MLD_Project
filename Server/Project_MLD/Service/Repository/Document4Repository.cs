@@ -100,11 +100,11 @@ namespace Project_MLD.Service.Repository
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Document4>> GetDocument4sByUserId(int userId)
+        public async Task<IEnumerable<Document4>> GetDocument4sByUserId(int userId, int approveid)
         {
             return await _context.Document4s
                .Include(x => x.TeachingPlanner)
-               .Where(x => x.TeachingPlanner.UserId == userId)
+               .Where(x => x.TeachingPlanner.UserId == userId && x.IsApprove == approveid)
                .ToListAsync();
         }
 
