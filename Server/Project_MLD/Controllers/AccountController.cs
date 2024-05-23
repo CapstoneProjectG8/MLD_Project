@@ -75,6 +75,50 @@ namespace Project_MLD.Controllers
                 return StatusCode(400, ex.Message);
             }
         }
+        [AllowAnonymous]
+        [HttpPost("Login2")]
+        public IActionResult Login2([FromBody] LoginModel login)
+        {
+            try
+            {
+                var accountLogin = new AccountDTO();
+                accountLogin.Username = login.Username;
+                accountLogin.Password = login.Password;
+
+                //check username hoặc password nếu null
+                if (accountLogin.Username == null || accountLogin.Password == null)
+                {
+                    return BadRequest("Please fill in all required fields.");
+                }
+                var authenticatedAccount = _repository.AuthenticateAccountByUser(accountLogin.Username, accountLogin.Password);
+                if (authenticatedAccount == null)
+                {
+                    return NotFound("User Not Found");
+                }
+                // Generate the token
+                var token = _repository.GenerateToken(authenticatedAccount);
+                if (token == null)
+                {
+                    return BadRequest("Unable to generate token.");
+                }
+                // Return token and account info
+                var response = new
+                {
+                    Token = token,
+                    AccountInfo = new
+                    {
+                        Active = authenticatedAccount.Account.Active,
+                        RoleId = authenticatedAccount.Account.RoleId
+                    }
+                };
+
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, ex.Message);
+            }
+        }
 
         [HttpGet("CheckAuthenciation")]
         public IActionResult CheckAuthenciation()
