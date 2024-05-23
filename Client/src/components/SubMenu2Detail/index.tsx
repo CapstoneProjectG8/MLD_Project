@@ -282,13 +282,21 @@ const SubMenu2Detail = () => {
           fetchAllUser(userInfoLogin);
         }
       } else {
+        const fecthDoc2 = await apiGetSubMenu2ById(
+          docId
+        );
         // Trường hợp có docId, lấy dữ liệu từ userInfoDocument
-        if (userInfoDocument) {
-          const res = await apiGetSpecializedDepartmentById(userInfoDocument.departmentId);
-          if (res && res.data) {
-            const departmentData = res.data;
-            setSpecializedDepartment(departmentData);
-          }
+        if (fecthDoc2 && fecthDoc2.data) {
+          const doc2Data: any = fecthDoc2.data;
+          setDocument2Info(doc2Data);
+          const fecthUserResult = await apiGetUser(doc2Data?.userId);
+          if (fecthUserResult && fecthUserResult.data) {
+            const userData: any = fecthUserResult.data;
+            setUserInfoDocument(userData);
+            const res = await apiGetSpecializedDepartmentById(
+              userData?.departmentId
+            );
+        }
   
           // Gọi hàm fetchAllUser với userInfoDocument
           fetchAllUser(userInfoDocument);
@@ -296,7 +304,7 @@ const SubMenu2Detail = () => {
       }
     };
   
-    const fetchAllUser = async (userInfo : User) => {
+    const fetchAllUser = async (userInfo : any) => {
       if (userInfo) {
         const res = await apiGetUserHostBy(userInfo.departmentId);
         if (res && res.data) {

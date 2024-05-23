@@ -27,6 +27,9 @@ const SubMenu4Detail = () => {
   const [document4Info, setDocument4Info] = useState<any>();
   const [openReport, setOpenReport] = useState(false);
   const [openFeedback, setOpenFeedback] = useState(false);
+  
+  const [openAccept, setOpenAccept] = useState(false);
+  const [openDeny, setOpenDeny] = useState(false);
   const [openRemove, setOpenRemove] = useState(false);
   const [reasonReport, setReasonReport] = useState("");
   const [descriptionRp, setDescriptionRp] = useState("");
@@ -56,6 +59,13 @@ const SubMenu4Detail = () => {
 
   const handleCloseFeedback = () => {
     setOpenFeedback(false);
+  };
+  const handleClickOpenAccept = () => {
+    setOpenAccept(true);
+  };
+
+  const handleClickOpenDeny = () => {
+    setOpenDeny(true);
   };
 
   const handleClickOpenRemove = () => {
@@ -113,84 +123,61 @@ const SubMenu4Detail = () => {
         </div>
       </div>
       <div className="sub-menu-infomation">
-        <div className="sub-menu-row">
+            <div className="sub-menu-row">
+              <div>
+                <i>
+                  {document4Info?.isApprove === 3
+                    ? "(Tài liệu đã được thẩm định)"
+                    : "(Tài liệu chưa được thẩm định)"}
+                </i>
+              </div>
+            </div>
+            <div className="sub-menu-row">
+              <div>
+                <strong>Người gửi: </strong>{" "}
+                <u className="underline-blue">{document4Info?.userFullName}</u>
+              </div>
+            </div>
+            <div className="sub-menu-row">
+              <div>
+                <strong>Ngày gửi: </strong> {document4Info?.createdDate}
+              </div>
+              <div className="right-action" onClick={handleClickOpenReport}>
+                <strong>
+                  <u className="underline-blue">Báo cáo tài liệu có sai sót</u>
+                </strong>
+              </div>
+            </div>
+          </div>
           <div>
-            <strong>Nguồn: </strong> https://baigiang.violet.vn
+            <div className="sub-menu-action">
+              <div
+                className="verify"
+                style={{
+                  display:
+                    user?.role === "Leader" && document4Info?.isApprove === 2
+                      ? "flex"
+                      : "none",
+                }}
+              >
+                <span>Tình trạng thẩm định:</span>
+                {
+                  <div style={{ display: "flex", columnGap: "10px" }}>
+                    <div
+                      className="action-button"
+                      onClick={handleClickOpenAccept}
+                    >
+                      Chấp thuận
+                    </div>
+                    <div className="action-button" onClick={handleClickOpenDeny}>
+                      Từ chối
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+
           </div>
-          <div className="right-action" onClick={handleClickOpenReport}>
-            <strong>
-              <u className="underline-blue">Báo cáo tài liệu có sai sót</u>
-            </strong>
-          </div>
-        </div>
-        <div className="sub-menu-row">
-          <div>
-            <strong>Người gửi: </strong>{" "}
-            <u className="underline-blue">Sam Dung</u>
-          </div>
-        </div>
-        <div className="sub-menu-row">
-          <div>
-            <strong>Ngày gửi: </strong> 10h:34' 14-01-2024
-          </div>
-        </div>
-        <div className="sub-menu-row">
-          <div>
-            <strong>Dung lượng: </strong> 19/9 KB
-          </div>
-          <div className="right-action" onClick={handleClickOpenFeedback}>
-            <strong>
-              <u className="underline-blue">Tạo đánh giá của bài dạy</u>
-            </strong>
-          </div>
-        </div>
-        <div className="sub-menu-row">
-          <div>
-            <strong>Dung lượng: </strong> 19/9 KB
-          </div>
-          <div
-            className="right-action"
-            onClick={() => {
-              navigate(
-                `/sub-menu-5/detail-view/${location.pathname.split("/")[3]}`
-              );
-            }}
-          >
-            <strong>
-              <u className="underline-blue">
-                Đi đến phụ lục đánh giá của bài dạy
-              </u>
-            </strong>
-          </div>
-        </div>
-        <div className="sub-menu-row">
-          <div>
-            <strong>Dung lượng: </strong> 19/9 KB
-          </div>
-          <div
-            className="right-action"
-            onClick={() => {
-              navigate("/sub-menu/5");
-            }}
-          >
-            <strong>
-              <u className="underline-blue">Xem các đánh giá khác</u>
-            </strong>
-          </div>
-        </div>
-        <div className="sub-menu-row">
-          <div>
-            <strong>Số lượt tải: </strong>25
-          </div>
-          <div className="right-action"></div>
-        </div>
-        <div className="sub-menu-row">
-          <div>
-            <strong>Số lượt thích: </strong> 0 người
-          </div>
-          <div className="right-action"></div>
-        </div>
-      </div>
       <Dialog
         open={openReport}
         onClose={handleCloseReport}
