@@ -232,7 +232,7 @@ namespace Project_MLD.Controllers
             var doc3SelectedTopics = await _selectedTopicsRepository.GetDocument3SelectedTopicsByDocument3Id(doc3Id);
             foreach (var item in doc3SelectedTopics)
             {
-                var st = await _stRepository.GetSelectedTopicById(item.Id);
+                var st = await _stRepository.GetSelectedTopicById(item.SelectedTopics.Id);
                 doc3SelectedTopicsNames.Add(st.Name);
             }
 
@@ -240,7 +240,7 @@ namespace Project_MLD.Controllers
 
             foreach (var item in doc3Curriculum)
             {
-                var cd = await _cdRepository.GetCurriculumDistributionById(item.Id);
+                var cd = await _cdRepository.GetCurriculumDistributionById(item.Curriculum.Id);
                 doc3CurriculumNames.Add(cd.Name);
             }
 

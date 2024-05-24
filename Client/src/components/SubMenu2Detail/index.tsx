@@ -83,7 +83,7 @@ const SubMenu2Detail = () => {
         titleName: "",
         description: "",
         slot: null,
-        time: "",
+        time: formatDate(Date.now()),
         place: "",
         hostBy: [0],
         collaborateWith: "",
@@ -191,6 +191,8 @@ const SubMenu2Detail = () => {
     };
     fecthPrincipleAndTeacher();
   }, [specializedDepartment?.id]);
+
+
   useEffect(() => {
     const fecthHostByList = async () => {
       if (document2Info) {
@@ -316,7 +318,7 @@ const SubMenu2Detail = () => {
     };
   
     fetchSpecializedDepartmentById();
-  }, [location.pathname, userInfoLogin, userInfoDocument]);
+  }, [location.pathname, userInfoLogin]);
   
 
   useEffect(() => {
@@ -537,7 +539,7 @@ const SubMenu2Detail = () => {
         titleName: "",
         description: "",
         slot: null,
-        time: "",
+        time: formatDate(Date.now()),
         place: "",
         hostBy: [0],
         collaborateWith: "",
@@ -688,7 +690,6 @@ const SubMenu2Detail = () => {
                         <select
                           id="grade"
                           style={{
-                            width: "40px",
                             height: "20px",
                             marginLeft: "4px",
                             border: "none",
@@ -844,7 +845,7 @@ const SubMenu2Detail = () => {
                                     <input
                                       type="date"
                                       value={
-                                        row.time ? formatDate(row.time) : ""
+                                        row.time ? formatDate(row.time) : formatDate(Date.now())
                                       }
                                       onChange={(e) => {
                                         const newValue = e.target.value;
@@ -1099,7 +1100,7 @@ const SubMenu2Detail = () => {
                         <img src={principle?.signature} alt="" style={{ width: "150px", height: "auto" }} />
                         <p>
                           {
-                            document2Info?.approveBy ?? principle?.firstName + " " + principle?.lastName
+                            document2Info?.approveByName ?? principle?.firstName + " " + principle?.lastName
                           }
                         </p>
                       </div>

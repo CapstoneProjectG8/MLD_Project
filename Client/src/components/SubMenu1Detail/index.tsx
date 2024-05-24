@@ -108,9 +108,9 @@ interface Row5 {
   testingCategoryName: string;
   testingCategoryId: number;
   time: number | null;
-  date: string;
+  date: string |null;
   description: string;
-  formCategoryId: number | null;
+  formCategoryId: number ;
 }
 
 const defaultRows: Row5[] = [
@@ -118,33 +118,33 @@ const defaultRows: Row5[] = [
     testingCategoryName: "Giữa Học kỳ 1",
     testingCategoryId: 1,
     time: null,
-    date: "",
+    date: formatDate(Date.now()),
     description: "",
-    formCategoryId: null,
+    formCategoryId: 1,
   },
   {
     testingCategoryName: "Cuối Học kỳ 1",
     testingCategoryId: 2,
     time: null,
-    date: "",
+    date: formatDate(Date.now()),
     description: "",
-    formCategoryId: null,
+    formCategoryId: 1,
   },
   {
     testingCategoryName: "Giữa Học kỳ 2",
     testingCategoryId: 3,
     time: null,
-    date: "",
+    date: formatDate(Date.now()),
     description: "",
-    formCategoryId: null,
+    formCategoryId: 1,
   },
   {
     testingCategoryName: "Cuối Học kỳ 2",
     testingCategoryId: 4,
     time: null,
-    date: "",
+    date: formatDate(Date.now()),
     description: "",
-    formCategoryId: null,
+    formCategoryId: 1,
   },
 ];
 
@@ -234,6 +234,7 @@ const SubMenu1Detail = () => {
   const getTargetElement = () => document.getElementById("main-content");
 
   const downloadPdf = async () => {
+    console.log(document1Info);
     try {
       const pdf = await generatePDF(getTargetElement, options);
       const formData = new FormData();
@@ -245,16 +246,17 @@ const SubMenu1Detail = () => {
       );
       if (response?.status === 200) {
         const res = await apiUpdateSubMenu1({
-          id: documentId,
+          
+          id: document1Info?.id ?? documentId,
           linkFile: response?.data,
           subjectId: hoadDong,
           gradeId: khoiLop,
           userId: user?.userId,
         });
-        if (res && documentId) {
+        if (res && (document1Info?.id ?? documentId)) {
           setDisplayAddRow(!displayAddRow);
           alert("Thành công! Hãy chờ đợi trong giây lát để chuyển trang");
-          navigate(`/sub-menu-1/detail-view/${documentId}`);
+          navigate(`/sub-menu-1/detail-view/${document1Info?.id ?? documentId}`);
         }
       }
     } catch (error) {
@@ -274,6 +276,7 @@ const SubMenu1Detail = () => {
     };
     fetchUserInfoLogin();
   }, [user]);
+
 
   useEffect(() => {
     const fetchSpecializedDepartmentById = async () => {
@@ -309,6 +312,8 @@ const SubMenu1Detail = () => {
         }
       }
     };
+
+    
 
     const fetchGrade = async () => {
       const res = await apiGetGrade();
@@ -529,15 +534,8 @@ const SubMenu1Detail = () => {
           isApprove: 2,
         });
         if (post) {
-          setDocumentId(post?.data?.id);
-          await apiPostNotification({
-            receiveBy: principleAndTeacher?.principle || [],
-            sentBy: user?.userId,
-            titleName: `${post?.data?.name} ĐÃ ĐƯỢC ĐĂNG TẢI, HÃY XÉT DUYỆT`,
-            message: `${post?.data?.name} ĐÃ ĐƯỢC ĐĂNG TẢI, HÃY XÉT DUYỆT`,
-            docType: 1,
-            docId: post?.data?.id,
-          });
+          setDocument1Info(post.data);
+          
         }
       } else alert("Nhập đầy đủ thông tin!");
     } else {
@@ -554,14 +552,6 @@ const SubMenu1Detail = () => {
         } catch (error) {
           alert("Không thể sửa");
         }
-        await apiPostNotification({
-          receiveBy: principleAndTeacher?.principle || [],
-          sentBy: user?.userId,
-          titleName: `${document1Info?.name} ĐÃ ĐƯỢC CHỈNH SỬA, HÃY XÉT DUYỆT`,
-          message: `${document1Info?.name} ĐÃ ĐƯỢC CHỈNH SỬA, HÃY XÉT DUYỆT`,
-          docType: 1,
-          docId: document1Info?.id,
-        });
       } else alert("Nhập đầy đủ thông tin!");
     }
   };
@@ -591,7 +581,7 @@ const SubMenu1Detail = () => {
       setDisplayAddRow(!displayAddRow);
       setOpen(false);
       try {
-        await apiDeleteSubMenu1(documentId);
+        await apiDeleteSubMenu1(document1Info?.id);
       } catch (error) {
         console.error(error);
       }
@@ -721,52 +711,76 @@ const SubMenu1Detail = () => {
     }
   };
 
-  const handleAddDoc1 = async (documentId: any) => {
-    if (location.pathname.includes("edit"))
-      await apiDeleteDocument1ForeignTableByDocument1ID(documentId);
-    if (rows1 && rows2 && rows3 && rows4 && rows5) {
-      const rows1WithDocumentId = rows1.map((row) => ({
-        ...row,
-        document1Id: documentId,
-      }));
-      const res1 = await apiPostSubMenu1TeachingEquipment(
-        rows1WithDocumentId,
-        documentId
-      );
-      const rows2WithDocumentId = rows2.map((row) => ({
-        ...row,
-        document1Id: documentId,
-      }));
-      const res2 = await apiPostSubMenu1SubjectRooms(
-        rows2WithDocumentId,
-        documentId
-      );
-      const rows3WithDocumentId = rows3.map((row) => ({
-        ...row,
-        document1Id: documentId,
-      }));
-      const res3 = await apiPostSubMenu1CuriculumDistribution(
-        rows3WithDocumentId,
-        documentId
-      );
-      const rows4WithDocumentId = rows4.map((row) => ({
-        ...row,
-        document1Id: documentId,
-      }));
-      const res4 = await apiPostSubMenu1SelectedTopic(
-        rows4WithDocumentId,
-        documentId
-      );
-      const rows5WithDocumentId = rows5.map((row) => ({
-        ...row,
-        document1Id: documentId,
-      }));
-      const res5 = await apiPostSubMenu1PeriodicAssessment(rows5WithDocumentId);
-      if (res1 && res2 && res3 && res4 && res5) {
-        downloadPdf();
+  const handleAddDoc1 = async (document1Info: any) => {
+    const documentId = document1Info?.id;
+    console.log(document1Info.id);
+    if(documentId){
+      if (location.pathname.includes("edit")){
+        await apiDeleteDocument1ForeignTableByDocument1ID(document1Info?.id);
+        await apiPostNotification({
+          receiveBy: principleAndTeacher?.principle || [],
+          sentBy: user?.userId,
+          titleName: `${document1Info?.name} ĐÃ ĐƯỢC CHỈNH SỬA, HÃY XÉT DUYỆT`,
+          message: `${document1Info?.name} ĐÃ ĐƯỢC CHỈNH SỬA, HÃY XÉT DUYỆT`,
+          docType: 1,
+          docId: document1Info?.id,
+        });   
       }
+      else {
+        await apiPostNotification({
+          receiveBy: principleAndTeacher?.principle || [],
+          sentBy: user?.userId,
+          titleName: `${document1Info?.name} ĐÃ ĐƯỢC ĐĂNG TẢI, HÃY XÉT DUYỆT`,
+          message: `${document1Info?.name} ĐÃ ĐƯỢC ĐĂNG TẢI, HÃY XÉT DUYỆT`,
+          docType: 1,
+          docId: document1Info?.id,
+        }); 
+      }
+      if (rows1 && rows2 && rows3 && rows4 && rows5) {
+        const rows1WithDocumentId = rows1.map((row) => ({
+          ...row,
+          document1Id: documentId,
+        }));
+        const res1 = await apiPostSubMenu1TeachingEquipment(
+          rows1WithDocumentId,
+          documentId
+        );
+        const rows2WithDocumentId = rows2.map((row) => ({
+          ...row,
+          document1Id: documentId,
+        }));
+        const res2 = await apiPostSubMenu1SubjectRooms(
+          rows2WithDocumentId,
+          documentId
+        );
+        const rows3WithDocumentId = rows3.map((row) => ({
+          ...row,
+          document1Id: documentId,
+        }));
+        const res3 = await apiPostSubMenu1CuriculumDistribution(
+          rows3WithDocumentId,
+          documentId
+        );
+        const rows4WithDocumentId = rows4.map((row) => ({
+          ...row,
+          document1Id: documentId,
+        }));
+        const res4 = await apiPostSubMenu1SelectedTopic(
+          rows4WithDocumentId,
+          documentId
+        );
+        const rows5WithDocumentId = rows5.map((row) => ({
+          ...row,
+          document1Id: documentId,
+        }));
+        const res5 = await apiPostSubMenu1PeriodicAssessment(rows5WithDocumentId);
+        if (res1 && res2 && res3 && res4 && res5) {
+          downloadPdf();
+        }
+      }
+      setOpen(false);
     }
-    setOpen(false);
+    
   };
 
   return (
@@ -882,7 +896,7 @@ const SubMenu1Detail = () => {
                         Chọn môn học
                       </option>
                       {subjects?.map((item) => (
-                        <option value={item?.id}>{item?.name}</option>
+                        <option value={item?.id}>{item?.name.toUpperCase()}</option>
                       ))}
                     </select>
 
@@ -893,7 +907,6 @@ const SubMenu1Detail = () => {
                     <select
                       id="grades"
                       style={{
-                        width: "70px",
                         height: "25px",
                         marginLeft: "4px",
                         border: "none",
@@ -1599,7 +1612,7 @@ const SubMenu1Detail = () => {
                               <TableCell align="center">
                                 <input
                                   type="date"
-                                  value={row.date ? formatDate(row.date) : ""}
+                                  value={row.date ? formatDate(row.date) : formatDate(Date.now())}
                                   onChange={(e) => {
                                     const newValue = e.target.value;
                                     const updatedRows = [...rows5];
@@ -1630,7 +1643,7 @@ const SubMenu1Detail = () => {
                                     border: "none",
                                     outline: "none",
                                   }}
-                                  value={row.formCategoryId ?? ""}
+                                  value={row.formCategoryId ?? 1}
                                   onChange={(e) => {
                                     const newValue = parseInt(e.target.value);
                                     const updatedRows = [...rows5];
@@ -1639,9 +1652,6 @@ const SubMenu1Detail = () => {
                                     setRows5(updatedRows);
                                   }}
                                 >
-                                  <option value="" disabled>
-                                    Chọn hình thức
-                                  </option>
                                   {formCategory?.map((item) => (
                                     <option value={item?.id}>
                                       {item?.name}
@@ -1800,7 +1810,7 @@ const SubMenu1Detail = () => {
             Hủy bỏ
           </Button>
           <Button
-            onClick={() => handleAddDoc1(documentId)}
+            onClick={() => handleAddDoc1(document1Info)}
             className="button-mui"
             autoFocus
           >
@@ -2015,6 +2025,14 @@ const SubMenu1Detail = () => {
                   userId: document1Info?.userId,
                   isApprove: 4,
                   approveBy: user?.userId,
+                });
+                await apiPostNotification({
+                  receiveBy: [document1Info?.userId] || [],
+                  sentBy: user?.userId,
+                  titleName: `${document1Info?.name} ĐÃ BỊ TỪ CHỐI, HÃY SỬA LẠI`,
+                  message: `${document1Info?.name} ĐÃ BỊ TỪ CHỐI, HÃY SỬA LẠI`,
+                  docType: 1,
+                  docId: document1Info?.id,
                 });
                 alert("Thành công! Hãy chờ đợi trong giây lát để chuyển trang");
                 navigate(`/sub-menu/1`);

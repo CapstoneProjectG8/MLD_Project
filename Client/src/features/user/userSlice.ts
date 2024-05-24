@@ -157,9 +157,7 @@ export const authSlice = createSlice({
             alert("Please change your password on first login.")
             state.loginStatus = 4
           }
-          else if (
-            action.payload.response?.data.status === LOGIN_STATUS.WRONG_PASSWORD
-          )
+          else 
             alert("Sai mật khẩu")
         },
       );

@@ -157,17 +157,17 @@ const SubMenu3Detail = () => {
       if (response?.status === 200) {
         const res = await apiUpdateSubMenu3(
           {
-            id: documentId,
+            id: document3Info?.id ?? documentId,
             document1Id: location.pathname.includes("create") ? parseInt(document1Id) : document3Info?.document1Id,
             linkFile: response?.data,
             userId: user?.userId,
           },
           documentId
         );
-        if (res && documentId) {
+        if (res && (document3Info?.id ?? documentId)) {
           setDisplayAddRow(!displayAddRow);
           alert("Thành công! Hãy chờ đợi trong giây lát để chuyển trang");
-          navigate(`/sub-menu-3/detail-view/${documentId}`);
+          navigate(`/sub-menu-3/detail-view/${(document3Info?.id ?? documentId)}`);
         }
       }
     } catch (error) {
@@ -1647,6 +1647,8 @@ const SubMenu3Detail = () => {
                     docType: 3,
                     docId: document3Info?.id,
                   });
+                  alert("Thành công! Hãy chờ đợi trong giây lát để chuyển trang");
+                navigate(`/sub-menu/3`);
                 } catch (error) {
                   alert("Không thể xét duyệt");
                 }
@@ -1707,6 +1709,8 @@ const SubMenu3Detail = () => {
                     docType: 3,
                     docId: document3Info?.id,
                   });
+                  alert("Thành công! Hãy chờ đợi trong giây lát để chuyển trang");
+                navigate(`/sub-menu/3`);
                 } catch (error) {
                   alert("Không thể từ chối");
                 }
