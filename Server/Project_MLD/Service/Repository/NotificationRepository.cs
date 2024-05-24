@@ -20,11 +20,11 @@ namespace Project_MLD.Service.Repository
 
         public async Task<bool> DeleteNotification(int doctype, int docId)
         {
-            
+
             var list = await _context.Notifications
                 .Where(x => x.DocType == doctype && x.DocId == docId)
                 .ToListAsync();
-            if(list != null)
+            if (list != null)
             {
                 _context.Notifications.RemoveRange(list);
                 _context.SaveChanges();
@@ -44,9 +44,18 @@ namespace Project_MLD.Service.Repository
 
         public async Task<IEnumerable<Notification>> GetNotificationByReceiveIdDESC(int receiverId)
         {
-            return await _context.Notifications
-                .Where(x => x.ReceiveBy == receiverId)
-                .OrderByDescending(x => x.Id).Take(10).ToListAsync();
+            var groupedNotifications = await _context.Notifications
+               .Where(x => x.ReceiveBy == receiverId)
+               .GroupBy(x => new
+               {
+                   x.ReceiveBy,
+                   x.DocId,
+                   x.DocType
+               })
+               .Select(g => g.OrderByDescending(x => x.Id).FirstOrDefault())
+               .ToListAsync();
+
+            return groupedNotifications.OrderByDescending(x => x.Id);
         }
     }
 }

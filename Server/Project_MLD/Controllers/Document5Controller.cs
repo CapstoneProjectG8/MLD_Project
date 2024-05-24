@@ -41,7 +41,7 @@ namespace Project_MLD.Controllers
         public async Task<ActionResult<IEnumerable<Document5DTO>>> GetDoucment5ByDoc4(int id)
         {
             var existDocument5 = await _repository.GetDoucment5ByDoc4(id);
-            var mapper = _mapper.Map<Document5DTO>(existDocument5);
+            var mapper = _mapper.Map<List<Document5DTO>>(existDocument5);
             return Ok(mapper);
         }
 

@@ -6,6 +6,7 @@ namespace Project_MLD.Service.Interface
     {
         Task<IEnumerable<User>> GetAllUsers();
         Task<IEnumerable<User>> GetAllUsersByDepartmentId(int id);
+        Task<User> GetUserIsRole(int userId,int roleId);
         Task<IEnumerable<User>> GetPrinciples();
         Task<User> GetUserById(int id);
         Task<User> AddUser(User User);

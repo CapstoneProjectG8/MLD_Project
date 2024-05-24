@@ -84,7 +84,7 @@ namespace Project_MLD.Service.Repository
             {
                 var documents = await _context.Document2s
                 .Include(x => x.User)
-                .Where(x => x.Status == true && x.User.DepartmentId == id)
+                .Where(x => x.Status == true && x.User.DepartmentId == id && x.IsApprove == 3)
                 .ToListAsync();
 
                 var anObject = new
@@ -130,6 +130,14 @@ namespace Project_MLD.Service.Repository
             }
             return await query
                 .Include(x => x.User)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Document2>> GetDoc2sByDepId(int depId)
+        {
+            return await _context.Document2s
+                .Include(x => x.User)
+                .Where(x => x.User.DepartmentId == depId && x.IsApprove == 3)
                 .ToListAsync();
         }
     }

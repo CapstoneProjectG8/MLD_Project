@@ -14,5 +14,8 @@ namespace Project_MLD.Service.Interface
         Task<TestingCategory> GetTestingCategoryById(int id);
         Task<IEnumerable<FormCategory>> GetAllFormCategory();
         Task<FormCategory> GetFormCategoryById(int id);
+
+        Task<bool> UpdateTestingCategory(TestingCategory tc);
+        Task<bool> UpdateFormCategory(FormCategory tc);
     }
 }

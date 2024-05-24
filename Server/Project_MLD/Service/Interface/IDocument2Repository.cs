@@ -12,6 +12,7 @@ namespace Project_MLD.Service.Interface
         Task<IEnumerable<Document2>> GetAllDoc2sByCondition(bool? status, int? isApprove);
         Task<IEnumerable<Document2>> GetAllDocument2sByUserIdAndApproveId(int id, int approveId);
         Task<IEnumerable<object>> GetDocument2ByUserSpecialiedDepartment(List<int> specialiedDepartmentListId);
+        Task<IEnumerable<Document2>> GetDoc2sByDepId(int depId);
         Task<IEnumerable<int?>> GetListHostbyByIdOfUserByDoc2Id(int doc2Id);
     }
 }

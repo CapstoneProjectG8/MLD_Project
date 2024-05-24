@@ -43,6 +43,11 @@ namespace Project_MLD.Service.Repository
             return await _context.SelectedTopics.FindAsync(id);
         }
 
+        public async Task<IEnumerable<SelectedTopic>> GetSelectedTopicsBySubjectId(int subjectId)
+        {
+            return await _context.SelectedTopics.Where(x => x.SubjectId == subjectId).ToListAsync();
+        }
+
         public async Task<bool> UpdateSelectedTopic(SelectedTopic st)
         {
             var existSelectedTopic = await GetSelectedTopicById(st.Id);
@@ -51,7 +56,15 @@ namespace Project_MLD.Service.Repository
                 return false;
             }
 
-            _context.Entry(existSelectedTopic).CurrentValues.SetValues(st);
+            var properties = typeof(SelectedTopic).GetProperties();
+            foreach (var property in properties)
+            {
+                var updatedValue = property.GetValue(st);
+                if (updatedValue != null)
+                {
+                    property.SetValue(existSelectedTopic, updatedValue);
+                }
+            }
             await _context.SaveChangesAsync();
             return true;
         }

@@ -2,6 +2,7 @@
 using Project_MLD.Models;
 using Project_MLD.Service.Interface;
 using System;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Project_MLD.Service.Repository
 {
@@ -70,6 +71,16 @@ namespace Project_MLD.Service.Repository
         {
             return await _context.Document4s.FirstOrDefaultAsync(x => x.Id == id);
         }
+        public async Task<Document4> GetDoc4TeachingPlannerByDoc4Id(int id)
+        {
+            return await _context.Document4s
+                .Include(x => x.TeachingPlanner)
+                    .ThenInclude(tp => tp.Class)
+                .Include(x => x.TeachingPlanner)
+                    .ThenInclude(tp => tp.Subject)
+                .FirstOrDefaultAsync(x => x.Id == id);
+        }
+
 
         public async Task<IEnumerable<Document4>> GetDocument4sWithCondition(bool? status, int? isApprove)
         {
@@ -89,11 +100,11 @@ namespace Project_MLD.Service.Repository
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Document4>> GetDocument4sByUserId(int userId)
+        public async Task<IEnumerable<Document4>> GetDocument4sByUserId(int userId, int approveid)
         {
             return await _context.Document4s
                .Include(x => x.TeachingPlanner)
-               .Where(x => x.TeachingPlanner.UserId == userId)
+               .Where(x => x.TeachingPlanner.UserId == userId && x.IsApprove == approveid)
                .ToListAsync();
         }
 
@@ -118,7 +129,7 @@ namespace Project_MLD.Service.Repository
                 var documents = await _context.Document4s
                     .Include(x => x.TeachingPlanner)
                     .ThenInclude(x => x.User)
-                    .Where(x => x.TeachingPlanner.User.DepartmentId == id)
+                    .Where(x => x.TeachingPlanner.User.DepartmentId == id && x.IsApprove == 3 && x.Status == true)
                     .ToListAsync();
 
                 result.Add(new
@@ -130,5 +141,36 @@ namespace Project_MLD.Service.Repository
             return result;
         }
 
+        public async Task<IEnumerable<Document4>> GetDoc4sByDoc3Id(int doc3Id)
+        {
+            var doc3 = await _context.Document3s
+                .Include(x => x.Document1)
+                .FirstOrDefaultAsync(x => x.Id == doc3Id);
+
+            if (doc3 == null)
+                return Enumerable.Empty<Document4>();
+
+            var classId = await ConvertSubjectNameToSubjectId(doc3.ClaasName);
+
+            var doc4 = await _context.Document4s
+                .Include(x => x.TeachingPlanner)
+                .Where(x => x.TeachingPlanner.UserId == doc3.UserId &&
+                            x.TeachingPlanner.ClassId == classId &&
+                            x.TeachingPlanner.SubjectId == doc3.Document1.SubjectId && 
+                            x.IsApprove == 3)
+                .ToListAsync();
+
+            return doc4;
+        }
+
+        public async Task<int> ConvertSubjectNameToSubjectId(string classname)
+        {
+            var @class = await _context.Classes
+                .Where(x => x.Name == classname)
+                .Select(x => x.Id)
+                .FirstOrDefaultAsync();
+
+            return @class;
+        }
     }
 }

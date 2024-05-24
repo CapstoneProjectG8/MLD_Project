@@ -126,5 +126,15 @@ namespace Project_MLD.Service.Repository
 
             return totalUsers;
         }
+
+        public async Task<User> GetUserIsRole(int userId, int roleId)
+        {
+            var user = await _context.Users
+              .Include(x => x.Account)
+                  .ThenInclude(x => x.Role)
+              .FirstOrDefaultAsync(x => x.Id == userId && x.Account.RoleId == roleId);
+
+            return user;
+        }
     }
 }

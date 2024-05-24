@@ -142,7 +142,7 @@ const SubMenu3Detail = () => {
 
   const getTargetElement = () => document.getElementById("main-content");
 
-  console.log("document3Info: ", document3Info);
+  console.log("document3Info: ", document3Info)
 
   const downloadPdf = async () => {
     try {
@@ -158,9 +158,7 @@ const SubMenu3Detail = () => {
         const res = await apiUpdateSubMenu3(
           {
             id: documentId,
-            document1Id: location.pathname.includes("create")
-              ? parseInt(document1Id)
-              : document3Info?.document1Id,
+            document1Id: location.pathname.includes("create") ? parseInt(document1Id) : document3Info?.document1Id,
             linkFile: response?.data,
             userId: user?.userId,
           },
@@ -249,6 +247,7 @@ const SubMenu3Detail = () => {
 
   useEffect(() => {
     const fetchSpecializedDepartmentById = async () => {
+
       let document1IdInit = 0;
       if (location.pathname.includes("create"))
         document1IdInit = parseInt(location.pathname.split("/")[3]);
@@ -273,6 +272,7 @@ const SubMenu3Detail = () => {
           }
         }
       }
+
     };
 
     const fetchTeachingEquipment = async () => {
@@ -432,7 +432,7 @@ const SubMenu3Detail = () => {
           note: "",
           status: true,
           approveByName: "",
-          isApprove: 1,
+          isApprove: 2,
         });
         if (post) {
           setDocumentId(post?.data?.id);
@@ -473,7 +473,7 @@ const SubMenu3Detail = () => {
         note: "",
         status: true,
         approveByName: "",
-        isApprove: 2,
+        isApprove: 1,
       });
       if (post) {
         setDocumentId(post?.data?.id);
@@ -502,14 +502,14 @@ const SubMenu3Detail = () => {
     if (rows1 && rows2) {
       const rows1WithDocumentId = rows1.map((row) => ({
         ...row,
-        document3Id: documentId ?? location.pathname.split("/")[3],
+        document3Id: documentId ?? location.pathname.split('/')[3],
       }));
       const res1 = await apiPostSubMenu3CuriculumDistribution(
         rows1WithDocumentId
       );
       const rows2WithDocumentId = rows2.map((row) => ({
         ...row,
-        document3Id: documentId ?? location.pathname.split("/")[3],
+        document3Id: documentId ?? location.pathname.split('/')[3],
       }));
       const res2 = await apiPostSubMenu3SelectedTopics(rows2WithDocumentId);
       if (res1 && res2) {
@@ -637,7 +637,7 @@ const SubMenu3Detail = () => {
         style={{ minWidth: "25rem", width: "100rem" }}
       >
         {location.pathname?.includes("edit") ||
-        location.pathname?.includes("create") ? (
+          location.pathname?.includes("create") ? (
           <div>
             <div
               className="sub-menu-content"
@@ -664,7 +664,6 @@ const SubMenu3Detail = () => {
                       <div>
                         <strong>TRƯỜNG: </strong>
                         <input
-                          style={{ height: "30px" }}
                           type="text"
                           placeholder="..........."
                           onChange={(e) => setTruong(e.target.value)}
@@ -853,7 +852,6 @@ const SubMenu3Detail = () => {
                                 </TableCell>
                                 <TableCell align="center">
                                   <input
-                                    style={{ marginBottom: "1.5rem" }}
                                     type="date"
                                     value={row.time ? formatDate(row.time) : ""}
                                     onChange={(e) => {
@@ -902,19 +900,19 @@ const SubMenu3Detail = () => {
                                       <div className="add-row-button">
                                         {equipIndex ===
                                           row.equipmentId.length - 1 && (
-                                          <Add
-                                            style={{
-                                              color: "black",
-                                              display: displayAddRow
-                                                ? "none"
-                                                : "",
-                                            }}
-                                            className="add-row-icon"
-                                            onClick={() =>
-                                              handleAddEquip(index)
-                                            }
-                                          />
-                                        )}
+                                            <Add
+                                              style={{
+                                                color: "black",
+                                                display: displayAddRow
+                                                  ? "none"
+                                                  : "",
+                                              }}
+                                              className="add-row-icon"
+                                              onClick={() =>
+                                                handleAddEquip(index)
+                                              }
+                                            />
+                                          )}
                                         {row.equipmentId.length > 1 && (
                                           <Remove
                                             style={{
@@ -1099,7 +1097,6 @@ const SubMenu3Detail = () => {
                                 </TableCell>
                                 <TableCell align="center">
                                   <input
-                                    style={{ marginBottom: "1.5rem" }}
                                     type="date"
                                     value={row.time ? formatDate(row.time) : ""}
                                     onChange={(e) => {
@@ -1153,14 +1150,14 @@ const SubMenu3Detail = () => {
                                       >
                                         {equipIndex ===
                                           row.equipmentId.length - 1 && (
-                                          <Add
-                                            style={{ color: "black" }}
-                                            className="add-row-icon"
-                                            onClick={() =>
-                                              handleAddEquip2(index)
-                                            }
-                                          />
-                                        )}
+                                            <Add
+                                              style={{ color: "black" }}
+                                              className="add-row-icon"
+                                              onClick={() =>
+                                                handleAddEquip2(index)
+                                              }
+                                            />
+                                          )}
                                         {row.equipmentId.length > 1 && (
                                           <Remove
                                             style={{ color: "black" }}
@@ -1257,6 +1254,7 @@ const SubMenu3Detail = () => {
                     </i>
                   </div>
                 </div>
+
                 <div className="sub-menu-content-main-feature">
                   <div className="sub-menu-content-main-feature-item">
                     <strong>II. Nhiệm vụ khác (nếu có)</strong>(Bồi dưỡng học
@@ -1367,8 +1365,7 @@ const SubMenu3Detail = () => {
                       className="action-button"
                       onClick={() =>
                         navigate(
-                          `/sub-menu-3/detail-edit/${
-                            location.pathname.split("/")[3]
+                          `/sub-menu-3/detail-edit/${location.pathname.split("/")[3]
                           }`
                         )
                       }
@@ -1402,6 +1399,13 @@ const SubMenu3Detail = () => {
                     {document3Info?.userFullName}
                   </u>
                 </div>
+                <div className="right-action" onClick={() => navigate(`/sub-menu-4/list-view/${document3Info?.id}`)}>
+                  <strong>
+                    <u className="underline-blue">
+                      Xem các kế hoạch bài dạy
+                    </u>
+                  </strong>
+                </div>
               </div>
               <div className="sub-menu-row">
                 <div>
@@ -1419,6 +1423,13 @@ const SubMenu3Detail = () => {
                 <div>
                   <strong>Ngày gửi: </strong> {document3Info?.createdDate}
                 </div>
+                <div className="right-action" onClick={() => navigate(`/upload-sub-menu-4/${document3Info?.id}`)}>
+                  <strong>
+                    <u className="underline-blue">
+                      Tạo kế hoạch bài dạy
+                    </u>
+                  </strong>
+                </div>
               </div>
             </div>
             <div>
@@ -1428,7 +1439,7 @@ const SubMenu3Detail = () => {
                   <div
                     style={{
                       display:
-                        userInfoLogin?.id === document1Info?.userId
+                        userInfoLogin?.id === document1Info?.userId && document3Info?.isApprove === 2
                           ? "flex"
                           : "none",
                       columnGap: "10px",

@@ -9,6 +9,8 @@ public partial class SelectedTopic
 
     public string? Name { get; set; }
 
+    public int? SubjectId { get; set; }
+
     public virtual ICollection<Document1SelectedTopic> Document1SelectedTopics { get; set; } = new List<Document1SelectedTopic>();
 
     public virtual ICollection<Document3SelectedTopic> Document3SelectedTopics { get; set; } = new List<Document3SelectedTopic>();

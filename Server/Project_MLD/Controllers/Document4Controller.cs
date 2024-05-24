@@ -16,11 +16,13 @@ namespace Project_MLD.Controllers
         private readonly IDocument4Repository _repository;
         private readonly IMapper _mapper;
         private readonly INotificationRepository _notificationRepository;
-        public Document4Controller(IDocument4Repository repository,  IMapper mapper, INotificationRepository notificationRepository)
+        private readonly IUserRepository _userRepository;
+        public Document4Controller(IDocument4Repository repository, IMapper mapper, INotificationRepository notificationRepository, IUserRepository userRepository)
         {
             _repository = repository;
             _mapper = mapper;
             _notificationRepository = notificationRepository;
+            _userRepository = userRepository;
         }
 
         [HttpGet("GetAllDocument4s")]
@@ -28,15 +30,42 @@ namespace Project_MLD.Controllers
         {
             var doc4 = await _repository.GetAllDocument4s();
             var mapDocument = _mapper.Map<List<Document4DTO>>(doc4);
-            //foreach (var item in mapDocument)
-            //{
-            //    if (item.ClassName == null)
-            //    {
-            //        return BadRequest("Null");
-            //    }
-            //}
-            
+
             return Ok(mapDocument);
+        }
+
+        [HttpGet("IsTheSameDepartment")]
+        public async Task<IActionResult> IsTheSameDepartment(int document4Id, int userLoginId, int doctype)
+        {
+
+            var existDocument4 = await _repository.GetDoc4TeachingPlannerByDoc4Id(document4Id);
+
+            //check leader 
+            var leader = await _userRepository.GetUserIsRole(userLoginId, 3);
+            //check principle
+            var principle = await _userRepository.GetUserIsRole(userLoginId, 4);
+
+            if (principle != null && doctype == 5)
+            {
+                return Ok(true);
+            }
+
+            if (leader != null)
+            {
+                var userdoc = await _userRepository.GetUserById(existDocument4.TeachingPlanner.UserId);
+                if (leader.DepartmentId == userdoc.DepartmentId)
+                {
+                    return Ok(true);
+                }
+                else
+                {
+                    return Ok(false);
+                }
+            }
+            else
+            {
+                return Ok(false);
+            }
         }
 
         [HttpGet("GetDocument4ByUserSpecialiedDepartment")]
@@ -48,7 +77,7 @@ namespace Project_MLD.Controllers
             {
                 if (document.GetType().GetProperty("SpecializedDepartmentId") != null && document.GetType().GetProperty("Document4s") != null)
                 {
-                   
+
                     var id = document.GetType().GetProperty("SpecializedDepartmentId").GetValue(document, null);
                     var doc = document.GetType().GetProperty("Document4s").GetValue(document, null);
 
@@ -153,6 +182,14 @@ namespace Project_MLD.Controllers
                 return NotFound("No Document 4 Found");
             }
             return Ok(doc4);
+        }
+
+        [HttpGet("GetDocument4sByDoc3Id")]
+        public async Task<IActionResult> GetDocument4sByDoc3Id(int doc3id)
+        {
+            var doc4 = await _repository.GetDoc4sByDoc3Id(doc3id);
+            var dataMap = _mapper.Map<List<Document4DTO>>(doc4);
+            return Ok(dataMap);
         }
     }
 }

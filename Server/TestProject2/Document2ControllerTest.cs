@@ -9,21 +9,31 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Project_MLD.Tests.Controllers
+namespace ControllerTest
 {
     public class Document2ControllerTests
     {
-        private readonly Mock<IDocument2Repository> _repositoryMock;
-        private readonly Mock<IMapper> _mapperMock;
-        private readonly Mock<IUserRepository> _userRepositoryMock;
+        private readonly Mock<IDocument2Repository> _mockRepository;
+        private readonly Mock<IUserRepository> _mockUserRepository;
+        private readonly Mock<ISpecializedDepartmentRepository> _mockSpecialDepartmentRepository;
+        private readonly Mock<IMapper> _mockMapper;
+        private readonly Mock<INotificationRepository> _mockNotificationRepository;
         private readonly Document2Controller _controller;
 
         public Document2ControllerTests()
         {
-            _repositoryMock = new Mock<IDocument2Repository>();
-            _mapperMock = new Mock<IMapper>();
-            _userRepositoryMock = new Mock<IUserRepository>();
-            _controller = new Document2Controller(_repositoryMock.Object, _mapperMock.Object, _userRepositoryMock.Object);
+            _mockRepository = new Mock<IDocument2Repository>();
+            _mockMapper = new Mock<IMapper>();
+            _mockUserRepository = new Mock<IUserRepository>();
+            _mockSpecialDepartmentRepository = new Mock<ISpecializedDepartmentRepository>();
+            _mockNotificationRepository = new Mock<INotificationRepository>();
+
+            _controller = new Document2Controller(
+                _mockRepository.Object,
+                _mockMapper.Object,
+                _mockUserRepository.Object,
+                _mockSpecialDepartmentRepository.Object,
+                _mockNotificationRepository.Object);
         }
 
         [Fact]
@@ -45,10 +55,10 @@ namespace Project_MLD.Tests.Controllers
             var user1 = new User { Id = 1, FirstName = "John", LastName = "Doe" };
             var user2 = new User { Id = 2, FirstName = "Jane", LastName = "Smith" };
 
-            _repositoryMock.Setup(repo => repo.GetAllDocument2s()).ReturnsAsync(documents);
-            _mapperMock.Setup(mapper => mapper.Map<List<Document2DTO>>(documents)).Returns(documentDTOs);
-            _userRepositoryMock.Setup(repo => repo.GetUserById(1)).ReturnsAsync(user1);
-            _userRepositoryMock.Setup(repo => repo.GetUserById(2)).ReturnsAsync(user2);
+            _mockRepository.Setup(repo => repo.GetAllDocument2s()).ReturnsAsync(documents);
+            _mockMapper.Setup(mapper => mapper.Map<List<Document2DTO>>(documents)).Returns(documentDTOs);
+            _mockUserRepository.Setup(repo => repo.GetUserById(1)).ReturnsAsync(user1);
+            _mockUserRepository.Setup(repo => repo.GetUserById(2)).ReturnsAsync(user2);
 
             // Act
             var result = await _controller.GetAllDocument2s();
@@ -80,10 +90,10 @@ namespace Project_MLD.Tests.Controllers
             var user1 = new User { Id = 1, FirstName = "John", LastName = "Doe" };
             var user2 = new User { Id = 2, FirstName = "Jane", LastName = "Smith" };
 
-            _repositoryMock.Setup(repo => repo.GetAllDoc2sByCondition(true, null)).ReturnsAsync(documents);
-            _mapperMock.Setup(mapper => mapper.Map<List<Document2DTO>>(documents)).Returns(documentDTOs);
-            _userRepositoryMock.Setup(repo => repo.GetUserById(1)).ReturnsAsync(user1);
-            _userRepositoryMock.Setup(repo => repo.GetUserById(2)).ReturnsAsync(user2);
+            _mockRepository.Setup(repo => repo.GetAllDoc2sByCondition(true, null)).ReturnsAsync(documents);
+            _mockMapper.Setup(mapper => mapper.Map<List<Document2DTO>>(documents)).Returns(documentDTOs);
+            _mockUserRepository.Setup(repo => repo.GetUserById(1)).ReturnsAsync(user1);
+            _mockUserRepository.Setup(repo => repo.GetUserById(2)).ReturnsAsync(user2);
 
             // Act
             var result = await _controller.GetAllDoc2sWithCondition(true, null);
@@ -112,8 +122,8 @@ namespace Project_MLD.Tests.Controllers
                 new Document2DTO { Id = 2, UserId = 2, ApproveBy = null }
             };
 
-            _repositoryMock.Setup(repo => repo.GetDocument2ByUserSpecialiedDepartment(It.IsAny<List<int>>())).ReturnsAsync(documents);
-            _mapperMock.Setup(mapper => mapper.Map<List<Document2DTO>>(It.IsAny<IEnumerable<Document2>>())).Returns(documentDTOs);
+            _mockRepository.Setup(repo => repo.GetDocument2ByUserSpecialiedDepartment(It.IsAny<List<int>>())).ReturnsAsync(documents);
+            _mockMapper.Setup(mapper => mapper.Map<List<Document2DTO>>(It.IsAny<IEnumerable<Document2>>())).Returns(documentDTOs);
 
             // Act
             var result = await _controller.GetDocument2ByUserSpecialiedDepartment(new List<int> { 1, 2 });
@@ -133,10 +143,10 @@ namespace Project_MLD.Tests.Controllers
             var user1 = new User { Id = 1, FirstName = "John", LastName = "Doe" };
             var user2 = new User { Id = 2, FirstName = "Jane", LastName = "Smith" };
 
-            _repositoryMock.Setup(repo => repo.GetDocument2ById(1)).ReturnsAsync(document);
-            _mapperMock.Setup(mapper => mapper.Map<Document2DTO>(document)).Returns(documentDTO);
-            _userRepositoryMock.Setup(repo => repo.GetUserById(1)).ReturnsAsync(user1);
-            _userRepositoryMock.Setup(repo => repo.GetUserById(2)).ReturnsAsync(user2);
+            _mockRepository.Setup(repo => repo.GetDocument2ById(1)).ReturnsAsync(document);
+            _mockMapper.Setup(mapper => mapper.Map<Document2DTO>(document)).Returns(documentDTO);
+            _mockUserRepository.Setup(repo => repo.GetUserById(1)).ReturnsAsync(user1);
+            _mockUserRepository.Setup(repo => repo.GetUserById(2)).ReturnsAsync(user2);
 
             // Act
             var result = await _controller.GetDocument2ById(1);
@@ -165,12 +175,12 @@ namespace Project_MLD.Tests.Controllers
                 new Document2 { Id = 2, UserId = 2, ApproveBy = null }
             };
 
-            _mapperMock.Setup(mapper => mapper.Map<Document2>(documentDTOs[0])).Returns(documents[0]);
-            _mapperMock.Setup(mapper => mapper.Map<Document2>(documentDTOs[1])).Returns(documents[1]);
-            _repositoryMock.Setup(repo => repo.AddDocument2(documents[0])).ReturnsAsync(documents[0]);
-            _repositoryMock.Setup(repo => repo.AddDocument2(documents[1])).ReturnsAsync(documents[1]);
-            _mapperMock.Setup(mapper => mapper.Map<Document2DTO>(documents[0])).Returns(documentDTOs[0]);
-            _mapperMock.Setup(mapper => mapper.Map<Document2DTO>(documents[1])).Returns(documentDTOs[1]);
+            _mockMapper.Setup(mapper => mapper.Map<Document2>(documentDTOs[0])).Returns(documents[0]);
+            _mockMapper.Setup(mapper => mapper.Map<Document2>(documentDTOs[1])).Returns(documents[1]);
+            _mockRepository.Setup(repo => repo.AddDocument2(documents[0])).ReturnsAsync(documents[0]);
+            _mockRepository.Setup(repo => repo.AddDocument2(documents[1])).ReturnsAsync(documents[1]);
+            _mockMapper.Setup(mapper => mapper.Map<Document2DTO>(documents[0])).Returns(documentDTOs[0]);
+            _mockMapper.Setup(mapper => mapper.Map<Document2DTO>(documents[1])).Returns(documentDTOs[1]);
 
             // Act
             var result = await _controller.AddDocument2(documentDTOs);
@@ -185,7 +195,7 @@ namespace Project_MLD.Tests.Controllers
         public async Task DeleteDocument2_ReturnsNoContent_WhenDocumentExists()
         {
             // Arrange
-            _repositoryMock.Setup(repo => repo.DeleteDocument2(1)).ReturnsAsync(true);
+            _mockRepository.Setup(repo => repo.DeleteDocument2(1)).ReturnsAsync(true);
 
             // Act
             var result = await _controller.DeleteDocument2(1);
@@ -198,7 +208,7 @@ namespace Project_MLD.Tests.Controllers
         public async Task DeleteDocument2_ReturnsNotFound_WhenDocumentDoesNotExist()
         {
             // Arrange
-            _repositoryMock.Setup(repo => repo.DeleteDocument2(1)).ReturnsAsync(false);
+            _mockRepository.Setup(repo => repo.DeleteDocument2(1)).ReturnsAsync(false);
 
             // Act
             var result = await _controller.DeleteDocument2(1);
@@ -214,9 +224,9 @@ namespace Project_MLD.Tests.Controllers
             var documentDTO = new Document2DTO { Id = 1, UserId = 1, ApproveBy = 2 };
             var document = new Document2 { Id = 1, UserId = 1, ApproveBy = 2 };
 
-            _mapperMock.Setup(mapper => mapper.Map<Document2>(documentDTO)).Returns(document);
-            _repositoryMock.Setup(repo => repo.UpdateDocument2(document)).ReturnsAsync(true);
-            _mapperMock.Setup(mapper => mapper.Map<Document2DTO>(document)).Returns(documentDTO);
+            _mockMapper.Setup(mapper => mapper.Map<Document2>(documentDTO)).Returns(document);
+            _mockRepository.Setup(repo => repo.UpdateDocument2(document)).ReturnsAsync(true);
+            _mockMapper.Setup(mapper => mapper.Map<Document2DTO>(document)).Returns(documentDTO);
 
             // Act
             var result = await _controller.UpdateDocument2(documentDTO);
@@ -235,9 +245,9 @@ namespace Project_MLD.Tests.Controllers
             var documentDTO = new Document2DTO { Id = 1, UserId = 1, ApproveBy = 2, Status = true };
             var document = new Document2 { Id = 1, UserId = 1, ApproveBy = 2, Status = true };
 
-            _mapperMock.Setup(mapper => mapper.Map<Document2>(documentDTO)).Returns(document);
-            _repositoryMock.Setup(repo => repo.UpdateDocument2(document)).ReturnsAsync(true);
-            _mapperMock.Setup(mapper => mapper.Map<Document2DTO>(document)).Returns(documentDTO);
+            _mockMapper.Setup(mapper => mapper.Map<Document2>(documentDTO)).Returns(document);
+            _mockRepository.Setup(repo => repo.UpdateDocument2(document)).ReturnsAsync(true);
+            _mockMapper.Setup(mapper => mapper.Map<Document2DTO>(document)).Returns(documentDTO);
 
             // Act
             var result = await _controller.ApproveDocument2(documentDTO);

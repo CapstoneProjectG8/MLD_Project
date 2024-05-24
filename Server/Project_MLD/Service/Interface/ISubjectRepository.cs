@@ -9,6 +9,7 @@ namespace Project_MLD.Service.Interface
         Task<Subject> AddSubject(Subject sub);
         Task<bool> UpdateSubject(Subject sub);
         Task<bool> DeleteSubject(int id);
+        Task<IEnumerable<Subject>> GetSubjectsByDepartmentId(int departmentId);
 
     }
 }

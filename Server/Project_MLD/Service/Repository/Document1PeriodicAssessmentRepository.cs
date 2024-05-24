@@ -135,5 +135,45 @@ namespace Project_MLD.Service.Repository
             }
             await _context.SaveChangesAsync();
         }
+
+        public async Task<bool> UpdateTestingCategory(TestingCategory tc)
+        {
+            var existTC = await GetTestingCategoryById(tc.Id);
+            if (existTC == null)
+            {
+                return false;
+            }
+            var properties = typeof(TestingCategory).GetProperties();
+            foreach (var property in properties)
+            {
+                var updatedValue = property.GetValue(tc);
+                if (updatedValue != null)
+                {
+                    property.SetValue(existTC, updatedValue);
+                }
+            }
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> UpdateFormCategory(FormCategory fc)
+        {
+            var existFC = await GetTestingCategoryById(fc.Id);
+            if (existFC == null)
+            {
+                return false;
+            }
+            var properties = typeof(FormCategory).GetProperties();
+            foreach (var property in properties)
+            {
+                var updatedValue = property.GetValue(fc);
+                if (updatedValue != null)
+                {
+                    property.SetValue(existFC, updatedValue);
+                }
+            }
+            await _context.SaveChangesAsync();
+            return true;
+        }
     }
 }

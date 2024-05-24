@@ -136,13 +136,12 @@ const SubMenu2Detail = () => {
       );
       if (response?.status === 200) {
         const res = await apiUpdateSubMenu2(
-          { id: documentId, linkFile: response?.data, userId: user?.userId },
-          documentId
+          { id: document2Info?.id ?? documentId, linkFile: response?.data, userId: user?.userId }
         );
-        if (res && documentId) {
+        if (res && (document2Info?.id ?? documentId)) {
           setDisplayAddRow(!displayAddRow);
           alert("Thành công! Hãy chờ đợi trong giây lát để chuyển trang");
-          navigate(`/sub-menu-2/detail-view/${documentId}`);
+          navigate(`/sub-menu-2/detail-view/${document2Info?.id ?? documentId}`);
         }
       }
     } catch (error) {
@@ -167,16 +166,16 @@ const SubMenu2Detail = () => {
     const fecthPrincipleByDoc = async () => {
       if (document2Info) {
         if (document2Info?.approveBy !== null) {
-          const res = await apiGetUser(document2Info?.approveBy);
+          const res = await apiGetUser(document2Info?.approveBy)
           if (res && res.data) {
             const principleData: any = res.data;
             setPrinciple(principleData);
           }
         }
       }
-    };
-    fecthPrincipleByDoc();
-  }, [document2Info]);
+    }
+    fecthPrincipleByDoc()
+  }, [document2Info])
 
   useEffect(() => {
     const fecthPrincipleAndTeacher = async () => {
@@ -265,22 +264,28 @@ const SubMenu2Detail = () => {
     }
   }, [location.pathname]);
 
+
   useEffect(() => {
     const fetchSpecializedDepartmentById = async () => {
-      if (!location.pathname.split("/")[3]) {
+      const docId = location.pathname.split("/")[3];
+      console.log(docId);
+      if (!docId) {
+        // Trường hợp không có docId, lấy dữ liệu từ userInfoLogin
         if (userInfoLogin) {
-          const res = await apiGetSpecializedDepartmentById(
-            userInfoLogin?.departmentId
-          );
+          const res = await apiGetSpecializedDepartmentById(userInfoLogin.departmentId);
           if (res && res.data) {
-            const departmentData: any = res.data;
+            const departmentData = res.data;
             setSpecializedDepartment(departmentData);
           }
+  
+          // Gọi hàm fetchAllUser với userInfoLogin
+          fetchAllUser(userInfoLogin);
         }
-      } else if (location.pathname.split("/")[3]) {
+      } else {
         const fecthDoc2 = await apiGetSubMenu2ById(
-          location.pathname.split("/")[3]
+          docId
         );
+        // Trường hợp có docId, lấy dữ liệu từ userInfoDocument
         if (fecthDoc2 && fecthDoc2.data) {
           const doc2Data: any = fecthDoc2.data;
           setDocument2Info(doc2Data);
@@ -291,16 +296,28 @@ const SubMenu2Detail = () => {
             const res = await apiGetSpecializedDepartmentById(
               userData?.departmentId
             );
-            if (res && res.data) {
-              const departmentData: any = res.data;
-              setSpecializedDepartment(departmentData);
-            }
-          }
+        }
+  
+          // Gọi hàm fetchAllUser với userInfoDocument
+          fetchAllUser(userInfoDocument);
         }
       }
     };
+  
+    const fetchAllUser = async (userInfo : any) => {
+      if (userInfo) {
+        const res = await apiGetUserHostBy(userInfo.departmentId);
+        if (res && res.data) {
+          const usersData: User[] = res.data;
+          setUsers(usersData);
+          console.log(users)
+        }
+      }
+    };
+  
     fetchSpecializedDepartmentById();
-  }, [location.pathname, userInfoLogin]);
+  }, [location.pathname, userInfoLogin, userInfoDocument]);
+  
 
   useEffect(() => {
     const fetchGrades = async () => {
@@ -314,18 +331,19 @@ const SubMenu2Detail = () => {
     fetchGrades();
   }, []);
 
-  useEffect(() => {
-    const fetchAllUser = async () => {
-      if (userInfoLogin) {
-        const res = await apiGetUserHostBy(userInfoLogin?.departmentId);
-        if (res && res.data) {
-          const usersData: User[] = res.data;
-          setUsers(usersData);
-        }
-      }
-    };
-    fetchAllUser();
-  }, [userInfoLogin]);
+  // useEffect(() => {
+  //     const fetchAllUser = async () => {
+  //       if (userInfoLogin  ) {
+  //         console.log(userInfoDocument);
+  //         const res = await apiGetUserHostBy(userInfoDocument?.departmentId ?? userInfoLogin?.departmentId);
+  //         if (res && res.data) {
+  //           const usersData: User[] = res.data;
+  //           setUsers(usersData);
+  //         }
+  //       }
+  //     };
+  //     fetchAllUser();
+  // }, [userInfoLogin]);
 
   const handleClickOpen = async () => {
     setDisplayAddRow(!displayAddRow);
@@ -345,10 +363,11 @@ const SubMenu2Detail = () => {
               createdDate: createdDate,
               status: true,
               approveByName: "",
-              isApprove: 1,
+              isApprove: 2,
             },
           ]);
           if (post) {
+            console.log(post);
             setDocumentId(post?.data[0]?.id);
             await apiPostNotification({
               receiveBy: principleAndTeacher?.principle || [],
@@ -356,7 +375,7 @@ const SubMenu2Detail = () => {
               titleName: `${post?.data[0].name} ĐÃ ĐƯỢC ĐĂNG TẢI, HÃY XÉT DUYỆT`,
               message: `${post?.data[0].name} ĐÃ ĐƯỢC ĐĂNG TẢI, HÃY XÉT DUYỆT`,
               docType: 2,
-              docId: post?.data?.id,
+              docId: post?.data[0]?.id,
             });
           }
         } catch (error) {
@@ -366,6 +385,14 @@ const SubMenu2Detail = () => {
     } else {
       if (user) {
         setOpen(true);
+        await apiUpdateSubMenu2(
+          {
+            id: document2Info?.id,
+            userId: document2Info?.userId,
+            isApprove: 2,
+            approveBy: user?.userId,
+          }
+        );
         await apiPostNotification({
           receiveBy: principleAndTeacher?.principle || [],
           sentBy: user?.userId,
@@ -395,7 +422,7 @@ const SubMenu2Detail = () => {
             createdDate: createdDate,
             status: true,
             approveByName: "",
-            isApprove: 2,
+            isApprove: 1,
           },
         ]);
         if (post) {
@@ -538,7 +565,7 @@ const SubMenu2Detail = () => {
       return accumulator;
     }, []);
     const rowsWithDocumentId = flattenedRows.map((row) => {
-      return { ...row, document2Id: documentId };
+      return { ...row, document2Id: document2Info?.id ?? documentId };
     });
 
     if (rowsWithDocumentId) {
@@ -572,7 +599,7 @@ const SubMenu2Detail = () => {
   return (
     <div className="sub-menu-container" style={{ minWidth: "30rem" }}>
       {location.pathname?.includes("edit") ||
-      location.pathname?.includes("create") ? (
+        location.pathname?.includes("create") ? (
         <div>
           <div className="sub-menu-content" id="main-content">
             <div className="sub-menu-content-header">
@@ -596,7 +623,6 @@ const SubMenu2Detail = () => {
                     <div>
                       <strong>TRƯỜNG: </strong>
                       <input
-                        style={{ height: "30px" }}
                         type="text"
                         placeholder="..........."
                         onChange={(e) => setTruong(e.target.value)}
@@ -776,7 +802,6 @@ const SubMenu2Detail = () => {
                                   </TableCell>
                                   <TableCell align="center">
                                     <textarea
-                                      rows={1}
                                       value={row.titleName ?? null}
                                       onChange={(e) => {
                                         const newValue = e.target.value;
@@ -790,7 +815,6 @@ const SubMenu2Detail = () => {
                                   </TableCell>
                                   <TableCell align="center">
                                     <textarea
-                                      rows={1}
                                       value={row.description ?? null}
                                       onChange={(e) => {
                                         const newValue = e.target.value;
@@ -804,7 +828,6 @@ const SubMenu2Detail = () => {
                                   </TableCell>
                                   <TableCell align="center">
                                     <textarea
-                                      rows={1}
                                       value={row.slot ?? ""}
                                       onChange={(e) => {
                                         const newValue = parseInt(
@@ -819,7 +842,6 @@ const SubMenu2Detail = () => {
                                   </TableCell>
                                   <TableCell align="center">
                                     <input
-                                      style={{ marginBottom: "1.5rem" }}
                                       type="date"
                                       value={
                                         row.time ? formatDate(row.time) : ""
@@ -835,7 +857,6 @@ const SubMenu2Detail = () => {
                                   </TableCell>
                                   <TableCell align="center">
                                     <textarea
-                                      rows={1}
                                       value={row.place ?? null}
                                       onChange={(e) => {
                                         const newValue = e.target.value;
@@ -857,7 +878,6 @@ const SubMenu2Detail = () => {
                                             marginLeft: "4px",
                                             border: "none",
                                             outline: "none",
-                                            justifyContent: "space-between",
                                           }}
                                           value={hos ?? 0}
                                           onChange={(e) => {
@@ -880,19 +900,19 @@ const SubMenu2Detail = () => {
                                         <div className="add-row-button">
                                           {hosIndex ===
                                             row.hostBy.length - 1 && (
-                                            <Add
-                                              style={{
-                                                color: "black",
-                                                display: displayAddRow
-                                                  ? "none"
-                                                  : "",
-                                              }}
-                                              className="add-row-icon"
-                                              onClick={() =>
-                                                handleAddHost(indexGrade, index)
-                                              }
-                                            />
-                                          )}
+                                              <Add
+                                                style={{
+                                                  color: "black",
+                                                  display: displayAddRow
+                                                    ? "none"
+                                                    : "",
+                                                }}
+                                                className="add-row-icon"
+                                                onClick={() =>
+                                                  handleAddHost(indexGrade, index)
+                                                }
+                                              />
+                                            )}
                                           {row.hostBy.length > 1 && (
                                             <Remove
                                               style={{
@@ -917,7 +937,6 @@ const SubMenu2Detail = () => {
                                   </TableCell>
                                   <TableCell align="center">
                                     <textarea
-                                      rows={1}
                                       value={row.collaborateWith ?? null}
                                       onChange={(e) => {
                                         const newValue = e.target.value;
@@ -931,7 +950,6 @@ const SubMenu2Detail = () => {
                                   </TableCell>
                                   <TableCell align="center">
                                     <textarea
-                                      rows={1}
                                       value={row.condition ?? null}
                                       onChange={(e) => {
                                         const newValue = e.target.value;
@@ -1017,41 +1035,19 @@ const SubMenu2Detail = () => {
                     <i>(Ký và ghi rõ họ tên)</i>
                   </div>
                   <br /> <br />
-                  <div
-                    style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                    }}
-                  >
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
                     {/* <input
                       type="text"
                       placeholder="................................................................"
                       style={{ width: "150px" }}
                       onChange={(e) => setToTruong(e.target.value)}
                     /> */}
-                    <img
-                      src={userInfoLogin?.signature}
-                      alt=""
-                      style={{ width: "150px", height: "auto" }}
-                    />
-                    <img
-                      src={
-                        location.pathname.includes("create")
-                          ? userInfoLogin?.signature
-                          : userInfoDocument?.signature
-                      }
-                      alt=""
-                      style={{ width: "150px", height: "auto" }}
-                    />
+                    <img src={userInfoLogin?.signature} alt="" style={{ width: "150px", height: "auto" }} />
+                    <img src={location.pathname.includes("create") ? userInfoLogin?.signature : userInfoDocument?.signature} alt="" style={{ width: "150px", height: "auto" }} />
                     <p>
-                      {location.pathname.includes("create")
-                        ? userInfoLogin?.firstName +
-                          " " +
-                          userInfoLogin?.lastName
-                        : userInfoDocument?.firstName +
-                          " " +
-                          userInfoDocument?.lastName}
+                      {
+                        location.pathname.includes("create") ? userInfoLogin?.firstName + " " + userInfoLogin?.lastName : userInfoDocument?.firstName + " " + userInfoDocument?.lastName
+                      }
                     </p>
                   </div>
                 </div>
@@ -1093,31 +1089,21 @@ const SubMenu2Detail = () => {
                   </div>
                   <br />
                   <br />
-                  {document2Info?.approveBy == null ? (
-                    <input
+                  {
+                    document2Info?.approveBy == null ? <input
                       type="text"
                       placeholder="................................................................"
                       style={{ width: "150px" }}
-                    />
-                  ) : (
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "center",
-                      }}
-                    >
-                      <img
-                        src={principle?.signature}
-                        alt=""
-                        style={{ width: "150px", height: "auto" }}
-                      />
-                      <p>
-                        {document2Info?.approveBy ??
-                          principle?.firstName + " " + principle?.lastName}
-                      </p>
-                    </div>
-                  )}
+                    /> :
+                      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                        <img src={principle?.signature} alt="" style={{ width: "150px", height: "auto" }} />
+                        <p>
+                          {
+                            document2Info?.approveBy ?? principle?.firstName + " " + principle?.lastName
+                          }
+                        </p>
+                      </div>
+                  }
                 </div>
               </div>
             </div>
@@ -1189,17 +1175,12 @@ const SubMenu2Detail = () => {
             </div>
             <div className="sub-menu-row">
               <div>
-                <strong>Nguồn: </strong> https://baigiang.violet.vn
+                <strong>Ngày gửi: </strong> {document2Info?.createdDate}
               </div>
               <div className="right-action" onClick={handleClickOpenReport}>
                 <strong>
                   <u className="underline-blue">Báo cáo tài liệu có sai sót</u>
                 </strong>
-              </div>
-            </div>
-            <div className="sub-menu-row">
-              <div>
-                <strong>Ngày gửi: </strong> {document2Info?.createdDate}
               </div>
             </div>
           </div>
@@ -1209,13 +1190,13 @@ const SubMenu2Detail = () => {
                 className="verify"
                 style={{
                   display:
-                    user?.role === "Principle" && document2Info?.isApprove === 2
+                    user?.role === "Principal" && document2Info?.isApprove === 2
                       ? "flex"
                       : "none",
                 }}
               >
                 <span>Tình trạng thẩm định:</span>
-                {user?.role === "principle" && (
+                {
                   <div style={{ display: "flex", columnGap: "10px" }}>
                     <div
                       className="action-button"
@@ -1223,20 +1204,14 @@ const SubMenu2Detail = () => {
                     >
                       Chấp thuận
                     </div>
-                    <div
-                      className="action-button"
-                      onClick={handleClickOpenDeny}
-                    >
+                    <div className="action-button" onClick={handleClickOpenDeny}>
                       Từ chối
                     </div>
                   </div>
-                )}
+                }
               </div>
             </div>
-            <div className="sub-menu-note">
-              Ghi chú <br />
-              <textarea name="" id="" rows={8}></textarea>
-            </div>
+
           </div>
         </>
       )}
@@ -1404,8 +1379,7 @@ const SubMenu2Detail = () => {
                     userId: document2Info?.userId,
                     isApprove: 3,
                     approveBy: user?.userId,
-                  },
-                  document2Info?.id
+                  }
                 );
                 await apiPostNotification({
                   receiveBy: [document2Info?.userId] || [],
@@ -1423,6 +1397,8 @@ const SubMenu2Detail = () => {
                   docType: 2,
                   docId: document2Info?.id,
                 });
+                alert("Thành công! Hãy chờ đợi trong giây lát để chuyển trang");
+                navigate(`/sub-menu/2`);
               } catch (error) {
                 alert("Không thể xét duyệt");
               }
@@ -1471,8 +1447,7 @@ const SubMenu2Detail = () => {
                     userId: document2Info?.userId,
                     isApprove: 4,
                     approveBy: user?.userId,
-                  },
-                  document2Info?.id
+                  }
                 );
                 await apiPostNotification({
                   receiveBy: [document2Info?.userId] || [],
@@ -1482,6 +1457,8 @@ const SubMenu2Detail = () => {
                   docType: 2,
                   docId: document2Info?.id,
                 });
+                alert("Thành công! Hãy chờ đợi trong giây lát để chuyển trang");
+                navigate(`/sub-menu/1`);
               } catch (error) {
                 alert("Không thể từ chối");
               }

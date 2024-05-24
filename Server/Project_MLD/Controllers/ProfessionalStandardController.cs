@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Project_MLD.DTO;
 using Project_MLD.Models;
 using Project_MLD.Service.Interface;
 using Project_MLD.Service.Repository;
@@ -12,10 +14,12 @@ namespace Project_MLD.Controllers
     public class ProfessionalStandardController : ControllerBase
     {
         private readonly IProfessionalStandardRepository _repository;
+        private readonly IMapper _mapper;
 
-        public ProfessionalStandardController(IProfessionalStandardRepository repository)
+        public ProfessionalStandardController(IProfessionalStandardRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -37,10 +41,11 @@ namespace Project_MLD.Controllers
             return Ok(existPs);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<Role>> AddProfessionalStandard(ProfessionalStandard ps)
+        [HttpPost("AddProfessionalStandard")]
+        public async Task<ActionResult<Role>> AddProfessionalStandard(ProfessionalStandardDTO ps)
         {
-            await _repository.AddProfessionalStandard(ps);
+            var mapper = _mapper.Map<ProfessionalStandard>(ps);
+            await _repository.AddProfessionalStandard(mapper);
             return CreatedAtAction(nameof(GetProfessionalStandardById), new { id = ps.Id }, ps);
         }
 
@@ -55,15 +60,11 @@ namespace Project_MLD.Controllers
             return NoContent();
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateProfessionalStandard(int id, ProfessionalStandard ps)
+        [HttpPut("UpdateProfessionalStandard")]
+        public async Task<IActionResult> UpdateProfessionalStandard(ProfessionalStandardDTO ps)
         {
-            if (id != ps.Id)
-            {
-                return BadRequest();
-            }
-
-            var result = await _repository.UpdateProfessionalStandard(ps);
+            var mapper = _mapper.Map<ProfessionalStandard>(ps);
+            var result = await _repository.UpdateProfessionalStandard(mapper);
             if (!result)
             {
                 return NotFound();

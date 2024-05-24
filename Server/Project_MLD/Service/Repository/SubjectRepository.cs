@@ -43,6 +43,12 @@ namespace Project_MLD.Service.Repository
             return await _context.Subjects.FindAsync(id);
         }
 
+        public async Task<IEnumerable<Subject>> GetSubjectsByDepartmentId(int departmentId)
+        {
+            return await _context.Subjects
+                .Where(x => x.DepartmentId == departmentId).ToListAsync();
+        }
+
         public async Task<bool> UpdateSubject(Subject sub)
         {
             var existSubject = await GetSubjectById(sub.Id);
@@ -51,7 +57,15 @@ namespace Project_MLD.Service.Repository
                 return false;
             }
 
-            _context.Entry(existSubject).CurrentValues.SetValues(sub);
+            var properties = typeof(Subject).GetProperties();
+            foreach (var property in properties)
+            {
+                var updatedValue = property.GetValue(sub);
+                if (updatedValue != null)
+                {
+                    property.SetValue(existSubject, updatedValue);
+                }
+            }
             await _context.SaveChangesAsync();
             return true;
         }

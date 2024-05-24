@@ -10,6 +10,7 @@ namespace Project_MLD.Service.Interface
         Task<bool> UpdateClass(Class cl);
         Task<bool> DeleteClass(int id);
         Task<IEnumerable<Class>> GetClassesByGradeId(int gradeId);
+        Task<Class> GetClassIdByClassName(string className);
 
     }
 }

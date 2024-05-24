@@ -50,8 +50,15 @@ namespace Project_MLD.Service.Repository
             {
                 return false;
             }
-
-            _context.Entry(existSpecialTeam).CurrentValues.SetValues(st);
+            var properties = typeof(SpecializedDepartment).GetProperties();
+            foreach (var property in properties)
+            {
+                var updatedValue = property.GetValue(st);
+                if (updatedValue != null)
+                {
+                    property.SetValue(existSpecialTeam, updatedValue);
+                }
+            }
             await _context.SaveChangesAsync();
             return true;
         }

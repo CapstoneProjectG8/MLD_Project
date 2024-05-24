@@ -106,7 +106,7 @@ namespace Project_MLD.Service.Repository
                     .Include(x => x.User)
                     .Include(x => x.Grade)
                     .Include(x => x.Subject)
-                    .Where(x => x.User.DepartmentId == id && x.Status == true)
+                    .Where(x => x.User.DepartmentId == id && x.Status == true && x.IsApprove == 3)
                     .ToListAsync();
 
                 var anObject = new
@@ -140,6 +140,17 @@ namespace Project_MLD.Service.Repository
                 .Include(x => x.Grade)
                 .Include(x => x.Subject)
                 .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Document1>> GetAllDoc1sBySubjectId(int subjectId)
+        {
+            return await _context.Document1s
+                .Include(x => x.User)
+                .Include(x => x.Grade)
+                .Include(x => x.Subject)
+                .Where(x => x.SubjectId == subjectId && x.IsApprove == 3)
+                .ToListAsync();
+
         }
     }
 }

@@ -60,19 +60,35 @@ const LoginForm: FC = () => {
 
       // Access username and password from the form
       const { username, password } = form;
-      // Encode the password to ensure special characters are properly handled
-      const encodedPassword = encodeURIComponent(password);
-      // Construct the login URL with username and password as query parameters
-      const loginUrl = `https://localhost:7241/Login?username=${username}&password=${encodedPassword}`;
 
       // Call the API for login
-      const response = await axios.post(loginUrl);
+      const response = await axios.post('https://localhost:7241/api/Account/Login2', {
+        username,
+        password,
+      });
+
+      // Extract token and account information from the response
+      const { token, accountInfo } = response.data;
+      const { active, roleId } = accountInfo;
+
+      // Check if the account is active and the role is admin
+      if (!active) {
+        message.error('Tài khoản của bạn đã bị khóa');
+
+        return;
+      }
+
+      if (roleId !== 1) {
+        message.error('Bạn không đủ quyền đăng nhập');
+
+        return;
+      }
 
       // Save token to cookie and set expiration time to 2 hours from now
       const expirationDate = new Date();
 
       expirationDate.setTime(expirationDate.getTime() + 2 * 60 * 60 * 1000); // 2 hours in milliseconds
-      Cookies.set('token', response.data.token, { expires: expirationDate });
+      Cookies.set('token', token, { expires: expirationDate });
 
       // Set token expiration time
       Cookies.set('token_expiration', expirationDate.toISOString());

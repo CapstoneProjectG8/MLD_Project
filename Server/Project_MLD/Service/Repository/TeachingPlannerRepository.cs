@@ -56,22 +56,34 @@ namespace Project_MLD.Service.Repository
         {
             try
             {
-                var newItem = new TeachingPlanner()
+                var existingTeachingPlanner = _context.TeachingPlanners
+                    .Where(x => x.UserId == userId
+                    && x.SubjectId == subjectId
+                    && x.ClassId == classId)
+                    .FirstOrDefault();
+
+                if (existingTeachingPlanner == null)
                 {
-                    UserId = userId,
-                    SubjectId = subjectId,
-                    ClassId = classId
-                };
-
-                _context.TeachingPlanners.Add(newItem);
-                await _context.SaveChangesAsync();
-
-                return newItem;
-            }catch (Exception ex)
+                    var newItem = new TeachingPlanner()
+                    {
+                        UserId = userId,
+                        SubjectId = subjectId,
+                        ClassId = classId
+                    };
+                    _context.TeachingPlanners.Add(newItem);
+                    await _context.SaveChangesAsync();
+                    return newItem;
+                }
+                else
+                {
+                    return existingTeachingPlanner;
+                } 
+            }
+            catch (Exception ex)
             {
                 throw new Exception("An error occurred while add Teaching Planner.", ex);
             }
-           
+
         }
     }
 }
