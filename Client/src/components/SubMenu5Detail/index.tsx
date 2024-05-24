@@ -32,6 +32,9 @@ import { options } from "../UploadPhuLuc4";
 import axios from "axios";
 import { apiPostEvaluate } from "../../api/evaluate";
 
+import { apiGetUser } from "../../api/user";
+import { User } from "../../models/User";
+
 const SubMenu5Detail = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -54,6 +57,8 @@ const SubMenu5Detail = () => {
   const [document5Id, setDocument5Id] = useState<any>();
   const [document4Info, setDocument4Info] = useState<any>();
   const [document5Info, setDocument5Info] = useState<any>();
+  
+  const [userInfoDocument, setUserInfoDocument] = useState<User>();
 
   const [login, setLogin] = useState(false);
   const [open, setOpen] = useState(false);
@@ -63,6 +68,23 @@ const SubMenu5Detail = () => {
   const [openRemove, setOpenRemove] = useState(false);
 
   const user = useAppSelector((state) => state.auth.user);
+
+  useEffect(() => {
+    const fetchUserinfo = async () => {
+      if (location.pathname.split("/")[3]) {
+        const fecthDoc = await apiGetSubMenu5ById(location.pathname.split("/")[3]);
+        if (fecthDoc && fecthDoc.data) {
+            const doc5Data = fecthDoc.data;
+            setDocument5Info(doc5Data);
+            const fetchUser = await apiGetUser(doc5Data?.userId);
+            if (fetchUser && fetchUser.data)
+              setUserInfoDocument(fetchUser?.data)
+          }
+        }
+      }
+    
+    fetchUserinfo();
+  }, [location.pathname]);
 
   const getTargetElement = () => document.getElementById("main-content");
 
@@ -361,7 +383,7 @@ const SubMenu5Detail = () => {
                     type="text"
                     placeholder="........................."
                     style={{ width: "90px" }}
-                    onChange={(e) => setTiet(parseInt(e.target.value))}
+                    onChange={(e) => setTiet(parseInt((e.target as HTMLInputElement).value))}
                   />
                 </div>
                 ;<div> Ngày: {new Date().toLocaleDateString("vi-VN")}</div>
@@ -410,7 +432,7 @@ const SubMenu5Detail = () => {
                               type="number"
                               value={tieuChi1 ?? ""}
                               onChange={(e) => {
-                                const newValue = parseFloat(e.target.value);
+                                const newValue = parseFloat((e.target as HTMLInputElement).value);
                                 if (
                                   !isNaN(newValue) &&
                                   newValue >= 0 &&
@@ -434,7 +456,7 @@ const SubMenu5Detail = () => {
                               type="number"
                               value={tieuChi2 ?? ""}
                               onChange={(e) => {
-                                const newValue = parseFloat(e.target.value);
+                                const newValue = parseFloat((e.target as HTMLInputElement).value);
                                 if (
                                   !isNaN(newValue) &&
                                   newValue >= 0 &&
@@ -457,7 +479,7 @@ const SubMenu5Detail = () => {
                               type="number"
                               value={tieuChi3 ?? ""}
                               onChange={(e) => {
-                                const newValue = parseFloat(e.target.value);
+                                const newValue = parseFloat((e.target as HTMLInputElement).value);
                                 if (
                                   !isNaN(newValue) &&
                                   newValue >= 0 &&
@@ -480,7 +502,7 @@ const SubMenu5Detail = () => {
                               type="number"
                               value={tieuChi4 ?? ""}
                               onChange={(e) => {
-                                const newValue = parseFloat(e.target.value);
+                                const newValue = parseFloat((e.target as HTMLInputElement).value);
                                 if (
                                   !isNaN(newValue) &&
                                   newValue >= 0 &&
@@ -508,7 +530,7 @@ const SubMenu5Detail = () => {
                               type="number"
                               value={tieuChi5 ?? ""}
                               onChange={(e) => {
-                                const newValue = parseFloat(e.target.value);
+                                const newValue = parseFloat((e.target as HTMLInputElement).value);
                                 if (
                                   !isNaN(newValue) &&
                                   newValue >= 0 &&
@@ -531,7 +553,7 @@ const SubMenu5Detail = () => {
                               type="number"
                               value={tieuChi6 ?? ""}
                               onChange={(e) => {
-                                const newValue = parseFloat(e.target.value);
+                                const newValue = parseFloat((e.target as HTMLInputElement).value);
                                 if (
                                   !isNaN(newValue) &&
                                   newValue >= 0 &&
@@ -555,7 +577,7 @@ const SubMenu5Detail = () => {
                               type="number"
                               value={tieuChi7 ?? ""}
                               onChange={(e) => {
-                                const newValue = parseFloat(e.target.value);
+                                const newValue = parseFloat((e.target as HTMLInputElement).value);
                                 if (
                                   !isNaN(newValue) &&
                                   newValue >= 0 &&
@@ -580,7 +602,7 @@ const SubMenu5Detail = () => {
                               type="number"
                               value={tieuChi8 ?? ""}
                               onChange={(e) => {
-                                const newValue = parseFloat(e.target.value);
+                                const newValue = parseFloat((e.target as HTMLInputElement).value);
                                 if (
                                   !isNaN(newValue) &&
                                   newValue >= 0 &&
@@ -607,7 +629,7 @@ const SubMenu5Detail = () => {
                               type="number"
                               value={tieuChi9 ?? ""}
                               onChange={(e) => {
-                                const newValue = parseFloat(e.target.value);
+                                const newValue = parseFloat((e.target as HTMLInputElement).value);
                                 if (
                                   !isNaN(newValue) &&
                                   newValue >= 0 &&
@@ -630,7 +652,7 @@ const SubMenu5Detail = () => {
                               type="number"
                               value={tieuChi10 ?? ""}
                               onChange={(e) => {
-                                const newValue = parseFloat(e.target.value);
+                                const newValue = parseFloat((e.target as HTMLInputElement).value);
                                 if (
                                   !isNaN(newValue) &&
                                   newValue >= 0 &&
@@ -654,7 +676,7 @@ const SubMenu5Detail = () => {
                               type="number"
                               value={tieuChi11 ?? ""}
                               onChange={(e) => {
-                                const newValue = parseFloat(e.target.value);
+                                const newValue = parseFloat((e.target as HTMLInputElement).value);
                                 if (
                                   !isNaN(newValue) &&
                                   newValue >= 0 &&
@@ -677,7 +699,7 @@ const SubMenu5Detail = () => {
                               type="number"
                               value={tieuChi12 ?? ""}
                               onChange={(e) => {
-                                const newValue = parseFloat(e.target.value);
+                                const newValue = parseFloat((e.target as HTMLInputElement).value);
                                 if (
                                   !isNaN(newValue) &&
                                   newValue >= 0 &&
@@ -724,7 +746,6 @@ const SubMenu5Detail = () => {
                       type="text"
                       placeholder="................................................................"
                       style={{ width: "150px" }}
-                      onChange={(e) => setNguoiDanhGia(e.target.value)}
                     />
                   </div>
                 </div>
@@ -748,19 +769,59 @@ const SubMenu5Detail = () => {
             <div className="sub-menu-row">
               <div>
                 <strong>Người gửi: </strong>{" "}
-                <u className="underline-blue">Sam Dung</u>
+                <u className="underline-blue">{userInfoDocument?.firstName+" "+userInfoDocument?.lastName}</u>
               </div>
             </div>
             <div className="sub-menu-row">
               <div>
                 <strong>Ngày gửi: </strong>{" "}
-                <u className="underline-blue">Sam Dung</u>
+                <u className="underline-blue">{document5Info?.createdDate}</u>
               </div>
             </div>
           </div>
           
         </>
       )}
+      <Dialog
+        open={open}
+        onClose={async (event, reason) => {
+          if (reason !== "backdropClick" && reason !== "escapeKeyDown") {
+            handleClose();
+          }
+        }}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle
+          id="alert-dialog-title"
+          style={{ textAlign: "center", fontWeight: 600 }}
+        >
+          Bạn có chắc chắn không
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText
+            id="alert-dialog-description"
+            style={{ textAlign: "center", fontWeight: 600 }}
+          >
+            Bạn có chắc muốn đưa phụ lục này vào xét duyệt
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleClose}
+            style={{ color: "#000", fontWeight: 600 }}
+          >
+            Hủy bỏ
+          </Button>
+          <Button
+            onClick={() => handleAddDoc5()}
+            className="button-mui"
+            autoFocus
+          >
+            Đồng ý
+          </Button>
+        </DialogActions>
+      </Dialog>
 
     </div>
   );

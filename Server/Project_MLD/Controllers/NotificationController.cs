@@ -196,6 +196,7 @@ namespace Project_MLD.Controllers
         {
             var teacher = new List<int>();
             var principle = new List<int>();
+            var leader = new List<int>();   
 
             foreach (var id in listDepartmentId)
             {
@@ -206,6 +207,9 @@ namespace Project_MLD.Controllers
                     if (person.Account.Role.RoleId == 2)
                     {
                         teacher.Add(person.Id);
+                    }else if (person.Account.Role.RoleId == 3)
+                    {
+                        leader.Add(person.Id);
                     }
                 }
             }
@@ -222,7 +226,8 @@ namespace Project_MLD.Controllers
             return Ok(new
             {
                 principle,
-                teacher
+                teacher,
+                leader
             });
         }
 

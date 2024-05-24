@@ -861,7 +861,7 @@ const SubMenu2Detail = () => {
                                         row.time ? formatDate(row.time) : formatDate(Date.now())
                                       }
                                       onChange={(e) => {
-                                        const newValue = e.target.value;
+                                        const newValue = (e.target as HTMLInputElement).value;
                                         const updatedRows = [...multiRows];
                                         updatedRows[indexGrade][index].time =
                                           newValue;

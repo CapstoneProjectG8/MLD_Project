@@ -232,6 +232,8 @@ const SubMenu1Detail = () => {
     fecthPrincipleAndTeacher()
   }, [specializedDepartment?.id])
 
+
+
   const getTargetElement = () => document.getElementById("main-content");
 
   const downloadPdf = async () => {
@@ -538,7 +540,7 @@ const SubMenu1Detail = () => {
       if (khoiLop && user && hoadDong) {
         setOpen(true);
         const post = await apiPostSubMenu1({
-          name: "KẾ HOẠCH DẠY HỌC CỦA TỔ CHUYÊN MÔN MÔN HỌC/HOẠT ĐỘNG GIÁO DỤC MÔN "+subjects.find(obj => obj.id === hoadDong)?.name.toUpperCase()+" KHỐI "+grades.find(obj => obj.id === khoiLop)?.name,
+          name: "KẾ HOẠCH DẠY HỌC CỦA TỔ CHUYÊN MÔN MÔN HỌC/HOẠT ĐỘNG GIÁO DỤC MÔN " + subjects.find(obj => obj.id === hoadDong)?.name.toUpperCase() + " KHỐI " + grades.find(obj => obj.id === khoiLop)?.name,
           subjectId: hoadDong,
           gradeId: khoiLop,
           userId: user.userId,
@@ -749,6 +751,7 @@ const SubMenu1Detail = () => {
           docType: 1,
           docId: document1Info?.id,
         });
+
       }
       if (rows1 && rows2 && rows3 && rows4 && rows5) {
         const rows1WithDocumentId = rows1.map((row) => ({
@@ -931,7 +934,7 @@ const SubMenu1Detail = () => {
                       onChange={(e) => {
                         if (location.pathname.includes("create"))
                           setKhoiLop(parseInt(e.target.value));
-                          setGrade(e.target.name);
+                        setGrade(e.target.name);
                       }}
                       value={document1Info?.gradeId ? document1Info?.gradeId : khoiLop ?? ""}
                     >
@@ -1628,7 +1631,7 @@ const SubMenu1Detail = () => {
                                   type="date"
                                   value={row.date ? formatDate(row.date) : formatDate(Date.now())}
                                   onChange={(e) => {
-                                    const newValue = e.target.value;
+                                    const newValue = (e.target as HTMLInputElement).value;
                                     const updatedRows = [...rows5];
                                     updatedRows[index].date = newValue;
                                     setRows5(updatedRows);
@@ -2052,7 +2055,7 @@ const SubMenu1Detail = () => {
                   docId: document1Info?.id,
                 });
                 await apiPostNotification({
-                  receiveBy: hostByList || [],
+                  receiveBy: principleAndTeacher?.teacher || [],
                   sentBy: user?.userId,
                   titleName: `${document1Info?.name} ĐÃ ĐƯỢC CHẤP NHẬN, HÃY TẠO KHUNG KẾ HOẠCH`,
                   message: `${document1Info?.name} ĐÃ ĐƯỢC CHẤP NHẬN, HÃY TẠO KHUNG KẾ HOẠCH`,
