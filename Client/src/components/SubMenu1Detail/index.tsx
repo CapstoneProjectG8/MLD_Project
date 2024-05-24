@@ -108,9 +108,9 @@ interface Row5 {
   testingCategoryName: string;
   testingCategoryId: number;
   time: number | null;
-  date: string |null;
+  date: string | null;
   description: string;
-  formCategoryId: number ;
+  formCategoryId: number;
 }
 
 const defaultRows: Row5[] = [
@@ -189,13 +189,14 @@ const SubMenu1Detail = () => {
   const [totalClass, setTotalClass] = useState<TotalClass>();
   const [teacherInfo, setTeacherInfo] = useState<TeacherInfo>();
   const [userInfoLogin, setUserInfoLogin] = useState<User>();
+  const [UserApproveBy, setUserApproveBy] = useState<User>();
   const [userInfoDocument, setUserInfoDocument] = useState<User>();
   const [reasonReport, setReasonReport] = useState("");
   const [descriptionRp, setDescriptionRp] = useState("");
 
   const [count, setCount] = useState(0);
-  const [truong, setTruong] = useState("");
-  const [to, setTo] = useState("");
+  const [subject, setSubject] = useState("");
+  const [grade, setGrade] = useState("");
   const [hoadDong, setHoatDong] = useState<number | null>(null);
   const [khoiLop, setKhoiLop] = useState<number | null>(null);
   const [startYear, setStartYear] = useState("");
@@ -246,7 +247,7 @@ const SubMenu1Detail = () => {
       );
       if (response?.status === 200) {
         const res = await apiUpdateSubMenu1({
-          
+
           id: document1Info?.id ?? documentId,
           linkFile: response?.data,
           subjectId: hoadDong,
@@ -276,6 +277,19 @@ const SubMenu1Detail = () => {
     };
     fetchUserInfoLogin();
   }, [user]);
+
+  useEffect(() => {
+    const fetchUserApprove = async () => {
+      if (document1Info?.approveBy) {
+        const res = await apiGetUser(document1Info?.approveBy);
+        if (res && res.data) {
+          const userData: any = res.data;
+          setUserApproveBy(userData);
+        }
+      }
+    };
+    fetchUserApprove();
+  });
 
 
   useEffect(() => {
@@ -313,7 +327,7 @@ const SubMenu1Detail = () => {
       }
     };
 
-    
+
 
     const fetchGrade = async () => {
       const res = await apiGetGrade();
@@ -524,7 +538,7 @@ const SubMenu1Detail = () => {
       if (khoiLop && user && hoadDong) {
         setOpen(true);
         const post = await apiPostSubMenu1({
-          name: "KẾ HOẠCH DẠY HỌC CỦA TỔ CHUYÊN MÔN MÔN HỌC/HOẠT ĐỘNG GIÁO DỤC",
+          name: "KẾ HOẠCH DẠY HỌC CỦA TỔ CHUYÊN MÔN MÔN HỌC/HOẠT ĐỘNG GIÁO DỤC MÔN "+subject.toUpperCase()+" Khối "+grade,
           subjectId: hoadDong,
           gradeId: khoiLop,
           userId: user.userId,
@@ -535,7 +549,7 @@ const SubMenu1Detail = () => {
         });
         if (post) {
           setDocument1Info(post.data);
-          
+
         }
       } else alert("Nhập đầy đủ thông tin!");
     } else {
@@ -714,8 +728,8 @@ const SubMenu1Detail = () => {
   const handleAddDoc1 = async (document1Info: any) => {
     const documentId = document1Info?.id;
     console.log(document1Info.id);
-    if(documentId){
-      if (location.pathname.includes("edit")){
+    if (documentId) {
+      if (location.pathname.includes("edit")) {
         await apiDeleteDocument1ForeignTableByDocument1ID(document1Info?.id);
         await apiPostNotification({
           receiveBy: principleAndTeacher?.principle || [],
@@ -724,7 +738,7 @@ const SubMenu1Detail = () => {
           message: `${document1Info?.name} ĐÃ ĐƯỢC CHỈNH SỬA, HÃY XÉT DUYỆT`,
           docType: 1,
           docId: document1Info?.id,
-        });   
+        });
       }
       else {
         await apiPostNotification({
@@ -734,7 +748,7 @@ const SubMenu1Detail = () => {
           message: `${document1Info?.name} ĐÃ ĐƯỢC ĐĂNG TẢI, HÃY XÉT DUYỆT`,
           docType: 1,
           docId: document1Info?.id,
-        }); 
+        });
       }
       if (rows1 && rows2 && rows3 && rows4 && rows5) {
         const rows1WithDocumentId = rows1.map((row) => ({
@@ -780,7 +794,7 @@ const SubMenu1Detail = () => {
       }
       setOpen(false);
     }
-    
+
   };
 
   return (
@@ -853,9 +867,9 @@ const SubMenu1Detail = () => {
                       }}
                       onChange={(e) => {
                         if (location.pathname.includes("create")) {
-                          setHoatDong(parseInt(e.target.value));
                           const value = parseInt(e.target.value);
                           setHoatDong(value);
+                          setSubject(e.target.name)
 
                           // Function to fetch curriculum by subject ID
                           const fetchCurriculumBySubjectId = async () => {
@@ -917,6 +931,7 @@ const SubMenu1Detail = () => {
                       onChange={(e) => {
                         if (location.pathname.includes("create"))
                           setKhoiLop(parseInt(e.target.value));
+                          setGrade(e.target.name);
                       }}
                       value={document1Info?.gradeId ? document1Info?.gradeId : khoiLop ?? ""}
                     >
@@ -1667,64 +1682,82 @@ const SubMenu1Detail = () => {
                 </div>
               </div>
               <div className="sub-menu-content-main-signature">
-                  <div className="to-truong">
-                    <div>
-                      <strong>TỔ TRƯỞNG</strong>
-                    </div>
-                    <div>
-                      <i>(Ký và ghi rõ họ tên)</i>
-                    </div>
-                    <br /> <br />
-                    <div>
-                      <input
-                        type="text"
-                        placeholder="................................................................"
-                        style={{ width: "150px" }}
-                      />
-                    </div>
+                <div className="to-truong">
+                  <div>
+                    <strong>TỔ TRƯỞNG</strong>
                   </div>
-                  <div className="hieu-truong">
-                    <div>
-                      <input
-                        type="text"
-                        placeholder="....................."
-                        style={{ width: "60px" }}
-                      />
-                      , ngày{" "}
-                      <input
-                        type="number"
-                        placeholder="....."
-                        style={{ width: "30px" }}
-                      />
-                      , tháng{" "}
-                      <input
-                        type="number"
-                        placeholder="....."
-                        style={{ width: "30px" }}
-                      />
-                      , năm 20{" "}
-                      <input
-                        type="number"
-                        placeholder="....."
-                        style={{ width: "30px" }}
-                      />
-                    </div>
-                    <div>
-                      <strong>HIỆU TRƯỞNG</strong>
-                    </div>
-                    <div>
-                      <i>(Ký và ghi rõ họ tên)</i>
-                    </div>
-                    <br /> <br />
-                    <div>
-                      <input
-                        type="text"
-                        placeholder="................................................................"
-                        style={{ width: "150px" }}
-                      />
-                    </div>
+                  <div>
+                    <i>(Ký và ghi rõ họ tên)</i>
+                  </div>
+                  <br /> <br />
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                    {/* <input
+                      type="text"
+                      placeholder="................................................................"
+                      style={{ width: "150px" }}
+                      onChange={(e) => setToTruong(e.target.value)}
+                    /> */}
+                    <img src={location.pathname.includes("create") ? userInfoLogin?.signature : userInfoDocument?.signature} alt="" style={{ width: "150px", height: "auto" }} />
+                    <p>
+                      {
+                        location.pathname.includes("create") ? userInfoLogin?.firstName + " " + userInfoLogin?.lastName : userInfoDocument?.firstName + " " + userInfoDocument?.lastName
+                      }
+                    </p>
                   </div>
                 </div>
+                <div className="hieu-truong">
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="....................."
+                      style={{ width: "60px" }}
+                    />
+                    , ngày{" "}
+                    <input
+                      type="number"
+                      placeholder="....."
+                      style={{ width: "30px" }}
+                    />
+                    , tháng{" "}
+                    <input
+                      type="number"
+                      placeholder="....."
+                      style={{ width: "30px" }}
+                    />
+                    , năm 20{" "}
+                    <input
+                      type="number"
+                      placeholder="....."
+                      style={{ width: "30px" }}
+                    />
+                  </div>
+                  <div>
+                    <strong>HIỆU TRƯỞNG</strong>
+                  </div>
+                  <div>
+                    <i>(Ký và ghi rõ họ tên)</i>
+                  </div>
+                  <br /> <br />
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                    {UserApproveBy?.id === undefined ? (
+                      <input
+                        type="text"
+                        placeholder="................................................................"
+                        style={{ width: "150px" }}
+                        disabled
+                      />
+                    ) : (
+                      <>
+                        <img src={UserApproveBy?.signature} alt="" style={{ width: "150px", height: "auto" }} />
+                        <p>
+                          {UserApproveBy?.firstName + " " + UserApproveBy?.lastName}
+                        </p>
+                      </>
+                    )}
+
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
           <div className="sub-menu-content-action">

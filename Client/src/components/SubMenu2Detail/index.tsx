@@ -98,6 +98,7 @@ const SubMenu2Detail = () => {
   const [openReport, setOpenReport] = useState(false);
   const [openRemove, setOpenRemove] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
+  const [UserApproveBy, setUserApproveBy] = useState<User>();
   const [specializedDepartment, setSpecializedDepartment] =
     useState<Department>();
   const [grades, setGrades] = useState<Grade[]>([]);
@@ -124,6 +125,18 @@ const SubMenu2Detail = () => {
 
   const getTargetElement = () => document.getElementById("main-content");
 
+  useEffect(() => {
+    const fetchUserApprove = async () => {
+      if (document2Info?.approveBy) {
+        const res = await apiGetUser(document2Info?.approveBy);
+        if (res && res.data) {
+          const userData: any = res.data;
+          setUserApproveBy(userData);
+        }
+      }
+    };
+    fetchUserApprove();
+  });
   const downloadPdf = async () => {
     try {
       const pdf = await generatePDF(getTargetElement, options);
@@ -629,7 +642,6 @@ const SubMenu2Detail = () => {
                       <input
                         type="text"
                         placeholder="..........."
-                        onChange={(e) => setTruong(e.target.value)}
                       />
                     </div>
                   </div>
@@ -1044,7 +1056,6 @@ const SubMenu2Detail = () => {
                       style={{ width: "150px" }}
                       onChange={(e) => setToTruong(e.target.value)}
                     /> */}
-                    <img src={userInfoLogin?.signature} alt="" style={{ width: "150px", height: "auto" }} />
                     <img src={location.pathname.includes("create") ? userInfoLogin?.signature : userInfoDocument?.signature} alt="" style={{ width: "150px", height: "auto" }} />
                     <p>
                       {
@@ -1059,28 +1070,24 @@ const SubMenu2Detail = () => {
                       type="text"
                       placeholder="....................."
                       style={{ width: "60px" }}
-                      onChange={(e) => setDayOfWeek(e.target.value)}
                     />
                     , ngày{" "}
                     <input
                       type="number"
                       placeholder="....."
                       style={{ width: "30px" }}
-                      onChange={(e) => setDayOfMonth(e.target.value)}
                     />
                     , tháng{" "}
                     <input
                       type="number"
                       placeholder="....."
                       style={{ width: "30px" }}
-                      onChange={(e) => setMonth(e.target.value)}
                     />
                     , năm 20{" "}
                     <input
                       type="number"
                       placeholder="....."
                       style={{ width: "30px" }}
-                      onChange={(e) => setYear(e.target.value)}
                     />
                   </div>
                   <div>
@@ -1089,23 +1096,25 @@ const SubMenu2Detail = () => {
                   <div>
                     <i>(Ký và ghi rõ họ tên)</i>
                   </div>
-                  <br />
-                  <br />
-                  {
-                    document2Info?.approveBy == null ? <input
-                      type="text"
-                      placeholder="................................................................"
-                      style={{ width: "150px" }}
-                    /> :
-                      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                        <img src={principle?.signature} alt="" style={{ width: "150px", height: "auto" }} />
+                  <br /> <br />
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                    {UserApproveBy?.id === undefined ? (
+                      <input
+                        type="text"
+                        placeholder="................................................................"
+                        style={{ width: "150px" }}
+                        disabled
+                      />
+                    ) : (
+                      <>
+                        <img src={UserApproveBy?.signature} alt="" style={{ width: "150px", height: "auto" }} />
                         <p>
-                          {
-                            document2Info?.approveByName ?? principle?.firstName + " " + principle?.lastName
-                          }
+                          {UserApproveBy?.firstName + " " + UserApproveBy?.lastName}
                         </p>
-                      </div>
-                  }
+                      </>
+                    )}
+
+                  </div>
                 </div>
               </div>
               
