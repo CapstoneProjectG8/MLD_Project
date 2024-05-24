@@ -95,10 +95,10 @@ const SubMenu4Detail = () => {
           <div className="verify" style={{ justifyContent: "center" }}>
             <div
               style={{
-                // display:
-                //   parseInt(user?.userId) === document4Info?.userId
-                //     ? "flex"
-                //     : "none",
+                display:
+                  // parseInt(user?.userId) === document4Info?.userId
+                  1  ? "flex"
+                    : "none",
                 columnGap: "10px",
               }}
             >
@@ -113,6 +113,15 @@ const SubMenu4Detail = () => {
         </div>
       </div>
       <div className="sub-menu-infomation">
+      <div className="sub-menu-row">
+                <div>
+                  <i>
+                    {document4Info?.isApprove === 3
+                      ? "(Tài liệu đã được thẩm định)"
+                      : "(Tài liệu chưa được thẩm định)"}
+                  </i>
+                </div>
+              </div>
         <div className="sub-menu-row">
           <div>
             <strong>Nguồn: </strong> https://baigiang.violet.vn
@@ -128,44 +137,17 @@ const SubMenu4Detail = () => {
             <strong>Người gửi: </strong>{" "}
             <u className="underline-blue">Sam Dung</u>
           </div>
-        </div>
-        <div className="sub-menu-row">
-          <div>
-            <strong>Ngày gửi: </strong> 10h:34' 14-01-2024
-          </div>
-        </div>
-        <div className="sub-menu-row">
-          <div>
-            <strong>Dung lượng: </strong> 19/9 KB
-          </div>
           <div className="right-action" onClick={handleClickOpenFeedback}>
             <strong>
               <u className="underline-blue">Tạo đánh giá của bài dạy</u>
             </strong>
           </div>
         </div>
+        
         <div className="sub-menu-row">
-          <div>
-            <strong>Dung lượng: </strong> 19/9 KB
-          </div>
-          <div
-            className="right-action"
-            onClick={() => {
-              navigate(
-                `/sub-menu-5/detail-view/${location.pathname.split("/")[3]}`
-              );
-            }}
-          >
-            <strong>
-              <u className="underline-blue">
-                Đi đến phụ lục đánh giá của bài dạy
-              </u>
-            </strong>
-          </div>
-        </div>
-        <div className="sub-menu-row">
-          <div>
-            <strong>Dung lượng: </strong> 19/9 KB
+        <div>
+            <strong>Ngày gửi: </strong>{" "}
+            <u className="underline-blue">Sam Dung</u>
           </div>
           <div
             className="right-action"
@@ -178,18 +160,7 @@ const SubMenu4Detail = () => {
             </strong>
           </div>
         </div>
-        <div className="sub-menu-row">
-          <div>
-            <strong>Số lượt tải: </strong>25
-          </div>
-          <div className="right-action"></div>
-        </div>
-        <div className="sub-menu-row">
-          <div>
-            <strong>Số lượt thích: </strong> 0 người
-          </div>
-          <div className="right-action"></div>
-        </div>
+        
       </div>
       <Dialog
         open={openReport}

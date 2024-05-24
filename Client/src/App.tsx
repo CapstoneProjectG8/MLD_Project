@@ -15,6 +15,7 @@ import UploadPhuLuc4Page from './pages/UploadPhuLuc4Page';
 import ApproveListPage from './pages/ApproveListPage';
 import SubMenu3List from './components/SubMenu3List';
 import SubMenu4List from './components/SubMenu4List';
+import SubMenu5List from './components/SubMenu5List';
 
 const App = () => {
   return (
@@ -41,6 +42,7 @@ const App = () => {
           <Route path="/sub-menu-5/detail-create/:index" element={<SubMenu5DetailPage />} />
           <Route path="/sub-menu-5/detail-view/:index" element={<SubMenu5DetailPage />} />
           <Route path="/sub-menu-5/detail-edit/:index" element={<SubMenu5DetailPage />} />
+          <Route path="/sub-menu-5/list-view/:index" element={<SubMenu5List />} />
           <Route path="/bai-giang-scrom" element={<ScromPage />} />
           <Route path="/bai-giang-scrom/:type" element={<ScromTypePage />} />
           <Route path="/upload-bai-giang" element={<UploadScromPage />} />
