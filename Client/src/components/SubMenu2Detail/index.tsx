@@ -596,6 +596,7 @@ const SubMenu2Detail = () => {
                     <div>
                       <strong>TRƯỜNG: </strong>
                       <input
+                        style={{ height: "30px" }}
                         type="text"
                         placeholder="..........."
                         onChange={(e) => setTruong(e.target.value)}
@@ -818,6 +819,7 @@ const SubMenu2Detail = () => {
                                   </TableCell>
                                   <TableCell align="center">
                                     <input
+                                      style={{ marginBottom: "1.5rem" }}
                                       type="date"
                                       value={
                                         row.time ? formatDate(row.time) : ""
