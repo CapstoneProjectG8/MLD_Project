@@ -812,7 +812,6 @@ const SubMenu1Detail = () => {
                         <input
                           type="text"
                           placeholder="..........."
-                          onChange={(e) => setTruong(e.target.value)}
                         />
                       </div>
                     </div>
@@ -1667,6 +1666,65 @@ const SubMenu1Detail = () => {
                   </div>
                 </div>
               </div>
+              <div className="sub-menu-content-main-signature">
+                  <div className="to-truong">
+                    <div>
+                      <strong>TỔ TRƯỞNG</strong>
+                    </div>
+                    <div>
+                      <i>(Ký và ghi rõ họ tên)</i>
+                    </div>
+                    <br /> <br />
+                    <div>
+                      <input
+                        type="text"
+                        placeholder="................................................................"
+                        style={{ width: "150px" }}
+                      />
+                    </div>
+                  </div>
+                  <div className="hieu-truong">
+                    <div>
+                      <input
+                        type="text"
+                        placeholder="....................."
+                        style={{ width: "60px" }}
+                      />
+                      , ngày{" "}
+                      <input
+                        type="number"
+                        placeholder="....."
+                        style={{ width: "30px" }}
+                      />
+                      , tháng{" "}
+                      <input
+                        type="number"
+                        placeholder="....."
+                        style={{ width: "30px" }}
+                      />
+                      , năm 20{" "}
+                      <input
+                        type="number"
+                        placeholder="....."
+                        style={{ width: "30px" }}
+                      />
+                    </div>
+                    <div>
+                      <strong>HIỆU TRƯỞNG</strong>
+                    </div>
+                    <div>
+                      <i>(Ký và ghi rõ họ tên)</i>
+                    </div>
+                    <br /> <br />
+                    <div>
+                      <input
+                        type="text"
+                        placeholder="................................................................"
+                        style={{ width: "150px" }}
+                      />
+                    </div>
+                  </div>
+                </div>
             </div>
           </div>
           <div className="sub-menu-content-action">

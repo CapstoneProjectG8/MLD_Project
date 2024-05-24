@@ -152,7 +152,7 @@ const SubMenu4Detail = () => {
           <div
             className="right-action"
             onClick={() => {
-              navigate("/sub-menu/5");
+              navigate(`/sub-menu-5/list-view/${document4Info?.id}`);
             }}
           >
             <strong>

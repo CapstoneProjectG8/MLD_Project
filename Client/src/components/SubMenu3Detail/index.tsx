@@ -1283,7 +1283,6 @@ const SubMenu3Detail = () => {
                         type="text"
                         placeholder="................................................................"
                         style={{ width: "150px" }}
-                        onChange={(e) => setToTruong(e.target.value)}
                       />
                     </div>
                   </div>

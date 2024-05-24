@@ -229,7 +229,7 @@ const SubMenu2Detail = () => {
         );
         if (res && res.data) {
           const gradeMap = new Map();
-
+          console.log(res);
           res.data.forEach((item: any, index: any) => {
             if (gradeMap.has(item.gradeId)) {
               const existingArray = gradeMap.get(item.gradeId);
@@ -240,9 +240,11 @@ const SubMenu2Detail = () => {
             }
             fecthTotalClass(item.gradeId, index);
           });
-
           const formatRes = Array.from(gradeMap.values());
+          
+          console.log(formatRes);
           setMultiRows(formatRes);
+          console.log(multiRows);
         }
         if (res?.data.length === 0) {
           setMultiRows([
@@ -662,7 +664,7 @@ const SubMenu2Detail = () => {
             </div>
 
             <div className="sub-menu-content-main">
-              {multiRows.map((subRows, indexGrade) => (
+              {multiRows?.map((subRows, indexGrade) => (
                 <Tooltip
                   key={indexGrade}
                   disableFocusListener
@@ -695,7 +697,6 @@ const SubMenu2Detail = () => {
                             border: "none",
                             outline: "none",
                           }}
-                          value={gradeIds[indexGrade]?.gradeId ?? ""}
                           defaultValue={subRows[0]?.gradeId ?? ""}
                           onChange={(e) => {
                             const newValue = parseInt(e.target.value);
@@ -1107,6 +1108,7 @@ const SubMenu2Detail = () => {
                   }
                 </div>
               </div>
+              
             </div>
           </div>
           <div className="sub-menu-content-action">

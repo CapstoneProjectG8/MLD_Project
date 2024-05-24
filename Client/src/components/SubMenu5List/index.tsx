@@ -3,7 +3,7 @@ import Layout from '../Layout'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { apiGetDoc3ByDoc1Id } from '../../api/subMenu3'
 import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material'
-import { apiGetDoc4ByDoc3Id } from '../../api/subMenu4'
+import { apiGetDoc5ByDoc4Id } from '../../api/subMenu5'
 
 function SubMenu5List() {
     const location = useLocation()
@@ -16,7 +16,7 @@ function SubMenu5List() {
     };
     useEffect(() => {
         const fetchSubMenu5 = async () => {
-            const data = await apiGetDoc4ByDoc3Id(parseInt(location.pathname.split("/")[3]))
+            const data = await apiGetDoc5ByDoc4Id(parseInt(location.pathname.split("/")[3]))
             if (data && data.data) {
                 setSubMenuData(data.data)
             }
@@ -30,7 +30,7 @@ function SubMenu5List() {
                     <div className="home-panel1-content-sub-menu">
                         <div className="home-panel1-content-sub-menu-list">
                             <div className="home-panel1-content-sub-menu-item-name">
-                                <div>KHUNG KẾ HOẠCH BÀI DẠY</div>
+                                <div>DANH SÁCH ĐÁNH GIÁ BÀI GIẢNG</div>
                             </div>
 
                             <form action="">
