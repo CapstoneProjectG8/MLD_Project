@@ -36,6 +36,7 @@ const UploadPhuLuc4 = () => {
     const [open, setOpen] = useState(false);
     const [teachingPlannerId, setTeachingPlannerId] = useState(null);
     const [teachingPlanner, setTeachingPlanner] = useState<any>();
+    const [document3Info, setDocument3Info] = useState<any>();
     const [document4Info, setDocument4Info] = useState<any>()
     const [topicOrLesson, setTopicOrLesson] = useState("lesson")
     const isEditPath = location.pathname.includes('edit');
@@ -45,7 +46,8 @@ const UploadPhuLuc4 = () => {
             const fetchGetDoc3InformationByDoc3Id = async () => {
                 const res = await apiGetDoc3InformationByDoc3Id(params.doc1Id)
                 if (res && res.data) {
-                    setTeachingPlanner(res.data)
+                    setDocument3Info(res.data);
+                    setTeachingPlanner(document3Info.document3Info)
                 }
             }
             fetchGetDoc3InformationByDoc3Id()
@@ -131,8 +133,9 @@ const UploadPhuLuc4 = () => {
 
     const handleUpload = async () => {
         setOpen(true)
+        console.log(teachingPlanner)
         if (teachingPlanner && user) {
-            const post = await apiPostTeachingPlanner(null, { userId: user?.userId, subjectId: teachingPlanner?.document3Info?.subjectId, classId: teachingPlanner?.document3Info?.classId })
+            const post = await apiPostTeachingPlanner(null, { userId: user?.userId, subjectId: teachingPlanner?.subjectId, classId: teachingPlanner?.classId })
             if (post) {
                 setTeachingPlannerId(post?.data.id)
             }
@@ -225,7 +228,8 @@ const UploadPhuLuc4 = () => {
                     </div>
                 </div>
                 {
-                    params?.doc1Id && <div className='upload-row'>
+
+                    location.pathname.includes("upload") ? (params?.doc1Id && <div className='upload-row'>
                         <div className='upload-title'>
                             <select
                                 onChange={(e) => {
@@ -244,7 +248,7 @@ const UploadPhuLuc4 = () => {
                                         <select onChange={handleTieuDeChange}>
                                             <option value="" disabled>Chọn bài giảng</option>
                                             {
-                                                teachingPlanner?.curriculumNames?.map((topic: any, index: number) => (
+                                                document3Info?.curriculumNames?.map((topic: any, index: number) => (
                                                     <option value={topic} key={index}>{topic}</option>
                                                 ))
                                             }
@@ -253,7 +257,7 @@ const UploadPhuLuc4 = () => {
                                         <select onChange={handleTieuDeChange}>
                                             <option value="" disabled>Chọn chuyên đề</option>
                                             {
-                                                teachingPlanner?.selectedTopicsNames?.map((name: any, index: number) => (
+                                                document3Info?.selectedTopicsNames?.map((name: any, index: number) => (
                                                     <option value={name} key={index}>{name}</option>
                                                 ))
                                             }
@@ -262,8 +266,16 @@ const UploadPhuLuc4 = () => {
                                 }
                             </div>
                         </div>
-                    </div>
-                }
+                    </div>) : (
+                        <div className='upload-row'>
+                            <div className='upload-title'>
+                                Tên bài dạy
+                            </div>
+                            <div className="upload-input">
+                                {document4Info?.name}
+                            </div>
+                        </div>
+                    )}
 
                 {/* <div className='upload-row'>
                     <div className='upload-title'>
@@ -329,7 +341,7 @@ const UploadPhuLuc4 = () => {
                     </Button>
                 </DialogActions>
             </Dialog>
-        </div>
+        </div >
     )
 }
 
