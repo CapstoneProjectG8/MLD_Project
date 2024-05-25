@@ -174,7 +174,7 @@ namespace Project_MLD.Mapper
             CreateMap<Document4DTO, Document4>()
                 .ForMember(dest => dest.TeachingPlanner, opt => opt.Ignore())
                 .ForMember(dest => dest.Document5s, opt => opt.Ignore())
-                .ForMember(dest => dest.IsApprove, opt => opt.Ignore())
+                .ForMember(dest => dest.IsApproveNavigation, opt => opt.Ignore())
                 .ReverseMap();
 
             CreateMap<TeachingPlanner, TeachingPlannerDTO>()

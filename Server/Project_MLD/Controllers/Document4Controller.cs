@@ -166,13 +166,9 @@ namespace Project_MLD.Controllers
             {
                 return NotFound("Error Updating");
             }
-            var dataMap = _mapper.Map<Document4>(mapDocument);
-            return Ok(new
-            {
-                message = "Update Success",
-                dataMap
-            });
+            return Ok("Update Success");
         }
+
         [HttpGet("GetDoc4InformationByDoc4Id")]
         public async Task<IActionResult> GetDoc4InformationByDoc4Id(int id)
         {
