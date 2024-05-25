@@ -21,6 +21,15 @@ const Guide = lazy(() => import(/* webpackChunkName: "guide'"*/ '@/pages/guide')
 const RoutePermission = lazy(() => import(/* webpackChunkName: "route-permission"*/ '@/pages/permission/route'));
 const AccountPermission = lazy(() => import(/* webpackChunkName: "route-permission"*/ '@/pages/account'));
 const Profile = lazy(() => import(/* webpackChunkName: "guide'"*/ '@/pages/profile'));
+const Class = lazy(() => import(/* webpackChunkName: "guide'"*/ '@/pages/Class'));
+const Curriculum = lazy(() => import(/* webpackChunkName: "guide'"*/ '@/pages/Curriculum'));
+const Category = lazy(() => import(/* webpackChunkName: "guide'"*/ '@/pages/Category'));
+const Equipment = lazy(() => import(/* webpackChunkName: "guide'"*/ '@/pages/TeachingEquipment'));
+const Planner = lazy(() => import(/* webpackChunkName: "guide'"*/ '@/pages/TeachingPlanner'));
+const Subject = lazy(() => import(/* webpackChunkName: "guide'"*/ '@/pages/Subject'));
+const Grade = lazy(() => import(/* webpackChunkName: "guide'"*/ '@/pages/Grade'));
+const Department = lazy(() => import(/* webpackChunkName: "guide'"*/ '@/pages/SpecializedDepartment'));
+const Room = lazy(() => import(/* webpackChunkName: "guide'"*/ '@/pages/SubjectRoom'));
 
 const routeList: RouteObject[] = [
   {
@@ -70,6 +79,42 @@ const routeList: RouteObject[] = [
       {
         path: 'permission/account',
         element: <WrapperRouteComponent element={<AccountPermission />} titleId="title.permission.route" auth />,
+      },
+      {
+        path: 'class',
+        element: <WrapperRouteComponent element={<Class />} titleId="title.permission.button" auth />,
+      },
+      {
+        path: 'curriculumDistribution',
+        element: <WrapperRouteComponent element={<Curriculum />} titleId="title.permission.button" auth />,
+      },
+      {
+        path: 'formCategory',
+        element: <WrapperRouteComponent element={<Category />} titleId="title.permission.button" auth />,
+      },
+      {
+        path: 'teachingEquipment',
+        element: <WrapperRouteComponent element={<Equipment />} titleId="title.permission.button" auth />,
+      },
+      {
+        path: 'teachingPlanner',
+        element: <WrapperRouteComponent element={<Planner />} titleId="title.permission.button" auth />,
+      },
+      {
+        path: 'subject',
+        element: <WrapperRouteComponent element={<Subject />} titleId="title.permission.button" auth />,
+      },
+      {
+        path: 'grade',
+        element: <WrapperRouteComponent element={<Grade />} titleId="title.permission.button" auth />,
+      },
+      {
+        path: 'specializedDepartment',
+        element: <WrapperRouteComponent element={<Department />} titleId="title.permission.button" auth />,
+      },
+      {
+        path: 'subjectRoom',
+        element: <WrapperRouteComponent element={<Room />} titleId="title.permission.button" auth />,
       },
       {
         path: '*',

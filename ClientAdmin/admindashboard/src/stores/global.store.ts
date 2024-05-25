@@ -7,7 +7,7 @@ interface State {
   loading: boolean;
 }
 
-const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+const systemTheme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
 const userTheme = localStorage.getItem('theme') as State['theme'];
 
 const initialState: State = {

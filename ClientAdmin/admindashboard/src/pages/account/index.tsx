@@ -60,6 +60,7 @@ const Account: FC = () => {
   const [searchedColumn, setSearchedColumn] = useState('');
   const searchInput = useRef(null);
   const [loading, setLoading] = useState(true);
+  const [creatingUser, setCreatingUser] = useState(false); // New state
 
   const fetchData = async () => {
     try {
@@ -117,6 +118,13 @@ const Account: FC = () => {
   };
 
   const handleConfirmBanUnban = (record: AccountDetail, action: 'ban' | 'unban') => {
+    if (record.roleId === 1) {
+      // Kiểm tra nếu role là 1 thì không thực hiện hành động ban/unban
+      message.warning('You cannot ban/unban accounts with role Admin.');
+
+      return;
+    }
+
     setSelectedAccount(record);
     setActionType(action);
     setConfirmModalVisible(true);
@@ -171,8 +179,10 @@ const Account: FC = () => {
 
       // Mở modal tạo user và truyền accountId vào
       setAddUserModalVisible(true);
-
+      setCreatingUser(true);
       message.success('Account created successfully.');
+      // Cập nhật lại dữ liệu accounts sau khi thêm tài khoản mới
+      fetchData();
     } catch (error) {
       console.error(error);
       message.error('Failed to create account.');
@@ -198,7 +208,9 @@ const Account: FC = () => {
       .then(() => {
         setAddUserModalVisible(false);
         setNewUserData({});
+        setCreatingUser(false);
         message.success('User created successfully.');
+        fetchData();
       })
       .catch(error => {
         console.error(error);
@@ -282,6 +294,27 @@ const Account: FC = () => {
     filters: filters,
     onFilter: (value, record) => record[dataIndex] === value,
   });
+
+  useEffect(() => {
+    const handleModalClose = e => {
+      if (creatingUser && !window.confirm('You have unsaved changes. Are you sure you want to close?')) {
+        e.preventDefault();
+      }
+    };
+
+    if (addUserModalVisible) {
+      window.addEventListener('beforeunload', handleModalClose);
+      window.addEventListener('unload', handleModalClose);
+    } else {
+      window.removeEventListener('beforeunload', handleModalClose);
+      window.removeEventListener('unload', handleModalClose);
+    }
+
+    return () => {
+      window.removeEventListener('beforeunload', handleModalClose);
+      window.removeEventListener('unload', handleModalClose);
+    };
+  }, [creatingUser, addUserModalVisible]);
   const columns = [
     {
       title: '#',
@@ -350,9 +383,11 @@ const Account: FC = () => {
       render: (text: string, record: AccountDetail) => (
         <span>
           <Button onClick={() => handleDetail(record)}>Detail</Button>
-          <Button onClick={() => handleConfirmBanUnban(record, record.active ? 'ban' : 'unban')}>
-            {record.active ? 'Ban' : 'Unban'}
-          </Button>
+          {record.roleId !== 1 && ( // Kiểm tra nếu role không phải là 1 thì mới hiển thị nút "Ban"
+            <Button onClick={() => handleConfirmBanUnban(record, record.active ? 'ban' : 'unban')}>
+              {record.active ? 'Ban' : 'Unban'}
+            </Button>
+          )}
         </span>
       ),
     },
@@ -464,15 +499,26 @@ const Account: FC = () => {
       <Modal
         title="Add User"
         visible={addUserModalVisible}
-        onCancel={() => setAddUserModalVisible(false)}
-        footer={[
-          <Button key="cancel" onClick={() => setAddUserModalVisible(false)}>
-            Cancel
-          </Button>,
-          <Button key="createUser" type="primary" onClick={() => handleCreateUser(newUserData.accountId)}>
-            Create User
-          </Button>,
-        ]}
+        onCancel={() => {
+          if (creatingUser) {
+            const confirm = window.confirm('You have unsaved changes. Are you sure you want to close?');
+
+            if (!confirm) {
+              return;
+            }
+          }
+
+          setAddUserModalVisible(false);
+        }}
+        onOk={handleCreateUser}
+        // footer={[
+        //   <Button key="cancel" onClick={() => setAddUserModalVisible(false)}>
+        //     Cancel
+        //   </Button>,
+        //   <Button key="createUser" type="primary" onClick={() => handleCreateUser(newUserData.accountId)}>
+        //     Create User
+        //   </Button>,
+        // ]}
       >
         <Form onValuesChange={handleNewUserFormChange}>
           <Form.Item

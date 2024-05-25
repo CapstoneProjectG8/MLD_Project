@@ -3,7 +3,7 @@ import type { FC } from 'react';
 
 import './index.less';
 
-import { Button, Checkbox, Form, Input, message } from 'antd';
+import { Button, Checkbox, Form, Input, message, Modal } from 'antd';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useState } from 'react';
@@ -53,6 +53,8 @@ const LoginForm: FC = () => {
     }
   };
 
+  const [loggedInAdminId, setLoggedInAdminId] = useState(null);
+
   const onFinished = async (form: LoginParams) => {
     try {
       // Dispatch the login action
@@ -69,17 +71,17 @@ const LoginForm: FC = () => {
 
       // Extract token and account information from the response
       const { token, accountInfo } = response.data;
-      const { active, roleId } = accountInfo;
+      const { active, roleId, id, loginAttempt } = accountInfo;
 
       // Check if the account is active and the role is admin
       if (!active) {
-        message.error('Tài khoản của bạn đã bị khóa');
+        message.error('Your account has been locked');
 
         return;
       }
 
       if (roleId !== 1) {
-        message.error('Bạn không đủ quyền đăng nhập');
+        message.error('You do not have permission to log in');
 
         return;
       }
@@ -92,7 +94,8 @@ const LoginForm: FC = () => {
 
       // Set token expiration time
       Cookies.set('token_expiration', expirationDate.toISOString());
-
+      // Store the logged-in admin's accountId
+      setLoggedInAdminId(id);
       // Redirect user after successful login
       const search = formatSearch(location.search);
       const from = search.from || { pathname: '/' };
@@ -101,7 +104,7 @@ const LoginForm: FC = () => {
       message.success('Login success!');
     } catch (error) {
       // Handle login error
-      message.error('Invalid username or password');
+      message.error(error.response.data);
     }
   };
 
@@ -109,6 +112,35 @@ const LoginForm: FC = () => {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  const showChangePasswordModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  const handlePasswordChange = async (values: any) => {
+    const { username, currentPassword, newPassword } = values;
+
+    try {
+      const response = await axios.post<{ message: string }>(
+        `https://localhost:7241/api/Account/ChangePassword?username=${username}&currentPassword=${currentPassword}&newPassword=${newPassword}`,
+      );
+
+      // Handle success response
+      message.success(response.data);
+
+      // Close the modal upon successful password change
+      handleCancel();
+    } catch (error) {
+      // Handle error
+      message.error(error.response.data);
+      // You can display an error message or handle the error as per your application logic
+    }
+  };
 
   return (
     <div className="login-page">
@@ -161,7 +193,38 @@ const LoginForm: FC = () => {
             <LocaleFormatter id="gloabal.tips.login" />
           </Button>
         </Form.Item>
+        <Form.Item>
+          <a href="#" onClick={showChangePasswordModal}>
+            Change password
+          </a>
+        </Form.Item>
       </Form>
+      <Modal title="Change Password" visible={isModalVisible} onCancel={handleCancel} footer={null}>
+        <Form onFinish={handlePasswordChange}>
+          <Form.Item label="Username" name="username" rules={[{ required: true, message: 'Username is required' }]}>
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Current Password"
+            name="currentPassword"
+            rules={[{ required: true, message: 'Current password is required' }]}
+          >
+            <Input.Password />
+          </Form.Item>
+          <Form.Item
+            label="New Password"
+            name="newPassword"
+            rules={[{ required: true, message: 'New password is required' }]}
+          >
+            <Input.Password />
+          </Form.Item>
+          <Form.Item>
+            <Button htmlType="submit" type="primary">
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 };

@@ -108,7 +108,9 @@ namespace Project_MLD.Controllers
                     AccountInfo = new
                     {
                         Active = authenticatedAccount.Account.Active,
-                        RoleId = authenticatedAccount.Account.RoleId
+                        RoleId = authenticatedAccount.Account.RoleId,
+                        Id = authenticatedAccount.Account.AccountId,
+                        LoginAttempt = authenticatedAccount.Account.LoginAttempt
                     }
                 };
 
