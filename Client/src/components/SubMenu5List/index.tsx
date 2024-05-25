@@ -54,33 +54,30 @@ function SubMenu5List() {
                                 <div className="container d-flex justify-content-center align-items-center"></div>
                             </form>
 
-                            {
-                                subMenuData?.map((doc: any, index) => (
-                                    <div key={index}>
+                            <div className="home-panel1-content-sub-menu-grid">
+                                {subMenuData?.map((doc: any, index) => (
+                                    <div
+                                        key={index}
+                                        className="home-panel1-content-sub-menu-item"
+                                        onClick={() => navigate(`/sub-menu-5/detail-view/${doc?.id}`)}
+                                    >
                                         <div
                                             className="home-panel1-content-sub-menu-item-content-grid"
                                             style={{
-                                                borderBottom:
-                                                    index === subMenuData.length - 1
-                                                        ? "none"
-                                                        : "1px solid black",
+                                                borderBottom: index === subMenuData.length - 1 ? "none" : "1px solid black",
                                             }}
                                         >
-                                            {
-                                                <div
-                                                    key={index}
-                                                    className="sub-menu-content-detail"
-                                                    onClick={() =>
-                                                        navigate(
-                                                            `/sub-menu-5/detail-view/${doc?.id}`
-                                                        )
-                                                    }
-                                                ></div>
-                                            }
+                                            <img
+                                                src={doc?.linkImage ?? "https://png.pngtree.com/png-vector/20190701/ourlarge/pngtree-document-icon-for-your-project-png-image_1533118.jpg"}
+                                                alt={doc?.name}
+                                                style={{ width: '100%', height: '100%' }} // Corrected inline styling
+                                            />
+                                            <div className="sub-menu-name">{doc?.name}</div>
                                         </div>
                                     </div>
-                                ))
-                            }
+                                ))}
+                            </div>
+
                         </div>
                     </div>
                 </div>

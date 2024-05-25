@@ -480,7 +480,8 @@ const SubMenu3Detail = () => {
   };
 
   const handleAddDoc3 = async () => {
-    const documentId = document3Info?.id;
+    const docId = document3Info?.id ?? documentId ;
+    console.log(documentId);
     if (documentId) {
       if (location.pathname.includes("edit")) {
         await apiDeleteDocument3ForeignTableByDocument3ID(
@@ -1428,7 +1429,7 @@ const SubMenu3Detail = () => {
                 <div
                   style={{
                     display:
-                      userInfoLogin?.id === document3Info?.userId
+                      userInfoLogin?.id === document3Info?.userId && document3Info?.isApprove === 3
                         ? "flex"
                         : "none",
                   }}

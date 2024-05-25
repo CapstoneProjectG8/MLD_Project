@@ -37,7 +37,8 @@ const UploadPhuLuc4 = () => {
     const [avatar, setAvatar] = useState<File | null>(null)
     const [subjects, setSubjects] = useState<Subject[]>([])
     const [classes, setClasses] = useState<Class[]>([])
-    const [avatarUrl, setAvatarUrl] = useState('')
+    const [avatarUrl, setAvatarUrl] = useState("https://png.pngtree.com/png-vector/20190701/ourlarge/pngtree-document-icon-for-your-project-png-image_1533118.jpg");
+
     const [fileUrl, setFileUrl] = useState('')
     const [open, setOpen] = useState(false);
     const [teachingPlannerId, setTeachingPlannerId] = useState(null);
@@ -45,8 +46,8 @@ const UploadPhuLuc4 = () => {
     const [document3Info, setDocument3Info] = useState<any>();
     const [document4Info, setDocument4Info] = useState<any>()
     const [topicOrLesson, setTopicOrLesson] = useState("lesson")
-  const [principleAndTeacher, setPrincipleAndTeacher] = useState<any>();
-  const isEditPath = location.pathname.includes('edit');
+    const [principleAndTeacher, setPrincipleAndTeacher] = useState<any>();
+    const isEditPath = location.pathname.includes('edit');
 
     useEffect(() => {
         const fetchUserInfoLogin = async () => {
