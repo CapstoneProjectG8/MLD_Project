@@ -162,11 +162,11 @@ namespace Project_MLD.Controllers
 
             var mapDocument = _mapper.Map<Document4>(pl4);
             var result = await _repository.UpdateDocument4(mapDocument);
-            if (!result)
+            if (result == null)
             {
                 return NotFound("Error Updating");
             }
-            var dataMap = _mapper.Map<Document4>(mapDocument);
+            var dataMap = _mapper.Map<Document4>(result);
             return Ok(new
             {
                 message = "Update Success",

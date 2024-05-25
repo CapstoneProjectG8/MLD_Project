@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿    using Microsoft.EntityFrameworkCore;
 using Project_MLD.Models;
 using Project_MLD.Service.Interface;
 using System;
@@ -108,12 +108,12 @@ namespace Project_MLD.Service.Repository
                .ToListAsync();
         }
 
-        public async Task<bool> UpdateDocument4(Document4 pl4)
+        public async Task<Document4> UpdateDocument4(Document4 pl4)
         {
             var existDocument4s = await GetDocument4ById(pl4.Id);
             if (existDocument4s == null)
             {
-                return false;
+                return null;
             }
 
             var properties = typeof(Document4).GetProperties();
@@ -126,7 +126,7 @@ namespace Project_MLD.Service.Repository
                 }
             }
             await _context.SaveChangesAsync();
-            return true;
+            return existDocument4s;
         }
 
         public async Task<IEnumerable<object>> GetDocument4ByUserSpecialiedDepartment(List<int> listId)

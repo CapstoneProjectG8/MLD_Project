@@ -8,7 +8,7 @@ namespace Project_MLD.Service.Interface
         Task<Document4> GetDocument4ById(int id);
         Task<Document4> GetDoc4TeachingPlannerByDoc4Id(int document4Id);
         Task<Document4> AddDocument4(Document4 pl4);
-        Task<bool> UpdateDocument4(Document4 pl4);
+        Task<Document4> UpdateDocument4(Document4 pl4);
         Task<bool> DeleteDocument4(int id);
         Task<IEnumerable<Document4>> GetDocument4sWithCondition(bool? status, int? isApprove);
         Task<IEnumerable<object>> GetDocument4ByUserSpecialiedDepartment(List<int> listId);
