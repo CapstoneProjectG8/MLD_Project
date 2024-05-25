@@ -166,7 +166,12 @@ namespace Project_MLD.Controllers
             {
                 return NotFound("Error Updating");
             }
-            return Ok("Update Success");
+            var dataMap = _mapper.Map<Document4>(mapDocument);
+            return Ok(new
+            {
+                message = "Update Success",
+                dataMap
+            });
         }
 
         [HttpGet("GetDoc4InformationByDoc4Id")]
